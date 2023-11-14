@@ -26,3 +26,4 @@ dist-ssr
 # our files 😀
 *.lock
 package-lock.json
+out/

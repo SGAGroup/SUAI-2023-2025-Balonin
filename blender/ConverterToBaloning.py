@@ -68,6 +68,47 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             else: return ''
         except:
             return ''
+    def getMetallic(self, obj):
+        try:
+            value = self.getMaterialProp(obj, 'Metallic')
+            if value > 0: return ', metallness: ' + str(round(value, 4))
+            else: return ''
+        except:
+            return ''
+    
+    def getRoughness(self, obj):
+        try:
+            value = self.getMaterialProp(obj, 'Roughness')
+            if value < 1: return ', roughness: ' + str(round(value, 4))
+            else: return ''
+        except:
+            return ''
+    
+    def getEmmission(self, obj):
+        try:
+            value = self.getMaterialProp(obj, 'Emission')
+            color = Color( (value[0], value[1], value[2]) )
+            if value[0] != 0 and value[1] != 0 and value[2] != 0: return ', emissive: ' + 'new THREE.Color('+ str(round(color.r, 4)) + ' ,' + str(round(color.g, 4)) + ' ,' + str(round(color.b, 4)) +')'
+            else: return ''
+        except:
+            return ''
+    
+    def addMaterial(self, obj, name, textureAdditionParameters, materials, materialsString):
+        try:
+            name = obj.material_slots[0].material.name
+            if "material" not in name.lower(): name += "Material"
+            if textureAdditionParameters != "": name += "DS"
+            if name in materials: return (name, materials, materialsString)
+            materialsString += 'var ' + name + ' = new THREE.MeshStandardMaterial({ color: new THREE.Color('+ self.getColor(obj) +')'+ textureAdditionParameters + self.getTransperency(obj) + self.getMetallic(obj) + self.getRoughness(obj) + self.getEmmission(obj) + ' });\n'
+            materials.append(name)
+            return (name, materials, materialsString)
+        except:
+            name = name + 'Material'
+            if textureAdditionParameters != "": name += "DS"
+            materialsString += 'var ' + name + ' = new THREE.MeshStandardMaterial({ color: new THREE.Color('+ self.getColor(obj) +')'+ textureAdditionParameters +' });\n'
+            materials.append(name)
+            return (name, materials, materialsString)
+            
 
     def execute(self, context):
         scene = context.scene
@@ -75,15 +116,17 @@ class OBJECT_OT_run_script(bpy.types.Operator):
 
         message = ""
         names = []
+        materialsString = ""
+        materials = []
         
         for ob in context.selected_objects:
             command, textureAdditionParameters, deltaX, name = self.getParameters(ob)
+            materialName, materials, materialsString = self.addMaterial(ob, name, textureAdditionParameters, materials, materialsString)
             message += 'var ' + name + 'Geometry' + ' = new THREE.'+command+';\n'
-            message += 'var ' + name + 'Material' + ' = new THREE.MeshBasicMaterial({ color: new THREE.Color('+ self.getColor(ob) +')'+ textureAdditionParameters + self.getTransperency(ob) + ' });\n'
-            message += 'var ' + name + ' = new THREE.Mesh( '+name + 'Geometry'+', '+ name + 'Material'+' );\n'
+            message += 'var ' + name + ' = new THREE.Mesh( '+name + 'Geometry'+', '+ materialName +' );\n'
             message += self.getPSR(ob, name, deltaX)+'\n'
             names.append(name)
-
+        message = materialsString +'\n' + message
         message +='var out = new THREE.Group();\n'
         message +='out.add('+', '.join(names)+')'
         bpy.context.window_manager.clipboard = message

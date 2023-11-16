@@ -114,6 +114,31 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             materials.append(name)
             return name, materials, materials_string
 
+    def get_light(self, obj, lights, lights_string):
+        name = obj.name.replace(".", "_").lower()
+        color = "0xffffff"
+        power = 1
+        try:
+            cl =  Color(obj.data.color[:3])
+            color = f"new THREE.Color({round(cl.r, 4)}, {round(cl.g, 4)}, {round(cl.b, 4)})"
+            power = obj.data.energy / 10
+        except:...
+            
+        if "sun" in name:
+            lights_string += f"var {name} = new THREE.DirectionalLight( {color}, {power} );\n"
+        elif "point" in name:
+            lights_string += f"var {name} = new THREE.PointLight({color}, {power});\n"
+        elif "spot" in name:
+            lights_string += f"var {name} = new THREE.SpotLight({color}, {power});\n"
+        elif "area" in name:
+            lights_string += f"var {name} = new THREE.RectAreaLight({color}, {power});\n" 
+        if any(obj.location):  
+            lights_string += f"{name}.position.set({round(obj.location.x, 4)}, {round(obj.location.z, 4)}, {round(-obj.location.y, 4)});\n"
+        if any(obj.rotation_euler): 
+            lights_string += f"{name}.rotation.set({round(obj.rotation_euler.x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
+        lights.append(name)    
+        return lights, lights_string
+
     def execute(self, context):
         scene = context.scene
         cursor = scene.cursor.location
@@ -122,20 +147,26 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         names = []
         materials_string = ""
         materials = []
+        lights_string = ""
+        lights = []
         
-        for ob in context.selected_objects:
-            command, texture_addition_parameters, delta_x, name = self.get_parameters(ob)
-            material_name, materials, materials_string = self.add_material(ob, name, texture_addition_parameters, materials, materials_string)
-            
-            message += f"var {name}Geometry = new THREE.{command};\n"
-            message += f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
-            message += f"{self.get_psr(ob, name, delta_x)}\n"
-            names.append(name)
-        
-        message = f"{materials_string}\n{message}"
-        message += f"var out = new THREE.Group();\n"
-        message += f"out.add({', '.join(names)})"
+        for obj in context.selected_objects:
+            light_types = ["area", "sun", "spot", "point"]
+            if any(light_type in obj.name.lower() for light_type in light_types):
+                lights, lights_string = self.get_light(obj, lights, lights_string)
+            else:
+                command, texture_addition_parameters, delta_x, name = self.get_parameters(obj)
+                material_name, materials, materials_string = self.add_material(obj, name, texture_addition_parameters, materials, materials_string)
+                
+                message += f"var {name}Geometry = new THREE.{command};\n"
+                message += f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
+                message += f"{self.get_psr(obj, name, delta_x)}\n"
+                names.append(name)
 
+        message = f"{lights_string}\n{materials_string}\n{message}"
+        message += f"var out = new THREE.Group();\n"
+        message += f"out.add({', '.join(names)})\n"
+        message += f"out.add({', '.join(lights)})\n"
         bpy.context.window_manager.clipboard = message
         self.report({'INFO'}, message)
         self.report({'INFO'}, "Script copied to clipboard!")

@@ -109,6 +109,7 @@ $result += '
     <head>
      <script SRC="http://livelab.spb.ru/x3d/three.min.js"></script>
      <script SRC="http://livelab.spb.ru/x3d/OrbitControls.js"></script>
+     <style>html, body {overflow: hidden;}</style>
     </head>
     html}}
 '

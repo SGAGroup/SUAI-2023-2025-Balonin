@@ -31,33 +31,37 @@ export function restart(ms: number) {
 
 var sceneexist: boolean | undefined = undefined;
 
-// balon begin
-var WC = window.innerWidth,
-  HC = window.innerHeight;
+// balon setup begin
 var F: boolean = true;
-var scene: THREE.Scene = new THREE.Scene();
-var camera: THREE.Camera;
-var renderer: THREE.WebGLRenderer;
-var controls: THREE.OrbitControls;
 var X = 0,
   Y = 0,
   Z = 0,
   W = 1;
 
-var Marsianka: THREE.Object3D;
 const animatables: {
   doors: {left: THREE.Object3D, right: THREE.Object3D, initPos?: {left: THREE.Vector3, right: THREE.Vector3}, transition: number, state: boolean}[]
 } = {
   doors: []
 };
-// balon end
+// balon setup end
+
+// balon ignore begin
+var WC, HC;
+var Marsianka: THREE.Object3D;
+var scene: THREE.Scene = new THREE.Scene();
+var camera: THREE.Camera;
+var renderer: THREE.WebGLRenderer;
+var controls: THREE.OrbitControls;
+// balon ignore end
 
 function main() {
-  // balon begin
+  // balon block begin
   if (tick == 0) {
     if (typeof sceneexist == "undefined") {
-      OpenCanvas("wCanvas", WC, HC);
+      OpenCanvas("wCanvas", (WC = window.innerWidth * .75), (HC = window.innerHeight * .75));
       CreateScene(WC, HC);
+
+      // balon setup
 
       Marsianka = createMetroStation();
       Marsianka.position.set(X, Y, Z);
@@ -76,11 +80,11 @@ function main() {
 
   F = true;
   restart(20);
-  // balon end
+  // balon block end
 }
 main();
 
-// balon begin
+// balon block begin
 function render() {
   requestAnimationFrame(render);
 
@@ -871,7 +875,7 @@ function CreateScene(WC: number, HC: number) {
     document.body.appendChild( renderer.domElement );
   }
 }
-// balon end
+// balon block end
 
 /*
     {{html

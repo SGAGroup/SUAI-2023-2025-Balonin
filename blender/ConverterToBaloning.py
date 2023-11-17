@@ -8,6 +8,9 @@ import bpy
 import random
 from math import pi
 from mathutils import Color
+import numpy as np
+from bpy.props import FloatVectorProperty
+
 
 
 class OBJECT_OT_run_script(bpy.types.Operator):
@@ -44,7 +47,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         message = ''
         if any(ob.location):  
             message += f"{name}.position.set({round(ob.location.x, 4)}, {round(ob.location.z, 4)}, {round(-ob.location.y, 4)});\n"
-        if ob.scale != (1, 1, 1): 
+        if ob.scale.x != 1 or ob.scale.y != 1 or ob.scale.z != 1: 
             message += f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.z, 4)}, {round(ob.scale.y, 4)});\n"
         if any(ob.rotation_euler) or delta_x: 
             message += f"{name}.rotation.set({round(ob.rotation_euler.x + delta_x, 4)}, {round(ob.rotation_euler.z, 4)}, {round(-ob.rotation_euler.y, 4)});\n"
@@ -108,7 +111,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             
             return name, materials, materials_string
         except:
-            name = name + 'material'
+            name = name + 'Material'
             name += "DS" if texture_addition_parameters else ""
             materials_string += f"var {name} = new THREE.MeshStandardMaterial({{ color: new THREE.Color({self.get_color(obj)}){texture_addition_parameters} }});\n"
             materials.append(name)
@@ -139,6 +142,45 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         lights.append(name)    
         return lights, lights_string
 
+    def get_for_cycle(self, s, obj, name, key, x, y, z):
+        cons, rel = obj.constant_offset_displace, obj.relative_offset_displace
+        self.report({'INFO'}, str([obj.use_relative_offset, obj.use_constant_offset]))
+        if not obj.use_relative_offset: rel = [0,0,0]
+        if not obj.use_constant_offset: cons = [0,0,0]
+        result = f"var {name}Group = new THREE.Group();\n"
+        result += f"for(var {key} = 0; {key}<{obj.count}; {key}++)"+ "{\n"
+        result += s
+        offsetX = f"{round(cons[0]+rel[0]*x, 4)} * {key}" if cons[0] or rel[0] else "0"
+        offsetY = f"{round(cons[2]+rel[2]*z, 4)} * {key}" if cons[2] or rel[2] else "0"
+        offsetZ = f"{-round(cons[1]+rel[1]*y, 4)} * {key}" if cons[1] or rel[1] else "0"
+        result += f"{name}.position.set({offsetX}, {offsetY}, {offsetZ});\n"
+        result += f"{name}Group.add({name});\n"+"}\n"
+
+        x = x*obj.count+(cons[0] - x +abs(rel[0])*x)*(obj.count-1) if cons[0] or rel[0] else x
+        y = y*obj.count+(cons[1] - y +abs(rel[1])*y)*(obj.count-1) if cons[1] or rel[1] else y
+        z = z*obj.count+(cons[2] - z +abs(rel[2])*z)*(obj.count-1) if cons[2] or rel[2] else z
+
+        return f"{name}Group", result, x, y, z
+
+    def get_mesh_with_modifiers(self, obj, name, material_name):
+        x,y,z = obj.mesh_dimensions
+
+        bykvs = ["i","j","k","f","u","w","h"]
+        try:
+            k = -1;
+            result = f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
+            for i in obj.modifiers:
+                if i.type == "ARRAY":
+                    k+=1;
+                    self.report({'INFO'}, str([x,y,z]))
+                    name, result, x, y, z = self.get_for_cycle(result, i, name, bykvs[k], x, y, z)
+            if k == -1:
+                return name, f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
+            else:
+                return name, result
+        except:
+            return name, f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
+    
     def execute(self, context):
         scene = context.scene
         cursor = scene.cursor.location
@@ -159,7 +201,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 material_name, materials, materials_string = self.add_material(obj, name, texture_addition_parameters, materials, materials_string)
                 
                 message += f"var {name}Geometry = new THREE.{command};\n"
-                message += f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
+                name, text = self.get_mesh_with_modifiers(obj, name, material_name)
+                message +=text
                 message += f"{self.get_psr(obj, name, delta_x)}\n"
                 names.append(name)
 
@@ -172,6 +215,38 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         self.report({'INFO'}, "Script copied to clipboard!")
 
         return {'FINISHED'}
+
+def np_matmul_coords(coords, matrix, space=None):
+    M = (space @ matrix @ space.inverted()
+         if space else matrix).transposed()
+    ones = np.ones((coords.shape[0], 1))
+    coords4d = np.hstack((coords, ones))
+    
+    return np.dot(coords4d, M)[:,:-1]
+
+
+def get_mesh_dims(self):
+    if self.type != 'MESH':
+        return None
+    me = self.data
+    coords = np.empty(3 * len(me.vertices))
+    
+    me.vertices.foreach_get("co", coords)
+
+    x, y, z = np_matmul_coords(coords.reshape(-1, 3), self.matrix_world).T
+
+    return (
+            x.max() - x.min(),
+            y.max() - y.min(),
+            z.max() - z.min()
+            )
+
+bpy.types.Object.mesh_dimensions = FloatVectorProperty(
+        name="Mesh Dimensions",
+        get=get_mesh_dims,
+        subtype='XYZ',
+        unit='LENGTH',
+        )
 
 def menu_func(self, context):
     self.layout.operator(OBJECT_OT_run_script.bl_idname)

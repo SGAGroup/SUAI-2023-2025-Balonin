@@ -100,7 +100,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
     
     def add_material(self, obj, name, texture_addition_parameters, materials, materials_string):
         try:
-            name = obj.material_slots[0].material.name.lower() if "material" not in name else name
+            name = obj.material_slots[0].material.name + "Material" if "material" not in obj.material_slots[0].material.name.lower() else obj.material_slots[0].material.name
+            name = name.replace(".", "_")
             name += "DS" if texture_addition_parameters else ""
             
             if name in materials: 

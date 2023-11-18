@@ -48,7 +48,11 @@ function get-ident-part([String]$str) {
     return ' ' * $result
 }
 
+Write-Output 'run tsc...'
+
 npx tsc --outDir out $file > $null
+
+Write-Output 'start process...'
 
 $content = Get-Content -Path $("out/" + [System.IO.Path]::GetFileNameWithoutExtension($file) + ".js")
 
@@ -134,3 +138,5 @@ $result += '
 $result = $result.Replace("let ", "var ").Replace("const ", "var ")
 
 Write-Output $result | clip
+
+Write-Output done

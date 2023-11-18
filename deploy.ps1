@@ -35,6 +35,19 @@ starts ignore block
 ends ignore block
 #>
 
+function get-ident-part([String]$str) {
+    $result = 0
+    foreach ($char in $str.ToCharArray()) {
+        if ($char -eq ' ') {
+            $result += 1
+        }
+        else {
+            break
+        }
+    }
+    return ' ' * $result
+}
+
 npx tsc --outDir out $file > $null
 
 $content = Get-Content -Path $("out/" + [System.IO.Path]::GetFileNameWithoutExtension($file) + ".js")
@@ -47,6 +60,8 @@ $is_setup_segment = $false
 $is_ignore_segment = $false
 $ignore_count = 0
 foreach ($line in $content -split "`r`n") {
+    $ident_part = get-ident-part($line)
+
     <# ignore current comment #>
     foreach ($to_ignore in "// balon block begin", "// balon ignore", "// balon setup", "// balon ignore begin", "// @ts-") {
         if ($line.Contains($to_ignore)) {
@@ -71,7 +86,9 @@ foreach ($line in $content -split "`r`n") {
         $is_setup_segment = $false
     }
     elseif ($line.Contains("// balon setup")) {
-        $result += $setup
+        foreach ($setup_line in $setup.Split("`r`n")) {
+            $result += $ident_part + $setup_line + "`r`n"
+        }
     }
     elseif ($line.Contains("// balon ignore begin")) {
         $is_ignore_segment = $true
@@ -84,8 +101,7 @@ foreach ($line in $content -split "`r`n") {
     if ($ignore_count -eq 0 -and -not $is_ignore_segment) {
         if ($is_balon_segment) {
             if ($line.Contains("CreateScene(WC, HC)") -and -not $line.Contains("function")) {
-                <# FIXME automatic ident #>
-                $result += "            var scene, camera, renderer; CreateScene(WC, HC);`r`n"
+                $result += $ident_part + "var scene, camera, renderer; CreateScene(WC, HC);`r`n"
             }
             else {
                 $result += $line + "`r`n"
@@ -93,7 +109,7 @@ foreach ($line in $content -split "`r`n") {
         }
 
         if ($is_setup_segment) {
-            $setup += $line.Replace("var", "").Replace("const", "").Replace("let", "") + "`r`n"
+            $setup += $line.Replace("var ", "").Replace("const ", "").Replace("let ", "") + "`r`n"
         }
     }
     
@@ -113,5 +129,8 @@ $result += '
     </head>
     html}}
 '
+
+<# post process #>
+$result = $result.Replace("let ", "var ").Replace("const ", "var ")
 
 Write-Output $result | clip

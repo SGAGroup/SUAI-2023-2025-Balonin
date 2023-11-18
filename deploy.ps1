@@ -50,11 +50,14 @@ function get-ident-part([String]$str) {
 
 Write-Output 'run tsc...'
 
+Remove-Item -Recurse -Force 'out'
 npx tsc --outDir out $file > $null
 
 Write-Output 'start process...'
 
-$content = Get-Content -Path $("out/" + [System.IO.Path]::GetFileNameWithoutExtension($file) + ".js")
+$processing_file_name = [System.IO.Path]::GetFileNameWithoutExtension($file) + ".js"
+$processing_file_path = Get-ChildItem -Path out -Recurse -Include $processing_file_name
+$content = Get-Content -LiteralPath $processing_file_path
 
 $result = ""
 $setup = ""

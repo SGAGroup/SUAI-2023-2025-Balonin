@@ -5,8 +5,13 @@
     <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BALON</title>
+    <!-- disable scroll on mouse -->
+    <script>
+      window.addEventListener("wheel", e => e.preventDefault(), { passive:false })
+    </script>
   </head>
   <body>
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/metro/main.ts"></script>
+    <script type="module" src="/src/swirling/main.ts"></script>
   </body>
 </html>

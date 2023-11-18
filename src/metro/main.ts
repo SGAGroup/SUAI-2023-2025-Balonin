@@ -1,4 +1,4 @@
-import * as THREE from './types';
+import * as THREE from '../types';
 
 function puts(s: string) {
   console.log(s);

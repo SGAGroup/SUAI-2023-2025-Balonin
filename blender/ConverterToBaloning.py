@@ -48,9 +48,9 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         if any(ob.location):  
             message += f"{name}.position.set({round(ob.location.x, 4)}, {round(ob.location.z, 4)}, {round(-ob.location.y, 4)});\n"
         if ob.scale.x != 1 or ob.scale.y != 1 or ob.scale.z != 1: 
-            message += f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.z, 4)}, {round(ob.scale.y, 4)});\n"
-        if any(ob.rotation_euler) or delta_x: 
-            message += f"{name}.rotation.set({round(ob.rotation_euler.x + delta_x, 4)}, {round(ob.rotation_euler.z, 4)}, {round(-ob.rotation_euler.y, 4)});\n"
+            message += f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.z, 4)}, {round(ob.scale.y, 4)});\n" if not delta_x else f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.y, 4)}, {round(ob.scale.z, 4)});\n" 
+        if any(ob.rotation_euler) or delta_x:
+            message += f"{name}.setRotation({round(ob.rotation_euler.x, 4)}, {round(ob.rotation_euler.z, 4)}, {round(-ob.rotation_euler.y, 4)});\n"
         return message
     
     def get_material_prop(self, obj, label):
@@ -138,19 +138,23 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             lights_string += f"var {name} = new THREE.RectAreaLight({color}, {power});\n" 
         if any(obj.location):  
             lights_string += f"{name}.position.set({round(obj.location.x, 4)}, {round(obj.location.z, 4)}, {round(-obj.location.y, 4)});\n"
-        if any(obj.rotation_euler): 
-            lights_string += f"{name}.rotation.set({round(obj.rotation_euler.x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
+        if any(obj.rotation_euler) or delta_x:
+            lights_string += f"{name}.setRotation({round(obj.rotation_euler.x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
         lights.append(name)    
         return lights, lights_string
 
-    def get_for_cycle(self, s, obj, name, key, x, y, z):
+    def get_for_cycle(self, s, obj, name, key, x, y, z, psr, ob, delta_x):
         cons, rel = obj.constant_offset_displace, obj.relative_offset_displace
+        cons[0],cons[1],cons[2]= cons[0] * ob.scale.x, cons[1] * ob.scale.y, cons[2] * ob.scale.z
         self.report({'INFO'}, str([obj.use_relative_offset, obj.use_constant_offset]))
         if not obj.use_relative_offset: rel = [0,0,0]
         if not obj.use_constant_offset: cons = [0,0,0]
         result = f"var {name}Group = new THREE.Group();\n"
         result += f"for(var {key} = 0; {key}<{obj.count}; {key}++)"+ "{\n"
         result += s
+        if not psr: 
+            if ob.scale.x != 1 or ob.scale.y != 1 or ob.scale.z != 1: 
+                result += f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.z, 4)}, {round(ob.scale.y, 4)});\n" if not delta_x else f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.y, 4)}, {round(ob.scale.z, 4)});\n"
         offsetX = f"{round(cons[0]+rel[0]*x, 4)} * {key}" if cons[0] or rel[0] else "0"
         offsetY = f"{round(cons[2]+rel[2]*z, 4)} * {key}" if cons[2] or rel[2] else "0"
         offsetZ = f"{-round(cons[1]+rel[1]*y, 4)} * {key}" if cons[1] or rel[1] else "0"
@@ -161,11 +165,86 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         y = y*obj.count+(cons[1] - y +abs(rel[1])*y)*(obj.count-1) if cons[1] or rel[1] else y
         z = z*obj.count+(cons[2] - z +abs(rel[2])*z)*(obj.count-1) if cons[2] or rel[2] else z
 
-        return f"{name}Group", result, x, y, z
+        psr = True
+
+        return f"{name}Group", result, x, y, z, psr
+        
+    def get_mirrored_object(self, s, mod, obj, name, x, y, z, delta_x):
+        self.report({'INFO'}, str(mod.mirror_object))
+        bx, by, bz = mod.use_axis
+        lx, ly, lz = obj.location.x, obj.location.y, obj.location.z
+        ex, ey, ez = obj.rotation_euler.x, obj.rotation_euler.y, obj.rotation_euler.z
+        blx, bly, blz = False, False, False
+        bex, bey, bez = False, False, False
+        dx = round(mod.mirror_object.location.x*2 - lx, 4)
+        dy = round(mod.mirror_object.location.y*2 + ly, 4)
+        dz = round(mod.mirror_object.location.z*2 - lz, 4)
+        rx = round(-ex + delta_x, 4)
+        ry = round(ey, 4)
+        rz = round(-ez, 4)
+        result=s;
+        
+        result += f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.z, 4)}, {round(obj.scale.y, 4)});\n" if not delta_x else f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.y, 4)}, {round(obj.scale.z, 4)});\n"
+        if bx:
+            c_name = name + "MX"
+            result += f'var {c_name}= {name}.clone();\n'
+
+            result += f"{name}.position.set({round(lx, 4)}, 0, 0);\n"
+            blx = True
+            result += f'{c_name}.position.set({dx}, 0, 0);\n'
+            
+            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
+            bex = True
+            result += f'{c_name}.setRotation({round(ex + delta_x , 4)}, {round(rz, 4)}, {round(ry, 4)});\n'
+
+            result += f'var {name}MirroredX = new THREE.Group();\n'
+            result += f'{name}MirroredX.add({name}, {c_name});\n'
+            name += "MirroredX"
+        
+        if by:
+            c_name = name + "MZ"
+            result += f'var {c_name}= {name}.clone();\n'
+
+            result += f"{name}.position.set(0, 0, {round(-ly, 4)});\n"
+            bly = True
+            result += f'{c_name}.position.set(0, 0, {dy});\n'
+
+            
+            bex = True
+            result += f'{c_name}.rotation.set(0, PI, 0);\n'
+            
+            result += f'var {name}MirroredZ = new THREE.Group();\n'
+            result += f'{name}MirroredZ.add({name}, {c_name});\n'
+            name += "MirroredZ"
+
+        if bz:
+            c_name = name + "MY"
+            result += f'var {c_name}= {name}.clone();\n'
+
+            result += f"{name}.position.set(0, {round(lz, 4)}, 0);\n"
+            blz = True
+            result += f'{c_name}.position.set(0, {dz}, 0);\n'
+            
+            bex = True
+            result += f'{c_name}.setRotation(0, 0, PI);\n'
+
+            result += f'var {name}MirroredY = new THREE.Group();\n'
+            result += f'{name}MirroredY.add({name}, {c_name});\n'
+            name += "MirroredY"
+            
+        if any((not bly, not blz, not blx)):
+            result += f"{name}.position.set({0 if blx else round(lx, 4)},{0 if blz else round(lz, 4)},{0 if bly else round(-ly, 4)});\n"
+
+        # if any((not bly, not blz, not blx)):
+        #     result += f"{name}.rotation.set({0 if bex else round(ex + delta_x, 4)},{0 if bez else round(ez, 4)},{0 if bey else round(-ey, 4)});\n"
+
+        return name, result, x, y, z
 
     def get_mesh_with_modifiers(self, obj, name, material_name):
+        psr = False
+        mir = False
+        _, _, delta_x, _ = self.get_parameters(obj)
         x,y,z = obj.mesh_dimensions
-
         bykvs = ["i","j","k","f","u","w","h"]
         try:
             k = -1;
@@ -174,17 +253,28 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 if i.type == "ARRAY":
                     k+=1;
                     self.report({'INFO'}, str([x,y,z]))
-                    name, result, x, y, z = self.get_for_cycle(result, i, name, bykvs[k], x, y, z)
-            if k == -1:
-                return name, f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
-            else:
-                return name, result
+                    name, result, x, y, z, psr = self.get_for_cycle(result, i, name, bykvs[k], x, y, z, psr, obj, delta_x)
+                        
+                if i.type == "MIRROR":
+                    mir = True;
+                    psr = True
+                    name, result, x, y, z = self.get_mirrored_object(result, i, obj, name, x, y, z, delta_x)
+            if not psr:
+                result += f"{self.get_psr(obj, name, delta_x)}\n"
+                psr = True
+            if k >= 0 and not mir:
+                if any(obj.rotation_euler) or delta_x:
+                    result += f"{name}.setRotation({round(obj.rotation_euler.x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
+                if any(obj.location):  
+                    result += f"{name}.position.set({round(obj.location.x, 4)}, {round(obj.location.z, 4)}, {round(-obj.location.y, 4)});\n"
+            return name, result
         except:
             return name, f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
     
     def execute(self, context):
         scene = context.scene
         cursor = scene.cursor.location
+        light_types = ["area", "sun", "spot", "point"]
 
         message = ""
         names = []
@@ -194,7 +284,6 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         lights = []
         
         for obj in context.selected_objects:
-            light_types = ["area", "sun", "spot", "point"]
             if any(light_type in obj.name.lower() for light_type in light_types):
                 lights, lights_string = self.get_light(obj, lights, lights_string)
             else:
@@ -204,26 +293,26 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 message += f"var {name}Geometry = new THREE.{command};\n"
                 name, text = self.get_mesh_with_modifiers(obj, name, material_name)
                 message +=text
-                message += f"{self.get_psr(obj, name, delta_x)}\n"
+                # message += f"{self.get_psr(obj, name, delta_x)}\n"
                 names.append(name)
 
         message = f"{lights_string}\n{materials_string}\n{message}"
         message += f"var out = new THREE.Group();\n"
         message += f"out.add({', '.join(names)})\n"
-        message += f"out.add({', '.join(lights)})\n"
+        message += f"out.add({', '.join(lights)})\n" if lights else ""
         bpy.context.window_manager.clipboard = message
         self.report({'INFO'}, message)
         self.report({'INFO'}, "Script copied to clipboard!")
 
         return {'FINISHED'}
 
-def np_matmul_coords(coords, matrix, space=None):
-    M = (space @ matrix @ space.inverted()
-         if space else matrix).transposed()
-    ones = np.ones((coords.shape[0], 1))
-    coords4d = np.hstack((coords, ones))
+# def np_matmul_coords(coords, matrix, space=None):
+#     M = (space @ matrix @ space.inverted()
+#          if space else matrix).transposed()
+#     ones = np.ones((coords.shape[0], 1))
+#     coords4d = np.hstack((coords, ones))
     
-    return np.dot(coords4d, M)[:,:-1]
+#     return np.dot(coords4d, M)[:,:-1]
 
 
 def get_mesh_dims(self):
@@ -233,14 +322,31 @@ def get_mesh_dims(self):
     coords = np.empty(3 * len(me.vertices))
     
     me.vertices.foreach_get("co", coords)
-
-    x, y, z = np_matmul_coords(coords.reshape(-1, 3), self.matrix_world).T
+    x,y,z =[],[],[]
+    for i in coords.reshape(-1, 3):
+        x.append(i[0])
+        y.append(i[1])
+        z.append(i[2])
 
     return (
-            x.max() - x.min(),
-            y.max() - y.min(),
-            z.max() - z.min()
+            (max(x) - min(x))*self.scale.x,
+            (max(y) - min(y))*self.scale.y,
+            (max(z) - min(z))*self.scale.z
             )
+    # if self.type != 'MESH':
+    #     return None
+    # me = self.data
+    # coords = np.empty(3 * len(me.vertices))
+    
+    # me.vertices.foreach_get("co", coords)
+
+    # x, y, z = np_matmul_coords(coords.reshape(-1, 3), self.matrix_world).T
+
+    # return (
+    #         x.max() - x.min(),
+    #         y.max() - y.min(),
+    #         z.max() - z.min()
+    #         )
 
 bpy.types.Object.mesh_dimensions = FloatVectorProperty(
         name="Mesh Dimensions",
@@ -262,3 +368,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+

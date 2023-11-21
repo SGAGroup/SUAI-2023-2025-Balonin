@@ -108,25 +108,37 @@ function animate() {
 }
 
 function CreateTestCube() {
-  const Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.8, 0.8, 0.8),
-    roughness: 0.5,
-  });
-  const cube_001Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.1305, 0.2065, 0.2085),
-  });
+ 
 
-  const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
-  const cube = new THREE.Mesh(cubeGeometry, Material);
+var Material = new THREE.MeshStandardMaterial({
+  color: new THREE.Color(0.8, 0.8, 0.8),
+  roughness: 0.5,
+});
 
-  const cube_001Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const cube_001 = new THREE.Mesh(cube_001Geometry, cube_001Material);
-  cube_001.position.set(4.58, 4.44, -4.03);
-  cube_001.scale.set(1.0, 1.1, 10.01);
-  cube_001.setRotation(PI / 4, PI / 4, -PI / 4);
+var cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+var cubeGroupGroupGroup = new THREE.Group();
+for (var k = 0; k < 2; k++) {
+  var cubeGroupGroup = new THREE.Group();
+  for (var j = 0; j < 2; j++) {
+    var cubeGroup = new THREE.Group();
+    for (var i = 0; i < 9; i++) {
+      var cube = new THREE.Mesh(cubeGeometry, Material);
+      cube.scale.set(1.21, 1.0, 1.0);
+      cube.position.set(7.244 * i, 0, 0);
+      cubeGroup.add(cube);
+    }
+    cubeGroup.position.set(-6.0372 * j, 0, 11.2 * j);
+    cubeGroupGroup.add(cubeGroup);
+  }
+  cubeGroupGroup.position.set(0.0 * k, 6.6 * k, 0);
+  cubeGroupGroupGroup.add(cubeGroupGroup);
+}
+cubeGroupGroupGroup.setRotation(-1.5708, 0.6824, 0.8971);
+cubeGroupGroupGroup.position.set(-2.46, 0.0, -0.0);
+var out = new THREE.Group();
+out.add(cubeGroupGroupGroup);
 
-  const out = new THREE.Group();
-  out.add(cube, cube_001);
+
 
   const help = new THREE.AxesHelper(10);
   out.add(help);

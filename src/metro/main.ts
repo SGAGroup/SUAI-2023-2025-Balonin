@@ -38,22 +38,11 @@ const X = 0,
   Z = 0,
   W = 1;
 
-const animatables: {
-  doors: {
-    left: THREE.Object3D;
-    right: THREE.Object3D;
-    initPos?: { left: THREE.Vector3; right: THREE.Vector3 };
-    transition: number;
-    state: boolean;
-  }[];
-} = {
-  doors: [],
-};
 // balon setup end
 
 // balon ignore begin
 let WC, HC;
-let Marsianka: THREE.Object3D;
+let Station: THREE.Object3D;
 let scene: THREE.Scene = new THREE.Scene();
 let camera: THREE.Camera;
 let renderer: THREE.WebGLRenderer;
@@ -73,16 +62,10 @@ function main() {
 
       // balon setup
 
-      Marsianka = createMetroStation();
-      Marsianka.position.set(X, Y, Z);
-      Marsianka.scale.set(W, W, W);
-      scene.add(Marsianka);
-
-      const vagon = createVagon();
-      vagon.position.set(16, 0, 0);
-      const s = 0.8;
-      vagon.scale.set(s, s, s);
-      scene.add(vagon);
+      Station = createMetroStation();
+      Station.position.set(X, Y, Z);
+      Station.scale.set(W, W, W);
+      scene.add(Station);
 
       render();
     }
@@ -99,7 +82,6 @@ function render() {
   requestAnimationFrame(render);
 
   if (F) {
-    animate();
     F = false;
   }
 
@@ -107,1280 +89,2075 @@ function render() {
   renderer.render(scene, camera);
 }
 
-function animate() {
-  const deltaRight = new THREE.Vector3(0, 0, -2);
-  const dT = 0.01;
-  animatables.doors.forEach((door) => {
-    if (!door.initPos)
-      door.initPos = {
-        left: door.left.position.clone(),
-        right: door.right.position.clone(),
-      };
-    door.transition += dT;
-    const leftTarget = door.state
-      ? door.initPos.left
-      : door.initPos.left.clone().add(deltaRight);
-    const rightTarget = door.state
-      ? door.initPos.right
-      : door.initPos.right.clone().add(deltaRight.clone().multiplyScalar(-1));
-    if (door.transition > 1 || door.transition < 0) {
-      door.state = !door.state;
-      door.transition = 0;
-    }
-    door.left.position.lerp(leftTarget, door.transition);
-    door.right.position.lerp(rightTarget, door.transition);
+function createKolonna() {
+  const KolonnaMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.0, 0.0, 0.0),
+    roughness: 0.5,
   });
-}
+  const LatunMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.7836, 0.8, 0.0789),
+    metalness: 1.0,
+    roughness: 0.5,
+  });
+  const KolonnayaPlitkaMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.3672, 0.2714, 0.1523),
+    roughness: 0.5,
+  });
 
-function createMetroStation() {
-  const CubeGeometry = new THREE.BoxGeometry(2, 2, 2);
-  const CubeMaterial = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.7951, 0.1565, 0.3541),
-  });
-  const Cube = new THREE.Mesh(CubeGeometry, CubeMaterial);
-  Cube.scale.set(13.0823, 0.2679, 21.8795);
-
-  const Cube_001Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_001Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.5106, 0.0754, 0.8399),
-  });
-  const Cube_001 = new THREE.Mesh(Cube_001Geometry, Cube_001Material);
-  Cube_001.position.set(0.0, 0.4623, 16.9036);
-  Cube_001.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_002Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_002Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8858, 0.8273, 0.3455),
-  });
-  const Cube_002 = new THREE.Mesh(Cube_002Geometry, Cube_002Material);
-  Cube_002.position.set(0.0, 5.1169, 21.5582);
-  Cube_002.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_003Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_003Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.5612, 0.4027, 0.869),
-  });
-  const Cube_003 = new THREE.Mesh(Cube_003Geometry, Cube_003Material);
-  Cube_003.position.set(0.0, 4.5997, 21.041);
-  Cube_003.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_004Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_004Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.1836, 0.3921, 0.5983),
-  });
-  const Cube_004 = new THREE.Mesh(Cube_004Geometry, Cube_004Material);
-  Cube_004.position.set(0.0, 4.0825, 20.5238);
-  Cube_004.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_005Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_005Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.998, 0.1974, 0.276),
-  });
-  const Cube_005 = new THREE.Mesh(Cube_005Geometry, Cube_005Material);
-  Cube_005.position.set(0.0, 3.5653, 20.0067);
-  Cube_005.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_006Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_006Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.4806, 0.0481, 0.5683),
-  });
-  const Cube_006 = new THREE.Mesh(Cube_006Geometry, Cube_006Material);
-  Cube_006.position.set(0.0, 3.0482, 19.4895);
-  Cube_006.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_007Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_007Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.5852, 0.9172, 0.9708),
-  });
-  const Cube_007 = new THREE.Mesh(Cube_007Geometry, Cube_007Material);
-  Cube_007.position.set(0.0, 2.531, 18.9723);
-  Cube_007.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_008Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_008Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.2887, 0.093, 0.7635),
-  });
-  const Cube_008 = new THREE.Mesh(Cube_008Geometry, Cube_008Material);
-  Cube_008.position.set(0.0, 2.0138, 18.4551);
-  Cube_008.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_009Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_009Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.9595, 0.8237, 0.2657),
-  });
-  const Cube_009 = new THREE.Mesh(Cube_009Geometry, Cube_009Material);
-  Cube_009.position.set(0.0, 1.4966, 17.9379);
-  Cube_009.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_010Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_010Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0607, 0.7391, 0.9445),
-  });
-  const Cube_010 = new THREE.Mesh(Cube_010Geometry, Cube_010Material);
-  Cube_010.position.set(0.0, 0.9795, 17.4208);
-  Cube_010.scale.set(13.0782, 0.2586, 0.2586);
-
-  const Cube_011Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_011Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.1868, 0.3576, 0.1565),
-  });
-  const Cube_011 = new THREE.Mesh(Cube_011Geometry, Cube_011Material);
-  Cube_011.position.set(0.0, 0.4623, 16.9036);
-  Cube_011.scale.set(13.0782, 0.2586, 0.2586);
-
-  const CylinderGeometry = new THREE.CylinderGeometry(1, 1, 2);
-  const CylinderMaterial = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder = new THREE.Mesh(CylinderGeometry, CylinderMaterial);
-  Cylinder.position.set(9.6401, 4.7315, 10.7761);
-  Cylinder.scale.set(1.0, 4.8045, 1.0);
-
-  const Cylinder_001Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_001Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_001 = new THREE.Mesh(
-    Cylinder_001Geometry,
-    Cylinder_001Material,
+  const cylinderkolonna_002Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderkolonna_002 = new THREE.Mesh(
+    cylinderkolonna_002Geometry,
+    KolonnaMaterial,
   );
-  Cylinder_001.position.set(9.6401, 4.7315, 4.8604);
-  Cylinder_001.scale.set(1.0, 4.8045, 1.0);
+  cylinderkolonna_002.position.set(0.0, 0.0, -0.0);
+  cylinderkolonna_002.scale.set(0.6216, 2.2292, 0.6216);
 
-  const Cylinder_002Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_002Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_002 = new THREE.Mesh(
-    Cylinder_002Geometry,
-    Cylinder_002Material,
+  const cylinderkolonna_008Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderkolonna_008 = new THREE.Mesh(
+    cylinderkolonna_008Geometry,
+    LatunMaterial,
   );
-  Cylinder_002.position.set(9.6401, 4.7315, -1.241);
-  Cylinder_002.scale.set(1.0, 4.8045, 1.0);
+  cylinderkolonna_008.position.set(0.0, 2.3675, -0.0);
+  cylinderkolonna_008.scale.set(0.7011, 0.2069, 0.7011);
 
-  const Cylinder_003Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_003Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_003 = new THREE.Mesh(
-    Cylinder_003Geometry,
-    Cylinder_003Material,
+  const cylinderkolonna_009Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderkolonna_009 = new THREE.Mesh(
+    cylinderkolonna_009Geometry,
+    LatunMaterial,
   );
-  Cylinder_003.position.set(9.6401, 4.7315, -7.721);
-  Cylinder_003.scale.set(1.0, 4.8045, 1.0);
+  cylinderkolonna_009.position.set(0.0, 2.2569, -0.0);
+  cylinderkolonna_009.scale.set(0.7436, 0.0517, 0.7436);
 
-  const Cylinder_004Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_004Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_004 = new THREE.Mesh(
-    Cylinder_004Geometry,
-    Cylinder_004Material,
+  const cylinderkolonna_010Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderkolonna_010 = new THREE.Mesh(
+    cylinderkolonna_010Geometry,
+    LatunMaterial,
   );
-  Cylinder_004.position.set(9.6401, 4.7315, -14.1167);
-  Cylinder_004.scale.set(1.0, 4.8045, 1.0);
+  cylinderkolonna_010.position.set(0.0, 2.5751, -0.0);
+  cylinderkolonna_010.scale.set(0.7436, 0.0517, 0.7436);
 
-  const Cylinder_005Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_005Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_005 = new THREE.Mesh(
-    Cylinder_005Geometry,
-    Cylinder_005Material,
+  const cylinderkolonna_011Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderkolonna_011 = new THREE.Mesh(
+    cylinderkolonna_011Geometry,
+    LatunMaterial,
   );
-  Cylinder_005.position.set(-9.0997, 4.7315, 10.7761);
-  Cylinder_005.scale.set(1.0, 4.8045, 1.0);
+  cylinderkolonna_011.position.set(0.0, -2.0552, -0.0);
+  cylinderkolonna_011.scale.set(0.7011, 0.2069, 0.7011);
 
-  const Cylinder_006Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_006Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_006 = new THREE.Mesh(
-    Cylinder_006Geometry,
-    Cylinder_006Material,
+  const cylinderkolonna_012Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderkolonna_012 = new THREE.Mesh(
+    cylinderkolonna_012Geometry,
+    LatunMaterial,
   );
-  Cylinder_006.position.set(-9.0997, 4.7315, 4.8604);
-  Cylinder_006.scale.set(1.0, 4.8045, 1.0);
+  cylinderkolonna_012.position.set(0.0, -2.0598, -0.0);
+  cylinderkolonna_012.scale.set(0.7436, 0.0827, 0.7436);
 
-  const Cylinder_007Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_007Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_007 = new THREE.Mesh(
-    Cylinder_007Geometry,
-    Cylinder_007Material,
-  );
-  Cylinder_007.position.set(-9.0997, 4.7315, -1.241);
-  Cylinder_007.scale.set(1.0, 4.8045, 1.0);
+  const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube = new THREE.Mesh(cubeGeometry, KolonnayaPlitkaMaterial);
+  cube.position.set(0.0, 2.6176, -0.0);
+  cube.scale.set(0.8355, 0.0763, 0.8355);
 
-  const Cylinder_008Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_008Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_008 = new THREE.Mesh(
-    Cylinder_008Geometry,
-    Cylinder_008Material,
-  );
-  Cylinder_008.position.set(-9.0997, 4.7315, -7.721);
-  Cylinder_008.scale.set(1.0, 4.8045, 1.0);
+  const cube_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_001 = new THREE.Mesh(cube_001Geometry, KolonnayaPlitkaMaterial);
+  cube_001.position.set(0.0, -0.4172, -0.9191);
+  cube_001.scale.set(1.0, 1.9289, 1.0);
 
-  const Cylinder_009Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_009Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cylinder_009 = new THREE.Mesh(
-    Cylinder_009Geometry,
-    Cylinder_009Material,
-  );
-  Cylinder_009.position.set(-9.0997, 4.7315, -14.1167);
-  Cylinder_009.scale.set(1.0, 4.8045, 1.0);
-
-  const Cube_012Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_012Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.3267, 0.7858, 0.6882),
-  });
-  const Cube_012 = new THREE.Mesh(Cube_012Geometry, Cube_012Material);
-  Cube_012.position.set(0.0, -2.0071, -0.0);
-  Cube_012.scale.set(19.5184, 0.2679, 21.8795);
-
-  const Cube_013Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_013Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.3799, 0.516, 0.9824),
-  });
-  const Cube_013 = new THREE.Mesh(Cube_013Geometry, Cube_013Material);
-  Cube_013.position.set(19.2477, 0.8518, -0.0);
-  Cube_013.scale.set(0.4091, 3.2368, 21.9766);
-
-  const Cube_014Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_014Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.6376, 0.5303, 0.4743),
-  });
-  const Cube_014 = new THREE.Mesh(Cube_014Geometry, Cube_014Material);
-  Cube_014.position.set(-19.3779, 0.8518, -0.0);
-  Cube_014.scale.set(0.4091, 3.2368, 21.9766);
-
-  const Cube_015Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_015Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.5914, 0.6163, 0.1711),
-  });
-  const Cube_015 = new THREE.Mesh(Cube_015Geometry, Cube_015Material);
-  Cube_015.position.set(14.1863, -1.58, -0.0);
-  Cube_015.scale.set(0.0939, -0.2266, 21.8873);
-
-  const Cube_016Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_016Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.3392, 0.0894, 0.3583),
-  });
-  const Cube_016 = new THREE.Mesh(Cube_016Geometry, Cube_016Material);
-  Cube_016.position.set(18.0331, -1.58, -0.0);
-  Cube_016.scale.set(0.0939, -0.2266, 21.8873);
-
-  const Cube_144Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_144Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.403, 0.1785, 0.4526),
-  });
-  const Cube_144 = new THREE.Mesh(Cube_144Geometry, Cube_144Material);
-  Cube_144.position.set(-17.8714, -1.58, -0.0);
-  Cube_144.scale.set(0.0939, -0.2266, 21.8873);
-
-  const Cube_145Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_145Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.2715, 0.0708, 0.3106),
-  });
-  const Cube_145 = new THREE.Mesh(Cube_145Geometry, Cube_145Material);
-  Cube_145.position.set(-14.0246, -1.58, -0.0);
-  Cube_145.scale.set(0.0939, -0.2266, 21.8873);
+  const cube_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_002 = new THREE.Mesh(cube_002Geometry, KolonnayaPlitkaMaterial);
+  cube_002.position.set(0.0, 2.7032, -0.9191);
+  cube_002.scale.set(1.55, 1.55, 1.0);
+  cube_002.setRotation(0.0, 0.0, -0.7854);
 
   const out = new THREE.Group();
   out.add(
-    Cube,
-    Cube_001,
-    Cube_002,
-    Cube_003,
-    Cube_004,
-    Cube_005,
-    Cube_006,
-    Cube_007,
-    Cube_008,
-    Cube_009,
-    Cube_010,
-    Cube_011,
-    Cylinder,
-    Cylinder_001,
-    Cylinder_002,
-    Cylinder_003,
-    Cylinder_004,
-    Cylinder_005,
-    Cylinder_006,
-    Cylinder_007,
-    Cylinder_008,
-    Cylinder_009,
-    Cube_012,
-    Cube_013,
-    Cube_014,
-    Cube_015,
-    Cube_016,
-    Cube_144,
-    Cube_145,
+    cylinderkolonna_002,
+    cylinderkolonna_008,
+    cylinderkolonna_009,
+    cylinderkolonna_010,
+    cylinderkolonna_011,
+    cylinderkolonna_012,
+    cube,
+    cube_001,
+    cube_002,
   );
+
   return out;
 }
 
-function createVagon() {
-  const Cube_021Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_021Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
+function createMetroStation() {
+  const PortretMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.0, 0.0128, 0.8),
+    roughness: 0.5,
   });
-  const Cube_021 = new THREE.Mesh(Cube_021Geometry, Cube_021Material);
-  Cube_021.scale.set(2.9555, 0.1578, 13.9988);
-
-  const Cube_022Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_022Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
+  const LatunMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.7836, 0.8, 0.0789),
+    metalness: 1.0,
+    roughness: 0.2,
   });
-  const Cube_022 = new THREE.Mesh(Cube_022Geometry, Cube_022Material);
-  Cube_022.position.set(-2.9952, 0.2552, -0.0);
-  Cube_022.scale.set(0.071, 0.2857, 14.0054);
-  Cube_022.rotation.set(0.0, 0.0, 0.3763);
-
-  const Cube_023Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_023Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
+  const Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.8, 0.8, 0.8),
+    roughness: 0.5,
   });
-  const Cube_023 = new THREE.Mesh(Cube_023Geometry, Cube_023Material);
-  Cube_023.position.set(-3.0975, 0.723, -0.0);
-  Cube_023.scale.set(0.071, 0.2857, 14.0054);
-  Cube_023.rotation.set(0.0, 0.0, 0.0146);
-
-  const Cube_024Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_024Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
+  const MetalMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
   });
-  const Cube_024 = new THREE.Mesh(Cube_024Geometry, Cube_024Material);
-  Cube_024.position.set(-3.0975, 3.1828, -11.9936);
-  Cube_024.scale.set(0.0711, 2.2298, 1.9943);
-  Cube_024.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_025Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_025Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
-  });
-  const Cube_025 = new THREE.Mesh(Cube_025Geometry, Cube_025Material);
-  Cube_025.position.set(-3.0975, 3.1828, -3.8948);
-  Cube_025.scale.set(0.0711, 2.2298, 1.9943);
-  Cube_025.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_026Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_026Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
-  });
-  const Cube_026 = new THREE.Mesh(Cube_026Geometry, Cube_026Material);
-  Cube_026.position.set(-3.0975, 3.1828, 4.0701);
-  Cube_026.scale.set(0.0711, 2.2298, 1.9943);
-  Cube_026.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_027Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_027Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
-  });
-  const Cube_027 = new THREE.Mesh(Cube_027Geometry, Cube_027Material);
-  Cube_027.position.set(-3.0975, 3.1828, 11.9974);
-  Cube_027.scale.set(0.0711, 2.2298, 1.9943);
-  Cube_027.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_028Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_028Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
-  });
-  const Cube_028 = new THREE.Mesh(Cube_028Geometry, Cube_028Material);
-  Cube_028.position.set(-2.9597, 6.1332, 0.0);
-  Cube_028.scale.set(0.071, 0.2857, 14.0054);
-  Cube_028.rotation.set(3.1416, 0.0, -0.3763);
-
-  const Cube_029Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_029Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cube_029 = new THREE.Mesh(Cube_029Geometry, Cube_029Material);
-  Cube_029.position.set(-3.0621, 5.6653, -0.0);
-  Cube_029.scale.set(0.071, 0.2857, 14.0054);
-  Cube_029.rotation.set(3.1416, 0.0, -0.0146);
-
-  const Cube_030Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_030Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
-  });
-  const Cube_030 = new THREE.Mesh(Cube_030Geometry, Cube_030Material);
-  Cube_030.position.set(0.0, 6.2979, -0.0);
-  Cube_030.scale.set(2.9555, 0.1578, 13.9988);
-
-  const Cube_DoorR_001Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorR_001Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
+  const GlassMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.3264, 0.3264, 0.3264),
     transparent: true,
-    opacity: 0.8031,
+    opacity: 0.315,
+    roughness: 0.5,
   });
-  const Cube_DoorR_001 = new THREE.Mesh(
-    Cube_DoorR_001Geometry,
-    Cube_DoorR_001Material,
-  );
-  Cube_DoorR_001.position.set(-3.0975, 3.1828, -6.8599);
-  Cube_DoorR_001.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorR_001.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorL_001Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorL_001Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
+  const Metal_004Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
   });
-  const Cube_DoorL_001 = new THREE.Mesh(
-    Cube_DoorL_001Geometry,
-    Cube_DoorL_001Material,
-  );
-  Cube_DoorL_001.position.set(-3.0975, 3.1828, -9.0148);
-  Cube_DoorL_001.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorL_001.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_037Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_037Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0017, 0.0, 0.1424),
+  const Metal_005Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
   });
-  const Cube_037 = new THREE.Mesh(Cube_037Geometry, Cube_037Material);
-  Cube_037.position.set(2.9289, 0.2588, -0.0);
-  Cube_037.scale.set(-0.071, 0.2857, 14.0054);
-  Cube_037.rotation.set(0.0, 0.0, -0.4054);
-
-  const Cube_038Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_038Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
+  const Metal_006Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
   });
-  const Cube_038 = new THREE.Mesh(Cube_038Geometry, Cube_038Material);
-  Cube_038.position.set(3.0449, 0.7235, -0.0);
-  Cube_038.scale.set(-0.071, 0.2857, 14.0054);
-  Cube_038.rotation.set(0.0, 0.0, -0.0438);
-
-  const Cube_039Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_039Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
+  const Metal_001Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
   });
-  const Cube_039 = new THREE.Mesh(Cube_039Geometry, Cube_039Material);
-  Cube_039.position.set(3.1166, 3.1822, -11.9936);
-  Cube_039.scale.set(-0.0711, 2.2298, 1.9943);
-  Cube_039.rotation.set(0.0, 0.0, -0.0139);
-
-  const Cube_040Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_040Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
+  const Metal_002Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
   });
-  const Cube_040 = new THREE.Mesh(Cube_040Geometry, Cube_040Material);
-  Cube_040.position.set(3.1166, 3.1822, -3.8948);
-  Cube_040.scale.set(-0.0711, 2.2298, 1.9943);
-  Cube_040.rotation.set(0.0, 0.0, -0.0139);
-
-  const Cube_041Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_041Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
+  const Metal_003Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
   });
-  const Cube_041 = new THREE.Mesh(Cube_041Geometry, Cube_041Material);
-  Cube_041.position.set(3.1166, 3.1822, 4.0701);
-  Cube_041.scale.set(-0.0711, 2.2298, 1.9943);
-  Cube_041.rotation.set(0.0, 0.0, -0.0139);
-
-  const Cube_042Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_042Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
+  const NapolnayaPlitkaMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.686, 0.6165, 0.3163),
+    roughness: 0.5,
   });
-  const Cube_042 = new THREE.Mesh(Cube_042Geometry, Cube_042Material);
-  Cube_042.position.set(3.1166, 3.1822, 11.9974);
-  Cube_042.scale.set(-0.0711, 2.2298, 1.9943);
-  Cube_042.rotation.set(0.0, 0.0, -0.0139);
-
-  const Cube_043Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_043Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0, 0.1096, 0.8),
-  });
-  const Cube_043 = new THREE.Mesh(Cube_043Geometry, Cube_043Material);
-  Cube_043.position.set(3.0649, 6.1353, 0.0);
-  Cube_043.scale.set(-0.071, 0.2857, 14.0054);
-  Cube_043.rotation.set(3.1416, -0.0, 0.3471);
-
-  const Cube_044Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_044Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cube_044 = new THREE.Mesh(Cube_044Geometry, Cube_044Material);
-  Cube_044.position.set(3.1536, 5.6647, -0.0);
-  Cube_044.scale.set(-0.071, 0.2857, 14.0054);
-  Cube_044.rotation.set(3.1416, 0.0, -0.0146);
-
-  const Cube_051Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_051Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8, 0.791, 0.3479),
-  });
-  const Cube_051 = new THREE.Mesh(Cube_051Geometry, Cube_051Material);
-  Cube_051.position.set(-2.0084, 3.1661, 14.0187);
-  Cube_051.scale.set(0.8761, 3.2221, -0.0753);
-
-  const Cube_052Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_052Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8, 0.791, 0.3479),
-  });
-  const Cube_052 = new THREE.Mesh(Cube_052Geometry, Cube_052Material);
-  Cube_052.position.set(2.0146, 3.1661, 14.0187);
-  Cube_052.scale.set(0.8761, 3.2221, -0.0753);
-
-  const Cube_053Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_053Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cube_053 = new THREE.Mesh(Cube_053Geometry, Cube_053Material);
-  Cube_053.position.set(0.001, 2.2494, 14.0187);
-  Cube_053.scale.set(1.1013, 2.2826, -0.0753);
-
-  const Cube_054Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_054Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8, 0.791, 0.3479),
-  });
-  const Cube_054 = new THREE.Mesh(Cube_054Geometry, Cube_054Material);
-  Cube_054.position.set(0.001, 5.4721, 14.0187);
-  Cube_054.scale.set(1.1013, 0.908, -0.0753);
-
-  const Cube_055Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_055Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8192, 0.6883, 0.5781),
-  });
-  const Cube_055 = new THREE.Mesh(Cube_055Geometry, Cube_055Material);
-  Cube_055.position.set(-2.9808, 3.185, 14.0187);
-  Cube_055.scale.set(0.0806, 2.8642, -0.0753);
-
-  const Cube_056Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_056Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.9774, 0.5942, 0.1214),
-  });
-  const Cube_056 = new THREE.Mesh(Cube_056Geometry, Cube_056Material);
-  Cube_056.position.set(3.0015, 3.2323, 14.0187);
-  Cube_056.scale.set(0.0806, 2.8642, -0.0753);
-
-  const Cube_057Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_057Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8, 0.791, 0.3479),
-  });
-  const Cube_057 = new THREE.Mesh(Cube_057Geometry, Cube_057Material);
-  Cube_057.position.set(-2.0084, 3.1661, -14.0155);
-  Cube_057.scale.set(0.8761, 3.2221, -0.0753);
-
-  const Cube_058Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_058Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8, 0.791, 0.3479),
-  });
-  const Cube_058 = new THREE.Mesh(Cube_058Geometry, Cube_058Material);
-  Cube_058.position.set(2.0146, 3.1661, -14.0155);
-  Cube_058.scale.set(0.8761, 3.2221, -0.0753);
-
-  const Cube_059Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_059Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cube_059 = new THREE.Mesh(Cube_059Geometry, Cube_059Material);
-  Cube_059.position.set(0.001, 2.2494, -14.0155);
-  Cube_059.scale.set(1.1013, 2.2826, -0.0753);
-
-  const Cube_060Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_060Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.8, 0.791, 0.3479),
-  });
-  const Cube_060 = new THREE.Mesh(Cube_060Geometry, Cube_060Material);
-  Cube_060.position.set(0.001, 5.4721, -14.0155);
-  Cube_060.scale.set(1.1013, 0.908, -0.0753);
-
-  const Cube_061Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_061Material = new THREE.MeshBasicMaterial({
+  const KolonnaMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.0, 0.0, 0.0),
+    roughness: 0.5,
   });
-  const Cube_061 = new THREE.Mesh(Cube_061Geometry, Cube_061Material);
-  Cube_061.position.set(0.0, -0.383, -0.0);
-  Cube_061.scale.set(2.8522, 0.3649, 13.8713);
 
-  const Cylinder_022Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_022Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_022 = new THREE.Mesh(
-    Cylinder_022Geometry,
-    Cylinder_022Material,
+  const cubeportretGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeportret = new THREE.Mesh(cubeportretGeometry, PortretMaterial);
+  cubeportret.position.set(-31.329, 5.0889, -0.0053);
+  cubeportret.scale.set(0.18, 4.5456, 3.3873);
+
+  const cubeobramlenieGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeobramlenie = new THREE.Mesh(cubeobramlenieGeometry, LatunMaterial);
+  cubeobramlenie.position.set(-31.329, 5.0889, 3.5536);
+  cubeobramlenie.scale.set(0.2035, 5.141, 0.2341);
+
+  const cubeobramlenie_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeobramlenie_001 = new THREE.Mesh(
+    cubeobramlenie_001Geometry,
+    LatunMaterial,
   );
-  Cylinder_022.position.set(-1.8958, -1.4429, -11.4735);
-  Cylinder_022.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_022.rotation.set(0.0, 0.0, -1.5708);
+  cubeobramlenie_001.position.set(-31.329, 5.0889, -3.667);
+  cubeobramlenie_001.scale.set(0.2035, 5.141, 0.2341);
 
-  const Cylinder_023Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_023Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_023 = new THREE.Mesh(
-    Cylinder_023Geometry,
-    Cylinder_023Material,
+  const cubeobramlenie_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeobramlenie_002 = new THREE.Mesh(
+    cubeobramlenie_002Geometry,
+    LatunMaterial,
   );
-  Cylinder_023.position.set(-2.0767, -1.4429, -11.4735);
-  Cylinder_023.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_023.rotation.set(0.0, 0.0, -1.5708);
+  cubeobramlenie_002.position.set(-31.329, 9.9821, -0.005);
+  cubeobramlenie_002.scale.set(0.2035, 3.6351, 0.2712);
+  cubeobramlenie_002.setRotation(1.5708, 0.0, 0.0);
 
-  const Cylinder_026Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_026Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_026 = new THREE.Mesh(
-    Cylinder_026Geometry,
-    Cylinder_026Material,
+  const cubemalayakrysha_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubemalayakrysha_001 = new THREE.Mesh(
+    cubemalayakrysha_001Geometry,
+    Material,
   );
-  Cylinder_026.position.set(-1.8958, -1.4429, -9.3935);
-  Cylinder_026.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_026.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_027Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_027Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_027 = new THREE.Mesh(
-    Cylinder_027Geometry,
-    Cylinder_027Material,
+  cubemalayakrysha_001.scale.set(38.6631, 0.1743, 2.2653);
+  const cubemalayakrysha_001MZ = cubemalayakrysha_001.clone();
+  cubemalayakrysha_001.position.set(0, 0, 6.7442);
+  cubemalayakrysha_001MZ.position.set(0, 0, -6.7442);
+  cubemalayakrysha_001.setRotation(0.7209, 0.0, 0.0);
+  cubemalayakrysha_001MZ.setRotation(-0.7209, -0.0, 0.0);
+  const cubemalayakrysha_001MirroredZ = new THREE.Group();
+  cubemalayakrysha_001MirroredZ.add(
+    cubemalayakrysha_001,
+    cubemalayakrysha_001MZ,
   );
-  Cylinder_027.position.set(-1.8958, -1.4429, -7.3135);
-  Cylinder_027.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_027.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_028Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_028Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_028 = new THREE.Mesh(
-    Cylinder_028Geometry,
-    Cylinder_028Material,
+  cubemalayakrysha_001MirroredZ.position.set(0.0, 9.163, 0);
+  const cubemalayakryshaGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubemalayakrysha = new THREE.Mesh(cubemalayakryshaGeometry, Material);
+  cubemalayakrysha.scale.set(38.6631, 0.1744, 2.8073);
+  const cubemalayakryshaMZ = cubemalayakrysha.clone();
+  cubemalayakrysha.position.set(0, 0, 2.6229);
+  cubemalayakryshaMZ.position.set(0, 0, -2.6229);
+  cubemalayakrysha.setRotation(0.034, 0.0, 0.0);
+  cubemalayakryshaMZ.setRotation(-0.034, -0.0, 0.0);
+  const cubemalayakryshaMirroredZ = new THREE.Group();
+  cubemalayakryshaMirroredZ.add(cubemalayakrysha, cubemalayakryshaMZ);
+  cubemalayakryshaMirroredZ.position.set(0.0, 10.6341, 0);
+  const cubebolshayakrysha_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubebolshayakrysha_001 = new THREE.Mesh(
+    cubebolshayakrysha_001Geometry,
+    Material,
   );
-  Cylinder_028.position.set(-1.8958, -1.4429, -2.1719);
-  Cylinder_028.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_028.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_029Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_029Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_029 = new THREE.Mesh(
-    Cylinder_029Geometry,
-    Cylinder_029Material,
+  cubebolshayakrysha_001.scale.set(49.229, 0.1743, 4.7993);
+  const cubebolshayakrysha_001MZ = cubebolshayakrysha_001.clone();
+  cubebolshayakrysha_001.position.set(0, 0, 19.5416);
+  cubebolshayakrysha_001MZ.position.set(0, 0, -19.5416);
+  cubebolshayakrysha_001.setRotation(0.7209, 0.0, 0.0);
+  cubebolshayakrysha_001MZ.setRotation(-0.7209, -0.0, 0.0);
+  const cubebolshayakrysha_001MirroredZ = new THREE.Group();
+  cubebolshayakrysha_001MirroredZ.add(
+    cubebolshayakrysha_001,
+    cubebolshayakrysha_001MZ,
   );
-  Cylinder_029.position.set(-1.8958, -1.4429, -0.0919);
-  Cylinder_029.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_029.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_030Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_030Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_030 = new THREE.Mesh(
-    Cylinder_030Geometry,
-    Cylinder_030Material,
+  cubebolshayakrysha_001MirroredZ.position.set(-1.2151, 9.163, 0);
+  const cubebolshayakrysha_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubebolshayakrysha_002 = new THREE.Mesh(
+    cubebolshayakrysha_002Geometry,
+    Material,
   );
-  Cylinder_030.position.set(-1.8958, -1.4429, 1.9881);
-  Cylinder_030.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_030.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_031Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_031Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_031 = new THREE.Mesh(
-    Cylinder_031Geometry,
-    Cylinder_031Material,
+  cubebolshayakrysha_002.scale.set(49.229, 0.1744, 5.1262);
+  const cubebolshayakrysha_002MZ = cubebolshayakrysha_002.clone();
+  cubebolshayakrysha_002.position.set(0, 0, 11.5094);
+  cubebolshayakrysha_002MZ.position.set(0, 0, -11.5094);
+  cubebolshayakrysha_002.setRotation(0.4408, 0.0, 0.0);
+  cubebolshayakrysha_002MZ.setRotation(-0.4408, -0.0, 0.0);
+  const cubebolshayakrysha_002MirroredZ = new THREE.Group();
+  cubebolshayakrysha_002MirroredZ.add(
+    cubebolshayakrysha_002,
+    cubebolshayakrysha_002MZ,
   );
-  Cylinder_031.position.set(-1.8958, -1.4429, 7.1297);
-  Cylinder_031.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_031.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_032Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_032Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_032 = new THREE.Mesh(
-    Cylinder_032Geometry,
-    Cylinder_032Material,
+  cubebolshayakrysha_002MirroredZ.position.set(-1.2151, 14.4925, 0);
+  const cubebolshayakrysha_003Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubebolshayakrysha_003 = new THREE.Mesh(
+    cubebolshayakrysha_003Geometry,
+    Material,
   );
-  Cylinder_032.position.set(-1.8958, -1.4429, 9.2097);
-  Cylinder_032.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_032.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_033Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_033Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_033 = new THREE.Mesh(
-    Cylinder_033Geometry,
-    Cylinder_033Material,
+  cubebolshayakrysha_003.scale.set(49.229, 0.1744, 3.4919);
+  const cubebolshayakrysha_003MZ = cubebolshayakrysha_003.clone();
+  cubebolshayakrysha_003.position.set(0, 0, 3.4425);
+  cubebolshayakrysha_003MZ.position.set(0, 0, -3.4425);
+  cubebolshayakrysha_003.setRotation(0.1266, 0.0, 0.0);
+  cubebolshayakrysha_003MZ.setRotation(-0.1266, -0.0, 0.0);
+  const cubebolshayakrysha_003MirroredZ = new THREE.Group();
+  cubebolshayakrysha_003MirroredZ.add(
+    cubebolshayakrysha_003,
+    cubebolshayakrysha_003MZ,
   );
-  Cylinder_033.position.set(-1.8958, -1.4429, 11.2897);
-  Cylinder_033.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_033.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_034Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_034Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_034 = new THREE.Mesh(
-    Cylinder_034Geometry,
-    Cylinder_034Material,
+  cubebolshayakrysha_003MirroredZ.position.set(-1.2151, 17.1452, 0);
+  const cubebolshayakryshaGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubebolshayakrysha = new THREE.Mesh(
+    cubebolshayakryshaGeometry,
+    Material,
   );
-  Cylinder_034.position.set(2.3086, -1.4429, 11.2897);
-  Cylinder_034.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_034.rotation.set(0.0, 0.0, -1.5708);
+  cubebolshayakrysha.scale.set(49.229, 0.1743, 5.422);
+  const cubebolshayakryshaMZ = cubebolshayakrysha.clone();
+  cubebolshayakrysha.position.set(0, 0, 23.2652);
+  cubebolshayakryshaMZ.position.set(0, 0, -23.2652);
+  cubebolshayakrysha.setRotation(1.5708, 0.0, 0.0);
+  cubebolshayakryshaMZ.setRotation(-1.5708, -0.0, 0.0);
+  const cubebolshayakryshaMirroredZ = new THREE.Group();
+  cubebolshayakryshaMirroredZ.add(cubebolshayakrysha, cubebolshayakryshaMZ);
+  cubebolshayakryshaMirroredZ.position.set(-1.2151, 0.4506, 0);
+  const cubesmotritelGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel = new THREE.Mesh(cubesmotritelGeometry, MetalMaterial);
+  cubesmotritel.position.set(48.8319, 1.6299, -0.7317);
+  cubesmotritel.scale.set(0.7995, 0.7995, 0.0694);
 
-  const Cylinder_035Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_035Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_035 = new THREE.Mesh(
-    Cylinder_035Geometry,
-    Cylinder_035Material,
+  const cubesmotritel_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_001 = new THREE.Mesh(
+    cubesmotritel_001Geometry,
+    MetalMaterial,
   );
-  Cylinder_035.position.set(2.3086, -1.4429, 9.2097);
-  Cylinder_035.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_035.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_001.position.set(48.818, 3.5732, 0.003);
+  cubesmotritel_001.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_001.setRotation(-1.5708, 4.7124, -0.0);
 
-  const Cylinder_036Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_036Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_036 = new THREE.Mesh(
-    Cylinder_036Geometry,
-    Cylinder_036Material,
+  const cubesmotritel_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_002 = new THREE.Mesh(
+    cubesmotritel_002Geometry,
+    GlassMaterial,
   );
-  Cylinder_036.position.set(2.3086, -1.4429, 7.1297);
-  Cylinder_036.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_036.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_002.position.set(49.5562, 2.977, 0.003);
+  cubesmotritel_002.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_002.setRotation(0.0, 4.7124, 0.0);
 
-  const Cylinder_037Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_037Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_037 = new THREE.Mesh(
-    Cylinder_037Geometry,
-    Cylinder_037Material,
+  const cubesmotritel_003Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_003 = new THREE.Mesh(
+    cubesmotritel_003Geometry,
+    GlassMaterial,
   );
-  Cylinder_037.position.set(2.3086, -1.4429, 1.9881);
-  Cylinder_037.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_037.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_003.position.set(48.799, 2.977, 0.733);
+  cubesmotritel_003.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_003.setRotation(0.0, 3.1416, 0.0);
 
-  const Cylinder_038Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_038Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_038 = new THREE.Mesh(
-    Cylinder_038Geometry,
-    Cylinder_038Material,
+  const cubesmotritel_004Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_004 = new THREE.Mesh(
+    cubesmotritel_004Geometry,
+    GlassMaterial,
   );
-  Cylinder_038.position.set(2.3086, -1.4429, -0.0919);
-  Cylinder_038.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_038.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_004.position.set(48.0747, 2.977, -0.0017);
+  cubesmotritel_004.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_004.setRotation(0.0, 1.5708, 0.0);
 
-  const Cylinder_039Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_039Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_039 = new THREE.Mesh(
-    Cylinder_039Geometry,
-    Cylinder_039Material,
+  const cubesmotritel_005Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_005 = new THREE.Mesh(
+    cubesmotritel_005Geometry,
+    GlassMaterial,
   );
-  Cylinder_039.position.set(2.3086, -1.4429, -2.1719);
-  Cylinder_039.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_039.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_005.position.set(48.8319, 2.977, -0.7317);
+  cubesmotritel_005.scale.set(0.7995, 0.4981, 0.0694);
 
-  const Cylinder_040Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_040Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_040 = new THREE.Mesh(
-    Cylinder_040Geometry,
-    Cylinder_040Material,
+  const cubesmotritel_006Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_006 = new THREE.Mesh(
+    cubesmotritel_006Geometry,
+    MetalMaterial,
   );
-  Cylinder_040.position.set(2.3086, -1.4429, -7.3135);
-  Cylinder_040.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_040.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_006.position.set(48.818, 0.8937, 0.003);
+  cubesmotritel_006.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_006.setRotation(-1.5708, 4.7124, -0.0);
 
-  const Cylinder_041Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_041Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_041 = new THREE.Mesh(
-    Cylinder_041Geometry,
-    Cylinder_041Material,
+  const cubesmotritel_007Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_007 = new THREE.Mesh(
+    cubesmotritel_007Geometry,
+    MetalMaterial,
   );
-  Cylinder_041.position.set(2.3086, -1.4429, -9.3935);
-  Cylinder_041.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_041.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_007.position.set(48.799, 1.6299, 0.733);
+  cubesmotritel_007.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_007.setRotation(0.0, 3.1416, 0.0);
 
-  const Cylinder_042Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_042Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_042 = new THREE.Mesh(
-    Cylinder_042Geometry,
-    Cylinder_042Material,
+  const cubesmotritel_008Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_008 = new THREE.Mesh(
+    cubesmotritel_008Geometry,
+    MetalMaterial,
   );
-  Cylinder_042.position.set(2.3086, -1.4429, -11.4735);
-  Cylinder_042.scale.set(1.0, 0.1531, 1.0);
-  Cylinder_042.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_008.position.set(49.5562, 1.6299, 0.003);
+  cubesmotritel_008.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_008.setRotation(0.0, 4.7124, 0.0);
 
-  const Cylinder_043Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_043Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_043 = new THREE.Mesh(
-    Cylinder_043Geometry,
-    Cylinder_043Material,
+  const cubesmotritel_009Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_009 = new THREE.Mesh(
+    cubesmotritel_009Geometry,
+    MetalMaterial,
   );
-  Cylinder_043.position.set(-2.0767, -1.4429, -9.4038);
-  Cylinder_043.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_043.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_009.position.set(48.0747, 1.6299, -0.0017);
+  cubesmotritel_009.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_009.setRotation(0.0, 1.5708, 0.0);
 
-  const Cylinder_044Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_044Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_044 = new THREE.Mesh(
-    Cylinder_044Geometry,
-    Cylinder_044Material,
+  const cubesmotritel_010Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_010 = new THREE.Mesh(
+    cubesmotritel_010Geometry,
+    MetalMaterial,
   );
-  Cylinder_044.position.set(-2.0767, -1.4429, -7.3341);
-  Cylinder_044.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_044.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_010.position.set(65.5021, 14.8283, -0.7317);
+  cubesmotritel_010.scale.set(0.7995, 0.7995, 0.0694);
 
-  const Cylinder_045Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_045Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_045 = new THREE.Mesh(
-    Cylinder_045Geometry,
-    Cylinder_045Material,
+  const cubesmotritel_011Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_011 = new THREE.Mesh(
+    cubesmotritel_011Geometry,
+    MetalMaterial,
   );
-  Cylinder_045.position.set(-2.0767, -1.4429, -2.1946);
-  Cylinder_045.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_045.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_011.position.set(65.4882, 16.7716, 0.003);
+  cubesmotritel_011.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_011.setRotation(-1.5708, 4.7124, -0.0);
 
-  const Cylinder_046Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_046Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_046 = new THREE.Mesh(
-    Cylinder_046Geometry,
-    Cylinder_046Material,
+  const cubesmotritel_012Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_012 = new THREE.Mesh(
+    cubesmotritel_012Geometry,
+    GlassMaterial,
   );
-  Cylinder_046.position.set(-2.0767, -1.4429, -0.1249);
-  Cylinder_046.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_046.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_012.position.set(66.2264, 16.1754, 0.003);
+  cubesmotritel_012.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_012.setRotation(0.0, 4.7124, 0.0);
 
-  const Cylinder_047Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_047Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_047 = new THREE.Mesh(
-    Cylinder_047Geometry,
-    Cylinder_047Material,
+  const cubesmotritel_013Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_013 = new THREE.Mesh(
+    cubesmotritel_013Geometry,
+    GlassMaterial,
   );
-  Cylinder_047.position.set(-2.0767, -1.4429, 1.9448);
-  Cylinder_047.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_047.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_013.position.set(65.4692, 16.1754, 0.733);
+  cubesmotritel_013.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_013.setRotation(0.0, 3.1416, 0.0);
 
-  const Cylinder_048Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_048Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_048 = new THREE.Mesh(
-    Cylinder_048Geometry,
-    Cylinder_048Material,
+  const cubesmotritel_014Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_014 = new THREE.Mesh(
+    cubesmotritel_014Geometry,
+    GlassMaterial,
   );
-  Cylinder_048.position.set(-2.0767, -1.4429, 7.0843);
-  Cylinder_048.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_048.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_014.position.set(64.7449, 16.1754, -0.0017);
+  cubesmotritel_014.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_014.setRotation(0.0, 1.5708, 0.0);
 
-  const Cylinder_049Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_049Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_049 = new THREE.Mesh(
-    Cylinder_049Geometry,
-    Cylinder_049Material,
+  const cubesmotritel_015Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_015 = new THREE.Mesh(
+    cubesmotritel_015Geometry,
+    GlassMaterial,
   );
-  Cylinder_049.position.set(-2.0767, -1.4429, 9.154);
-  Cylinder_049.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_049.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_015.position.set(65.5021, 16.1754, -0.7317);
+  cubesmotritel_015.scale.set(0.7995, 0.4981, 0.0694);
 
-  const Cylinder_050Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_050Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_050 = new THREE.Mesh(
-    Cylinder_050Geometry,
-    Cylinder_050Material,
+  const cubesmotritel_016Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_016 = new THREE.Mesh(
+    cubesmotritel_016Geometry,
+    MetalMaterial,
   );
-  Cylinder_050.position.set(-2.0767, -1.4429, 11.2236);
-  Cylinder_050.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_050.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_016.position.set(65.4882, 14.0921, 0.003);
+  cubesmotritel_016.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_016.setRotation(-1.5708, 4.7124, -0.0);
 
-  const Cylinder_051Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_051Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_051 = new THREE.Mesh(
-    Cylinder_051Geometry,
-    Cylinder_051Material,
+  const cubesmotritel_017Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_017 = new THREE.Mesh(
+    cubesmotritel_017Geometry,
+    MetalMaterial,
   );
-  Cylinder_051.position.set(2.4949, -1.4429, 11.2236);
-  Cylinder_051.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_051.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_017.position.set(65.4692, 14.8283, 0.733);
+  cubesmotritel_017.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_017.setRotation(0.0, 3.1416, 0.0);
 
-  const Cylinder_052Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_052Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_052 = new THREE.Mesh(
-    Cylinder_052Geometry,
-    Cylinder_052Material,
+  const cubesmotritel_018Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_018 = new THREE.Mesh(
+    cubesmotritel_018Geometry,
+    MetalMaterial,
   );
-  Cylinder_052.position.set(2.4949, -1.4429, 9.154);
-  Cylinder_052.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_052.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_018.position.set(66.2264, 14.8283, 0.003);
+  cubesmotritel_018.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_018.setRotation(0.0, 4.7124, 0.0);
 
-  const Cylinder_053Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_053Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_053 = new THREE.Mesh(
-    Cylinder_053Geometry,
-    Cylinder_053Material,
+  const cubesmotritel_019Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_019 = new THREE.Mesh(
+    cubesmotritel_019Geometry,
+    MetalMaterial,
   );
-  Cylinder_053.position.set(2.4949, -1.4429, 7.0843);
-  Cylinder_053.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_053.rotation.set(0.0, 0.0, -1.5708);
+  cubesmotritel_019.position.set(64.7449, 14.8283, -0.0017);
+  cubesmotritel_019.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_019.setRotation(0.0, 1.5708, 0.0);
 
-  const Cylinder_054Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_054Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_054 = new THREE.Mesh(
-    Cylinder_054Geometry,
-    Cylinder_054Material,
+  const cubelestnicaGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnicaGroup = new THREE.Group();
+  for (let i = 0; i < 29; i++) {
+    const cubelestnica = new THREE.Mesh(cubelestnicaGeometry, MetalMaterial);
+    cubelestnica.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnicaGroup.add(cubelestnica);
+  }
+  cubelestnicaGroup.position.set(50.1677, 1.0795, -2.4186);
+  const cubenapolnikGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik = new THREE.Mesh(cubenapolnikGeometry, MetalMaterial);
+  cubenapolnik.position.set(49.0968, 0.7364, -2.4245);
+  cubenapolnik.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik.setRotation(1.5708, 0.0, 0.0);
+
+  const cubeporuchenGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen = new THREE.Mesh(cubeporuchenGeometry, MetalMaterial);
+  cubeporuchen.scale.set(9.0522, 0.9024, 0.1501);
+  const cubeporuchenMZ = cubeporuchen.clone();
+  cubeporuchen.position.set(0, 0, -1.3602);
+  cubeporuchenMZ.position.set(0, 0, -3.477);
+  cubeporuchen.setRotation(0.0, 0.0, 0.7854);
+  cubeporuchenMZ.setRotation(0.0, -0.0, 0.7854);
+  const cubeporuchenMirroredZ = new THREE.Group();
+  cubeporuchenMirroredZ.add(cubeporuchen, cubeporuchenMZ);
+  cubeporuchenMirroredZ.position.set(56.7434, 7.997, 0);
+  const cubeporuchen_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_001 = new THREE.Mesh(
+    cubeporuchen_001Geometry,
+    MetalMaterial,
   );
-  Cylinder_054.position.set(2.4949, -1.4429, 1.9448);
-  Cylinder_054.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_054.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_055Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_055Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_055 = new THREE.Mesh(
-    Cylinder_055Geometry,
-    Cylinder_055Material,
+  cubeporuchen_001.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_001MZ = cubeporuchen_001.clone();
+  cubeporuchen_001.position.set(0, 0, -1.3602);
+  cubeporuchen_001MZ.position.set(0, 0, -3.477);
+  cubeporuchen_001.setRotation(0.0, 0.0, -0.0);
+  cubeporuchen_001MZ.setRotation(0.0, -0.0, -0.0);
+  const cubeporuchen_001MirroredZ = new THREE.Group();
+  cubeporuchen_001MirroredZ.add(cubeporuchen_001, cubeporuchen_001MZ);
+  cubeporuchen_001MirroredZ.position.set(49.0968, 1.3748, 0);
+  const cylinderporuchen_002Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_002 = new THREE.Mesh(
+    cylinderporuchen_002Geometry,
+    MetalMaterial,
   );
-  Cylinder_055.position.set(2.4949, -1.4429, -0.1249);
-  Cylinder_055.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_055.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_056Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_056Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_056 = new THREE.Mesh(
-    Cylinder_056Geometry,
-    Cylinder_056Material,
+  cylinderporuchen_002.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_002MZ = cylinderporuchen_002.clone();
+  cylinderporuchen_002.position.set(0, 0, -1.361);
+  cylinderporuchen_002MZ.position.set(0, 0, -3.4762);
+  cylinderporuchen_002.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_002MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_002MirroredZ = new THREE.Group();
+  cylinderporuchen_002MirroredZ.add(
+    cylinderporuchen_002,
+    cylinderporuchen_002MZ,
   );
-  Cylinder_056.position.set(2.4949, -1.4429, -2.1946);
-  Cylinder_056.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_056.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_057Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_057Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_057 = new THREE.Mesh(
-    Cylinder_057Geometry,
-    Cylinder_057Material,
+  cylinderporuchen_002MirroredZ.position.set(50.1677, 1.5286, 0);
+  const cylinderporuchen_003Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_003 = new THREE.Mesh(
+    cylinderporuchen_003Geometry,
+    MetalMaterial,
   );
-  Cylinder_057.position.set(2.4949, -1.4429, -7.3341);
-  Cylinder_057.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_057.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_058Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_058Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_058 = new THREE.Mesh(
-    Cylinder_058Geometry,
-    Cylinder_058Material,
+  cylinderporuchen_003.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_003MZ = cylinderporuchen_003.clone();
+  cylinderporuchen_003.position.set(0, 0, -1.361);
+  cylinderporuchen_003MZ.position.set(0, 0, -3.4762);
+  cylinderporuchen_003.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_003MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_003MirroredZ = new THREE.Group();
+  cylinderporuchen_003MirroredZ.add(
+    cylinderporuchen_003,
+    cylinderporuchen_003MZ,
   );
-  Cylinder_058.position.set(2.4949, -1.4429, -9.4038);
-  Cylinder_058.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_058.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cylinder_059Geometry = new THREE.CylinderGeometry(1, 1, 2);
-  const Cylinder_059Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-  });
-  const Cylinder_059 = new THREE.Mesh(
-    Cylinder_059Geometry,
-    Cylinder_059Material,
+  cylinderporuchen_003MirroredZ.position.set(63.2871, 14.535, 0);
+  const cylinderporuchen_004Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_004 = new THREE.Mesh(
+    cylinderporuchen_004Geometry,
+    MetalMaterial,
   );
-  Cylinder_059.position.set(2.4949, -1.4429, -11.4735);
-  Cylinder_059.scale.set(0.8482, 0.1299, 0.8482);
-  Cylinder_059.rotation.set(0.0, 0.0, -1.5708);
-
-  const Cube_DoorR_002Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorR_002Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorR_002 = new THREE.Mesh(
-    Cube_DoorR_002Geometry,
-    Cube_DoorR_002Material,
+  cylinderporuchen_004.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_004MZ = cylinderporuchen_004.clone();
+  cylinderporuchen_004.position.set(0, 0, -1.361);
+  cylinderporuchen_004MZ.position.set(0, 0, -3.4762);
+  cylinderporuchen_004.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_004MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_004MirroredZ = new THREE.Group();
+  cylinderporuchen_004MirroredZ.add(
+    cylinderporuchen_004,
+    cylinderporuchen_004MZ,
   );
-  Cube_DoorR_002.position.set(-3.0975, 3.1828, 1.1619);
-  Cube_DoorR_002.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorR_002.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorL_002Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorL_002Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorL_002 = new THREE.Mesh(
-    Cube_DoorL_002Geometry,
-    Cube_DoorL_002Material,
+  cylinderporuchen_004MirroredZ.position.set(48.0709, 1.241, 0);
+  const cubeporuchen_005Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_005 = new THREE.Mesh(
+    cubeporuchen_005Geometry,
+    MetalMaterial,
   );
-  Cube_DoorL_002.position.set(-3.0975, 3.1828, -0.993);
-  Cube_DoorL_002.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorL_002.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorR_003Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorR_003Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorR_003 = new THREE.Mesh(
-    Cube_DoorR_003Geometry,
-    Cube_DoorR_003Material,
+  cubeporuchen_005.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_005MZ = cubeporuchen_005.clone();
+  cubeporuchen_005.position.set(0, 0, -1.3602);
+  cubeporuchen_005MZ.position.set(0, 0, -3.477);
+  cubeporuchen_005.setRotation(0.0, -0.0, -3.1416);
+  cubeporuchen_005MZ.setRotation(0.0, 0.0, -3.1416);
+  const cubeporuchen_005MirroredZ = new THREE.Group();
+  cubeporuchen_005MirroredZ.add(cubeporuchen_005, cubeporuchen_005MZ);
+  cubeporuchen_005MirroredZ.position.set(64.736, 14.5346, 0);
+  const cylinderporuchen_006Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_006 = new THREE.Mesh(
+    cylinderporuchen_006Geometry,
+    MetalMaterial,
   );
-  Cube_DoorR_003.position.set(-3.0975, 3.1828, 9.1283);
-  Cube_DoorR_003.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorR_003.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorL_003Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorL_003Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorL_003 = new THREE.Mesh(
-    Cube_DoorL_003Geometry,
-    Cube_DoorL_003Material,
+  cylinderporuchen_006.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_006MZ = cylinderporuchen_006.clone();
+  cylinderporuchen_006.position.set(0, 0, -1.361);
+  cylinderporuchen_006MZ.position.set(0, 0, -3.4762);
+  cylinderporuchen_006.setRotation(1.5708, -0.0, -3.1416);
+  cylinderporuchen_006MZ.setRotation(-1.5708, 0.0, -3.1416);
+  const cylinderporuchen_006MirroredZ = new THREE.Group();
+  cylinderporuchen_006MirroredZ.add(
+    cylinderporuchen_006,
+    cylinderporuchen_006MZ,
   );
-  Cube_DoorL_003.position.set(-3.0975, 3.1828, 6.9734);
-  Cube_DoorL_003.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorL_003.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorR_004Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorR_004Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorR_004 = new THREE.Mesh(
-    Cube_DoorR_004Geometry,
-    Cube_DoorR_004Material,
+  cylinderporuchen_006MirroredZ.position.set(65.7619, 14.4624, 0);
+  const cubenapolnik_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_001 = new THREE.Mesh(
+    cubenapolnik_001Geometry,
+    MetalMaterial,
   );
-  Cube_DoorR_004.position.set(3.0795, 3.1828, -6.8599);
-  Cube_DoorR_004.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorR_004.rotation.set(0.0, 0.0, -0.0152);
+  cubenapolnik_001.position.set(64.5817, 14.1388, -2.4245);
+  cubenapolnik_001.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_001.setRotation(1.5708, 0.0, 0.0);
 
-  const Cube_DoorL_004Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorL_004Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorL_004 = new THREE.Mesh(
-    Cube_DoorL_004Geometry,
-    Cube_DoorL_004Material,
+  const cubelestnica_005Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnica_005Group = new THREE.Group();
+  for (let i = 0; i < 29; i++) {
+    const cubelestnica_005 = new THREE.Mesh(
+      cubelestnica_005Geometry,
+      Metal_004Material,
+    );
+    cubelestnica_005.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica_005.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnica_005Group.add(cubelestnica_005);
+  }
+  cubelestnica_005Group.position.set(50.1677, 1.0795, -5.1042);
+  const cubenapolnik_011Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_011 = new THREE.Mesh(
+    cubenapolnik_011Geometry,
+    Metal_004Material,
   );
-  Cube_DoorL_004.position.set(3.0795, 3.1828, -9.0148);
-  Cube_DoorL_004.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorL_004.rotation.set(0.0, 0.0, -0.0152);
+  cubenapolnik_011.position.set(49.0968, 0.7364, -5.11);
+  cubenapolnik_011.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_011.setRotation(1.5708, 0.0, 0.0);
 
-  const Cube_DoorR_005Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorR_005Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorR_005 = new THREE.Mesh(
-    Cube_DoorR_005Geometry,
-    Cube_DoorR_005Material,
+  const cubeporuchen_014Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_014 = new THREE.Mesh(
+    cubeporuchen_014Geometry,
+    Metal_004Material,
   );
-  Cube_DoorR_005.position.set(3.0795, 3.1828, 1.1619);
-  Cube_DoorR_005.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorR_005.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorL_005Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorL_005Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorL_005 = new THREE.Mesh(
-    Cube_DoorL_005Geometry,
-    Cube_DoorL_005Material,
+  cubeporuchen_014.scale.set(9.0522, 0.9024, 0.1501);
+  const cubeporuchen_014MZ = cubeporuchen_014.clone();
+  cubeporuchen_014.position.set(0, 0, -4.0458);
+  cubeporuchen_014MZ.position.set(0, 0, -6.1625);
+  cubeporuchen_014.setRotation(0.0, 0.0, 0.7854);
+  cubeporuchen_014MZ.setRotation(0.0, -0.0, 0.7854);
+  const cubeporuchen_014MirroredZ = new THREE.Group();
+  cubeporuchen_014MirroredZ.add(cubeporuchen_014, cubeporuchen_014MZ);
+  cubeporuchen_014MirroredZ.position.set(56.7434, 7.997, 0);
+  const cubeporuchen_013Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_013 = new THREE.Mesh(
+    cubeporuchen_013Geometry,
+    Metal_004Material,
   );
-  Cube_DoorL_005.position.set(3.0795, 3.1828, -0.993);
-  Cube_DoorL_005.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorL_005.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorR_006Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorR_006Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorR_006 = new THREE.Mesh(
-    Cube_DoorR_006Geometry,
-    Cube_DoorR_006Material,
+  cubeporuchen_013.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_013MZ = cubeporuchen_013.clone();
+  cubeporuchen_013.position.set(0, 0, -4.0458);
+  cubeporuchen_013MZ.position.set(0, 0, -6.1625);
+  cubeporuchen_013.setRotation(0.0, 0.0, -0.0);
+  cubeporuchen_013MZ.setRotation(0.0, -0.0, -0.0);
+  const cubeporuchen_013MirroredZ = new THREE.Group();
+  cubeporuchen_013MirroredZ.add(cubeporuchen_013, cubeporuchen_013MZ);
+  cubeporuchen_013MirroredZ.position.set(49.0968, 1.3748, 0);
+  const cylinderporuchen_020Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_020 = new THREE.Mesh(
+    cylinderporuchen_020Geometry,
+    Metal_004Material,
   );
-  Cube_DoorR_006.position.set(3.0795, 3.1828, 9.1283);
-  Cube_DoorR_006.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorR_006.rotation.set(0.0, 0.0, -0.0152);
-
-  const Cube_DoorL_006Geometry = new THREE.BoxGeometry(2, 2, 2);
-  const Cube_DoorL_006Material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0.0202, 0.1172, 0.686),
-    transparent: true,
-    opacity: 0.8031,
-  });
-  const Cube_DoorL_006 = new THREE.Mesh(
-    Cube_DoorL_006Geometry,
-    Cube_DoorL_006Material,
+  cylinderporuchen_020.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_020MZ = cylinderporuchen_020.clone();
+  cylinderporuchen_020.position.set(0, 0, -4.0465);
+  cylinderporuchen_020MZ.position.set(0, 0, -6.1618);
+  cylinderporuchen_020.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_020MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_020MirroredZ = new THREE.Group();
+  cylinderporuchen_020MirroredZ.add(
+    cylinderporuchen_020,
+    cylinderporuchen_020MZ,
   );
-  Cube_DoorL_006.position.set(3.0795, 3.1828, 6.9734);
-  Cube_DoorL_006.scale.set(0.0363, 2.2296, 1.0634);
-  Cube_DoorL_006.rotation.set(0.0, 0.0, -0.0152);
+  cylinderporuchen_020MirroredZ.position.set(50.1677, 1.5286, 0);
+  const cylinderporuchen_019Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_019 = new THREE.Mesh(
+    cylinderporuchen_019Geometry,
+    Metal_004Material,
+  );
+  cylinderporuchen_019.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_019MZ = cylinderporuchen_019.clone();
+  cylinderporuchen_019.position.set(0, 0, -4.0465);
+  cylinderporuchen_019MZ.position.set(0, 0, -6.1618);
+  cylinderporuchen_019.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_019MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_019MirroredZ = new THREE.Group();
+  cylinderporuchen_019MirroredZ.add(
+    cylinderporuchen_019,
+    cylinderporuchen_019MZ,
+  );
+  cylinderporuchen_019MirroredZ.position.set(63.2871, 14.535, 0);
+  const cylinderporuchen_018Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_018 = new THREE.Mesh(
+    cylinderporuchen_018Geometry,
+    Metal_004Material,
+  );
+  cylinderporuchen_018.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_018MZ = cylinderporuchen_018.clone();
+  cylinderporuchen_018.position.set(0, 0, -4.0465);
+  cylinderporuchen_018MZ.position.set(0, 0, -6.1618);
+  cylinderporuchen_018.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_018MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_018MirroredZ = new THREE.Group();
+  cylinderporuchen_018MirroredZ.add(
+    cylinderporuchen_018,
+    cylinderporuchen_018MZ,
+  );
+  cylinderporuchen_018MirroredZ.position.set(48.0709, 1.241, 0);
+  const cubeporuchen_012Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_012 = new THREE.Mesh(
+    cubeporuchen_012Geometry,
+    Metal_004Material,
+  );
+  cubeporuchen_012.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_012MZ = cubeporuchen_012.clone();
+  cubeporuchen_012.position.set(0, 0, -4.0458);
+  cubeporuchen_012MZ.position.set(0, 0, -6.1625);
+  cubeporuchen_012.setRotation(0.0, -0.0, -3.1416);
+  cubeporuchen_012MZ.setRotation(0.0, 0.0, -3.1416);
+  const cubeporuchen_012MirroredZ = new THREE.Group();
+  cubeporuchen_012MirroredZ.add(cubeporuchen_012, cubeporuchen_012MZ);
+  cubeporuchen_012MirroredZ.position.set(64.736, 14.5346, 0);
+  const cylinderporuchen_017Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_017 = new THREE.Mesh(
+    cylinderporuchen_017Geometry,
+    Metal_004Material,
+  );
+  cylinderporuchen_017.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_017MZ = cylinderporuchen_017.clone();
+  cylinderporuchen_017.position.set(0, 0, -4.0465);
+  cylinderporuchen_017MZ.position.set(0, 0, -6.1618);
+  cylinderporuchen_017.setRotation(1.5708, -0.0, -3.1416);
+  cylinderporuchen_017MZ.setRotation(-1.5708, 0.0, -3.1416);
+  const cylinderporuchen_017MirroredZ = new THREE.Group();
+  cylinderporuchen_017MirroredZ.add(
+    cylinderporuchen_017,
+    cylinderporuchen_017MZ,
+  );
+  cylinderporuchen_017MirroredZ.position.set(65.7619, 14.4624, 0);
+  const cubenapolnik_010Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_010 = new THREE.Mesh(
+    cubenapolnik_010Geometry,
+    Metal_004Material,
+  );
+  cubenapolnik_010.position.set(64.5817, 14.1388, -5.11);
+  cubenapolnik_010.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_010.setRotation(1.5708, 0.0, 0.0);
 
+  const cubelestnica_006Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnica_006Group = new THREE.Group();
+  for (let i = 0; i < 29; i++) {
+    const cubelestnica_006 = new THREE.Mesh(
+      cubelestnica_006Geometry,
+      Metal_005Material,
+    );
+    cubelestnica_006.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica_006.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnica_006Group.add(cubelestnica_006);
+  }
+  cubelestnica_006Group.position.set(50.1677, 1.0795, 2.3681);
+  const cubenapolnik_013Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_013 = new THREE.Mesh(
+    cubenapolnik_013Geometry,
+    Metal_005Material,
+  );
+  cubenapolnik_013.position.set(49.0968, 0.7364, 2.3622);
+  cubenapolnik_013.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_013.setRotation(1.5708, 0.0, 0.0);
+
+  const cubeporuchen_017Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_017 = new THREE.Mesh(
+    cubeporuchen_017Geometry,
+    Metal_005Material,
+  );
+  cubeporuchen_017.scale.set(9.0522, 0.9024, 0.1501);
+  const cubeporuchen_017MZ = cubeporuchen_017.clone();
+  cubeporuchen_017.position.set(0, 0, 3.4265);
+  cubeporuchen_017MZ.position.set(0, 0, 1.3097);
+  cubeporuchen_017.setRotation(0.0, 0.0, 0.7854);
+  cubeporuchen_017MZ.setRotation(0.0, -0.0, 0.7854);
+  const cubeporuchen_017MirroredZ = new THREE.Group();
+  cubeporuchen_017MirroredZ.add(cubeporuchen_017, cubeporuchen_017MZ);
+  cubeporuchen_017MirroredZ.position.set(56.7434, 7.997, 0);
+  const cubeporuchen_016Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_016 = new THREE.Mesh(
+    cubeporuchen_016Geometry,
+    Metal_005Material,
+  );
+  cubeporuchen_016.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_016MZ = cubeporuchen_016.clone();
+  cubeporuchen_016.position.set(0, 0, 3.4265);
+  cubeporuchen_016MZ.position.set(0, 0, 1.3097);
+  cubeporuchen_016.setRotation(0.0, 0.0, -0.0);
+  cubeporuchen_016MZ.setRotation(0.0, -0.0, -0.0);
+  const cubeporuchen_016MirroredZ = new THREE.Group();
+  cubeporuchen_016MirroredZ.add(cubeporuchen_016, cubeporuchen_016MZ);
+  cubeporuchen_016MirroredZ.position.set(49.0968, 1.3748, 0);
+  const cylinderporuchen_024Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_024 = new THREE.Mesh(
+    cylinderporuchen_024Geometry,
+    Metal_005Material,
+  );
+  cylinderporuchen_024.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_024MZ = cylinderporuchen_024.clone();
+  cylinderporuchen_024.position.set(0, 0, 3.4257);
+  cylinderporuchen_024MZ.position.set(0, 0, 1.3105);
+  cylinderporuchen_024.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_024MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_024MirroredZ = new THREE.Group();
+  cylinderporuchen_024MirroredZ.add(
+    cylinderporuchen_024,
+    cylinderporuchen_024MZ,
+  );
+  cylinderporuchen_024MirroredZ.position.set(50.1677, 1.5286, 0);
+  const cylinderporuchen_023Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_023 = new THREE.Mesh(
+    cylinderporuchen_023Geometry,
+    Metal_005Material,
+  );
+  cylinderporuchen_023.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_023MZ = cylinderporuchen_023.clone();
+  cylinderporuchen_023.position.set(0, 0, 3.4257);
+  cylinderporuchen_023MZ.position.set(0, 0, 1.3105);
+  cylinderporuchen_023.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_023MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_023MirroredZ = new THREE.Group();
+  cylinderporuchen_023MirroredZ.add(
+    cylinderporuchen_023,
+    cylinderporuchen_023MZ,
+  );
+  cylinderporuchen_023MirroredZ.position.set(63.2871, 14.535, 0);
+  const cylinderporuchen_022Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_022 = new THREE.Mesh(
+    cylinderporuchen_022Geometry,
+    Metal_005Material,
+  );
+  cylinderporuchen_022.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_022MZ = cylinderporuchen_022.clone();
+  cylinderporuchen_022.position.set(0, 0, 3.4257);
+  cylinderporuchen_022MZ.position.set(0, 0, 1.3105);
+  cylinderporuchen_022.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_022MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_022MirroredZ = new THREE.Group();
+  cylinderporuchen_022MirroredZ.add(
+    cylinderporuchen_022,
+    cylinderporuchen_022MZ,
+  );
+  cylinderporuchen_022MirroredZ.position.set(48.0709, 1.241, 0);
+  const cubeporuchen_015Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_015 = new THREE.Mesh(
+    cubeporuchen_015Geometry,
+    Metal_005Material,
+  );
+  cubeporuchen_015.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_015MZ = cubeporuchen_015.clone();
+  cubeporuchen_015.position.set(0, 0, 3.4265);
+  cubeporuchen_015MZ.position.set(0, 0, 1.3097);
+  cubeporuchen_015.setRotation(0.0, -0.0, -3.1416);
+  cubeporuchen_015MZ.setRotation(0.0, 0.0, -3.1416);
+  const cubeporuchen_015MirroredZ = new THREE.Group();
+  cubeporuchen_015MirroredZ.add(cubeporuchen_015, cubeporuchen_015MZ);
+  cubeporuchen_015MirroredZ.position.set(64.736, 14.5346, 0);
+  const cylinderporuchen_021Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_021 = new THREE.Mesh(
+    cylinderporuchen_021Geometry,
+    Metal_005Material,
+  );
+  cylinderporuchen_021.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_021MZ = cylinderporuchen_021.clone();
+  cylinderporuchen_021.position.set(0, 0, 3.4257);
+  cylinderporuchen_021MZ.position.set(0, 0, 1.3105);
+  cylinderporuchen_021.setRotation(1.5708, -0.0, -3.1416);
+  cylinderporuchen_021MZ.setRotation(-1.5708, 0.0, -3.1416);
+  const cylinderporuchen_021MirroredZ = new THREE.Group();
+  cylinderporuchen_021MirroredZ.add(
+    cylinderporuchen_021,
+    cylinderporuchen_021MZ,
+  );
+  cylinderporuchen_021MirroredZ.position.set(65.7619, 14.4624, 0);
+  const cubenapolnik_012Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_012 = new THREE.Mesh(
+    cubenapolnik_012Geometry,
+    Metal_005Material,
+  );
+  cubenapolnik_012.position.set(64.5817, 14.1388, 2.3622);
+  cubenapolnik_012.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_012.setRotation(1.5708, 0.0, 0.0);
+
+  const cubelestnica_007Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnica_007Group = new THREE.Group();
+  for (let i = 0; i < 29; i++) {
+    const cubelestnica_007 = new THREE.Mesh(
+      cubelestnica_007Geometry,
+      Metal_006Material,
+    );
+    cubelestnica_007.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica_007.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnica_007Group.add(cubelestnica_007);
+  }
+  cubelestnica_007Group.position.set(50.1677, 1.0795, 5.1056);
+  const cubenapolnik_015Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_015 = new THREE.Mesh(
+    cubenapolnik_015Geometry,
+    Metal_006Material,
+  );
+  cubenapolnik_015.position.set(49.0968, 0.7364, 5.0997);
+  cubenapolnik_015.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_015.setRotation(1.5708, 0.0, 0.0);
+
+  const cubeporuchen_020Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_020 = new THREE.Mesh(
+    cubeporuchen_020Geometry,
+    Metal_006Material,
+  );
+  cubeporuchen_020.scale.set(9.0522, 0.9024, 0.1501);
+  const cubeporuchen_020MZ = cubeporuchen_020.clone();
+  cubeporuchen_020.position.set(0, 0, 6.164);
+  cubeporuchen_020MZ.position.set(0, 0, 4.0472);
+  cubeporuchen_020.setRotation(0.0, 0.0, 0.7854);
+  cubeporuchen_020MZ.setRotation(0.0, -0.0, 0.7854);
+  const cubeporuchen_020MirroredZ = new THREE.Group();
+  cubeporuchen_020MirroredZ.add(cubeporuchen_020, cubeporuchen_020MZ);
+  cubeporuchen_020MirroredZ.position.set(56.7434, 7.997, 0);
+  const cubeporuchen_019Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_019 = new THREE.Mesh(
+    cubeporuchen_019Geometry,
+    Metal_006Material,
+  );
+  cubeporuchen_019.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_019MZ = cubeporuchen_019.clone();
+  cubeporuchen_019.position.set(0, 0, 6.164);
+  cubeporuchen_019MZ.position.set(0, 0, 4.0472);
+  cubeporuchen_019.setRotation(0.0, 0.0, -0.0);
+  cubeporuchen_019MZ.setRotation(0.0, -0.0, -0.0);
+  const cubeporuchen_019MirroredZ = new THREE.Group();
+  cubeporuchen_019MirroredZ.add(cubeporuchen_019, cubeporuchen_019MZ);
+  cubeporuchen_019MirroredZ.position.set(49.0968, 1.3748, 0);
+  const cylinderporuchen_028Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_028 = new THREE.Mesh(
+    cylinderporuchen_028Geometry,
+    Metal_006Material,
+  );
+  cylinderporuchen_028.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_028MZ = cylinderporuchen_028.clone();
+  cylinderporuchen_028.position.set(0, 0, 6.1632);
+  cylinderporuchen_028MZ.position.set(0, 0, 4.0479);
+  cylinderporuchen_028.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_028MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_028MirroredZ = new THREE.Group();
+  cylinderporuchen_028MirroredZ.add(
+    cylinderporuchen_028,
+    cylinderporuchen_028MZ,
+  );
+  cylinderporuchen_028MirroredZ.position.set(50.1677, 1.5286, 0);
+  const cylinderporuchen_027Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_027 = new THREE.Mesh(
+    cylinderporuchen_027Geometry,
+    Metal_006Material,
+  );
+  cylinderporuchen_027.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_027MZ = cylinderporuchen_027.clone();
+  cylinderporuchen_027.position.set(0, 0, 6.1632);
+  cylinderporuchen_027MZ.position.set(0, 0, 4.0479);
+  cylinderporuchen_027.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_027MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_027MirroredZ = new THREE.Group();
+  cylinderporuchen_027MirroredZ.add(
+    cylinderporuchen_027,
+    cylinderporuchen_027MZ,
+  );
+  cylinderporuchen_027MirroredZ.position.set(63.2871, 14.535, 0);
+  const cylinderporuchen_026Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_026 = new THREE.Mesh(
+    cylinderporuchen_026Geometry,
+    Metal_006Material,
+  );
+  cylinderporuchen_026.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_026MZ = cylinderporuchen_026.clone();
+  cylinderporuchen_026.position.set(0, 0, 6.1632);
+  cylinderporuchen_026MZ.position.set(0, 0, 4.0479);
+  cylinderporuchen_026.setRotation(1.5708, 0.0, 0.0);
+  cylinderporuchen_026MZ.setRotation(-1.5708, -0.0, 0.0);
+  const cylinderporuchen_026MirroredZ = new THREE.Group();
+  cylinderporuchen_026MirroredZ.add(
+    cylinderporuchen_026,
+    cylinderporuchen_026MZ,
+  );
+  cylinderporuchen_026MirroredZ.position.set(48.0709, 1.241, 0);
+  const cubeporuchen_018Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_018 = new THREE.Mesh(
+    cubeporuchen_018Geometry,
+    Metal_006Material,
+  );
+  cubeporuchen_018.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_018MZ = cubeporuchen_018.clone();
+  cubeporuchen_018.position.set(0, 0, 6.164);
+  cubeporuchen_018MZ.position.set(0, 0, 4.0472);
+  cubeporuchen_018.setRotation(0.0, -0.0, -3.1416);
+  cubeporuchen_018MZ.setRotation(0.0, 0.0, -3.1416);
+  const cubeporuchen_018MirroredZ = new THREE.Group();
+  cubeporuchen_018MirroredZ.add(cubeporuchen_018, cubeporuchen_018MZ);
+  cubeporuchen_018MirroredZ.position.set(64.736, 14.5346, 0);
+  const cylinderporuchen_025Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_025 = new THREE.Mesh(
+    cylinderporuchen_025Geometry,
+    Metal_006Material,
+  );
+  cylinderporuchen_025.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_025MZ = cylinderporuchen_025.clone();
+  cylinderporuchen_025.position.set(0, 0, 6.1632);
+  cylinderporuchen_025MZ.position.set(0, 0, 4.0479);
+  cylinderporuchen_025.setRotation(1.5708, -0.0, -3.1416);
+  cylinderporuchen_025MZ.setRotation(-1.5708, 0.0, -3.1416);
+  const cylinderporuchen_025MirroredZ = new THREE.Group();
+  cylinderporuchen_025MirroredZ.add(
+    cylinderporuchen_025,
+    cylinderporuchen_025MZ,
+  );
+  cylinderporuchen_025MirroredZ.position.set(65.7619, 14.4624, 0);
+  const cubenapolnik_014Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_014 = new THREE.Mesh(
+    cubenapolnik_014Geometry,
+    Metal_006Material,
+  );
+  cubenapolnik_014.position.set(64.5817, 14.1388, 5.0997);
+  cubenapolnik_014.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_014.setRotation(1.5708, 0.0, 0.0);
+
+  const cubesmotritel_020Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_020 = new THREE.Mesh(
+    cubesmotritel_020Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_020.position.set(110.4389, 15.3204, -40.4363);
+  cubesmotritel_020.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_020.setRotation(0.0, 3.1416, 0.0);
+
+  const cubesmotritel_021Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_021 = new THREE.Mesh(
+    cubesmotritel_021Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_021.position.set(110.4528, 17.2637, -41.1711);
+  cubesmotritel_021.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_021.setRotation(-1.5708, 7.854, -0.0);
+
+  const cubesmotritel_022Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_022 = new THREE.Mesh(
+    cubesmotritel_022Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_022.position.set(109.7146, 16.6675, -41.1711);
+  cubesmotritel_022.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_022.setRotation(0.0, 7.854, 0.0);
+
+  const cubesmotritel_023Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_023 = new THREE.Mesh(
+    cubesmotritel_023Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_023.position.set(110.4717, 16.6675, -41.9011);
+  cubesmotritel_023.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_023.setRotation(0.0, 6.2832, 0.0);
+
+  const cubesmotritel_024Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_024 = new THREE.Mesh(
+    cubesmotritel_024Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_024.position.set(111.196, 16.6675, -41.1664);
+  cubesmotritel_024.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_024.setRotation(0.0, 4.7124, 0.0);
+
+  const cubesmotritel_025Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_025 = new THREE.Mesh(
+    cubesmotritel_025Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_025.position.set(110.4389, 16.6675, -40.4363);
+  cubesmotritel_025.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_025.setRotation(0.0, 3.1416, 0.0);
+
+  const cubesmotritel_026Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_026 = new THREE.Mesh(
+    cubesmotritel_026Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_026.position.set(110.4528, 14.5842, -41.1711);
+  cubesmotritel_026.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_026.setRotation(-1.5708, 7.854, -0.0);
+
+  const cubesmotritel_027Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_027 = new THREE.Mesh(
+    cubesmotritel_027Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_027.position.set(110.4717, 15.3204, -41.9011);
+  cubesmotritel_027.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_027.setRotation(0.0, 6.2832, 0.0);
+
+  const cubesmotritel_028Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_028 = new THREE.Mesh(
+    cubesmotritel_028Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_028.position.set(109.7146, 15.3204, -41.1711);
+  cubesmotritel_028.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_028.setRotation(0.0, 7.854, 0.0);
+
+  const cubesmotritel_029Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_029 = new THREE.Mesh(
+    cubesmotritel_029Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_029.position.set(111.196, 15.3204, -41.1664);
+  cubesmotritel_029.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_029.setRotation(0.0, 4.7124, 0.0);
+
+  const cubesmotritel_030Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_030 = new THREE.Mesh(
+    cubesmotritel_030Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_030.position.set(46.9089, 75.239, -40.4363);
+  cubesmotritel_030.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_030.setRotation(0.0, 3.1416, 0.0);
+  const cubesmotritel_031Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_031 = new THREE.Mesh(
+    cubesmotritel_031Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_031.position.set(46.9227, 77.1822, -41.1711);
+  cubesmotritel_031.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_031.setRotation(-1.5708, 7.854, -0.0);
+
+  const cubesmotritel_032Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_032 = new THREE.Mesh(
+    cubesmotritel_032Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_032.position.set(46.1846, 76.586, -41.1711);
+  cubesmotritel_032.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_032.setRotation(0.0, 7.854, 0.0);
+
+  const cubesmotritel_033Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_033 = new THREE.Mesh(
+    cubesmotritel_033Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_033.position.set(46.9417, 76.586, -41.9011);
+  cubesmotritel_033.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_033.setRotation(0.0, 6.2832, 0.0);
+
+  const cubesmotritel_034Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_034 = new THREE.Mesh(
+    cubesmotritel_034Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_034.position.set(47.666, 76.586, -41.1664);
+  cubesmotritel_034.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_034.setRotation(0.0, 4.7124, 0.0);
+
+  const cubesmotritel_035Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_035 = new THREE.Mesh(
+    cubesmotritel_035Geometry,
+    GlassMaterial,
+  );
+  cubesmotritel_035.position.set(46.9089, 76.586, -40.4363);
+  cubesmotritel_035.scale.set(0.7995, 0.4981, 0.0694);
+  cubesmotritel_035.setRotation(0.0, 3.1416, 0.0);
+
+  const cubesmotritel_036Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_036 = new THREE.Mesh(
+    cubesmotritel_036Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_036.position.set(46.9227, 74.5027, -41.1711);
+  cubesmotritel_036.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_036.setRotation(-1.5708, 7.854, -0.0);
+
+  const cubesmotritel_037Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_037 = new THREE.Mesh(
+    cubesmotritel_037Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_037.position.set(46.9417, 75.239, -41.9011);
+  cubesmotritel_037.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_037.setRotation(0.0, 6.2832, 0.0);
+
+  const cubesmotritel_038Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_038 = new THREE.Mesh(
+    cubesmotritel_038Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_038.position.set(46.1846, 75.239, -41.1711);
+  cubesmotritel_038.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_038.setRotation(0.0, 7.854, 0.0);
+
+  const cubesmotritel_039Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubesmotritel_039 = new THREE.Mesh(
+    cubesmotritel_039Geometry,
+    MetalMaterial,
+  );
+  cubesmotritel_039.position.set(47.666, 75.239, -41.1664);
+  cubesmotritel_039.scale.set(0.7995, 0.7995, 0.0694);
+  cubesmotritel_039.setRotation(0.0, 4.7124, 0.0);
+
+  const cubelestnica_004Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnica_004Group = new THREE.Group();
+  for (let i = 0; i < 130; i++) {
+    const cubelestnica_004 = new THREE.Mesh(
+      cubelestnica_004Geometry,
+      MetalMaterial,
+    );
+    cubelestnica_004.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica_004.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnica_004Group.add(cubelestnica_004);
+  }
+  cubelestnica_004Group.setRotation(0.0, 3.1416, 0.0);
+  cubelestnica_004Group.position.set(109.1031, 14.77, -38.7495);
+  const cubenapolnik_008Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_008 = new THREE.Mesh(
+    cubenapolnik_008Geometry,
+    MetalMaterial,
+  );
+  cubenapolnik_008.position.set(110.174, 14.4269, -38.7436);
+  cubenapolnik_008.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_008.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubeporuchen_028Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_028 = new THREE.Mesh(
+    cubeporuchen_028Geometry,
+    MetalMaterial,
+  );
+  cubeporuchen_028.scale.set(42.2406, 0.9024, 0.1501);
+  const cubeporuchen_028MZ = cubeporuchen_028.clone();
+  cubeporuchen_028.position.set(0, 0, -39.8079);
+  cubeporuchen_028MZ.position.set(0, 0, -37.6911);
+  cubeporuchen_028.setRotation(0.0, 3.1416, 0.7854);
+  cubeporuchen_028MZ.setRotation(0.0, -3.1416, 0.7854);
+  const cubeporuchen_028MirroredZ = new THREE.Group();
+  cubeporuchen_028MirroredZ.add(cubeporuchen_028, cubeporuchen_028MZ);
+  cubeporuchen_028MirroredZ.position.set(79.2887, 44.9262, 0);
+  const cubeporuchen_029Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_029 = new THREE.Mesh(
+    cubeporuchen_029Geometry,
+    MetalMaterial,
+  );
+  cubeporuchen_029.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_029MZ = cubeporuchen_029.clone();
+  cubeporuchen_029.position.set(0, 0, -39.8079);
+  cubeporuchen_029MZ.position.set(0, 0, -37.6911);
+  cubeporuchen_029.setRotation(0.0, 3.1416, 0.0);
+  cubeporuchen_029MZ.setRotation(0.0, -3.1416, 0.0);
+  const cubeporuchen_029MirroredZ = new THREE.Group();
+  cubeporuchen_029MirroredZ.add(cubeporuchen_029, cubeporuchen_029MZ);
+  cubeporuchen_029MirroredZ.position.set(110.174, 15.0653, 0);
+  const cylinderporuchen_030Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_030 = new THREE.Mesh(
+    cylinderporuchen_030Geometry,
+    MetalMaterial,
+  );
+  cylinderporuchen_030.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_030MZ = cylinderporuchen_030.clone();
+  cylinderporuchen_030.position.set(0, 0, -39.8071);
+  cylinderporuchen_030MZ.position.set(0, 0, -37.6919);
+  cylinderporuchen_030.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_030MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_030MirroredZ = new THREE.Group();
+  cylinderporuchen_030MirroredZ.add(
+    cylinderporuchen_030,
+    cylinderporuchen_030MZ,
+  );
+  cylinderporuchen_030MirroredZ.position.set(109.1031, 15.2191, 0);
+  const cylinderporuchen_031Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_031 = new THREE.Mesh(
+    cylinderporuchen_031Geometry,
+    MetalMaterial,
+  );
+  cylinderporuchen_031.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_031MZ = cylinderporuchen_031.clone();
+  cylinderporuchen_031.position.set(0, 0, -39.8071);
+  cylinderporuchen_031MZ.position.set(0, 0, -37.6919);
+  cylinderporuchen_031.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_031MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_031MirroredZ = new THREE.Group();
+  cylinderporuchen_031MirroredZ.add(
+    cylinderporuchen_031,
+    cylinderporuchen_031MZ,
+  );
+  cylinderporuchen_031MirroredZ.position.set(49.4927, 74.9621, 0);
+  const cylinderporuchen_032Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_032 = new THREE.Mesh(
+    cylinderporuchen_032Geometry,
+    MetalMaterial,
+  );
+  cylinderporuchen_032.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_032MZ = cylinderporuchen_032.clone();
+  cylinderporuchen_032.position.set(0, 0, -39.8071);
+  cylinderporuchen_032MZ.position.set(0, 0, -37.6919);
+  cylinderporuchen_032.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_032MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_032MirroredZ = new THREE.Group();
+  cylinderporuchen_032MirroredZ.add(
+    cylinderporuchen_032,
+    cylinderporuchen_032MZ,
+  );
+  cylinderporuchen_032MirroredZ.position.set(111.1998, 14.9315, 0);
+  const cubeporuchen_033Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_033 = new THREE.Mesh(
+    cubeporuchen_033Geometry,
+    MetalMaterial,
+  );
+  cubeporuchen_033.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_033MZ = cubeporuchen_033.clone();
+  cubeporuchen_033.position.set(0, 0, -39.8079);
+  cubeporuchen_033MZ.position.set(0, 0, -37.6911);
+  cubeporuchen_033.setRotation(0.0, 3.1416, -3.1416);
+  cubeporuchen_033MZ.setRotation(0.0, -3.1416, -3.1416);
+  const cubeporuchen_033MirroredZ = new THREE.Group();
+  cubeporuchen_033MirroredZ.add(cubeporuchen_033, cubeporuchen_033MZ);
+  cubeporuchen_033MirroredZ.position.set(48.0437, 74.9617, 0);
+  const cylinderporuchen_034Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_034 = new THREE.Mesh(
+    cylinderporuchen_034Geometry,
+    MetalMaterial,
+  );
+  cylinderporuchen_034.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_034MZ = cylinderporuchen_034.clone();
+  cylinderporuchen_034.position.set(0, 0, -39.8071);
+  cylinderporuchen_034MZ.position.set(0, 0, -37.6919);
+  cylinderporuchen_034.setRotation(1.5708, 3.1416, -3.1416);
+  cylinderporuchen_034MZ.setRotation(-1.5708, -3.1416, -3.1416);
+  const cylinderporuchen_034MirroredZ = new THREE.Group();
+  cylinderporuchen_034MirroredZ.add(
+    cylinderporuchen_034,
+    cylinderporuchen_034MZ,
+  );
+  cylinderporuchen_034MirroredZ.position.set(47.0178, 74.8895, 0);
+  const cubenapolnik_009Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_009 = new THREE.Mesh(
+    cubenapolnik_009Geometry,
+    MetalMaterial,
+  );
+  cubenapolnik_009.position.set(48.1409, 74.2756, -38.7436);
+  cubenapolnik_009.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_009.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubelestnica_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnica_001Group = new THREE.Group();
+  for (let i = 0; i < 130; i++) {
+    const cubelestnica_001 = new THREE.Mesh(
+      cubelestnica_001Geometry,
+      Metal_001Material,
+    );
+    cubelestnica_001.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica_001.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnica_001Group.add(cubelestnica_001);
+  }
+  cubelestnica_001Group.setRotation(0.0, 3.1416, 0.0);
+  cubelestnica_001Group.position.set(109.1031, 14.77, -35.9955);
+  const cubenapolnik_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_002 = new THREE.Mesh(
+    cubenapolnik_002Geometry,
+    Metal_001Material,
+  );
+  cubenapolnik_002.position.set(110.174, 14.4269, -35.9896);
+  cubenapolnik_002.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_002.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubeporuchen_003Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_003 = new THREE.Mesh(
+    cubeporuchen_003Geometry,
+    Metal_001Material,
+  );
+  cubeporuchen_003.scale.set(42.2406, 0.9024, 0.1501);
+  const cubeporuchen_003MZ = cubeporuchen_003.clone();
+  cubeporuchen_003.position.set(0, 0, -37.0539);
+  cubeporuchen_003MZ.position.set(0, 0, -34.9371);
+  cubeporuchen_003.setRotation(0.0, 3.1416, 0.7854);
+  cubeporuchen_003MZ.setRotation(0.0, -3.1416, 0.7854);
+  const cubeporuchen_003MirroredZ = new THREE.Group();
+  cubeporuchen_003MirroredZ.add(cubeporuchen_003, cubeporuchen_003MZ);
+  cubeporuchen_003MirroredZ.position.set(79.2887, 44.9262, 0);
+  const cubeporuchen_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_002 = new THREE.Mesh(
+    cubeporuchen_002Geometry,
+    Metal_001Material,
+  );
+  cubeporuchen_002.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_002MZ = cubeporuchen_002.clone();
+  cubeporuchen_002.position.set(0, 0, -37.0539);
+  cubeporuchen_002MZ.position.set(0, 0, -34.9371);
+  cubeporuchen_002.setRotation(0.0, 3.1416, 0.0);
+  cubeporuchen_002MZ.setRotation(0.0, -3.1416, 0.0);
+  const cubeporuchen_002MirroredZ = new THREE.Group();
+  cubeporuchen_002MirroredZ.add(cubeporuchen_002, cubeporuchen_002MZ);
+  cubeporuchen_002MirroredZ.position.set(110.174, 15.0653, 0);
+  const cylinderporuchen_015Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_015 = new THREE.Mesh(
+    cylinderporuchen_015Geometry,
+    Metal_001Material,
+  );
+  cylinderporuchen_015.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_015MZ = cylinderporuchen_015.clone();
+  cylinderporuchen_015.position.set(0, 0, -37.0531);
+  cylinderporuchen_015MZ.position.set(0, 0, -34.9379);
+  cylinderporuchen_015.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_015MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_015MirroredZ = new THREE.Group();
+  cylinderporuchen_015MirroredZ.add(
+    cylinderporuchen_015,
+    cylinderporuchen_015MZ,
+  );
+  cylinderporuchen_015MirroredZ.position.set(109.1031, 15.2191, 0);
+  const cylinderporuchen_014Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_014 = new THREE.Mesh(
+    cylinderporuchen_014Geometry,
+    Metal_001Material,
+  );
+  cylinderporuchen_014.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_014MZ = cylinderporuchen_014.clone();
+  cylinderporuchen_014.position.set(0, 0, -37.0531);
+  cylinderporuchen_014MZ.position.set(0, 0, -34.9379);
+  cylinderporuchen_014.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_014MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_014MirroredZ = new THREE.Group();
+  cylinderporuchen_014MirroredZ.add(
+    cylinderporuchen_014,
+    cylinderporuchen_014MZ,
+  );
+  cylinderporuchen_014MirroredZ.position.set(49.4927, 74.9621, 0);
+  const cylinderporuchen_013Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_013 = new THREE.Mesh(
+    cylinderporuchen_013Geometry,
+    Metal_001Material,
+  );
+  cylinderporuchen_013.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_013MZ = cylinderporuchen_013.clone();
+  cylinderporuchen_013.position.set(0, 0, -37.0531);
+  cylinderporuchen_013MZ.position.set(0, 0, -34.9379);
+  cylinderporuchen_013.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_013MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_013MirroredZ = new THREE.Group();
+  cylinderporuchen_013MirroredZ.add(
+    cylinderporuchen_013,
+    cylinderporuchen_013MZ,
+  );
+  cylinderporuchen_013MirroredZ.position.set(111.1998, 14.9315, 0);
+  const cubeporuchen_010Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_010 = new THREE.Mesh(
+    cubeporuchen_010Geometry,
+    Metal_001Material,
+  );
+  cubeporuchen_010.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_010MZ = cubeporuchen_010.clone();
+  cubeporuchen_010.position.set(0, 0, -37.0539);
+  cubeporuchen_010MZ.position.set(0, 0, -34.9371);
+  cubeporuchen_010.setRotation(0.0, 3.1416, -3.1416);
+  cubeporuchen_010MZ.setRotation(0.0, -3.1416, -3.1416);
+  const cubeporuchen_010MirroredZ = new THREE.Group();
+  cubeporuchen_010MirroredZ.add(cubeporuchen_010, cubeporuchen_010MZ);
+  cubeporuchen_010MirroredZ.position.set(48.0437, 74.9617, 0);
+  const cylinderporuchen_001Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_001 = new THREE.Mesh(
+    cylinderporuchen_001Geometry,
+    Metal_001Material,
+  );
+  cylinderporuchen_001.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_001MZ = cylinderporuchen_001.clone();
+  cylinderporuchen_001.position.set(0, 0, -37.0531);
+  cylinderporuchen_001MZ.position.set(0, 0, -34.9379);
+  cylinderporuchen_001.setRotation(1.5708, 3.1416, -3.1416);
+  cylinderporuchen_001MZ.setRotation(-1.5708, -3.1416, -3.1416);
+  const cylinderporuchen_001MirroredZ = new THREE.Group();
+  cylinderporuchen_001MirroredZ.add(
+    cylinderporuchen_001,
+    cylinderporuchen_001MZ,
+  );
+  cylinderporuchen_001MirroredZ.position.set(47.0178, 74.8895, 0);
+  const cubenapolnik_007Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_007 = new THREE.Mesh(
+    cubenapolnik_007Geometry,
+    Metal_001Material,
+  );
+  cubenapolnik_007.position.set(48.1409, 74.2756, -35.9896);
+  cubenapolnik_007.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_007.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubelestnica_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnica_002Group = new THREE.Group();
+  for (let i = 0; i < 130; i++) {
+    const cubelestnica_002 = new THREE.Mesh(
+      cubelestnica_002Geometry,
+      Metal_002Material,
+    );
+    cubelestnica_002.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica_002.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnica_002Group.add(cubelestnica_002);
+  }
+  cubelestnica_002Group.setRotation(0.0, 3.1416, 0.0);
+  cubelestnica_002Group.position.set(109.1031, 14.77, -43.5771);
+  const cubenapolnik_004Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_004 = new THREE.Mesh(
+    cubenapolnik_004Geometry,
+    Metal_002Material,
+  );
+  cubenapolnik_004.position.set(110.174, 14.4269, -43.5712);
+  cubenapolnik_004.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_004.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubeporuchen_006Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_006 = new THREE.Mesh(
+    cubeporuchen_006Geometry,
+    Metal_002Material,
+  );
+  cubeporuchen_006.scale.set(42.2406, 0.9024, 0.1501);
+  const cubeporuchen_006MZ = cubeporuchen_006.clone();
+  cubeporuchen_006.position.set(0, 0, -44.6355);
+  cubeporuchen_006MZ.position.set(0, 0, -42.5187);
+  cubeporuchen_006.setRotation(0.0, 3.1416, 0.7854);
+  cubeporuchen_006MZ.setRotation(0.0, -3.1416, 0.7854);
+  const cubeporuchen_006MirroredZ = new THREE.Group();
+  cubeporuchen_006MirroredZ.add(cubeporuchen_006, cubeporuchen_006MZ);
+  cubeporuchen_006MirroredZ.position.set(79.2887, 44.9262, 0);
+  const cubeporuchen_011Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_011 = new THREE.Mesh(
+    cubeporuchen_011Geometry,
+    Metal_002Material,
+  );
+  cubeporuchen_011.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_011MZ = cubeporuchen_011.clone();
+  cubeporuchen_011.position.set(0, 0, -44.6355);
+  cubeporuchen_011MZ.position.set(0, 0, -42.5187);
+  cubeporuchen_011.setRotation(0.0, 3.1416, 0.0);
+  cubeporuchen_011MZ.setRotation(0.0, -3.1416, 0.0);
+  const cubeporuchen_011MirroredZ = new THREE.Group();
+  cubeporuchen_011MirroredZ.add(cubeporuchen_011, cubeporuchen_011MZ);
+  cubeporuchen_011MirroredZ.position.set(110.174, 15.0653, 0);
+  const cylinderporuchen_008Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_008 = new THREE.Mesh(
+    cylinderporuchen_008Geometry,
+    Metal_002Material,
+  );
+  cylinderporuchen_008.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_008MZ = cylinderporuchen_008.clone();
+  cylinderporuchen_008.position.set(0, 0, -44.6347);
+  cylinderporuchen_008MZ.position.set(0, 0, -42.5195);
+  cylinderporuchen_008.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_008MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_008MirroredZ = new THREE.Group();
+  cylinderporuchen_008MirroredZ.add(
+    cylinderporuchen_008,
+    cylinderporuchen_008MZ,
+  );
+  cylinderporuchen_008MirroredZ.position.set(109.1031, 15.2191, 0);
+  const cylinderporuchen_007Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_007 = new THREE.Mesh(
+    cylinderporuchen_007Geometry,
+    Metal_002Material,
+  );
+  cylinderporuchen_007.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_007MZ = cylinderporuchen_007.clone();
+  cylinderporuchen_007.position.set(0, 0, -44.6347);
+  cylinderporuchen_007MZ.position.set(0, 0, -42.5195);
+  cylinderporuchen_007.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_007MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_007MirroredZ = new THREE.Group();
+  cylinderporuchen_007MirroredZ.add(
+    cylinderporuchen_007,
+    cylinderporuchen_007MZ,
+  );
+  cylinderporuchen_007MirroredZ.position.set(49.4927, 74.9621, 0);
+  const cylinderporuchen_016Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_016 = new THREE.Mesh(
+    cylinderporuchen_016Geometry,
+    Metal_002Material,
+  );
+  cylinderporuchen_016.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_016MZ = cylinderporuchen_016.clone();
+  cylinderporuchen_016.position.set(0, 0, -44.6347);
+  cylinderporuchen_016MZ.position.set(0, 0, -42.5195);
+  cylinderporuchen_016.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_016MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_016MirroredZ = new THREE.Group();
+  cylinderporuchen_016MirroredZ.add(
+    cylinderporuchen_016,
+    cylinderporuchen_016MZ,
+  );
+  cylinderporuchen_016MirroredZ.position.set(111.1998, 14.9315, 0);
+  const cubeporuchen_004Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_004 = new THREE.Mesh(
+    cubeporuchen_004Geometry,
+    Metal_002Material,
+  );
+  cubeporuchen_004.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_004MZ = cubeporuchen_004.clone();
+  cubeporuchen_004.position.set(0, 0, -44.6355);
+  cubeporuchen_004MZ.position.set(0, 0, -42.5187);
+  cubeporuchen_004.setRotation(0.0, 3.1416, -3.1416);
+  cubeporuchen_004MZ.setRotation(0.0, -3.1416, -3.1416);
+  const cubeporuchen_004MirroredZ = new THREE.Group();
+  cubeporuchen_004MirroredZ.add(cubeporuchen_004, cubeporuchen_004MZ);
+  cubeporuchen_004MirroredZ.position.set(48.0437, 74.9617, 0);
+  const cylinderporuchen_005Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_005 = new THREE.Mesh(
+    cylinderporuchen_005Geometry,
+    Metal_002Material,
+  );
+  cylinderporuchen_005.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_005MZ = cylinderporuchen_005.clone();
+  cylinderporuchen_005.position.set(0, 0, -44.6347);
+  cylinderporuchen_005MZ.position.set(0, 0, -42.5195);
+  cylinderporuchen_005.setRotation(1.5708, 3.1416, -3.1416);
+  cylinderporuchen_005MZ.setRotation(-1.5708, -3.1416, -3.1416);
+  const cylinderporuchen_005MirroredZ = new THREE.Group();
+  cylinderporuchen_005MirroredZ.add(
+    cylinderporuchen_005,
+    cylinderporuchen_005MZ,
+  );
+  cylinderporuchen_005MirroredZ.position.set(47.0178, 74.8895, 0);
+  const cubenapolnik_003Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_003 = new THREE.Mesh(
+    cubenapolnik_003Geometry,
+    Metal_002Material,
+  );
+  cubenapolnik_003.position.set(48.1409, 74.2756, -43.5712);
+  cubenapolnik_003.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_003.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubelestnica_003Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubelestnica_003Group = new THREE.Group();
+  for (let i = 0; i < 130; i++) {
+    const cubelestnica_003 = new THREE.Mesh(
+      cubelestnica_003Geometry,
+      Metal_003Material,
+    );
+    cubelestnica_003.scale.set(0.2302, 0.2302, 1.0);
+    cubelestnica_003.position.set(0.4605 * i, 0.4605 * i, 0);
+    cubelestnica_003Group.add(cubelestnica_003);
+  }
+  cubelestnica_003Group.setRotation(0.0, 3.1416, 0.0);
+  cubelestnica_003Group.position.set(109.1031, 14.77, -46.46);
+  const cubenapolnik_006Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_006 = new THREE.Mesh(
+    cubenapolnik_006Geometry,
+    Metal_003Material,
+  );
+  cubenapolnik_006.position.set(110.174, 14.4269, -46.4541);
+  cubenapolnik_006.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_006.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubeporuchen_009Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_009 = new THREE.Mesh(
+    cubeporuchen_009Geometry,
+    Metal_003Material,
+  );
+  cubeporuchen_009.scale.set(42.2406, 0.9024, 0.1501);
+  const cubeporuchen_009MZ = cubeporuchen_009.clone();
+  cubeporuchen_009.position.set(0, 0, -47.5184);
+  cubeporuchen_009MZ.position.set(0, 0, -45.4016);
+  cubeporuchen_009.setRotation(0.0, 3.1416, 0.7854);
+  cubeporuchen_009MZ.setRotation(0.0, -3.1416, 0.7854);
+  const cubeporuchen_009MirroredZ = new THREE.Group();
+  cubeporuchen_009MirroredZ.add(cubeporuchen_009, cubeporuchen_009MZ);
+  cubeporuchen_009MirroredZ.position.set(79.2887, 44.9262, 0);
+  const cubeporuchen_008Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_008 = new THREE.Mesh(
+    cubeporuchen_008Geometry,
+    Metal_003Material,
+  );
+  cubeporuchen_008.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_008MZ = cubeporuchen_008.clone();
+  cubeporuchen_008.position.set(0, 0, -47.5184);
+  cubeporuchen_008MZ.position.set(0, 0, -45.4016);
+  cubeporuchen_008.setRotation(0.0, 3.1416, 0.0);
+  cubeporuchen_008MZ.setRotation(0.0, -3.1416, 0.0);
+  const cubeporuchen_008MirroredZ = new THREE.Group();
+  cubeporuchen_008MirroredZ.add(cubeporuchen_008, cubeporuchen_008MZ);
+  cubeporuchen_008MirroredZ.position.set(110.174, 15.0653, 0);
+  const cylinderporuchen_012Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_012 = new THREE.Mesh(
+    cylinderporuchen_012Geometry,
+    Metal_003Material,
+  );
+  cylinderporuchen_012.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_012MZ = cylinderporuchen_012.clone();
+  cylinderporuchen_012.position.set(0, 0, -47.5176);
+  cylinderporuchen_012MZ.position.set(0, 0, -45.4024);
+  cylinderporuchen_012.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_012MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_012MirroredZ = new THREE.Group();
+  cylinderporuchen_012MirroredZ.add(
+    cylinderporuchen_012,
+    cylinderporuchen_012MZ,
+  );
+  cylinderporuchen_012MirroredZ.position.set(109.1031, 15.2191, 0);
+  const cylinderporuchen_011Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_011 = new THREE.Mesh(
+    cylinderporuchen_011Geometry,
+    Metal_003Material,
+  );
+  cylinderporuchen_011.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_011MZ = cylinderporuchen_011.clone();
+  cylinderporuchen_011.position.set(0, 0, -47.5176);
+  cylinderporuchen_011MZ.position.set(0, 0, -45.4024);
+  cylinderporuchen_011.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_011MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_011MirroredZ = new THREE.Group();
+  cylinderporuchen_011MirroredZ.add(
+    cylinderporuchen_011,
+    cylinderporuchen_011MZ,
+  );
+  cylinderporuchen_011MirroredZ.position.set(49.4927, 74.9621, 0);
+  const cylinderporuchen_010Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_010 = new THREE.Mesh(
+    cylinderporuchen_010Geometry,
+    Metal_003Material,
+  );
+  cylinderporuchen_010.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_010MZ = cylinderporuchen_010.clone();
+  cylinderporuchen_010.position.set(0, 0, -47.5176);
+  cylinderporuchen_010MZ.position.set(0, 0, -45.4024);
+  cylinderporuchen_010.setRotation(1.5708, 3.1416, 0.0);
+  cylinderporuchen_010MZ.setRotation(-1.5708, -3.1416, 0.0);
+  const cylinderporuchen_010MirroredZ = new THREE.Group();
+  cylinderporuchen_010MirroredZ.add(
+    cylinderporuchen_010,
+    cylinderporuchen_010MZ,
+  );
+  cylinderporuchen_010MirroredZ.position.set(111.1998, 14.9315, 0);
+  const cubeporuchen_007Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeporuchen_007 = new THREE.Mesh(
+    cubeporuchen_007Geometry,
+    Metal_003Material,
+  );
+  cubeporuchen_007.scale.set(1.0888, 0.8356, 0.1501);
+  const cubeporuchen_007MZ = cubeporuchen_007.clone();
+  cubeporuchen_007.position.set(0, 0, -47.5184);
+  cubeporuchen_007MZ.position.set(0, 0, -45.4016);
+  cubeporuchen_007.setRotation(0.0, 3.1416, -3.1416);
+  cubeporuchen_007MZ.setRotation(0.0, -3.1416, -3.1416);
+  const cubeporuchen_007MirroredZ = new THREE.Group();
+  cubeporuchen_007MirroredZ.add(cubeporuchen_007, cubeporuchen_007MZ);
+  cubeporuchen_007MirroredZ.position.set(48.0437, 74.9617, 0);
+  const cylinderporuchen_009Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinderporuchen_009 = new THREE.Mesh(
+    cylinderporuchen_009Geometry,
+    Metal_003Material,
+  );
+  cylinderporuchen_009.scale.set(1.0, 0.1516, 1.0);
+  const cylinderporuchen_009MZ = cylinderporuchen_009.clone();
+  cylinderporuchen_009.position.set(0, 0, -47.5176);
+  cylinderporuchen_009MZ.position.set(0, 0, -45.4024);
+  cylinderporuchen_009.setRotation(1.5708, 3.1416, -3.1416);
+  cylinderporuchen_009MZ.setRotation(-1.5708, -3.1416, -3.1416);
+  const cylinderporuchen_009MirroredZ = new THREE.Group();
+  cylinderporuchen_009MirroredZ.add(
+    cylinderporuchen_009,
+    cylinderporuchen_009MZ,
+  );
+  cylinderporuchen_009MirroredZ.position.set(47.0178, 74.8895, 0);
+  const cubenapolnik_005Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenapolnik_005 = new THREE.Mesh(
+    cubenapolnik_005Geometry,
+    Metal_003Material,
+  );
+  cubenapolnik_005.position.set(48.1409, 74.2756, -46.4541);
+  cubenapolnik_005.scale.set(1.3957, 0.9468, 0.1099);
+  cubenapolnik_005.setRotation(1.5708, 3.1416, 0.0);
+
+  const cubeplatformaGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma = new THREE.Mesh(
+    cubeplatformaGeometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma.position.set(0.0, -1.8366, -0.0);
+  cubeplatforma.scale.set(50.7068, 2.6625, 15.7104);
+
+  const cylinderkolonnaGroup = new THREE.Group();
+  for (let i = 0; i < 12; i++) {
+    const cylinderkolonna = createKolonna();
+    cylinderkolonna.scale.set(1, 1, 1);
+
+    const cylinderkolonnaMZ = cylinderkolonna.clone();
+    cylinderkolonna.position.set(0, 0, -7.1816);
+    cylinderkolonnaMZ.position.set(0, 0, 7.1816);
+    cylinderkolonna.setRotation(0.0, 0.0, -0.0);
+    cylinderkolonnaMZ.setRotation(0.0, PI, -0.0);
+    const cylinderkolonnaMirroredZ = new THREE.Group();
+    cylinderkolonnaMirroredZ.add(cylinderkolonna, cylinderkolonnaMZ);
+    cylinderkolonnaMirroredZ.position.set(5.3716 * i, 0, 0);
+
+    cylinderkolonnaGroup.add(cylinderkolonnaMirroredZ);
+  }
+  cylinderkolonnaGroup.scale.set(1, 1, 1);
+  cylinderkolonnaGroup.position.set(-29.3436, 3.1864, 0);
+
+  const cubezadnyayactenaGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubezadnyayactena = new THREE.Mesh(
+    cubezadnyayactenaGeometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubezadnyayactena.position.set(-41.1399, 5.7355, -0.0);
+  cubezadnyayactena.scale.set(9.4309, 6.6795, 13.2992);
+
+  const cubezadnyayactena_005Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubezadnyayactena_005 = new THREE.Mesh(
+    cubezadnyayactena_005Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubezadnyayactena_005.position.set(-50.9049, 5.7355, -0.0);
+  cubezadnyayactena_005.scale.set(1.3866, 13.2495, 26.3803);
+
+  const cubeplatforma_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_001 = new THREE.Mesh(
+    cubeplatforma_001Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_001.position.set(81.3975, 4.9485, -0.0);
+  cubeplatforma_001.scale.set(18.8583, 9.1838, 10.2647);
+
+  const cubeplatforma_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_002 = new THREE.Mesh(
+    cubeplatforma_002Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_002.position.set(108.7083, 4.9485, -9.36);
+  cubeplatforma_002.scale.set(18.8583, 9.1838, 10.2647);
+  cubeplatforma_002.setRotation(0.0, 0.6632, 0.0);
+
+  const cubeplatforma_003Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_003 = new THREE.Mesh(
+    cubeplatforma_003Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_003.position.set(119.9306, 4.9485, -31.787);
+  cubeplatforma_003.scale.set(18.8583, 9.1838, 10.2647);
+  cubeplatforma_003.setRotation(0.0, 1.5708, 0.0);
+
+  const cubeplatforma_004Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_004 = new THREE.Mesh(
+    cubeplatforma_004Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_004.position.set(119.9306, 17.1768, -54.3248);
+  cubeplatforma_004.scale.set(4.524, 20.7624, 13.0694);
+  cubeplatforma_004.setRotation(0.0, 1.5708, 0.0);
+
+  const cubeplatforma_005Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_005 = new THREE.Mesh(
+    cubeplatforma_005Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_005.position.set(80.4003, 11.7972, -11.1806);
+  cubeplatforma_005.scale.set(18.8583, 13.6124, -1.6351);
+
+  const cubeplatforma_006Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_006 = new THREE.Mesh(
+    cubeplatforma_006Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_006.position.set(103.2543, 16.2657, -16.3414);
+  cubeplatforma_006.scale.set(8.1106, 9.1838, -1.4964);
+  cubeplatforma_006.setRotation(0.0, 0.6632, 0.0);
+
+  const cubeplatforma_007Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_007 = new THREE.Mesh(
+    cubeplatforma_007Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_007.position.set(109.0647, 16.3831, -27.0969);
+  cubeplatforma_007.scale.set(6.4677, 9.1838, -2.1092);
+  cubeplatforma_007.setRotation(0.0, 1.5708, 0.0);
+
+  const cubeplatforma_008Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubeplatforma_008 = new THREE.Mesh(
+    cubeplatforma_008Geometry,
+    NapolnayaPlitkaMaterial,
+  );
+  cubeplatforma_008.position.set(4.2305, 17.1768, -40.2182);
+  cubeplatforma_008.scale.set(9.9024, 57.1623, 45.22);
+  cubeplatforma_008.setRotation(0.0, 1.5708, 0.0);
+
+  const cubenadkolonnie_001Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenadkolonnie_001 = new THREE.Mesh(
+    cubenadkolonnie_001Geometry,
+    Material,
+  );
+  cubenadkolonnie_001.scale.set(31.6438, 0.1921, 0.7246);
+  const cubenadkolonnie_001MZ = cubenadkolonnie_001.clone();
+  cubenadkolonnie_001.position.set(0, 0, -6.2798);
+  cubenadkolonnie_001MZ.position.set(0, 0, 6.2798);
+  cubenadkolonnie_001.setRotation(0.0, 0.0, -0.0);
+  cubenadkolonnie_001MZ.setRotation(0.0, -0.0, -0.0);
+  const cubenadkolonnie_001MirroredZ = new THREE.Group();
+  cubenadkolonnie_001MirroredZ.add(cubenadkolonnie_001, cubenadkolonnie_001MZ);
+  cubenadkolonnie_001MirroredZ.position.set(0.0, 7.0259, 0);
+  const cubenadkolonnie_002Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenadkolonnie_002 = new THREE.Mesh(
+    cubenadkolonnie_002Geometry,
+    Material,
+  );
+  cubenadkolonnie_002.scale.set(31.6438, 0.1921, 0.7246);
+  const cubenadkolonnie_002MZ = cubenadkolonnie_002.clone();
+  cubenadkolonnie_002.position.set(0, 0, -6.124);
+  cubenadkolonnie_002MZ.position.set(0, 0, 6.124);
+  cubenadkolonnie_002.setRotation(-0.7258, 0.0, 0.0);
+  cubenadkolonnie_002MZ.setRotation(0.7258, -0.0, 0.0);
+  const cubenadkolonnie_002MirroredZ = new THREE.Group();
+  cubenadkolonnie_002MirroredZ.add(cubenadkolonnie_002, cubenadkolonnie_002MZ);
+  cubenadkolonnie_002MirroredZ.position.set(0.0, 6.5967, 0);
+  const cubenadkolonnie_003Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cubenadkolonnie_003 = new THREE.Mesh(
+    cubenadkolonnie_003Geometry,
+    Material,
+  );
+  cubenadkolonnie_003.scale.set(31.6438, 0.1921, 0.7246);
+  const cubenadkolonnie_003MZ = cubenadkolonnie_003.clone();
+  cubenadkolonnie_003.position.set(0, 0, -7.1651);
+  cubenadkolonnie_003MZ.position.set(0, 0, 7.1651);
+  cubenadkolonnie_003.setRotation(0.0, 0.0, -0.0);
+  cubenadkolonnie_003MZ.setRotation(0.0, -0.0, -0.0);
+  const cubenadkolonnie_003MirroredZ = new THREE.Group();
+  cubenadkolonnie_003MirroredZ.add(cubenadkolonnie_003, cubenadkolonnie_003MZ);
+  cubenadkolonnie_003MirroredZ.position.set(0.0, 6.0642, 0);
   const out = new THREE.Group();
   out.add(
-    Cube_021,
-    Cube_022,
-    Cube_023,
-    Cube_024,
-    Cube_025,
-    Cube_026,
-    Cube_027,
-    Cube_028,
-    Cube_029,
-    Cube_030,
-    Cube_DoorR_001,
-    Cube_DoorL_001,
-    Cube_037,
-    Cube_038,
-    Cube_039,
-    Cube_040,
-    Cube_041,
-    Cube_042,
-    Cube_043,
-    Cube_044,
-    Cube_051,
-    Cube_052,
-    Cube_053,
-    Cube_054,
-    Cube_055,
-    Cube_056,
-    Cube_057,
-    Cube_058,
-    Cube_059,
-    Cube_060,
-    Cube_061,
-    Cylinder_022,
-    Cylinder_023,
-    Cylinder_026,
-    Cylinder_027,
-    Cylinder_028,
-    Cylinder_029,
-    Cylinder_030,
-    Cylinder_031,
-    Cylinder_032,
-    Cylinder_033,
-    Cylinder_034,
-    Cylinder_035,
-    Cylinder_036,
-    Cylinder_037,
-    Cylinder_038,
-    Cylinder_039,
-    Cylinder_040,
-    Cylinder_041,
-    Cylinder_042,
-    Cylinder_043,
-    Cylinder_044,
-    Cylinder_045,
-    Cylinder_046,
-    Cylinder_047,
-    Cylinder_048,
-    Cylinder_049,
-    Cylinder_050,
-    Cylinder_051,
-    Cylinder_052,
-    Cylinder_053,
-    Cylinder_054,
-    Cylinder_055,
-    Cylinder_056,
-    Cylinder_057,
-    Cylinder_058,
-    Cylinder_059,
-    Cube_DoorR_002,
-    Cube_DoorL_002,
-    Cube_DoorR_003,
-    Cube_DoorL_003,
-    Cube_DoorR_004,
-    Cube_DoorL_004,
-    Cube_DoorR_005,
-    Cube_DoorL_005,
-    Cube_DoorR_006,
-    Cube_DoorL_006,
+    cubeportret,
+    cubeobramlenie,
+    cubeobramlenie_001,
+    cubeobramlenie_002,
+    cubemalayakrysha_001MirroredZ,
+    cubemalayakryshaMirroredZ,
+    cubebolshayakrysha_001MirroredZ,
+    cubebolshayakrysha_002MirroredZ,
+    cubebolshayakrysha_003MirroredZ,
+    cubebolshayakryshaMirroredZ,
+    cubesmotritel,
+    cubesmotritel_001,
+    cubesmotritel_002,
+    cubesmotritel_003,
+    cubesmotritel_004,
+    cubesmotritel_005,
+    cubesmotritel_006,
+    cubesmotritel_007,
+    cubesmotritel_008,
+    cubesmotritel_009,
+    cubesmotritel_010,
+    cubesmotritel_011,
+    cubesmotritel_012,
+    cubesmotritel_013,
+    cubesmotritel_014,
+    cubesmotritel_015,
+    cubesmotritel_016,
+    cubesmotritel_017,
+    cubesmotritel_018,
+    cubesmotritel_019,
+    cubelestnicaGroup,
+    cubenapolnik,
+    cubeporuchenMirroredZ,
+    cubeporuchen_001MirroredZ,
+    cylinderporuchen_002MirroredZ,
+    cylinderporuchen_003MirroredZ,
+    cylinderporuchen_004MirroredZ,
+    cubeporuchen_005MirroredZ,
+    cylinderporuchen_006MirroredZ,
+    cubenapolnik_001,
+    cubelestnica_005Group,
+    cubenapolnik_011,
+    cubeporuchen_014MirroredZ,
+    cubeporuchen_013MirroredZ,
+    cylinderporuchen_020MirroredZ,
+    cylinderporuchen_019MirroredZ,
+    cylinderporuchen_018MirroredZ,
+    cubeporuchen_012MirroredZ,
+    cylinderporuchen_017MirroredZ,
+    cubenapolnik_010,
+    cubelestnica_006Group,
+    cubenapolnik_013,
+    cubeporuchen_017MirroredZ,
+    cubeporuchen_016MirroredZ,
+    cylinderporuchen_024MirroredZ,
+    cylinderporuchen_023MirroredZ,
+    cylinderporuchen_022MirroredZ,
+    cubeporuchen_015MirroredZ,
+    cylinderporuchen_021MirroredZ,
+    cubenapolnik_012,
+    cubelestnica_007Group,
+    cubenapolnik_015,
+    cubeporuchen_020MirroredZ,
+    cubeporuchen_019MirroredZ,
+    cylinderporuchen_028MirroredZ,
+    cylinderporuchen_027MirroredZ,
+    cylinderporuchen_026MirroredZ,
+    cubeporuchen_018MirroredZ,
+    cylinderporuchen_025MirroredZ,
+    cubenapolnik_014,
+    cubesmotritel_020,
+    cubesmotritel_021,
+    cubesmotritel_022,
+    cubesmotritel_023,
+    cubesmotritel_024,
+    cubesmotritel_025,
+    cubesmotritel_026,
+    cubesmotritel_027,
+    cubesmotritel_028,
+    cubesmotritel_029,
+    cubesmotritel_030,
+    cubesmotritel_031,
+    cubesmotritel_032,
+    cubesmotritel_033,
+    cubesmotritel_034,
+    cubesmotritel_035,
+    cubesmotritel_036,
+    cubesmotritel_037,
+    cubesmotritel_038,
+    cubesmotritel_039,
+    cubelestnica_004Group,
+    cubenapolnik_008,
+    cubeporuchen_028MirroredZ,
+    cubeporuchen_029MirroredZ,
+    cylinderporuchen_030MirroredZ,
+    cylinderporuchen_031MirroredZ,
+    cylinderporuchen_032MirroredZ,
+    cubeporuchen_033MirroredZ,
+    cylinderporuchen_034MirroredZ,
+    cubenapolnik_009,
+    cubelestnica_001Group,
+    cubenapolnik_002,
+    cubeporuchen_003MirroredZ,
+    cubeporuchen_002MirroredZ,
+    cylinderporuchen_015MirroredZ,
+    cylinderporuchen_014MirroredZ,
+    cylinderporuchen_013MirroredZ,
+    cubeporuchen_010MirroredZ,
+    cylinderporuchen_001MirroredZ,
+    cubenapolnik_007,
+    cubelestnica_002Group,
+    cubenapolnik_004,
+    cubeporuchen_006MirroredZ,
+    cubeporuchen_011MirroredZ,
+    cylinderporuchen_008MirroredZ,
+    cylinderporuchen_007MirroredZ,
+    cylinderporuchen_016MirroredZ,
+    cubeporuchen_004MirroredZ,
+    cylinderporuchen_005MirroredZ,
+    cubenapolnik_003,
+    cubelestnica_003Group,
+    cubenapolnik_006,
+    cubeporuchen_009MirroredZ,
+    cubeporuchen_008MirroredZ,
+    cylinderporuchen_012MirroredZ,
+    cylinderporuchen_011MirroredZ,
+    cylinderporuchen_010MirroredZ,
+    cubeporuchen_007MirroredZ,
+    cylinderporuchen_009MirroredZ,
+    cubenapolnik_005,
+    cubeplatforma,
+    cylinderkolonnaGroup,
+    cubezadnyayactena,
+    cubezadnyayactena_005,
+    cubeplatforma_001,
+    cubeplatforma_002,
+    cubeplatforma_003,
+    cubeplatforma_004,
+    cubeplatforma_005,
+    cubeplatforma_006,
+    cubeplatforma_007,
+    cubeplatforma_008,
+    cubenadkolonnie_001MirroredZ,
+    cubenadkolonnie_002MirroredZ,
+    cubenadkolonnie_003MirroredZ,
   );
 
-  const doors: typeof animatables.doors = [
-    {
-      left: Cube_DoorL_001,
-      right: Cube_DoorR_001,
-      state: false,
-      transition: 0,
-    },
-    {
-      left: Cube_DoorL_002,
-      right: Cube_DoorR_002,
-      state: false,
-      transition: 0,
-    },
-    {
-      left: Cube_DoorL_003,
-      right: Cube_DoorR_003,
-      state: false,
-      transition: 0,
-    },
-  ];
+  out.traverse((obj) => {
+    obj.receiveShadow = true;
+    obj.castShadow = true;
+  });
 
-  animatables.doors = doors;
   return out;
 }
 
 function CreateScene(WC: number, HC: number) {
+  THREE.Object3D.prototype.setRotation = function (
+    x_rot: number,
+    y_rot: number,
+    z_rot: number,
+  ) {
+    this.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), x_rot);
+    this.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), z_rot);
+    this.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), y_rot);
+  };
+
   if (typeof sceneexist == 'undefined') {
     sceneexist = true;
     // объявление сцены
@@ -1395,6 +2172,11 @@ function CreateScene(WC: number, HC: number) {
       alpha: true,
       antialias: true,
     });
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.width = 1024;
+    renderer.shadowMap.height = 1024;
+    renderer.outputEncoding = THREE.sRGBEncoding;
 
     renderer.setPixelRatio(window.devicePixelRatio);
     // привяжем отрисовку к html и высоте канвы
@@ -1409,10 +2191,24 @@ function CreateScene(WC: number, HC: number) {
 
     // источники света
     scene.add(new THREE.AmbientLight(0x555555, 2));
+
     const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
     const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2);
-    directionalLight.position.set(5, -2, 4).normalize();
-    directionalLight2.position.set(-5, 2, 4).normalize();
+    directionalLight.position.set(5, 4, 4).multiplyScalar(100);
+    directionalLight2.position.set(-5, 2, 4).multiplyScalar(10);
+
+    [directionalLight, directionalLight2].forEach((light) => {
+      light.castShadow = true;
+      light.shadow.camera.left = -1000;
+      light.shadow.camera.bottom = -1000;
+      light.shadow.camera.right = 1000;
+      light.shadow.camera.top = 1000;
+      light.shadow.camera.far = 100000;
+      light.shadow.mapSize.width = 1024;
+      light.shadow.mapSize.height = 1024;
+      light.shadow.normalBias = 4;
+    });
+
     scene.add(directionalLight);
     scene.add(directionalLight2);
 

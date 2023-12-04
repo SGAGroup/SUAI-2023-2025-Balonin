@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "powershell -File ./deploy.ps1 ./src/swirling/main.ts",
+    "build": "powershell -File ./deploy.ps1",
     "lint": "eslint --ext .js,.ts,.vue,.cjs ./",
     "preview": "vite preview"
   },

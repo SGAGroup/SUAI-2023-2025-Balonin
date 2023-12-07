@@ -138,7 +138,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             lights_string += f"var {name} = new THREE.RectAreaLight({color}, {power});\n" 
         if any(obj.location):  
             lights_string += f"{name}.position.set({round(obj.location.x, 4)}, {round(obj.location.z, 4)}, {round(-obj.location.y, 4)});\n"
-        if any(obj.rotation_euler) or delta_x:
+        if any(obj.rotation_euler):
             lights_string += f"{name}.setRotation({round(obj.rotation_euler.x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
         lights.append(name)    
         return lights, lights_string
@@ -169,6 +169,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
 
         return f"{name}Group", result, x, y, z, psr
         
+    
     def get_mirrored_object(self, s, mod, obj, name, x, y, z, delta_x):
         self.report({'INFO'}, str(mod.mirror_object))
         bx, by, bz = mod.use_axis
@@ -177,7 +178,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         blx, bly, blz = False, False, False
         bex, bey, bez = False, False, False
         dx = round(mod.mirror_object.location.x*2 - lx, 4)
-        dy = round(mod.mirror_object.location.y*2 + ly, 4)
+        dy = round(mod.mirror_object.location.y*2 - ly, 4)
         dz = round(mod.mirror_object.location.z*2 - lz, 4)
         rx = round(-ex + delta_x, 4)
         ry = round(ey, 4)
@@ -205,13 +206,13 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             c_name = name + "MZ"
             result += f'var {c_name}= {name}.clone();\n'
 
-            result += f"{name}.position.set(0, 0, {round(-ly, 4)});\n"
+            result += f"{name}.position.set(0, 0, {-round(ly, 4)});\n"
             bly = True
-            result += f'{c_name}.position.set(0, 0, {dy});\n'
+            result += f'{c_name}.position.set(0, 0, {-dy});\n'
 
-            
+            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
-            result += f'{c_name}.rotation.set(0, PI, 0);\n'
+            result += f'{c_name}.setRotation({round(rx, 4)}, {round(rz, 4)}, {round(-ey, 4)});\n'
             
             result += f'var {name}MirroredZ = new THREE.Group();\n'
             result += f'{name}MirroredZ.add({name}, {c_name});\n'
@@ -225,8 +226,9 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             blz = True
             result += f'{c_name}.position.set(0, {dz}, 0);\n'
             
+            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
-            result += f'{c_name}.setRotation(0, 0, PI);\n'
+            result += f'{c_name}.setRotation({round(ex + delta_x , 4)}, {round(rz, 4)}, {round(ry, 4)});\n'
 
             result += f'var {name}MirroredY = new THREE.Group();\n'
             result += f'{name}MirroredY.add({name}, {c_name});\n'

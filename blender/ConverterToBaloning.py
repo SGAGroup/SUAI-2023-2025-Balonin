@@ -35,7 +35,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         elif "cone" in name: 
             command, delta_x = "ConeGeometry(1, 2, 32)", 0
         elif "torus" in name: 
-            command, delta_x = "TorusGeometry(1, 0.25, 12, 48)", 0
+            command, delta_x = "TorusGeometry(1, 0.25, 12, 48)", pi/2
         elif "plane" in name: 
             command, delta_x, texture_addition_parameters = "PlaneGeometry(2, 2)", pi/2, ", side: THREE.DoubleSide"
         elif "icosphere" in name: 

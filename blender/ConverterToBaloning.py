@@ -50,7 +50,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         if ob.scale.x != 1 or ob.scale.y != 1 or ob.scale.z != 1: 
             message += f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.z, 4)}, {round(ob.scale.y, 4)});\n" if not delta_x else f"{name}.scale.set({round(ob.scale.x, 4)}, {round(ob.scale.y, 4)}, {round(ob.scale.z, 4)});\n" 
         if any(ob.rotation_euler) or delta_x:
-            message += f"{name}.setRotation({round(ob.rotation_euler.x, 4)}, {round(ob.rotation_euler.z, 4)}, {round(-ob.rotation_euler.y, 4)});\n"
+            message += f"{name}.setRotation({round(ob.rotation_euler.x + delta_x, 4)}, {round(ob.rotation_euler.z, 4)}, {round(-ob.rotation_euler.y, 4)});\n"
         return message
     
     def get_material_prop(self, obj, label):

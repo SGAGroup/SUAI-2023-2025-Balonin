@@ -266,7 +266,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 psr = True
             if k >= 0 and not mir:
                 if any(obj.rotation_euler) or delta_x:
-                    result += f"{name}.setRotation({round(obj.rotation_euler.x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
+                    result += f"{name}.setRotation({round(obj.rotation_euler.x + delta_x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
                 if any(obj.location):  
                     result += f"{name}.position.set({round(obj.location.x, 4)}, {round(obj.location.z, 4)}, {round(-obj.location.y, 4)});\n"
             return name, result

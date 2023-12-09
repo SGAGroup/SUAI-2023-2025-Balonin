@@ -48,16 +48,35 @@ function get-ident-part([String]$str) {
     return ' ' * $result
 }
 
+function get-tsc-result([String]$expected_file_name) {
+    return Get-ChildItem -Path out -Recurse -Include $expected_file_name
+}
+
+# check what tsc produced file
+function is-tsc-result-exists([String]$expected_file_name) {
+    return [System.IO.File]::Exists($(get-tsc-result($input_file)))
+}
+
+$input_file = [System.IO.Path]::GetFileNameWithoutExtension($file) + ".js"
+
 Write-Output 'run tsc...'
 
 Remove-Item -Recurse -Force 'out'
+
 npx tsc --outDir out $file > $null
+if (-not (is-tsc-result-exists($input_file))) {
+    Write-Output 'tsc failed... rerun with output'
+    npx tsc --pretty --outDir out $file
+    if (-not (is-tsc-result-exists($input_file))) {
+        Write-Output 'aborting'
+        exit 1
+    }
+}
 
 Write-Output 'start process...'
 
-$processing_file_name = [System.IO.Path]::GetFileNameWithoutExtension($file) + ".js"
-$processing_file_path = Get-ChildItem -Path out -Recurse -Include $processing_file_name
-$content = Get-Content -LiteralPath $processing_file_path
+$input_file_path = Get-ChildItem -Path out -Recurse -Include $input_file
+$content = Get-Content -Encoding utf8 -LiteralPath $input_file_path
 
 $result = ""
 $setup = ""
@@ -140,6 +159,6 @@ $result += '
 <# post process #>
 $result = $result.Replace("let ", "var ").Replace("const ", "var ")
 
-Write-Output $result | clip
+Write-Output $result | Set-Clipboard
 
 Write-Output done

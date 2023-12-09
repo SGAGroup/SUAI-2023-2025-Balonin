@@ -43,6 +43,7 @@ const X = 0,
 // balon ignore begin
 let WC, HC;
 let Station: THREE.Object3D;
+let Robot: THREE.Object3D;
 let scene: THREE.Scene = new THREE.Scene();
 let camera: THREE.Camera;
 let renderer: THREE.WebGLRenderer;
@@ -67,6 +68,11 @@ function main() {
       Station.scale.set(W, W, W);
       scene.add(Station);
 
+      Robot = createRobot();
+      Robot.position.set(X, Y, Z);
+      Robot.scale.set(W, W, W);
+      scene.add(Robot);
+
       render();
     }
   }
@@ -87,6 +93,22 @@ function render() {
 
   controls.update();
   renderer.render(scene, camera);
+}
+
+function createRobot() {
+  const cuberemoveMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.597, 0.6645, 0.7586),
+  });
+
+  const cuberemoveGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cuberemove = new THREE.Mesh(cuberemoveGeometry, cuberemoveMaterial);
+  cuberemove.position.set(-0.572, 1.8259, -0.0787);
+  cuberemove.scale.set(0.5, 1.0, 0.5);
+
+  const out = new THREE.Group();
+  out.add(cuberemove);
+
+  return out;
 }
 
 function createKolonna() {

@@ -49,7 +49,7 @@ function get-ident-part([String]$str) {
 }
 
 function get-tsc-result([String]$expected_file_name) {
-    return Get-ChildItem -LiteralPath out -Recurse -Include $expected_file_name
+    return Get-ChildItem -Path out -Recurse -Include $expected_file_name
 }
 
 # check what tsc produced file
@@ -75,7 +75,7 @@ if (-not (is-tsc-result-exists($input_file))) {
 
 Write-Output 'start process...'
 
-$input_file_path = Get-ChildItem -LiteralPath out -Recurse -Include $input_file
+$input_file_path = Get-ChildItem -Path out -Recurse -Include $input_file
 $content = Get-Content -Encoding utf8 -LiteralPath $input_file_path
 
 $result = ""

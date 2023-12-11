@@ -307,7 +307,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
     #     except:
     #         return name, f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
     
-     def get_function(self, obj, message): 
+    def get_function(self, obj, message): 
 
         light_types = ["area", "sun", "spot", "point"]
 

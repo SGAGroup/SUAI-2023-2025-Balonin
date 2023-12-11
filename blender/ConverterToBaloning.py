@@ -170,7 +170,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         return f"{name}Group", result, x, y, z, psr
         
     
-    def get_mirrored_object(self, s, mod, obj, name, x, y, z, delta_x):
+    def get_mirrored_object(self, s, mod, obj, name, x, y, z, delta_x, psr):
         self.report({'INFO'}, str(mod.mirror_object))
         bx, by, bz = mod.use_axis
         lx, ly, lz = obj.location.x, obj.location.y, obj.location.z
@@ -184,8 +184,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         ry = round(ey, 4)
         rz = round(-ez, 4)
         result=s;
-        
-        result += f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.z, 4)}, {round(obj.scale.y, 4)});\n" if not delta_x else f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.y, 4)}, {round(obj.scale.z, 4)});\n"
+        if not psr:
+            result += f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.z, 4)}, {round(obj.scale.y, 4)});\n" if not delta_x else f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.y, 4)}, {round(obj.scale.z, 4)});\n"
         if bx:
             c_name = name + "MX"
             result += f'var {c_name}= {name}.clone();\n'
@@ -196,6 +196,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             
             result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
+            result+=f'{c_name}.traverse(function (child) {"{if (child instanceof THREE.Mesh) {child.rotation.x += Math.PI;}}"});'
+            result += f'{c_name}.rotation.set(PI, PI, 0);\n'
             result += f'{c_name}.setRotation({round(ex + delta_x , 4)}, {round(rz, 4)}, {round(ry, 4)});\n'
 
             result += f'var {name}MirroredX = new THREE.Group();\n'
@@ -210,8 +212,11 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             bly = True
             result += f'{c_name}.position.set(0, 0, {-dy});\n'
 
+
             result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
+            result+=f'{c_name}.traverse(function (child) {"{if (child instanceof THREE.Mesh) {child.rotation.z += Math.PI;}}"});'
+            result += f'{c_name}.rotation.set(0, PI, PI);\n'
             result += f'{c_name}.setRotation({round(rx, 4)}, {round(rz, 4)}, {round(-ey, 4)});\n'
             
             result += f'var {name}MirroredZ = new THREE.Group();\n'
@@ -228,7 +233,9 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             
             result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
-            result += f'{c_name}.setRotation({round(ex + delta_x , 4)}, {round(rz, 4)}, {round(ry, 4)});\n'
+            result+=f'{c_name}.traverse(function (child) {"{if (child instanceof THREE.Mesh) {child.rotation.x += Math.PI;}}"});'
+            result += f'{c_name}.rotation.set(PI, PI, PI);\n'
+            result += f'{c_name}.setRotation({round(rx , 4)}, {round(ez, 4)}, {round(ry, 4)});\n'
 
             result += f'var {name}MirroredY = new THREE.Group();\n'
             result += f'{name}MirroredY.add({name}, {c_name});\n'
@@ -236,9 +243,6 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             
         if any((not bly, not blz, not blx)):
             result += f"{name}.position.set({0 if blx else round(lx, 4)},{0 if blz else round(lz, 4)},{0 if bly else round(-ly, 4)});\n"
-
-        # if any((not bly, not blz, not blx)):
-        #     result += f"{name}.rotation.set({0 if bex else round(ex + delta_x, 4)},{0 if bez else round(ez, 4)},{0 if bey else round(-ey, 4)});\n"
 
         return name, result, x, y, z
 
@@ -260,7 +264,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 if i.type == "MIRROR":
                     mir = True;
                     psr = True
-                    name, result, x, y, z = self.get_mirrored_object(result, i, obj, name, x, y, z, delta_x)
+                    name, result, x, y, z = self.get_mirrored_object(result, i, obj, name, x, y, z, delta_x, psr)
             if not psr:
                 result += f"{self.get_psr(obj, name, delta_x)}\n"
                 psr = True
@@ -308,15 +312,6 @@ class OBJECT_OT_run_script(bpy.types.Operator):
 
         return {'FINISHED'}
 
-# def np_matmul_coords(coords, matrix, space=None):
-#     M = (space @ matrix @ space.inverted()
-#          if space else matrix).transposed()
-#     ones = np.ones((coords.shape[0], 1))
-#     coords4d = np.hstack((coords, ones))
-    
-#     return np.dot(coords4d, M)[:,:-1]
-
-
 def get_mesh_dims(self):
     if self.type != 'MESH':
         return None
@@ -335,20 +330,7 @@ def get_mesh_dims(self):
             (max(y) - min(y))*self.scale.y,
             (max(z) - min(z))*self.scale.z
             )
-    # if self.type != 'MESH':
-    #     return None
-    # me = self.data
-    # coords = np.empty(3 * len(me.vertices))
-    
-    # me.vertices.foreach_get("co", coords)
 
-    # x, y, z = np_matmul_coords(coords.reshape(-1, 3), self.matrix_world).T
-
-    # return (
-    #         x.max() - x.min(),
-    #         y.max() - y.min(),
-    #         z.max() - z.min()
-    #         )
 
 bpy.types.Object.mesh_dimensions = FloatVectorProperty(
         name="Mesh Dimensions",

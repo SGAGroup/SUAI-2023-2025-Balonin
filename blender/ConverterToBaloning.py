@@ -261,9 +261,9 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                     name, result, x, y, z, psr = self.get_for_cycle(result, i, name, bykvs[k], x, y, z, psr, obj, delta_x)
                         
                 if i.type == "MIRROR":
+                    name, result, x, y, z = self.get_mirrored_object(result, i, obj, name, x, y, z, delta_x, psr)
                     mir = True;
                     psr = True
-                    name, result, x, y, z = self.get_mirrored_object(result, i, obj, name, x, y, z, delta_x, psr)
             if not psr:
                 result += f"{self.get_psr(obj, name, delta_x)}\n"
                 psr = True

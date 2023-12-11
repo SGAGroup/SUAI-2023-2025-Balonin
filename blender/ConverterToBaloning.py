@@ -169,7 +169,6 @@ class OBJECT_OT_run_script(bpy.types.Operator):
 
         return f"{name}Group", result, x, y, z, psr
         
-    
     def get_mirrored_object(self, s, mod, obj, name, x, y, z, delta_x, psr):
         self.report({'INFO'}, str(mod.mirror_object))
         bx, by, bz = mod.use_axis
@@ -276,13 +275,81 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             return name, result
         except:
             return name, f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
+
+    # def get_function_with_modifiers(self, obj, name, material_name):
+    #     psr = False
+    #     mir = False
+    #     _, _, delta_x, _ = self.get_parameters(obj)
+    #     x,y,z = obj.mesh_dimensions
+    #     bykvs = ["i","j","k","f","u","w","h"]
+    #     try:
+    #         k = -1;
+    #         result = f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
+    #         for i in obj.modifiers:
+    #             if i.type == "ARRAY":
+    #                 k+=1;
+    #                 self.report({'INFO'}, str([x,y,z]))
+    #                 name, result, x, y, z, psr = self.get_for_cycle(result, i, name, bykvs[k], x, y, z, psr, obj, delta_x)
+                        
+    #             if i.type == "MIRROR":
+    #                 mir = True;
+    #                 psr = True
+    #                 name, result, x, y, z = self.get_mirrored_object(result, i, obj, name, x, y, z, delta_x, psr)
+    #         if not psr:
+    #             result += f"{self.get_psr(obj, name, delta_x)}\n"
+    #             psr = True
+    #         if k >= 0 and not mir:
+    #             if any(obj.rotation_euler) or delta_x:
+    #                 result += f"{name}.setRotation({round(obj.rotation_euler.x + delta_x, 4)}, {round(obj.rotation_euler.z, 4)}, {round(-obj.rotation_euler.y, 4)});\n"
+    #             if any(obj.location):  
+    #                 result += f"{name}.position.set({round(obj.location.x, 4)}, {round(obj.location.z, 4)}, {round(-obj.location.y, 4)});\n"
+    #         return name, result
+    #     except:
+    #         return name, f"var {name} = new THREE.Mesh({name}Geometry, {material_name});\n"
     
+     def get_function(self, obj, message): 
+
+        light_types = ["area", "sun", "spot", "point"]
+
+        message += f"function {obj.name}() {'{'}"
+        functions= ""
+        names = []
+        materials_string = ""
+        materials = []
+        lights_string = ""
+        lights = []
+        
+        for obj in obj.children:
+            if any(light_type in obj.name.lower() for light_type in light_types):
+                lights, lights_string = self.get_light(obj, lights, lights_string)
+            elif "function" in obj.name.lower():
+                functions = self.get_function(obj, functions)
+                message += f"var {obj.name}Entity = {obj.name}();\n"
+                message += self.get_psr(obj, obj.name + "Entity", 0)
+                names.append(obj.name+'Entity')
+            else:
+                command, texture_addition_parameters, delta_x, name = self.get_parameters(obj)
+                material_name, materials, materials_string = self.add_material(obj, name, texture_addition_parameters, materials, materials_string)
+                
+                message += f"var {name}Geometry = new THREE.{command};\n"
+                name, text = self.get_mesh_with_modifiers(obj, name, material_name)
+                message +=text
+                names.append(name)
+
+        message = f"{functions}\n{lights_string}\n{materials_string}\n{message}"
+        message += f"var out = new THREE.Group();\n"
+        message += f"out.add({', '.join(names)})\n"
+        message += f"out.add({', '.join(lights)})\n" if lights else ""
+        message += f"return out \n{'}'}"
+        return message
+
     def execute(self, context):
         scene = context.scene
         cursor = scene.cursor.location
         light_types = ["area", "sun", "spot", "point"]
 
         message = ""
+        functions= ""
         names = []
         materials_string = ""
         materials = []
@@ -292,6 +359,11 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         for obj in context.selected_objects:
             if any(light_type in obj.name.lower() for light_type in light_types):
                 lights, lights_string = self.get_light(obj, lights, lights_string)
+            elif "function" in obj.name.lower():
+                functions = self.get_function(obj, functions)
+                message += f"var {obj.name}Entity = {obj.name}();\n"
+                message += self.get_psr(obj, obj.name + "Entity", 0)
+                names.append(obj.name+'Entity')
             else:
                 command, texture_addition_parameters, delta_x, name = self.get_parameters(obj)
                 material_name, materials, materials_string = self.add_material(obj, name, texture_addition_parameters, materials, materials_string)
@@ -299,10 +371,9 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 message += f"var {name}Geometry = new THREE.{command};\n"
                 name, text = self.get_mesh_with_modifiers(obj, name, material_name)
                 message +=text
-                # message += f"{self.get_psr(obj, name, delta_x)}\n"
                 names.append(name)
 
-        message = f"{lights_string}\n{materials_string}\n{message}"
+        message = f"{functions}\n{lights_string}\n{materials_string}\n{message}"
         message += f"var out = new THREE.Group();\n"
         message += f"out.add({', '.join(names)})\n"
         message += f"out.add({', '.join(lights)})\n" if lights else ""
@@ -330,7 +401,6 @@ def get_mesh_dims(self):
             (max(y) - min(y))*self.scale.y,
             (max(z) - min(z))*self.scale.z
             )
-
 
 bpy.types.Object.mesh_dimensions = FloatVectorProperty(
         name="Mesh Dimensions",

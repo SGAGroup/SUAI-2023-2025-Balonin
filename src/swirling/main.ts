@@ -29,7 +29,7 @@ tick_tick();
 export function restart(ms: number) {
   setTimeout(main, ms);
 }
-
+THREE.Object3D.prototype.applyMatrix = THREE.Object3D.prototype.applyMatrix4;
 let sceneexist: boolean | undefined = undefined;
 
 // balon setup begin

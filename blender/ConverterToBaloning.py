@@ -176,66 +176,51 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         ex, ey, ez = obj.rotation_euler.x, obj.rotation_euler.y, obj.rotation_euler.z
         blx, bly, blz = False, False, False
         bex, bey, bez = False, False, False
-        dx = round(mod.mirror_object.location.x*2 - lx, 4)
-        dy = round(mod.mirror_object.location.y*2 - ly, 4)
-        dz = round(mod.mirror_object.location.z*2 - lz, 4)
+        dx = -round(mod.mirror_object.location.x*2 - lx, 4)
+        dy = -round(mod.mirror_object.location.y*2 - ly, 4)
+        dz = -round(mod.mirror_object.location.z*2 - lz, 4)
         rx = round(-ex + delta_x, 4)
         ry = round(ey, 4)
         rz = round(-ez, 4)
         result=s;
         if not psr:
             result += f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.z, 4)}, {round(obj.scale.y, 4)});\n" if not delta_x else f"{name}.scale.set({round(obj.scale.x, 4)}, {round(obj.scale.y, 4)}, {round(obj.scale.z, 4)});\n"
+        
         if bx:
-            c_name = name + "MX"
-            result += f'var {c_name}= {name}.clone();\n'
-
-            result += f"{name}.position.set({round(lx, 4)}, 0, 0);\n"
-            blx = True
-            result += f'{c_name}.position.set({dx}, 0, 0);\n'
-            
-            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
-            result+=f'{c_name}.traverse(function (child) {"{if (child instanceof THREE.Mesh) {child.rotation.x += Math.PI;}}"});'
-            result += f'{c_name}.rotation.set(PI, PI, 0);\n'
-            result += f'{c_name}.setRotation({round(ex + delta_x , 4)}, {round(rz, 4)}, {round(ry, 4)});\n'
-
+            blx = True
+            c_name = name + "MX"
+            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
+            result += f'var {c_name}= {name}.clone();\n'
+            result += f"{name}.position.set({round(lx, 4)}, 0, 0);\n"
+            result += f"{c_name}.position.set({round(dx, 4)}, 0, 0);\n"
+            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale(-{c_name}.scale.x, {c_name}.scale.y, {c_name}.scale.z));\n'
             result += f'var {name}MirroredX = new THREE.Group();\n'
             result += f'{name}MirroredX.add({name}, {c_name});\n'
             name += "MirroredX"
-        
         if by:
-            c_name = name + "MZ"
-            result += f'var {c_name}= {name}.clone();\n'
-
-            result += f"{name}.position.set(0, 0, {-round(ly, 4)});\n"
             bly = True
-            result += f'{c_name}.position.set(0, 0, {-dy});\n'
-
-
-            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
-            result+=f'{c_name}.traverse(function (child) {"{if (child instanceof THREE.Mesh) {child.rotation.z += Math.PI;}}"});'
-            result += f'{c_name}.rotation.set(0, PI, PI);\n'
-            result += f'{c_name}.setRotation({round(rx, 4)}, {round(rz, 4)}, {round(-ey, 4)});\n'
-            
+            c_name = name + "MZ"
+            if not blx:
+                result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
+            result += f'var {c_name}= {name}.clone();\n'
+            result += f"{name}.position.set(0, 0, {-round(ly, 4)});\n"
+            result += f'{c_name}.position.set(0, 0, {-dy});\n'
+            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale({c_name}.scale.x, {c_name}.scale.y, -{c_name}.scale.z));\n'
             result += f'var {name}MirroredZ = new THREE.Group();\n'
             result += f'{name}MirroredZ.add({name}, {c_name});\n'
             name += "MirroredZ"
-
         if bz:
-            c_name = name + "MY"
-            result += f'var {c_name}= {name}.clone();\n'
-
-            result += f"{name}.position.set(0, {round(lz, 4)}, 0);\n"
             blz = True
-            result += f'{c_name}.position.set(0, {dz}, 0);\n'
-            
-            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             bex = True
-            result+=f'{c_name}.traverse(function (child) {"{if (child instanceof THREE.Mesh) {child.rotation.x += Math.PI;}}"});'
-            result += f'{c_name}.rotation.set(PI, PI, PI);\n'
-            result += f'{c_name}.setRotation({round(rx , 4)}, {round(ez, 4)}, {round(ry, 4)});\n'
-
+            c_name = name + "MY"
+            if not bly and not blx:
+                result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
+            result += f'var {c_name}= {name}.clone();\n'
+            result += f"{name}.position.set(0, {round(lz, 4)}, 0);\n"
+            result += f'{c_name}.position.set(0, {dz}, 0);\n'
+            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale({c_name}.scale.x, -{c_name}.scale.y, {c_name}.scale.z));\n'
             result += f'var {name}MirroredY = new THREE.Group();\n'
             result += f'{name}MirroredY.add({name}, {c_name});\n'
             name += "MirroredY"
@@ -292,9 +277,13 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         lights_string = ""
         lights = []
         
-        for obj in obj.children:
+        for obj in context.selected_objects:
             if any(light_type in obj.name.lower() for light_type in light_types):
                 lights, lights_string = self.get_light(obj, lights, lights_string)
+            elif "function" in obj.name.lower() and "entity" in obj.name.lower():
+                name, text = self.get_mesh_with_modifiers(obj, obj.name, "", True)
+                message += text;
+                names.append(name)
             elif "function" in obj.name.lower():
                 functions = self.get_function(obj, functions)
             else:

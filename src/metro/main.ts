@@ -47,7 +47,7 @@ let Robot: THREE.Object3D;
 let scene: THREE.Scene = new THREE.Scene();
 let camera: THREE.Camera;
 let renderer: THREE.WebGLRenderer;
-let controls: unknown;
+let controls: PointerLockControls;
 
 // balon ignore
 // controls globals
@@ -57,21 +57,29 @@ let moveLeft = false;
 let moveRight = false;
 let canJump = false;
 let prevTime = performance.now();
-const velocity = new THREE.Vector3();
-const direction = new THREE.Vector3();
+let velocity = new THREE.Vector3();
+let direction = new THREE.Vector3();
 // balon ignore end
 
 function main() {
   // balon block begin
   if (tick == 0) {
     if (typeof sceneexist == 'undefined') {
+      controls = undefined;
       OpenCanvas(
         'wCanvas',
         (WC = window.innerWidth * 0.75),
         (HC = window.innerHeight * 0.75),
       );
       CreateScene(WC, HC);
-
+      moveForward = false;
+      moveBackward = false;
+      moveLeft = false;
+      moveRight = false;
+      canJump = false;
+      prevTime = performance.now();
+      velocity = new THREE.Vector3();
+      direction = new THREE.Vector3();
       // balon setup
 
       Station = createMetroStation();
@@ -98,7 +106,7 @@ main();
 function render() {
   requestAnimationFrame(render);
 
-  console.log(velocity);
+  // console.log(velocity);
 
   if (F) {
     F = false;
@@ -2276,7 +2284,7 @@ function CreateScene(WC: number, HC: number) {
     document.body.appendChild(renderer.domElement);
   }
 }
-
+// balon block begin
 function setupcontrols(scene: THREE.Scene) {
   const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
   const _vector = new THREE.Vector3();
@@ -2287,10 +2295,18 @@ function setupcontrols(scene: THREE.Scene) {
 
   const _PI_2 = Math.PI / 2;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  class PointerLockControls extends THREE.EventDispatcher<any> {
+  interface ListenerEvent {
+    target?: unknown;
+    type: string;
+    message?: unknown;
+  }
+  type ListenerEventLambda = (event: ListenerEvent) => unknown;
+  class PointerLockControls {
     camera: THREE.Camera;
     domElement: HTMLElement;
+    _listeners?: {
+      [index: string]: ListenerEventLambda[];
+    };
 
     isLocked: boolean;
 
@@ -2303,8 +2319,6 @@ function setupcontrols(scene: THREE.Scene) {
     _onPointerlockChange: (event: unknown) => void;
     _onPointerlockError: (event: unknown) => void;
     constructor(camera: THREE.Camera, domElement: HTMLElement) {
-      super();
-
       this.camera = camera;
       this.domElement = domElement;
 
@@ -2397,7 +2411,63 @@ function setupcontrols(scene: THREE.Scene) {
       this.domElement.ownerDocument.exitPointerLock();
     }
     // event listeners
+    addEventListener(type: string, listener: ListenerEventLambda) {
+      if (this._listeners === undefined) this._listeners = {};
 
+      const listeners = this._listeners;
+
+      if (listeners[type] === undefined) {
+        listeners[type] = [];
+      }
+
+      if (listeners[type].indexOf(listener) === -1) {
+        listeners[type].push(listener);
+      }
+    }
+
+    hasEventListener(type: string, listener: ListenerEventLambda) {
+      if (this._listeners === undefined) return false;
+
+      const listeners = this._listeners;
+
+      return (
+        listeners[type] !== undefined &&
+        listeners[type].indexOf(listener) !== -1
+      );
+    }
+
+    removeEventListener(type: string, listener: ListenerEventLambda) {
+      if (this._listeners === undefined) return;
+
+      const listeners = this._listeners;
+      const listenerArray = listeners[type];
+
+      if (listenerArray !== undefined) {
+        const index = listenerArray.indexOf(listener);
+
+        if (index !== -1) {
+          listenerArray.splice(index, 1);
+        }
+      }
+    }
+
+    dispatchEvent(event: ListenerEvent) {
+      if (this._listeners === undefined) return;
+
+      const listeners = this._listeners;
+      const listenerArray = listeners[event.type];
+
+      if (listenerArray !== undefined) {
+        event.target = this;
+
+        // Make a copy, in case listeners are removed while iterating.
+        const array = listenerArray.slice(0);
+
+        for (let i = 0, l = array.length; i < l; i++) {
+          array[i].call(this, event);
+        }
+      }
+    }
     onMouseMove(event: MouseEvent) {
       if (this.isLocked === false) return;
 
@@ -2448,7 +2518,7 @@ function setupcontrols(scene: THREE.Scene) {
     }
   }
 
-  const controls = new PointerLockControls(camera, renderer.domElement);
+  controls = new PointerLockControls(camera, renderer.domElement);
   scene.add(controls.getObject());
 
   const onKeyDown = function (event: KeyboardEvent) {

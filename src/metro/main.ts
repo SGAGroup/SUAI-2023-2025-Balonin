@@ -47,6 +47,7 @@ let Robot: THREE.Object3D;
 let scene: THREE.Scene = new THREE.Scene();
 let camera: THREE.Camera;
 let renderer: THREE.WebGLRenderer;
+// @ts-expect-error Type defined in setupcontrols function
 let controls: PointerLockControls;
 
 // balon ignore
@@ -65,7 +66,6 @@ function main() {
   // balon block begin
   if (tick == 0) {
     if (typeof sceneexist == 'undefined') {
-      controls = undefined;
       OpenCanvas(
         'wCanvas',
         (WC = window.innerWidth * 0.75),

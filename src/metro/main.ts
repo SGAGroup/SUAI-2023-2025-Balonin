@@ -100,6 +100,7 @@ function main() {
 main();
 
 // balon block begin
+let arrow;
 function render() {
   requestAnimationFrame(render);
 
@@ -115,9 +116,9 @@ function render() {
   const time = performance.now();
 
   if (controls.isLocked) {
-    raycaster.ray.origin.copy(controls.getObject().position);
+    raycaster.ray.origin.copy(controls.getObject().position); // Перемещаем в центр персонажа
     // 2m tall
-    raycaster.ray.origin.y -= 10;
+    // raycaster.ray.origin.y -= 1;
 
     const intersections = raycaster.intersectObjects(collisions, true);
     const isOnObject = intersections.length > 0;
@@ -127,15 +128,16 @@ function render() {
     velocity.z -= velocity.z * 10.0 * delta;
 
     if (!isFly) {
-      velocity.y -= 9.8 * 50.0 * delta; // 50.0 = mass
+      velocity.y -= 9.8 * 10.0 * delta; // 50.0 = mass
     }
 
     direction.z = Number(moveForward) - Number(moveBackward);
     direction.x = Number(moveRight) - Number(moveLeft);
     direction.normalize();
 
-    if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
-    if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
+    const speed = 200;
+    if (moveForward || moveBackward) velocity.z -= direction.z * speed * delta;
+    if (moveLeft || moveRight) velocity.x -= direction.x * speed * delta;
 
     if (!isFly && isOnObject === true) {
       velocity.y = Math.max(0, velocity.y);
@@ -169,11 +171,16 @@ function initParameters() {
   moveLeft = false;
   moveRight = false;
   canJump = true;
-  isFly = true;
+  isFly = false;
   prevTime = performance.now();
   velocity = new THREE.Vector3();
   direction = new THREE.Vector3();
-  raycaster = new THREE.Raycaster();
+  raycaster = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(0, -1, 0),
+    0,
+    2,
+  );
   collisions = [];
 }
 
@@ -2552,7 +2559,7 @@ function setupcontrols(scene: THREE.Scene) {
   }
 
   controls = new PointerLockControls(camera, renderer.domElement);
-  controls.getObject().position.set(-0.572, 1.8259, -0.0787);
+  controls.getObject().position.set(-0.572, 2.7, -0.0787);
   scene.add(controls.getObject());
 
   const onKeyDown = function (event: KeyboardEvent) {
@@ -2579,7 +2586,7 @@ function setupcontrols(scene: THREE.Scene) {
 
       case 'Space':
         if (!isFly) {
-          if (canJump === true) velocity.y += 50;
+          if (canJump === true) velocity.y += 20;
           canJump = false;
         } else {
           controls.getObject().position.y += event.shiftKey ? -5 : 5;

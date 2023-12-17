@@ -49,6 +49,8 @@ let camera: THREE.Camera;
 let renderer: THREE.WebGLRenderer;
 // @ts-expect-error Type defined in setupcontrols function
 let controls: PointerLockControls;
+let raycaster: THREE.Raycaster;
+let collisions: THREE.Object3D[];
 
 // balon ignore
 // controls globals
@@ -57,6 +59,7 @@ let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
 let canJump = false;
+let isFly = true;
 let prevTime = performance.now();
 let velocity = new THREE.Vector3();
 let direction = new THREE.Vector3();
@@ -72,20 +75,14 @@ function main() {
         (HC = window.innerHeight * 0.75),
       );
       CreateScene(WC, HC);
-      moveForward = false;
-      moveBackward = false;
-      moveLeft = false;
-      moveRight = false;
-      canJump = false;
-      prevTime = performance.now();
-      velocity = new THREE.Vector3();
-      direction = new THREE.Vector3();
+      initParameters();
       // balon setup
 
       Station = createMetroStation();
       Station.position.set(X, Y, Z);
       Station.scale.set(W, W, W);
       scene.add(Station);
+      collisions.push(Station);
 
       Robot = createRobot();
       Robot.position.set(X, Y, Z);
@@ -112,36 +109,72 @@ function render() {
     F = false;
   }
 
+  // balon ignore
+  // https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_pointerlock.html
+
   const time = performance.now();
 
-  const delta = (time - prevTime) / 1000;
-  velocity.x -= velocity.x * 10.0 * delta;
-  velocity.z -= velocity.z * 10.0 * delta;
+  if (controls.isLocked) {
+    raycaster.ray.origin.copy(controls.getObject().position);
+    // 2m tall
+    raycaster.ray.origin.y -= 10;
 
-  velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+    const intersections = raycaster.intersectObjects(collisions, true);
+    const isOnObject = intersections.length > 0;
 
-  direction.z = Number(moveForward) - Number(moveBackward);
-  direction.x = Number(moveRight) - Number(moveLeft);
-  direction.normalize(); // this ensures consistent movements in all directions
+    const delta = (time - prevTime) / 1000;
+    velocity.x -= velocity.x * 10.0 * delta;
+    velocity.z -= velocity.z * 10.0 * delta;
 
-  if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
-  if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
+    if (!isFly) {
+      velocity.y -= 9.8 * 50.0 * delta; // 50.0 = mass
+    }
 
-  controls.moveRight(-velocity.x * delta);
-  controls.moveForward(-velocity.z * delta);
-  // controls.getObject().position.y += velocity.y * delta; // new behavior
+    direction.z = Number(moveForward) - Number(moveBackward);
+    direction.x = Number(moveRight) - Number(moveLeft);
+    direction.normalize();
 
-  if (controls.getObject().position.y < 10) {
-    velocity.y = 0;
-    controls.getObject().position.y = 10;
+    if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
+    if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
 
-    canJump = true;
+    if (!isFly && isOnObject === true) {
+      velocity.y = Math.max(0, velocity.y);
+      canJump = true;
+    }
+
+    controls.moveRight(-velocity.x * delta);
+    controls.moveForward(-velocity.z * delta);
+    controls.getObject().position.y += velocity.y * delta;
+
+    if (!isFly) {
+      if (controls.getObject().position.y < -0) {
+        // controls.getObject().position.set(-0.572, 1.8259, -0.0787);
+        velocity.y = 0;
+        controls.getObject().position.y = 0;
+
+        canJump = true;
+      }
+    }
   }
 
   prevTime = time;
 
   // controls.update();
   renderer.render(scene, camera);
+}
+
+function initParameters() {
+  moveForward = false;
+  moveBackward = false;
+  moveLeft = false;
+  moveRight = false;
+  canJump = true;
+  isFly = true;
+  prevTime = performance.now();
+  velocity = new THREE.Vector3();
+  direction = new THREE.Vector3();
+  raycaster = new THREE.Raycaster();
+  collisions = [];
 }
 
 function createRobot() {
@@ -2519,6 +2552,7 @@ function setupcontrols(scene: THREE.Scene) {
   }
 
   controls = new PointerLockControls(camera, renderer.domElement);
+  controls.getObject().position.set(-0.572, 1.8259, -0.0787);
   scene.add(controls.getObject());
 
   const onKeyDown = function (event: KeyboardEvent) {
@@ -2544,8 +2578,12 @@ function setupcontrols(scene: THREE.Scene) {
         break;
 
       case 'Space':
-        if (canJump === true) velocity.y += 350;
-        // canJump = false;
+        if (!isFly) {
+          if (canJump === true) velocity.y += 50;
+          canJump = false;
+        } else {
+          controls.getObject().position.y += event.shiftKey ? -5 : 5;
+        }
         break;
     }
   };

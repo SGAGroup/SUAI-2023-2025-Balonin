@@ -59,6 +59,7 @@ let raycasterRF: THREE.Raycaster;
 let raycasterLB: THREE.Raycaster;
 let raycasterLF: THREE.Raycaster;
 let collisions: THREE.Object3D[];
+let objectFit: number;
 
 // balon ignore
 // controls globals
@@ -155,7 +156,7 @@ function render() {
 
     const delta = (time - prevTime) / 1000;
     velocity.x -= velocity.x * 10.0 * delta;
-    velocity.z -= velocity.z * 10.0 * delta;
+    velocity.z -= velocity.z * 10.0 * delta;0
 
     if (!isFly) {
       velocity.y -= 9.8 * 10.0 * delta; // 50.0 = mass
@@ -174,10 +175,22 @@ function render() {
       canJump = true; 
     }
 
-    if ((intR || intRB || intRF) && velocity.x < 0) velocity.x = 0;
-    if ((intL || intLB || intLF) && velocity.x > 0) velocity.x = 0;
-    if ((intF || intLF || intRF) && velocity.z > 0) velocity.z = 0;
-    if ((intB || intLB || intRB) && velocity.z < 0) velocity.z = 0;
+    if ((intR || intRB || intRF) && velocity.x < 0) {
+      controls.getObject().position.x -= objectFit/25;
+      velocity.x = 0;
+    }
+    if ((intL || intLB || intLF) && velocity.x > 0) {
+      controls.getObject().position.x += objectFit / 25;
+      velocity.x = 0;
+    };
+    if ((intF || intLF || intRF) && velocity.z > 0) {
+      controls.getObject().position.z -= objectFit / 25;
+      velocity.z = 0;
+    }
+    if ((intB || intLB || intRB) && velocity.z < 0) {
+      controls.getObject().position.z += objectFit/25;
+      velocity.z = 0;
+    }
 
 
     controls.moveRight(-velocity.x * delta);
@@ -202,6 +215,7 @@ function render() {
 }
 
 function initParameters() {
+  objectFit = 1.3;
   moveForward = false;
   moveBackward = false;
   moveLeft = false;
@@ -219,56 +233,56 @@ function initParameters() {
     new THREE.Vector3(),
     new THREE.Vector3(0, -1, 0),
     0,
-    2,
+    objectFit,
   );
   collisions = [];
   raycasterRight = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(1, 0, 0),
     0,
-    2,
+    objectFit,
   );
   raycasterLeft = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(-1, 0, 0),
     0,
-    2,
+    objectFit,
   );
   raycasterForward = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(0, 0, 1),
     0,
-    2,
+    objectFit,
   );
   raycasterBackward = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(0, 0, -1),
     0,
-    2,
+    objectFit,
   );
   raycasterRF = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(1, 0, 1),
     0,
-    2,
+    objectFit,
   );
   raycasterLF = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(-1, 0, 1),
     0,
-    2,
+    objectFit,
   );
   raycasterLB = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(-1, 0, -1),
     0,
-    2,
+    objectFit,
   );
   raycasterRB = new THREE.Raycaster(
     new THREE.Vector3(),
     new THREE.Vector3(1, 0, -1),
     0,
-    2,
+    objectFit,
   );
   
 }

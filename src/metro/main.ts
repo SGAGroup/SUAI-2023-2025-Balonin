@@ -50,6 +50,14 @@ let renderer: THREE.WebGLRenderer;
 // @ts-expect-error Type defined in setupcontrols function
 let controls: PointerLockControls;
 let raycaster: THREE.Raycaster;
+let raycasterRight: THREE.Raycaster;
+let raycasterLeft: THREE.Raycaster;
+let raycasterForward: THREE.Raycaster;
+let raycasterBackward: THREE.Raycaster;
+let raycasterRB: THREE.Raycaster;
+let raycasterRF: THREE.Raycaster;
+let raycasterLB: THREE.Raycaster;
+let raycasterLF: THREE.Raycaster;
 let collisions: THREE.Object3D[];
 
 // balon ignore
@@ -58,6 +66,10 @@ let moveForward = false;
 let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
+let canMoveForward = true;
+let canMoveBackward = true;
+let canMoveLeft = true;
+let canMoveRight = true;
 let canJump = false;
 let isFly = true;
 let prevTime = performance.now();
@@ -116,12 +128,30 @@ function render() {
   const time = performance.now();
 
   if (controls.isLocked) {
-    raycaster.ray.origin.copy(controls.getObject().position); // Перемещаем в центр персонажа
+    raycaster.ray.origin.copy(controls.getObject().position);
+    raycasterRight.ray.origin.copy(controls.getObject().position);
+    raycasterLeft.ray.origin.copy(controls.getObject().position);
+    raycasterBackward.ray.origin.copy(controls.getObject().position);
+    raycasterForward.ray.origin.copy(controls.getObject().position);// Перемещаем в центр персонажа
+    raycasterRB.ray.origin.copy(controls.getObject().position);
+    raycasterRF.ray.origin.copy(controls.getObject().position);
+    raycasterLB.ray.origin.copy(controls.getObject().position);
+    raycasterLF.ray.origin.copy(controls.getObject().position);
     // 2m tall
     // raycaster.ray.origin.y -= 1;
 
     const intersections = raycaster.intersectObjects(collisions, true);
     const isOnObject = intersections.length > 0;
+
+    const intR = raycasterRight.intersectObjects(collisions, true).length > 0;
+    const intL = raycasterLeft.intersectObjects(collisions, true).length > 0;
+    const intF = raycasterForward.intersectObjects(collisions, true).length > 0;
+    const intB = raycasterBackward.intersectObjects(collisions, true).length > 0;
+    const intRB = raycasterRB.intersectObjects(collisions, true).length > 0;
+    const intLB = raycasterLB.intersectObjects(collisions, true).length > 0;
+    const intRF = raycasterRF.intersectObjects(collisions, true).length > 0;
+    const intLF = raycasterLF.intersectObjects(collisions, true).length > 0;
+    console.log(intR, intL, intF, intB, isOnObject);
 
     const delta = (time - prevTime) / 1000;
     velocity.x -= velocity.x * 10.0 * delta;
@@ -141,8 +171,14 @@ function render() {
 
     if (!isFly && isOnObject === true) {
       velocity.y = Math.max(0, velocity.y);
-      canJump = true;
+      canJump = true; 
     }
+
+    if ((intR || intRB || intRF) && velocity.x < 0) velocity.x = 0;
+    if ((intL || intLB || intLF) && velocity.x > 0) velocity.x = 0;
+    if ((intF || intLF || intRF) && velocity.z > 0) velocity.z = 0;
+    if ((intB || intLB || intRB) && velocity.z < 0) velocity.z = 0;
+
 
     controls.moveRight(-velocity.x * delta);
     controls.moveForward(-velocity.z * delta);
@@ -170,6 +206,10 @@ function initParameters() {
   moveBackward = false;
   moveLeft = false;
   moveRight = false;
+  canMoveForward = true;
+  canMoveBackward = true;
+  canMoveLeft = true;
+  canMoveRight = true;
   canJump = true;
   isFly = false;
   prevTime = performance.now();
@@ -182,6 +222,55 @@ function initParameters() {
     2,
   );
   collisions = [];
+  raycasterRight = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(1, 0, 0),
+    0,
+    2,
+  );
+  raycasterLeft = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(-1, 0, 0),
+    0,
+    2,
+  );
+  raycasterForward = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(0, 0, 1),
+    0,
+    2,
+  );
+  raycasterBackward = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(0, 0, -1),
+    0,
+    2,
+  );
+  raycasterRF = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(1, 0, 1),
+    0,
+    2,
+  );
+  raycasterLF = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(-1, 0, 1),
+    0,
+    2,
+  );
+  raycasterLB = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(-1, 0, -1),
+    0,
+    2,
+  );
+  raycasterRB = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(1, 0, -1),
+    0,
+    2,
+  );
+  
 }
 
 function createRobot() {

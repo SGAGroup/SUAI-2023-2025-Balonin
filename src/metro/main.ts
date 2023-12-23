@@ -113,7 +113,7 @@ function main() {
 main();
 
 // balon block begin
-let arrow;
+
 function render() {
   requestAnimationFrame(render);
 
@@ -133,7 +133,7 @@ function render() {
     raycasterRight.ray.origin.copy(controls.getObject().position);
     raycasterLeft.ray.origin.copy(controls.getObject().position);
     raycasterBackward.ray.origin.copy(controls.getObject().position);
-    raycasterForward.ray.origin.copy(controls.getObject().position);// Перемещаем в центр персонажа
+    raycasterForward.ray.origin.copy(controls.getObject().position); // Перемещаем в центр персонажа
     raycasterRB.ray.origin.copy(controls.getObject().position);
     raycasterRF.ray.origin.copy(controls.getObject().position);
     raycasterLB.ray.origin.copy(controls.getObject().position);
@@ -147,7 +147,8 @@ function render() {
     const intR = raycasterRight.intersectObjects(collisions, true).length > 0;
     const intL = raycasterLeft.intersectObjects(collisions, true).length > 0;
     const intF = raycasterForward.intersectObjects(collisions, true).length > 0;
-    const intB = raycasterBackward.intersectObjects(collisions, true).length > 0;
+    const intB =
+      raycasterBackward.intersectObjects(collisions, true).length > 0;
     const intRB = raycasterRB.intersectObjects(collisions, true).length > 0;
     const intLB = raycasterLB.intersectObjects(collisions, true).length > 0;
     const intRF = raycasterRF.intersectObjects(collisions, true).length > 0;
@@ -156,7 +157,8 @@ function render() {
 
     const delta = (time - prevTime) / 1000;
     velocity.x -= velocity.x * 10.0 * delta;
-    velocity.z -= velocity.z * 10.0 * delta;0
+    velocity.z -= velocity.z * 10.0 * delta;
+    0;
 
     if (!isFly) {
       velocity.y -= 9.8 * 10.0 * delta; // 50.0 = mass
@@ -172,26 +174,25 @@ function render() {
 
     if (!isFly && isOnObject === true) {
       velocity.y = Math.max(0, velocity.y);
-      canJump = true; 
+      canJump = true;
     }
 
     if ((intR || intRB || intRF) && velocity.x < 0) {
-      controls.getObject().position.x -= objectFit/25;
+      controls.getObject().position.x -= objectFit / 25;
       velocity.x = 0;
     }
     if ((intL || intLB || intLF) && velocity.x > 0) {
       controls.getObject().position.x += objectFit / 25;
       velocity.x = 0;
-    };
+    }
     if ((intF || intLF || intRF) && velocity.z > 0) {
       controls.getObject().position.z -= objectFit / 25;
       velocity.z = 0;
     }
     if ((intB || intLB || intRB) && velocity.z < 0) {
-      controls.getObject().position.z += objectFit/25;
+      controls.getObject().position.z += objectFit / 25;
       velocity.z = 0;
     }
-
 
     controls.moveRight(-velocity.x * delta);
     controls.moveForward(-velocity.z * delta);
@@ -284,7 +285,6 @@ function initParameters() {
     0,
     objectFit,
   );
-  
 }
 
 function createRobot() {

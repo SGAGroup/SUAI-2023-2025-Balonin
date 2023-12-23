@@ -29,6 +29,7 @@ tick_tick();
 export function restart(ms: number) {
   setTimeout(main, ms);
 }
+
 THREE.Object3D.prototype.applyMatrix = THREE.Object3D.prototype.applyMatrix4;
 let sceneexist: boolean | undefined = undefined;
 
@@ -39,17 +40,17 @@ const X = 0,
   Z = 0,
   W = 1;
 
-const animatables: {
-  doors: {
-    left: THREE.Object3D;
-    right: THREE.Object3D;
-    initPos?: { left: THREE.Vector3; right: THREE.Vector3 };
-    transition: number;
-    state: boolean;
-  }[];
-} = {
-  doors: [],
-};
+// const animatables: {
+//   doors: {
+//     left: THREE.Object3D;
+//     right: THREE.Object3D;
+//     initPos?: { left: THREE.Vector3; right: THREE.Vector3 };
+//     transition: number;
+//     state: boolean;
+//   }[];
+// } = {
+//   doors: [],
+// };
 // balon setup end
 
 // balon ignore begin
@@ -57,9 +58,34 @@ let WC, HC;
 let scene: THREE.Scene = new THREE.Scene();
 let camera: THREE.Camera;
 let renderer: THREE.WebGLRenderer;
-let controls: THREE.OrbitControls;
+// @ts-expect-error Type defined in setupcontrols function
+let controls: PointerLockControls;
+let raycaster: THREE.Raycaster;
+let raycasterRight: THREE.Raycaster;
+let raycasterLeft: THREE.Raycaster;
+let raycasterForward: THREE.Raycaster;
+let raycasterBackward: THREE.Raycaster;
+let raycasterRB: THREE.Raycaster;
+let raycasterRF: THREE.Raycaster;
+let raycasterLB: THREE.Raycaster;
+let raycasterLF: THREE.Raycaster;
+let collisions: THREE.Object3D[];
+let objectFit: number;
 
-let testCube: THREE.Object3D;
+let station: THREE.Object3D;
+let moveForward = false;
+let moveBackward = false;
+let moveLeft = false;
+let moveRight = false;
+let canMoveForward = true;
+let canMoveBackward = true;
+let canMoveLeft = true;
+let canMoveRight = true;
+let canJump = false;
+let isFly = true;
+let prevTime = performance.now();
+let velocity = new THREE.Vector3();
+let direction = new THREE.Vector3();
 // balon ignore end
 
 function main() {
@@ -72,14 +98,15 @@ function main() {
         (HC = window.innerHeight * 0.75),
       );
       CreateScene(WC, HC);
-
+      initParameters();
       // balon setup
 
-      testCube = CreateTestCube();
-      testCube.position.set(X, Y, Z);
-      testCube.scale.set(W, W, W);
-      // testCube.rotation.set(PI, 0, 0);
-      scene.add(testCube);
+      station = CreateStation();
+      station.position.set(X, Y, Z);
+      station.scale.set(W, W, W);
+      // station.rotation.set(PI, 0, 0);
+      scene.add(station);
+      collisions.push(station);
 
       render();
     }
@@ -95,21 +122,182 @@ main();
 function render() {
   requestAnimationFrame(render);
 
+  // console.log(velocity);
+
   if (F) {
-    animate();
     F = false;
   }
 
-  controls.update();
+  // balon ignore
+  // https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_pointerlock.html
+
+  const time = performance.now();
+
+  if (controls.isLocked) {
+    raycaster.ray.origin.copy(controls.getObject().position);
+    raycasterRight.ray.origin.copy(controls.getObject().position);
+    raycasterLeft.ray.origin.copy(controls.getObject().position);
+    raycasterBackward.ray.origin.copy(controls.getObject().position);
+    raycasterForward.ray.origin.copy(controls.getObject().position); // Перемещаем в центр персонажа
+    raycasterRB.ray.origin.copy(controls.getObject().position);
+    raycasterRF.ray.origin.copy(controls.getObject().position);
+    raycasterLB.ray.origin.copy(controls.getObject().position);
+    raycasterLF.ray.origin.copy(controls.getObject().position);
+    // 2m tall
+    // raycaster.ray.origin.y -= 1;
+
+    const intersections = raycaster.intersectObjects(collisions, true);
+    const isOnObject = intersections.length > 0;
+
+    const intR = raycasterRight.intersectObjects(collisions, true).length > 0;
+    const intL = raycasterLeft.intersectObjects(collisions, true).length > 0;
+    const intF = raycasterForward.intersectObjects(collisions, true).length > 0;
+    const intB =
+      raycasterBackward.intersectObjects(collisions, true).length > 0;
+    const intRB = raycasterRB.intersectObjects(collisions, true).length > 0;
+    const intLB = raycasterLB.intersectObjects(collisions, true).length > 0;
+    const intRF = raycasterRF.intersectObjects(collisions, true).length > 0;
+    const intLF = raycasterLF.intersectObjects(collisions, true).length > 0;
+    // console.log(intR, intL, intF, intB, isOnObject);
+
+    const delta = (time - prevTime) / 1000;
+    velocity.x -= velocity.x * 10.0 * delta;
+    velocity.z -= velocity.z * 10.0 * delta;
+    0;
+
+    if (!isFly) {
+      velocity.y -= 9.8 * 10.0 * delta; // 50.0 = mass
+    }
+
+    direction.z = Number(moveForward) - Number(moveBackward);
+    direction.x = Number(moveRight) - Number(moveLeft);
+    direction.normalize();
+
+    const speed = 200;
+    if (moveForward || moveBackward) velocity.z -= direction.z * speed * delta;
+    if (moveLeft || moveRight) velocity.x -= direction.x * speed * delta;
+
+    if (!isFly && isOnObject === true) {
+      velocity.y = Math.max(0, velocity.y);
+      canJump = true;
+    }
+
+    if ((intR || intRB || intRF) && velocity.x) {
+      controls.getObject().position.x -= objectFit / 50;
+      velocity.x = 0;
+      console.log('right');
+    }
+    if ((intL || intLB || intLF) && velocity.x) {
+      controls.getObject().position.x += objectFit / 50;
+      velocity.x = 0;
+      console.log('left');
+    }
+    if ((intF || intLF || intRF) && velocity.z) {
+      controls.getObject().position.z -= objectFit / 50;
+      velocity.z = 0;
+      console.log('forward');
+    }
+    if ((intB || intLB || intRB) && velocity.z) {
+      controls.getObject().position.z += objectFit / 50;
+      velocity.z = 0;
+      console.log('backward');
+    }
+
+    controls.moveRight(-velocity.x * delta);
+    controls.moveForward(-velocity.z * delta);
+    controls.getObject().position.y += velocity.y * delta;
+
+    if (!isFly) {
+      if (controls.getObject().position.y < -0) {
+        // controls.getObject().position.set(-0.572, 1.8259, -0.0787);
+        velocity.y = 0;
+        controls.getObject().position.y = 0;
+
+        canJump = true;
+      }
+    }
+  }
+
+  prevTime = time;
+
+  // controls.update();
   renderer.render(scene, camera);
 }
 
-function animate() {
-  //
+function initParameters() {
+  objectFit = 1.2;
+  moveForward = false;
+  moveBackward = false;
+  moveLeft = false;
+  moveRight = false;
+  canMoveForward = true;
+  canMoveBackward = true;
+  canMoveLeft = true;
+  canMoveRight = true;
+  canJump = true;
+  isFly = false;
+  prevTime = performance.now();
+  velocity = new THREE.Vector3();
+  direction = new THREE.Vector3();
+  raycaster = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(0, -1, 0),
+    0,
+    objectFit,
+  );
+  collisions = [];
+  raycasterRight = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(1, 0, 0),
+    0,
+    objectFit,
+  );
+  raycasterLeft = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(-1, 0, 0),
+    0,
+    objectFit,
+  );
+  raycasterForward = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(0, 0, 1),
+    0,
+    objectFit,
+  );
+  raycasterBackward = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(0, 0, -1),
+    0,
+    objectFit,
+  );
+  raycasterRF = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(1, 0, 1),
+    0,
+    objectFit * 0.9,
+  );
+  raycasterLF = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(-1, 0, 1),
+    0,
+    objectFit * 0.9,
+  );
+  raycasterLB = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(-1, 0, -1),
+    0,
+    objectFit * 0.9,
+  );
+  raycasterRB = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(1, 0, -1),
+    0,
+    objectFit * 0.9,
+  );
 }
 //#endregion
 //#region
-function CreateTestCube() {
+function CreateStation() {
   //#endregion
 
   const ColoumnMaterial = new THREE.MeshStandardMaterial({
@@ -206,7 +394,7 @@ function CreateTestCube() {
 
   const cube_smallroof_tileGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tileGroup = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile = new THREE.Mesh(
       cube_smallroof_tileGeometry,
       RoofTilesMaterial,
@@ -219,7 +407,7 @@ function CreateTestCube() {
   cube_smallroof_tileGroup.position.set(-29.7716, 9.7462, -0.6276);
   const cube_smallroof_tile_005Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_005Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_005 = new THREE.Mesh(
       cube_smallroof_tile_005Geometry,
       RoofTilesMaterial,
@@ -232,7 +420,7 @@ function CreateTestCube() {
   cube_smallroof_tile_005Group.position.set(-29.7716, 9.5972, -1.8736);
   const cube_smallroof_tile_004Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_004Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_004 = new THREE.Mesh(
       cube_smallroof_tile_004Geometry,
       RoofTilesMaterial,
@@ -245,7 +433,7 @@ function CreateTestCube() {
   cube_smallroof_tile_004Group.position.set(-29.7716, 9.3407, -3.0144);
   const cube_smallroof_tile_003Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_003Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_003 = new THREE.Mesh(
       cube_smallroof_tile_003Geometry,
       RoofTilesMaterial,
@@ -258,7 +446,7 @@ function CreateTestCube() {
   cube_smallroof_tile_003Group.position.set(-29.7716, 8.9771, -4.0545);
   const cube_smallroof_tile_002Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_002Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_002 = new THREE.Mesh(
       cube_smallroof_tile_002Geometry,
       RoofTilesMaterial,
@@ -271,7 +459,7 @@ function CreateTestCube() {
   cube_smallroof_tile_002Group.position.set(-29.7716, 8.4392, -4.9277);
   const cube_smallroof_tile_001Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_001Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_001 = new THREE.Mesh(
       cube_smallroof_tile_001Geometry,
       RoofTilesMaterial,
@@ -284,7 +472,7 @@ function CreateTestCube() {
   cube_smallroof_tile_001Group.position.set(-29.7716, 7.6197, -5.6245);
   const cube_smallroof_tile_006Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_006Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_006 = new THREE.Mesh(
       cube_smallroof_tile_006Geometry,
       BrassMaterial,
@@ -297,7 +485,7 @@ function CreateTestCube() {
   cube_smallroof_tile_006Group.position.set(-27.7592, 9.6666, -0.6276);
   const cube_smallroof_tile_007Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_007Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_007 = new THREE.Mesh(
       cube_smallroof_tile_007Geometry,
       BrassMaterial,
@@ -310,7 +498,7 @@ function CreateTestCube() {
   cube_smallroof_tile_007Group.position.set(-27.7592, 9.5176, -1.8736);
   const cube_smallroof_tile_008Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_008Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_008 = new THREE.Mesh(
       cube_smallroof_tile_008Geometry,
       BrassMaterial,
@@ -323,7 +511,7 @@ function CreateTestCube() {
   cube_smallroof_tile_008Group.position.set(-27.7592, 9.261, -3.0144);
   const cube_smallroof_tile_009Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_009Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_009 = new THREE.Mesh(
       cube_smallroof_tile_009Geometry,
       BrassMaterial,
@@ -336,7 +524,7 @@ function CreateTestCube() {
   cube_smallroof_tile_009Group.position.set(-27.7592, 8.8974, -4.0545);
   const cube_smallroof_tile_010Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_010Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_010 = new THREE.Mesh(
       cube_smallroof_tile_010Geometry,
       BrassMaterial,
@@ -349,7 +537,7 @@ function CreateTestCube() {
   cube_smallroof_tile_010Group.position.set(-27.7592, 8.3596, -4.9277);
   const cube_smallroof_tile_011Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_011Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_011 = new THREE.Mesh(
       cube_smallroof_tile_011Geometry,
       BrassMaterial,
@@ -362,7 +550,7 @@ function CreateTestCube() {
   cube_smallroof_tile_011Group.position.set(-27.7592, 7.5401, -5.6245);
   const cube_smallroof_tile_012Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_012Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_012 = new THREE.Mesh(
       cube_smallroof_tile_012Geometry,
       RoofTilesMaterial,
@@ -375,7 +563,7 @@ function CreateTestCube() {
   cube_smallroof_tile_012Group.position.set(-29.7716, 9.7482, 0.6277);
   const cube_smallroof_tile_013Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_013Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_013 = new THREE.Mesh(
       cube_smallroof_tile_013Geometry,
       RoofTilesMaterial,
@@ -388,7 +576,7 @@ function CreateTestCube() {
   cube_smallroof_tile_013Group.position.set(-29.7716, 9.6026, 1.8431);
   const cube_smallroof_tile_014Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_014Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_014 = new THREE.Mesh(
       cube_smallroof_tile_014Geometry,
       RoofTilesMaterial,
@@ -401,7 +589,7 @@ function CreateTestCube() {
   cube_smallroof_tile_014Group.position.set(-29.7716, 9.3406, 3.0144);
   const cube_smallroof_tile_015Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_015Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_015 = new THREE.Mesh(
       cube_smallroof_tile_015Geometry,
       RoofTilesMaterial,
@@ -414,7 +602,7 @@ function CreateTestCube() {
   cube_smallroof_tile_015Group.position.set(-29.7716, 8.977, 4.0544);
   const cube_smallroof_tile_016Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_016Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_016 = new THREE.Mesh(
       cube_smallroof_tile_016Geometry,
       RoofTilesMaterial,
@@ -427,7 +615,7 @@ function CreateTestCube() {
   cube_smallroof_tile_016Group.position.set(-29.7716, 8.4452, 4.9207);
   const cube_smallroof_tile_017Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_017Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_017 = new THREE.Mesh(
       cube_smallroof_tile_017Geometry,
       RoofTilesMaterial,
@@ -440,7 +628,7 @@ function CreateTestCube() {
   cube_smallroof_tile_017Group.position.set(-29.7716, 7.6197, 5.6245);
   const cube_smallroof_tile_018Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_018Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_018 = new THREE.Mesh(
       cube_smallroof_tile_018Geometry,
       BrassMaterial,
@@ -453,7 +641,7 @@ function CreateTestCube() {
   cube_smallroof_tile_018Group.position.set(-27.7592, 9.6682, 0.6277);
   const cube_smallroof_tile_019Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_019Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_019 = new THREE.Mesh(
       cube_smallroof_tile_019Geometry,
       BrassMaterial,
@@ -466,7 +654,7 @@ function CreateTestCube() {
   cube_smallroof_tile_019Group.position.set(-27.7592, 9.5207, 1.8742);
   const cube_smallroof_tile_020Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_020Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_020 = new THREE.Mesh(
       cube_smallroof_tile_020Geometry,
       BrassMaterial,
@@ -479,7 +667,7 @@ function CreateTestCube() {
   cube_smallroof_tile_020Group.position.set(-27.7592, 9.2635, 3.0151);
   const cube_smallroof_tile_021Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_021Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_021 = new THREE.Mesh(
       cube_smallroof_tile_021Geometry,
       BrassMaterial,
@@ -492,7 +680,7 @@ function CreateTestCube() {
   cube_smallroof_tile_021Group.position.set(-27.7592, 8.8938, 4.0628);
   const cube_smallroof_tile_022Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_022Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_022 = new THREE.Mesh(
       cube_smallroof_tile_022Geometry,
       BrassMaterial,
@@ -505,7 +693,7 @@ function CreateTestCube() {
   cube_smallroof_tile_022Group.position.set(-27.7592, 8.3655, 4.9207);
   const cube_smallroof_tile_023Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_023Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_023 = new THREE.Mesh(
       cube_smallroof_tile_023Geometry,
       BrassMaterial,
@@ -572,7 +760,7 @@ function CreateTestCube() {
 
   const cube_smallroof_tile_030Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_030Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_030 = new THREE.Mesh(
       cube_smallroof_tile_030Geometry,
       RoofTiles_1Material,
@@ -585,7 +773,7 @@ function CreateTestCube() {
   cube_smallroof_tile_030Group.position.set(-29.7716, 9.3073, -3.0144);
   const cube_smallroof_tile_031Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_smallroof_tile_031Group = new THREE.Group();
-  for (var i = 0; i < 21; i++) {
+  for (let i = 0; i < 21; i++) {
     const cube_smallroof_tile_031 = new THREE.Mesh(
       cube_smallroof_tile_031Geometry,
       RoofTiles_1Material,
@@ -598,7 +786,7 @@ function CreateTestCube() {
   cube_smallroof_tile_031Group.position.set(-29.7716, 9.3073, 3.0144);
   const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeGroup = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cube = new THREE.Mesh(cubeGeometry, ColoumnPlateMaterial);
     cube.scale.set(1.0, 3.4789, 1.0);
     cube.position.set(6.0 * i, 0, 0);
@@ -607,7 +795,7 @@ function CreateTestCube() {
   cubeGroup.position.set(-30.709, 4.3331, 7.8995);
   const cube_002Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_002Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_002 = new THREE.Mesh(cube_002Geometry, ColoumnPlateMaterial);
     cube_002.scale.set(0.4453, 0.2934, 0.9985);
     cube_002.position.set(2.8961 * i, -5.2527 * i, 0);
@@ -617,7 +805,7 @@ function CreateTestCube() {
   cube_002Group.position.set(-29.8356, 4.92, 7.8995);
   const cube_004Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_004Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_004 = new THREE.Mesh(cube_004Geometry, ColoumnPlateMaterial);
     cube_004.scale.set(0.4453, 0.4393, 0.9985);
     cube_004.position.set(4.771 * i, -3.6355 * i, 0);
@@ -627,7 +815,7 @@ function CreateTestCube() {
   cube_004Group.position.set(-29.3814, 5.5959, 7.8995);
   const cube_005Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_005Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_005 = new THREE.Mesh(cube_005Geometry, ColoumnPlateMaterial);
     cube_005.scale.set(0.4453, 0.2384, 0.9985);
     cube_005.position.set(5.7105 * i, -1.8349 * i, 0);
@@ -637,7 +825,7 @@ function CreateTestCube() {
   cube_005Group.position.set(-28.5579, 5.832, 7.8995);
   const cube_006Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_006Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_006 = new THREE.Mesh(cube_006Geometry, ColoumnPlateMaterial);
     cube_006.scale.set(0.4453, 0.1584, 0.9985);
     cube_006.position.set(5.9981 * i, 0, 0);
@@ -646,7 +834,7 @@ function CreateTestCube() {
   cube_006Group.position.set(-27.6974, 5.8917, 7.8995);
   const cube_007Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_007Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_007 = new THREE.Mesh(cube_007Geometry, ColoumnPlateMaterial);
     cube_007.scale.set(0.4453, 0.2934, 0.9985);
     cube_007.position.set(2.8961 * i, 5.2527 * i, 0);
@@ -668,7 +856,7 @@ function CreateTestCube() {
 
   const cube_011Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_011Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_011 = new THREE.Mesh(cube_011Geometry, ColoumnPlateMaterial);
     cube_011.scale.set(0.4453, 0.2384, 0.9985);
     cube_011.position.set(5.7105 * i, 1.8349 * i, 0);
@@ -678,7 +866,7 @@ function CreateTestCube() {
   cube_011Group.position.set(-26.8361, 5.832, 7.8995);
   const cube_012Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_012Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_012 = new THREE.Mesh(cube_012Geometry, ColoumnPlateMaterial);
     cube_012.scale.set(0.4453, 0.4393, 0.9985);
     cube_012.position.set(4.771 * i, 3.6355 * i, 0);
@@ -688,7 +876,7 @@ function CreateTestCube() {
   cube_012Group.position.set(-26.0135, 5.5959, 7.8995);
   const cube_013Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_013Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_013 = new THREE.Mesh(cube_013Geometry, Floor_ColumnsMaterial);
     cube_013.scale.set(0.4453, 0.2934, 0.6455);
     cube_013.position.set(2.8961 * i, 5.2527 * i, 0);
@@ -698,7 +886,7 @@ function CreateTestCube() {
   cube_013Group.position.set(-25.6364, 4.92, 7.8995);
   const cube_015Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_015Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cube_015 = new THREE.Mesh(cube_015Geometry, Floor_ColumnsMaterial);
     cube_015.scale.set(1.05, 3.4789, 0.6455);
     cube_015.position.set(6.0 * i, 0, 0);
@@ -707,7 +895,7 @@ function CreateTestCube() {
   cube_015Group.position.set(-30.709, 4.3331, 7.8995);
   const cube_016Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_016Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_016 = new THREE.Mesh(cube_016Geometry, Floor_ColumnsMaterial);
     cube_016.scale.set(0.4453, 0.2934, 0.6455);
     cube_016.position.set(2.8961 * i, -5.2527 * i, 0);
@@ -717,7 +905,7 @@ function CreateTestCube() {
   cube_016Group.position.set(-29.777, 4.92, 7.8995);
   const cube_017Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_017Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_017 = new THREE.Mesh(cube_017Geometry, Floor_ColumnsMaterial);
     cube_017.scale.set(0.4453, 0.4393, 0.6455);
     cube_017.position.set(4.771 * i, -3.6355 * i, 0);
@@ -727,7 +915,7 @@ function CreateTestCube() {
   cube_017Group.position.set(-29.3235, 5.5959, 7.8995);
   const cube_018Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_018Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_018 = new THREE.Mesh(cube_018Geometry, Floor_ColumnsMaterial);
     cube_018.scale.set(0.4453, 0.2384, 0.6455);
     cube_018.position.set(5.7105 * i, -1.8349 * i, 0);
@@ -737,7 +925,7 @@ function CreateTestCube() {
   cube_018Group.position.set(-28.4432, 5.832, 7.8995);
   const cube_019Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_019Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_019 = new THREE.Mesh(cube_019Geometry, Floor_ColumnsMaterial);
     cube_019.scale.set(0.4453, 0.1584, 0.6455);
     cube_019.position.set(5.9981 * i, 0, 0);
@@ -752,7 +940,7 @@ function CreateTestCube() {
 
   const cube_021Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_021Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_021 = new THREE.Mesh(cube_021Geometry, Floor_ColumnsMaterial);
     cube_021.scale.set(0.4453, 0.4393, 0.6455);
     cube_021.position.set(4.771 * i, 3.6355 * i, 0);
@@ -762,7 +950,7 @@ function CreateTestCube() {
   cube_021Group.position.set(-26.068, 5.5959, 7.8995);
   const cube_022Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_022Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_022 = new THREE.Mesh(cube_022Geometry, Floor_ColumnsMaterial);
     cube_022.scale.set(0.4453, 0.2384, 0.6455);
     cube_022.position.set(5.7105 * i, 1.8349 * i, 0);
@@ -772,7 +960,7 @@ function CreateTestCube() {
   cube_022Group.position.set(-26.9447, 5.832, 7.8995);
   const cube_010Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_010Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cube_010 = new THREE.Mesh(cube_010Geometry, ColoumnPlateMaterial);
     cube_010.scale.set(1.0, 3.4789, 1.0);
     cube_010.position.set(6.0 * i, 0, 0);
@@ -781,7 +969,7 @@ function CreateTestCube() {
   cube_010Group.position.set(-30.709, 4.3331, -7.8995);
   const cube_023Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_023Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cube_023 = new THREE.Mesh(cube_023Geometry, Floor_ColumnsMaterial);
     cube_023.scale.set(1.05, 3.4789, 0.6455);
     cube_023.position.set(6.0 * i, 0, 0);
@@ -790,7 +978,7 @@ function CreateTestCube() {
   cube_023Group.position.set(-30.709, 4.3331, -7.8995);
   const cube_024Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_024Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_024 = new THREE.Mesh(cube_024Geometry, ColoumnPlateMaterial);
     cube_024.scale.set(0.4453, 0.2934, 0.9985);
     cube_024.position.set(2.8961 * i, -5.2527 * i, 0);
@@ -800,7 +988,7 @@ function CreateTestCube() {
   cube_024Group.position.set(-29.8356, 4.92, -7.901);
   const cube_025Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_025Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_025 = new THREE.Mesh(cube_025Geometry, ColoumnPlateMaterial);
     cube_025.scale.set(0.4453, 0.4393, 0.9985);
     cube_025.position.set(4.771 * i, -3.6355 * i, 0);
@@ -810,7 +998,7 @@ function CreateTestCube() {
   cube_025Group.position.set(-29.3814, 5.5959, -7.901);
   const cube_026Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_026Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_026 = new THREE.Mesh(cube_026Geometry, ColoumnPlateMaterial);
     cube_026.scale.set(0.4453, 0.2384, 0.9985);
     cube_026.position.set(5.7105 * i, -1.8349 * i, 0);
@@ -820,7 +1008,7 @@ function CreateTestCube() {
   cube_026Group.position.set(-28.5579, 5.832, -7.901);
   const cube_027Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_027Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_027 = new THREE.Mesh(cube_027Geometry, ColoumnPlateMaterial);
     cube_027.scale.set(0.4453, 0.1584, 0.9985);
     cube_027.position.set(5.9981 * i, 0, 0);
@@ -829,7 +1017,7 @@ function CreateTestCube() {
   cube_027Group.position.set(-27.6974, 5.8917, -7.901);
   const cube_028Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_028Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_028 = new THREE.Mesh(cube_028Geometry, ColoumnPlateMaterial);
     cube_028.scale.set(0.4453, 0.2934, 0.9985);
     cube_028.position.set(2.8961 * i, 5.2527 * i, 0);
@@ -839,7 +1027,7 @@ function CreateTestCube() {
   cube_028Group.position.set(-25.5818, 4.92, -7.901);
   const cube_029Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_029Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_029 = new THREE.Mesh(cube_029Geometry, ColoumnPlateMaterial);
     cube_029.scale.set(0.4453, 0.2384, 0.9985);
     cube_029.position.set(5.7105 * i, 1.8349 * i, 0);
@@ -849,7 +1037,7 @@ function CreateTestCube() {
   cube_029Group.position.set(-26.8361, 5.832, -7.901);
   const cube_030Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_030Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_030 = new THREE.Mesh(cube_030Geometry, ColoumnPlateMaterial);
     cube_030.scale.set(0.4453, 0.4393, 0.9985);
     cube_030.position.set(4.771 * i, 3.6355 * i, 0);
@@ -859,7 +1047,7 @@ function CreateTestCube() {
   cube_030Group.position.set(-26.0135, 5.5959, -7.901);
   const cube_031Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_031Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_031 = new THREE.Mesh(cube_031Geometry, Floor_ColumnsMaterial);
     cube_031.scale.set(0.4453, 0.2934, 0.6455);
     cube_031.position.set(2.8961 * i, 5.2527 * i, 0);
@@ -869,7 +1057,7 @@ function CreateTestCube() {
   cube_031Group.position.set(-25.6364, 4.92, -7.901);
   const cube_032Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_032Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_032 = new THREE.Mesh(cube_032Geometry, Floor_ColumnsMaterial);
     cube_032.scale.set(0.4453, 0.2934, 0.6455);
     cube_032.position.set(2.8961 * i, -5.2527 * i, 0);
@@ -879,7 +1067,7 @@ function CreateTestCube() {
   cube_032Group.position.set(-29.777, 4.92, -7.901);
   const cube_033Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_033Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_033 = new THREE.Mesh(cube_033Geometry, Floor_ColumnsMaterial);
     cube_033.scale.set(0.4453, 0.4393, 0.6455);
     cube_033.position.set(4.771 * i, -3.6355 * i, 0);
@@ -889,7 +1077,7 @@ function CreateTestCube() {
   cube_033Group.position.set(-29.3235, 5.5959, -7.901);
   const cube_034Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_034Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_034 = new THREE.Mesh(cube_034Geometry, Floor_ColumnsMaterial);
     cube_034.scale.set(0.4453, 0.2384, 0.6455);
     cube_034.position.set(5.7105 * i, -1.8349 * i, 0);
@@ -899,7 +1087,7 @@ function CreateTestCube() {
   cube_034Group.position.set(-28.4432, 5.832, -7.901);
   const cube_035Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_035Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_035 = new THREE.Mesh(cube_035Geometry, Floor_ColumnsMaterial);
     cube_035.scale.set(0.4453, 0.1584, 0.6455);
     cube_035.position.set(5.9981 * i, 0, 0);
@@ -908,7 +1096,7 @@ function CreateTestCube() {
   cube_035Group.position.set(-27.6974, 5.8583, -7.901);
   const cube_036Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_036Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_036 = new THREE.Mesh(cube_036Geometry, Floor_ColumnsMaterial);
     cube_036.scale.set(0.4453, 0.4393, 0.6455);
     cube_036.position.set(4.771 * i, 3.6355 * i, 0);
@@ -918,7 +1106,7 @@ function CreateTestCube() {
   cube_036Group.position.set(-26.068, 5.5959, -7.901);
   const cube_037Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_037Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_037 = new THREE.Mesh(cube_037Geometry, Floor_ColumnsMaterial);
     cube_037.scale.set(0.4453, 0.2384, 0.6455);
     cube_037.position.set(5.7105 * i, 1.8349 * i, 0);
@@ -961,7 +1149,7 @@ function CreateTestCube() {
   cube_040MirroredZ.position.set(63.7679, 4.3331, 0);
   const cube_070Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_070Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_070 = new THREE.Mesh(cube_070Geometry, ColoumnPlateMaterial);
     cube_070.scale.set(2.0429, 0.9826, 0.9985);
     cube_070.position.set(5.998 * i, 0, 0);
@@ -970,7 +1158,7 @@ function CreateTestCube() {
   cube_070Group.position.set(-27.6974, 6.8294, -7.901);
   const cube_071Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_071Group = new THREE.Group();
-  for (var i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i++) {
     const cube_071 = new THREE.Mesh(cube_071Geometry, ColoumnPlateMaterial);
     cube_071.scale.set(2.0429, 0.9826, 0.9985);
     cube_071.position.set(5.998 * i, 0, 0);
@@ -1018,7 +1206,7 @@ function CreateTestCube() {
   cube_bigroof_004MirroredZ.position.set(-1.2151, -3.1009, 0);
   const cube_stairs_005Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_stairs_005Group = new THREE.Group();
-  for (var i = 0; i < 29; i++) {
+  for (let i = 0; i < 29; i++) {
     const cube_stairs_005 = new THREE.Mesh(
       cube_stairs_005Geometry,
       RoofTilesMaterial,
@@ -1351,7 +1539,7 @@ function CreateTestCube() {
 
   const cube_066Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_066Group = new THREE.Group();
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     const cube_066 = new THREE.Mesh(cube_066Geometry, WhiteDotsMaterial);
     cube_066.scale.set(0.0392, 0.6686, 0.47);
     cube_066.position.set(12.001 * i, 0, 0);
@@ -1360,7 +1548,7 @@ function CreateTestCube() {
   cube_066Group.position.set(-23.6566, 3.1162, 7.8995);
   const cube_067Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_067Group = new THREE.Group();
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     const cube_067 = new THREE.Mesh(cube_067Geometry, WhiteDotsMaterial);
     cube_067.scale.set(0.0392, 0.6686, 0.47);
     cube_067.position.set(12.001 * i, 0, 0);
@@ -1369,7 +1557,7 @@ function CreateTestCube() {
   cube_067Group.position.set(-23.6566, 3.1162, -7.8995);
   const cube_068Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_068Group = new THREE.Group();
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     const cube_068 = new THREE.Mesh(cube_068Geometry, WhiteDotsMaterial);
     cube_068.scale.set(0.0392, 0.6686, 0.47);
     cube_068.position.set(12.001 * i, 0, 0);
@@ -1378,7 +1566,7 @@ function CreateTestCube() {
   cube_068Group.position.set(-25.7557, 3.1162, 7.8995);
   const cube_069Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_069Group = new THREE.Group();
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     const cube_069 = new THREE.Mesh(cube_069Geometry, WhiteDotsMaterial);
     cube_069.scale.set(0.0392, 0.6686, 0.47);
     cube_069.position.set(12.001 * i, 0, 0);
@@ -1442,7 +1630,7 @@ function CreateTestCube() {
   cube_076MirroredZ.position.set(-1.4681, -0.7137, 0);
   const cube_077Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_077Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_077 = new THREE.Mesh(cube_077Geometry, WhiteDotsMaterial);
     cube_077.scale.set(1.5186, 0.0513, 1.4186);
     cube_077.position.set(3.341 * i, 0, 0);
@@ -1452,7 +1640,7 @@ function CreateTestCube() {
   cube_077Group.position.set(-48.0887, 9.1261, 15.2259);
   const cube_078Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_078Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_078 = new THREE.Mesh(cube_078Geometry, WhiteDotsMaterial);
     cube_078.scale.set(1.5186, 0.0513, 1.3299);
     cube_078.position.set(3.341 * i, 0, 0);
@@ -1462,7 +1650,7 @@ function CreateTestCube() {
   cube_078Group.position.set(-48.0887, 8.8694, 12.5384);
   const cube_079Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_079Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_079 = new THREE.Mesh(cube_079Geometry, WhiteDotsMaterial);
     cube_079.scale.set(1.5186, 0.0513, 1.2076);
     cube_079.position.set(3.341 * i, 0, 0);
@@ -1472,7 +1660,7 @@ function CreateTestCube() {
   cube_079Group.position.set(-48.0887, 7.8661, 10.3425);
   const cube_080Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_080Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_080 = new THREE.Mesh(cube_080Geometry, WhiteDotsMaterial);
     cube_080.scale.set(1.5186, 0.0513, 0.6538);
     cube_080.position.set(3.341 * i, 0, 0);
@@ -1482,7 +1670,7 @@ function CreateTestCube() {
   cube_080Group.position.set(-48.0887, 6.6251, 9.1086);
   const cube_081Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_081Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_081 = new THREE.Mesh(cube_081Geometry, WhiteDotsMaterial);
     cube_081.scale.set(1.5186, 0.0513, 1.4186);
     cube_081.position.set(3.341 * i, 0, 0);
@@ -1492,7 +1680,7 @@ function CreateTestCube() {
   cube_081Group.position.set(-48.0887, 8.5788, 17.9723);
   const cube_082Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_082Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_082 = new THREE.Mesh(cube_082Geometry, WhiteDotsMaterial);
     cube_082.scale.set(1.5186, 0.0513, 1.3442);
     cube_082.position.set(3.341 * i, 0, 0);
@@ -1502,7 +1690,7 @@ function CreateTestCube() {
   cube_082Group.position.set(-48.0887, 7.3242, 20.3389);
   const cube_083Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_083Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_083 = new THREE.Mesh(cube_083Geometry, WhiteDotsMaterial);
     cube_083.scale.set(1.5186, 0.0513, 1.3442);
     cube_083.position.set(3.341 * i, 0, 0);
@@ -1512,7 +1700,7 @@ function CreateTestCube() {
   cube_083Group.position.set(-48.0887, 5.4288, 22.068);
   const cube_084Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_084Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_084 = new THREE.Mesh(cube_084Geometry, MetalMaterial);
     cube_084.scale.set(0.1738, 0.0511, 1.3427);
     cube_084.position.set(3.341 * i, 0, 0);
@@ -1522,7 +1710,7 @@ function CreateTestCube() {
   cube_084Group.position.set(-46.4182, 5.3882, 22.0402);
   const cube_085Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_085Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_085 = new THREE.Mesh(cube_085Geometry, MetalMaterial);
     cube_085.scale.set(0.1738, 0.0513, 1.4127);
     cube_085.position.set(3.341 * i, 0, 0);
@@ -1532,7 +1720,7 @@ function CreateTestCube() {
   cube_085Group.position.set(-46.4182, 9.0855, 15.2265);
   const cube_086Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_086Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_086 = new THREE.Mesh(cube_086Geometry, MetalMaterial);
     cube_086.scale.set(0.1738, 0.0513, 1.3247);
     cube_086.position.set(3.341 * i, 0, 0);
@@ -1542,7 +1730,7 @@ function CreateTestCube() {
   cube_086Group.position.set(-46.4182, 8.8288, 12.5501);
   const cube_087Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_087Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_087 = new THREE.Mesh(cube_087Geometry, MetalMaterial);
     cube_087.scale.set(0.1738, 0.0512, 1.2043);
     cube_087.position.set(3.341 * i, 0, 0);
@@ -1552,7 +1740,7 @@ function CreateTestCube() {
   cube_087Group.position.set(-46.4182, 7.8255, 10.3634);
   const cube_088Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_088Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_088 = new THREE.Mesh(cube_088Geometry, MetalMaterial);
     cube_088.scale.set(0.1738, 0.0511, 0.6533);
     cube_088.position.set(3.341 * i, 0, 0);
@@ -1562,7 +1750,7 @@ function CreateTestCube() {
   cube_088Group.position.set(-46.4182, 6.5845, 9.1346);
   const cube_089Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_089Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_089 = new THREE.Mesh(cube_089Geometry, MetalMaterial);
     cube_089.scale.set(0.1738, 0.0513, 1.4133);
     cube_089.position.set(3.341 * i, 0, 0);
@@ -1572,7 +1760,7 @@ function CreateTestCube() {
   cube_089Group.position.set(-46.4182, 8.5382, 17.9615);
   const cube_090Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_090Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_090 = new THREE.Mesh(cube_090Geometry, MetalMaterial);
     cube_090.scale.set(0.1738, 0.0512, 1.3406);
     cube_090.position.set(3.341 * i, 0, 0);
@@ -1582,7 +1770,7 @@ function CreateTestCube() {
   cube_090Group.position.set(-46.4182, 7.2836, 20.3183);
   const cube_091Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_091Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_091 = new THREE.Mesh(cube_091Geometry, MetalMaterial);
     cube_091.scale.set(1.5186, 0.0513, 0.0838);
     cube_091.position.set(3.341 * i, 0, 0);
@@ -1592,7 +1780,7 @@ function CreateTestCube() {
   cube_091Group.position.set(-48.0887, 9.0256, 16.6168);
   const cube_093Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_093Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_093 = new THREE.Mesh(cube_093Geometry, WhiteDotsMaterial);
     cube_093.scale.set(1.5186, 0.0513, 0.6538);
     cube_093.position.set(3.341 * i, 0, 0);
@@ -1602,7 +1790,7 @@ function CreateTestCube() {
   cube_093Group.position.set(-48.0887, 6.6251, -9.1086);
   const cube_094Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_094Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_094 = new THREE.Mesh(cube_094Geometry, WhiteDotsMaterial);
     cube_094.scale.set(1.5186, 0.0513, 1.2076);
     cube_094.position.set(3.341 * i, 0, 0);
@@ -1612,7 +1800,7 @@ function CreateTestCube() {
   cube_094Group.position.set(-48.0887, 7.8661, -10.3425);
   const cube_095Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_095Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_095 = new THREE.Mesh(cube_095Geometry, MetalMaterial);
     cube_095.scale.set(0.1738, 0.0511, 0.6533);
     cube_095.position.set(3.341 * i, 0, 0);
@@ -1622,7 +1810,7 @@ function CreateTestCube() {
   cube_095Group.position.set(-46.4182, 6.5845, -9.1346);
   const cube_096Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_096Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_096 = new THREE.Mesh(cube_096Geometry, MetalMaterial);
     cube_096.scale.set(0.1738, 0.0512, 1.2043);
     cube_096.position.set(3.341 * i, 0, 0);
@@ -1632,7 +1820,7 @@ function CreateTestCube() {
   cube_096Group.position.set(-46.4182, 7.8255, -10.3634);
   const cube_097Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_097Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_097 = new THREE.Mesh(cube_097Geometry, WhiteDotsMaterial);
     cube_097.scale.set(1.5186, 0.0513, 1.3299);
     cube_097.position.set(3.341 * i, 0, 0);
@@ -1642,7 +1830,7 @@ function CreateTestCube() {
   cube_097Group.position.set(-48.0887, 8.8694, -12.5384);
   const cube_098Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_098Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_098 = new THREE.Mesh(cube_098Geometry, MetalMaterial);
     cube_098.scale.set(0.1738, 0.0513, 1.3247);
     cube_098.position.set(3.341 * i, 0, 0);
@@ -1652,7 +1840,7 @@ function CreateTestCube() {
   cube_098Group.position.set(-46.4182, 8.8288, -12.5501);
   const cube_099Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_099Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_099 = new THREE.Mesh(cube_099Geometry, WhiteDotsMaterial);
     cube_099.scale.set(1.5186, 0.0513, 1.4186);
     cube_099.position.set(3.341 * i, 0, 0);
@@ -1662,7 +1850,7 @@ function CreateTestCube() {
   cube_099Group.position.set(-48.0888, 9.1261, -15.2259);
   const cube_100Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_100Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_100 = new THREE.Mesh(cube_100Geometry, MetalMaterial);
     cube_100.scale.set(0.1738, 0.0513, 1.4127);
     cube_100.position.set(3.341 * i, 0, 0);
@@ -1672,7 +1860,7 @@ function CreateTestCube() {
   cube_100Group.position.set(-46.4182, 9.0855, -15.2265);
   const cube_101Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_101Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_101 = new THREE.Mesh(cube_101Geometry, WhiteDotsMaterial);
     cube_101.scale.set(1.5186, 0.0513, 1.4186);
     cube_101.position.set(3.341 * i, 0, 0);
@@ -1682,7 +1870,7 @@ function CreateTestCube() {
   cube_101Group.position.set(-48.0887, 8.5788, -17.9723);
   const cube_102Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_102Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_102 = new THREE.Mesh(cube_102Geometry, MetalMaterial);
     cube_102.scale.set(0.1738, 0.0512, 1.3406);
     cube_102.position.set(3.341 * i, 0, 0);
@@ -1692,7 +1880,7 @@ function CreateTestCube() {
   cube_102Group.position.set(-46.4182, 7.2836, -20.3183);
   const cube_103Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_103Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_103 = new THREE.Mesh(cube_103Geometry, MetalMaterial);
     cube_103.scale.set(0.1738, 0.0513, 1.4133);
     cube_103.position.set(3.341 * i, 0, 0);
@@ -1702,7 +1890,7 @@ function CreateTestCube() {
   cube_103Group.position.set(-46.4182, 8.5382, -17.9615);
   const cube_104Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_104Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_104 = new THREE.Mesh(cube_104Geometry, WhiteDotsMaterial);
     cube_104.scale.set(1.5186, 0.0513, 1.3442);
     cube_104.position.set(3.341 * i, 0, 0);
@@ -1712,7 +1900,7 @@ function CreateTestCube() {
   cube_104Group.position.set(-48.0887, 7.3242, -20.3389);
   const cube_105Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_105Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_105 = new THREE.Mesh(cube_105Geometry, WhiteDotsMaterial);
     cube_105.scale.set(1.5186, 0.0513, 1.3442);
     cube_105.position.set(3.341 * i, 0, 0);
@@ -1722,7 +1910,7 @@ function CreateTestCube() {
   cube_105Group.position.set(-48.0887, 5.4288, -22.068);
   const cube_106Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_106Group = new THREE.Group();
-  for (var i = 0; i < 30; i++) {
+  for (let i = 0; i < 30; i++) {
     const cube_106 = new THREE.Mesh(cube_106Geometry, MetalMaterial);
     cube_106.scale.set(0.1738, 0.0511, 1.3427);
     cube_106.position.set(3.341 * i, 0, 0);
@@ -1732,7 +1920,7 @@ function CreateTestCube() {
   cube_106Group.position.set(-46.4182, 5.3882, -22.0402);
   const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderGroup = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder = new THREE.Mesh(cylinderGeometry, ColoumnMaterial);
     cylinder.scale.set(0.5, 2.5, 0.5);
     cylinder.position.set(6.0 * i, 0, 0);
@@ -1741,7 +1929,7 @@ function CreateTestCube() {
   cylinderGroup.position.set(-30.709, 3.2961, -7.1816);
   const cylinder_001Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_001Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder_001 = new THREE.Mesh(
       cylinder_001Geometry,
       ColoumnPlateMaterial,
@@ -1753,7 +1941,7 @@ function CreateTestCube() {
   cylinder_001Group.position.set(-30.709, 1.0416, -7.1816);
   const cube_003Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_003Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cube_003 = new THREE.Mesh(cube_003Geometry, ColoumnPlateMaterial);
     cube_003.scale.set(0.7, 0.0759, 0.7);
     cube_003.position.set(6.0 * i, 0, 0);
@@ -1762,7 +1950,7 @@ function CreateTestCube() {
   cube_003Group.position.set(-30.709, 5.8089, -7.1816);
   const cylinder_003Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_003Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder_003 = new THREE.Mesh(
       cylinder_003Geometry,
       ColoumnPlateMaterial,
@@ -1774,7 +1962,7 @@ function CreateTestCube() {
   cylinder_003Group.position.set(-30.709, 5.47, -7.1816);
   const cylinder_004Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_004Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder_004 = new THREE.Mesh(cylinder_004Geometry, BrassMaterial);
     cylinder_004.scale.set(0.6, 0.1363, 0.6);
     cylinder_004.position.set(6.0 * i, 0, 0);
@@ -1783,7 +1971,7 @@ function CreateTestCube() {
   cylinder_004Group.position.set(-30.709, 5.4668, -7.1816);
   const torus_001Geometry = new THREE.TorusGeometry(1, 0.25, 12, 48);
   const torus_001Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const torus_001 = new THREE.Mesh(torus_001Geometry, BrassMaterial);
     torus_001.scale.set(0.5, 0.5, 0.5233);
     torus_001.position.set(6.0 * i, 0, 0);
@@ -1793,7 +1981,7 @@ function CreateTestCube() {
   torus_001Group.position.set(-30.709, 1.0461, -7.1816);
   const torus_002Geometry = new THREE.TorusGeometry(1, 0.25, 12, 48);
   const torus_002Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const torus_002 = new THREE.Mesh(torus_002Geometry, BrassMaterial);
     torus_002.scale.set(0.52, 0.52, 0.5233);
     torus_002.position.set(6.0 * i, 0, 0);
@@ -1803,7 +1991,7 @@ function CreateTestCube() {
   torus_002Group.position.set(-30.709, 5.7037, -7.1816);
   const torus_003Geometry = new THREE.TorusGeometry(1, 0.25, 12, 48);
   const torus_003Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const torus_003 = new THREE.Mesh(torus_003Geometry, BrassMaterial);
     torus_003.scale.set(0.52, 0.52, 0.2641);
     torus_003.position.set(6.0 * i, 0, 0);
@@ -1835,7 +2023,7 @@ function CreateTestCube() {
   cube_floor_columnsMirroredZ.position.set(15.9462, 0.5578, 0);
   const cube_stripesGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_stripesGroup = new THREE.Group();
-  for (var i = 0; i < 55; i++) {
+  for (let i = 0; i < 55; i++) {
     const cube_stripes = new THREE.Mesh(
       cube_stripesGeometry,
       Floor_StripesMaterial,
@@ -1878,7 +2066,7 @@ function CreateTestCube() {
   cube_floor_trainssideMirroredZ.position.set(-0.5219, 0.5684, 0);
   const cube_stripes_001Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_stripes_001Group = new THREE.Group();
-  for (var i = 0; i < 83; i++) {
+  for (let i = 0; i < 83; i++) {
     const cube_stripes_001 = new THREE.Mesh(
       cube_stripes_001Geometry,
       Floor_StripesMaterial,
@@ -1890,7 +2078,7 @@ function CreateTestCube() {
   cube_stripes_001Group.position.set(-49.0516, 0.8519, -13.6124);
   const cylinder_stripe_dotsGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_stripe_dotsGroup = new THREE.Group();
-  for (var i = 0; i < 82; i++) {
+  for (let i = 0; i < 82; i++) {
     const cylinder_stripe_dots = new THREE.Mesh(
       cylinder_stripe_dotsGeometry,
       WhiteDotsMaterial,
@@ -1902,7 +2090,7 @@ function CreateTestCube() {
   cylinder_stripe_dotsGroup.position.set(-48.4447, 0.8683, -13.6124);
   const cube_stripes_002Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_stripes_002Group = new THREE.Group();
-  for (var i = 0; i < 55; i++) {
+  for (let i = 0; i < 55; i++) {
     const cube_stripes_002 = new THREE.Mesh(
       cube_stripes_002Geometry,
       Floor_StripesMaterial,
@@ -1914,7 +2102,7 @@ function CreateTestCube() {
   cube_stripes_002Group.position.set(-31.3272, 0.8634, 4.7543);
   const cylinder_002Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_002Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder_002 = new THREE.Mesh(cylinder_002Geometry, ColoumnMaterial);
     cylinder_002.scale.set(0.5, 2.5, 0.5);
     cylinder_002.position.set(6.0 * i, 0, 0);
@@ -1923,7 +2111,7 @@ function CreateTestCube() {
   cylinder_002Group.position.set(-30.709, 3.2961, 7.171);
   const cube_stripes_003Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_stripes_003Group = new THREE.Group();
-  for (var i = 0; i < 83; i++) {
+  for (let i = 0; i < 83; i++) {
     const cube_stripes_003 = new THREE.Mesh(
       cube_stripes_003Geometry,
       Floor_StripesMaterial,
@@ -1940,7 +2128,7 @@ function CreateTestCube() {
     32,
   );
   const cylinder_stripe_dots_001Group = new THREE.Group();
-  for (var i = 0; i < 82; i++) {
+  for (let i = 0; i < 82; i++) {
     const cylinder_stripe_dots_001 = new THREE.Mesh(
       cylinder_stripe_dots_001Geometry,
       WhiteDotsMaterial,
@@ -1952,7 +2140,7 @@ function CreateTestCube() {
   cylinder_stripe_dots_001Group.position.set(-48.4447, 0.8683, 13.6124);
   const cylinder_005Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_005Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder_005 = new THREE.Mesh(
       cylinder_005Geometry,
       ColoumnPlateMaterial,
@@ -1964,7 +2152,7 @@ function CreateTestCube() {
   cylinder_005Group.position.set(-30.709, 1.0416, 7.1711);
   const torus_004Geometry = new THREE.TorusGeometry(1, 0.25, 12, 48);
   const torus_004Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const torus_004 = new THREE.Mesh(torus_004Geometry, BrassMaterial);
     torus_004.scale.set(0.5, 0.5, 0.5233);
     torus_004.position.set(6.0 * i, 0, 0);
@@ -1974,7 +2162,7 @@ function CreateTestCube() {
   torus_004Group.position.set(-30.709, 1.0461, 7.1657);
   const cylinder_006Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_006Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder_006 = new THREE.Mesh(
       cylinder_006Geometry,
       ColoumnPlateMaterial,
@@ -1986,7 +2174,7 @@ function CreateTestCube() {
   cylinder_006Group.position.set(-30.709, 5.47, 7.1711);
   const torus_005Geometry = new THREE.TorusGeometry(1, 0.25, 12, 48);
   const torus_005Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const torus_005 = new THREE.Mesh(torus_005Geometry, BrassMaterial);
     torus_005.scale.set(0.52, 0.52, 0.2641);
     torus_005.position.set(6.0 * i, 0, 0);
@@ -1996,7 +2184,7 @@ function CreateTestCube() {
   torus_005Group.position.set(-30.709, 5.307, 7.1655);
   const cylinder_007Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinder_007Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cylinder_007 = new THREE.Mesh(cylinder_007Geometry, BrassMaterial);
     cylinder_007.scale.set(0.6, 0.1363, 0.6);
     cylinder_007.position.set(6.0 * i, 0, 0);
@@ -2005,7 +2193,7 @@ function CreateTestCube() {
   cylinder_007Group.position.set(-30.709, 5.4668, 7.1711);
   const cube_001Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_001Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const cube_001 = new THREE.Mesh(cube_001Geometry, ColoumnPlateMaterial);
     cube_001.scale.set(0.7, 0.0759, 0.7);
     cube_001.position.set(6.0 * i, 0, 0);
@@ -2014,7 +2202,7 @@ function CreateTestCube() {
   cube_001Group.position.set(-30.709, 5.8089, 7.1711);
   const torus_006Geometry = new THREE.TorusGeometry(1, 0.25, 12, 48);
   const torus_006Group = new THREE.Group();
-  for (var i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) {
     const torus_006 = new THREE.Mesh(torus_006Geometry, BrassMaterial);
     torus_006.scale.set(0.52, 0.52, 0.5233);
     torus_006.position.set(6.0 * i, 0, 0);
@@ -2024,7 +2212,7 @@ function CreateTestCube() {
   torus_006Group.position.set(-30.709, 5.7037, 7.1711);
   const cube_stripes_004Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_stripes_004Group = new THREE.Group();
-  for (var i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     const cube_stripes_004 = new THREE.Mesh(
       cube_stripes_004Geometry,
       Floor_StripesMaterial,
@@ -2355,9 +2543,13 @@ function CreateTestCube() {
     cube_coloumnsupper_003MirroredZ,
   );
 
+  out.traverse((obj) => {
+    obj.receiveShadow = true;
+    obj.castShadow = true;
+  });
   //#region
-  const help = new THREE.AxesHelper(10);
-  out.add(help);
+  // const help = new THREE.AxesHelper(10);
+  // out.add(help);
   return out;
   //#endregion
 }
@@ -2393,11 +2585,12 @@ function CreateScene(WC: number, HC: number) {
     // renderer.setSize( window.innerWidth, window.innerHeight );
     document.getElementById('wCanvas')?.appendChild(renderer.domElement);
     renderer.setSize(WC, HC);
+    setupcontrols(scene);
     // установим модуль управления камерой
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.rotateSpeed = 1.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 0.8;
+    // controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // controls.rotateSpeed = 1.0;
+    // controls.zoomSpeed = 1.2;
+    // controls.panSpeed = 0.8;
 
     // источники света
     scene.add(new THREE.AmbientLight(0x555555, 2));
@@ -2411,6 +2604,307 @@ function CreateScene(WC: number, HC: number) {
     // balon ignore
     document.body.appendChild(renderer.domElement);
   }
+}
+function setupcontrols(scene: THREE.Scene) {
+  const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
+  const _vector = new THREE.Vector3();
+
+  const _changeEvent = { type: 'change' };
+  const _lockEvent = { type: 'lock' };
+  const _unlockEvent = { type: 'unlock' };
+
+  const _PI_2 = Math.PI / 2;
+
+  interface ListenerEvent {
+    target?: unknown;
+    type: string;
+    message?: unknown;
+  }
+  type ListenerEventLambda = (event: ListenerEvent) => unknown;
+  class PointerLockControls {
+    camera: THREE.Camera;
+    domElement: HTMLElement;
+    _listeners?: {
+      [index: string]: ListenerEventLambda[];
+    };
+
+    isLocked: boolean;
+
+    minPolarAngle: number;
+    maxPolarAngle: number;
+
+    pointerSpeed: number;
+
+    _onMouseMove: (event: MouseEvent) => void;
+    _onPointerlockChange: (event: unknown) => void;
+    _onPointerlockError: (event: unknown) => void;
+    constructor(camera: THREE.Camera, domElement: HTMLElement) {
+      this.camera = camera;
+      this.domElement = domElement;
+
+      this.isLocked = false;
+
+      // Set to constrain the pitch of the camera
+      // Range is 0 to Math.PI radians
+      this.minPolarAngle = 0; // radians
+      this.maxPolarAngle = Math.PI; // radians
+
+      this.pointerSpeed = 1.0;
+
+      this._onMouseMove = this.onMouseMove.bind(this);
+      this._onPointerlockChange = this.onPointerlockChange.bind(this);
+      this._onPointerlockError = this.onPointerlockError.bind(this);
+
+      this.connect();
+    }
+
+    connect() {
+      this.domElement.ownerDocument.addEventListener(
+        'mousemove',
+        this._onMouseMove,
+      );
+      this.domElement.ownerDocument.addEventListener(
+        'pointerlockchange',
+        this._onPointerlockChange,
+      );
+      this.domElement.ownerDocument.addEventListener(
+        'pointerlockerror',
+        this._onPointerlockError,
+      );
+    }
+
+    disconnect() {
+      this.domElement.ownerDocument.removeEventListener(
+        'mousemove',
+        this._onMouseMove,
+      );
+      this.domElement.ownerDocument.removeEventListener(
+        'pointerlockchange',
+        this._onPointerlockChange,
+      );
+      this.domElement.ownerDocument.removeEventListener(
+        'pointerlockerror',
+        this._onPointerlockError,
+      );
+    }
+
+    dispose() {
+      this.disconnect();
+    }
+
+    getObject() {
+      // retaining this method for backward compatibility
+
+      return this.camera;
+    }
+
+    getDirection(v: THREE.Vector3) {
+      return v.set(0, 0, -1).applyQuaternion(this.camera.quaternion);
+    }
+
+    moveForward(distance: number) {
+      // move forward parallel to the xz-plane
+      // assumes camera.up is y-up
+
+      const camera = this.camera;
+
+      _vector.setFromMatrixColumn(camera.matrix, 0);
+
+      _vector.crossVectors(camera.up, _vector);
+
+      camera.position.addScaledVector(_vector, distance);
+    }
+
+    moveRight(distance: number) {
+      const camera = this.camera;
+
+      _vector.setFromMatrixColumn(camera.matrix, 0);
+
+      camera.position.addScaledVector(_vector, distance);
+    }
+
+    lock() {
+      this.domElement.requestPointerLock();
+    }
+
+    unlock() {
+      this.domElement.ownerDocument.exitPointerLock();
+    }
+    // event listeners
+    addEventListener(type: string, listener: ListenerEventLambda) {
+      if (this._listeners === undefined) this._listeners = {};
+
+      const listeners = this._listeners;
+
+      if (listeners[type] === undefined) {
+        listeners[type] = [];
+      }
+
+      if (listeners[type].indexOf(listener) === -1) {
+        listeners[type].push(listener);
+      }
+    }
+
+    hasEventListener(type: string, listener: ListenerEventLambda) {
+      if (this._listeners === undefined) return false;
+
+      const listeners = this._listeners;
+
+      return (
+        listeners[type] !== undefined &&
+        listeners[type].indexOf(listener) !== -1
+      );
+    }
+
+    removeEventListener(type: string, listener: ListenerEventLambda) {
+      if (this._listeners === undefined) return;
+
+      const listeners = this._listeners;
+      const listenerArray = listeners[type];
+
+      if (listenerArray !== undefined) {
+        const index = listenerArray.indexOf(listener);
+
+        if (index !== -1) {
+          listenerArray.splice(index, 1);
+        }
+      }
+    }
+
+    dispatchEvent(event: ListenerEvent) {
+      if (this._listeners === undefined) return;
+
+      const listeners = this._listeners;
+      const listenerArray = listeners[event.type];
+
+      if (listenerArray !== undefined) {
+        event.target = this;
+
+        // Make a copy, in case listeners are removed while iterating.
+        const array = listenerArray.slice(0);
+
+        for (let i = 0, l = array.length; i < l; i++) {
+          array[i].call(this, event);
+        }
+      }
+    }
+    onMouseMove(event: MouseEvent) {
+      if (this.isLocked === false) return;
+
+      let movementX = event.movementX || 0;
+      if ('mozMovementX' in event) movementX = event.mozMovementX as number;
+      if ('webkitMovementX' in event)
+        movementX = event.webkitMovementX as number;
+
+      const movementY = event.movementY || 0;
+      if ('mozMovementY' in event) movementX = event.mozMovementY as number;
+      if ('webkitMovementY' in event)
+        movementX = event.webkitMovementY as number;
+
+      const camera = this.camera;
+      _euler.setFromQuaternion(camera.quaternion);
+
+      _euler.y -= movementX * 0.002 * this.pointerSpeed;
+      _euler.x -= movementY * 0.002 * this.pointerSpeed;
+
+      _euler.x = Math.max(
+        _PI_2 - this.maxPolarAngle,
+        Math.min(_PI_2 - this.minPolarAngle, _euler.x),
+      );
+
+      camera.quaternion.setFromEuler(_euler);
+
+      this.dispatchEvent(_changeEvent);
+    }
+
+    onPointerlockChange() {
+      if (
+        this.domElement.ownerDocument.pointerLockElement === this.domElement
+      ) {
+        this.dispatchEvent(_lockEvent);
+
+        this.isLocked = true;
+      } else {
+        this.dispatchEvent(_unlockEvent);
+
+        this.isLocked = false;
+      }
+    }
+
+    onPointerlockError() {
+      console.error(
+        'THREE.PointerLockControls: Unable to use Pointer Lock API',
+      );
+    }
+  }
+
+  controls = new PointerLockControls(camera, renderer.domElement);
+  controls.getObject().position.set(-0.572, 2.7, -0.0787);
+  scene.add(controls.getObject());
+
+  const onKeyDown = function (event: KeyboardEvent) {
+    switch (event.code) {
+      case 'ArrowUp':
+      case 'KeyW':
+        moveForward = true;
+        break;
+
+      case 'ArrowLeft':
+      case 'KeyA':
+        moveLeft = true;
+        break;
+
+      case 'ArrowDown':
+      case 'KeyS':
+        moveBackward = true;
+        break;
+
+      case 'ArrowRight':
+      case 'KeyD':
+        moveRight = true;
+        break;
+
+      case 'Space':
+        if (!isFly) {
+          if (canJump === true) velocity.y += 20;
+          canJump = false;
+        } else {
+          controls.getObject().position.y += event.shiftKey ? -5 : 5;
+        }
+        break;
+    }
+  };
+
+  const onKeyUp = function (event: KeyboardEvent) {
+    switch (event.code) {
+      case 'ArrowUp':
+      case 'KeyW':
+        moveForward = false;
+        break;
+
+      case 'ArrowLeft':
+      case 'KeyA':
+        moveLeft = false;
+        break;
+
+      case 'ArrowDown':
+      case 'KeyS':
+        moveBackward = false;
+        break;
+
+      case 'ArrowRight':
+      case 'KeyD':
+        moveRight = false;
+        break;
+    }
+  };
+
+  document.addEventListener('keydown', onKeyDown);
+  document.addEventListener('keyup', onKeyUp);
+
+  document.addEventListener('click', function () {
+    controls.lock();
+  });
 }
 // balon block end
 //#endregion

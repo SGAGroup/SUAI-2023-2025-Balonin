@@ -193,8 +193,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             result += f'var {c_name}= {name}.clone();\n'
             result += f"{name}.position.set({round(lx, 4)}, 0, 0);\n"
-            result += f"{c_name}.position.set({round(dx, 4)}, 0, 0);\n"
-            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale(-1, 1, 1));\n'
+            result += f'{c_name}.scale.set(-{c_name}.scale.x, {c_name}.scale.y, {c_name}.scale.z);\n'
+            result += f"{c_name}.position.set({-round(dx, 4)}, 0, 0);\n"
             result += f'var {name}MirroredX = new THREE.Group();\n'
             result += f'{name}MirroredX.add({name}, {c_name});\n'
             name += "MirroredX"
@@ -206,8 +206,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             result += f'var {c_name}= {name}.clone();\n'
             result += f"{name}.position.set(0, 0, {-round(ly, 4)});\n"
+            result += f'{c_name}.scale.set({c_name}.scale.x, {c_name}.scale.y, -{c_name}.scale.z);\n'
             result += f'{c_name}.position.set(0, 0, {-dy});\n'
-            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale(1, 1, -1));\n'
             result += f'var {name}MirroredZ = new THREE.Group();\n'
             result += f'{name}MirroredZ.add({name}, {c_name});\n'
             name += "MirroredZ"
@@ -219,8 +219,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
                 result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             result += f'var {c_name}= {name}.clone();\n'
             result += f"{name}.position.set(0, {round(lz, 4)}, 0);\n"
-            result += f'{c_name}.position.set(0, {dz}, 0);\n'
-            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale(1, -1, 1));\n'
+            result += f'{c_name}.scale.set({c_name}.scale.x, -{c_name}.scale.y, {c_name}.scale.z);\n'
+            result += f'{c_name}.position.set(0, {-dz}, 0);\n'
             result += f'var {name}MirroredY = new THREE.Group();\n'
             result += f'{name}MirroredY.add({name}, {c_name});\n'
             name += "MirroredY"

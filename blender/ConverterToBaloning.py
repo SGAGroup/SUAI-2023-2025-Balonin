@@ -220,7 +220,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             result += f'var {c_name}= {name}.clone();\n'
             result += f"{name}.position.set(0, {round(lz, 4)}, 0);\n"
             result += f'{c_name}.position.set(0, {dz}, 0);\n'
-            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale(1, -1, 1);\n'
+            result += f'{c_name}.applyMatrix({c_name}.matrixWorld.makeScale(1, -1, 1));\n'
             result += f'var {name}MirroredY = new THREE.Group();\n'
             result += f'{name}MirroredY.add({name}, {c_name});\n'
             name += "MirroredY"
@@ -277,7 +277,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
         lights_string = ""
         lights = []
         
-        for obj in context.selected_objects:
+        for obj in obj.children:
             if any(light_type in obj.name.lower() for light_type in light_types):
                 lights, lights_string = self.get_light(obj, lights, lights_string)
             elif "function" in obj.name.lower() and "entity" in obj.name.lower():

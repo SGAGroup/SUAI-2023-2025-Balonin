@@ -1584,8 +1584,12 @@ function CreateStation() {
   cube_038.setRotation(0.0, 0.0, -0.0);
   let cube_038MZ = cube_038.clone();
   cube_038.position.set(0, 0, 7.8995);
-  cube_038MZ.position.set(0, 0, 7.8995);
-  cube_038MZ.applyMatrix(cube_038MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_038MZ.scale.set(
+    cube_038MZ.scale.x,
+    cube_038MZ.scale.y,
+    -cube_038MZ.scale.z,
+  );
+  cube_038MZ.position.set(0, 0, -7.8995);
   let cube_038MirroredZ = new THREE.Group();
   cube_038MirroredZ.add(cube_038, cube_038MZ);
   cube_038MirroredZ.position.set(44.5687, 4.3331, 0);
@@ -1595,8 +1599,12 @@ function CreateStation() {
   cube_039.setRotation(0.0, 0.0, -0.0);
   let cube_039MZ = cube_039.clone();
   cube_039.position.set(0, 0, 9.2379);
-  cube_039MZ.position.set(0, 0, 9.2379);
-  cube_039MZ.applyMatrix(cube_039MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_039MZ.scale.set(
+    cube_039MZ.scale.x,
+    cube_039MZ.scale.y,
+    -cube_039MZ.scale.z,
+  );
+  cube_039MZ.position.set(0, 0, -9.2379);
   let cube_039MirroredZ = new THREE.Group();
   cube_039MirroredZ.add(cube_039, cube_039MZ);
   cube_039MirroredZ.position.set(53.863, 4.3331, 0);
@@ -1606,8 +1614,12 @@ function CreateStation() {
   cube_040.setRotation(0.0, 0.0, -0.0);
   let cube_040MZ = cube_040.clone();
   cube_040.position.set(0, 0, 10.4484);
-  cube_040MZ.position.set(0, 0, 10.4484);
-  cube_040MZ.applyMatrix(cube_040MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_040MZ.scale.set(
+    cube_040MZ.scale.x,
+    cube_040MZ.scale.y,
+    -cube_040MZ.scale.z,
+  );
+  cube_040MZ.position.set(0, 0, -10.4484);
   let cube_040MirroredZ = new THREE.Group();
   cube_040MirroredZ.add(cube_040, cube_040MZ);
   cube_040MirroredZ.position.set(63.7679, 4.3331, 0);
@@ -1635,8 +1647,12 @@ function CreateStation() {
   cube_092.setRotation(0.0, 0.0, -0.0);
   let cube_092MZ = cube_092.clone();
   cube_092.position.set(0, 0, 7.8995);
-  cube_092MZ.position.set(0, 0, 7.8995);
-  cube_092MZ.applyMatrix(cube_092MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_092MZ.scale.set(
+    cube_092MZ.scale.x,
+    cube_092MZ.scale.y,
+    -cube_092MZ.scale.z,
+  );
+  cube_092MZ.position.set(0, 0, -7.8995);
   let cube_092MirroredZ = new THREE.Group();
   cube_092MirroredZ.add(cube_092, cube_092MZ);
   cube_092MirroredZ.position.set(-40.6534, 4.3331, 0);
@@ -1649,8 +1665,12 @@ function CreateStation() {
   cube_bigroof.setRotation(1.5708, 0.0, 0.0);
   let cube_bigroofMZ = cube_bigroof.clone();
   cube_bigroof.position.set(0, 0, 22.6954);
-  cube_bigroofMZ.position.set(0, 0, 22.6954);
-  cube_bigroofMZ.applyMatrix(cube_bigroofMZ.matrixWorld.makeScale(1, 1, -1));
+  cube_bigroofMZ.scale.set(
+    cube_bigroofMZ.scale.x,
+    cube_bigroofMZ.scale.y,
+    -cube_bigroofMZ.scale.z,
+  );
+  cube_bigroofMZ.position.set(0, 0, -22.6954);
   let cube_bigroofMirroredZ = new THREE.Group();
   cube_bigroofMirroredZ.add(cube_bigroof, cube_bigroofMZ);
   cube_bigroofMirroredZ.position.set(-1.2151, -0.2095, 0);
@@ -1663,10 +1683,12 @@ function CreateStation() {
   cube_bigroof_004.setRotation(1.5708, 0.0, 0.0);
   let cube_bigroof_004MZ = cube_bigroof_004.clone();
   cube_bigroof_004.position.set(0, 0, 14.5133);
-  cube_bigroof_004MZ.position.set(0, 0, 14.5133);
-  cube_bigroof_004MZ.applyMatrix(
-    cube_bigroof_004MZ.matrixWorld.makeScale(1, 1, -1),
+  cube_bigroof_004MZ.scale.set(
+    cube_bigroof_004MZ.scale.x,
+    cube_bigroof_004MZ.scale.y,
+    -cube_bigroof_004MZ.scale.z,
   );
+  cube_bigroof_004MZ.position.set(0, 0, -14.5133);
   let cube_bigroof_004MirroredZ = new THREE.Group();
   cube_bigroof_004MirroredZ.add(cube_bigroof_004, cube_bigroof_004MZ);
   cube_bigroof_004MirroredZ.position.set(-1.2151, -3.1009, 0);
@@ -1700,10 +1722,12 @@ function CreateStation() {
   cube_handrail_014.setRotation(0.0, 0.0, 0.7854);
   let cube_handrail_014MZ = cube_handrail_014.clone();
   cube_handrail_014.position.set(0, 0, -5.5815);
-  cube_handrail_014MZ.position.set(0, 0, 7.6983);
-  cube_handrail_014MZ.applyMatrix(
-    cube_handrail_014MZ.matrixWorld.makeScale(1, 1, -1),
+  cube_handrail_014MZ.scale.set(
+    cube_handrail_014MZ.scale.x,
+    cube_handrail_014MZ.scale.y,
+    -cube_handrail_014MZ.scale.z,
   );
+  cube_handrail_014MZ.position.set(0, 0, -7.6983);
   let cube_handrail_014MirroredZ = new THREE.Group();
   cube_handrail_014MirroredZ.add(cube_handrail_014, cube_handrail_014MZ);
   cube_handrail_014MirroredZ.position.set(79.9783, 7.997, 0);
@@ -1716,10 +1740,12 @@ function CreateStation() {
   cube_handrail_013.setRotation(0.0, 0.0, -0.0);
   let cube_handrail_013MZ = cube_handrail_013.clone();
   cube_handrail_013.position.set(0, 0, -5.5815);
-  cube_handrail_013MZ.position.set(0, 0, 7.6983);
-  cube_handrail_013MZ.applyMatrix(
-    cube_handrail_013MZ.matrixWorld.makeScale(1, 1, -1),
+  cube_handrail_013MZ.scale.set(
+    cube_handrail_013MZ.scale.x,
+    cube_handrail_013MZ.scale.y,
+    -cube_handrail_013MZ.scale.z,
   );
+  cube_handrail_013MZ.position.set(0, 0, -7.6983);
   let cube_handrail_013MirroredZ = new THREE.Group();
   cube_handrail_013MirroredZ.add(cube_handrail_013, cube_handrail_013MZ);
   cube_handrail_013MirroredZ.position.set(72.3317, 1.3748, 0);
@@ -1732,10 +1758,12 @@ function CreateStation() {
   cylinder_handrail_020.setRotation(1.5708, 0.0, 0.0);
   let cylinder_handrail_020MZ = cylinder_handrail_020.clone();
   cylinder_handrail_020.position.set(0, 0, -5.5823);
-  cylinder_handrail_020MZ.position.set(0, 0, 7.6976);
-  cylinder_handrail_020MZ.applyMatrix(
-    cylinder_handrail_020MZ.matrixWorld.makeScale(1, 1, -1),
+  cylinder_handrail_020MZ.scale.set(
+    cylinder_handrail_020MZ.scale.x,
+    cylinder_handrail_020MZ.scale.y,
+    -cylinder_handrail_020MZ.scale.z,
   );
+  cylinder_handrail_020MZ.position.set(0, 0, -7.6976);
   let cylinder_handrail_020MirroredZ = new THREE.Group();
   cylinder_handrail_020MirroredZ.add(
     cylinder_handrail_020,
@@ -1751,10 +1779,12 @@ function CreateStation() {
   cylinder_handrail_019.setRotation(1.5708, 0.0, 0.0);
   let cylinder_handrail_019MZ = cylinder_handrail_019.clone();
   cylinder_handrail_019.position.set(0, 0, -5.5823);
-  cylinder_handrail_019MZ.position.set(0, 0, 7.6976);
-  cylinder_handrail_019MZ.applyMatrix(
-    cylinder_handrail_019MZ.matrixWorld.makeScale(1, 1, -1),
+  cylinder_handrail_019MZ.scale.set(
+    cylinder_handrail_019MZ.scale.x,
+    cylinder_handrail_019MZ.scale.y,
+    -cylinder_handrail_019MZ.scale.z,
   );
+  cylinder_handrail_019MZ.position.set(0, 0, -7.6976);
   let cylinder_handrail_019MirroredZ = new THREE.Group();
   cylinder_handrail_019MirroredZ.add(
     cylinder_handrail_019,
@@ -1770,10 +1800,12 @@ function CreateStation() {
   cylinder_handrail_018.setRotation(1.5708, 0.0, 0.0);
   let cylinder_handrail_018MZ = cylinder_handrail_018.clone();
   cylinder_handrail_018.position.set(0, 0, -5.5823);
-  cylinder_handrail_018MZ.position.set(0, 0, 7.6976);
-  cylinder_handrail_018MZ.applyMatrix(
-    cylinder_handrail_018MZ.matrixWorld.makeScale(1, 1, -1),
+  cylinder_handrail_018MZ.scale.set(
+    cylinder_handrail_018MZ.scale.x,
+    cylinder_handrail_018MZ.scale.y,
+    -cylinder_handrail_018MZ.scale.z,
   );
+  cylinder_handrail_018MZ.position.set(0, 0, -7.6976);
   let cylinder_handrail_018MirroredZ = new THREE.Group();
   cylinder_handrail_018MirroredZ.add(
     cylinder_handrail_018,
@@ -1789,10 +1821,12 @@ function CreateStation() {
   cube_handrail_012.setRotation(0.0, -0.0, -3.1416);
   let cube_handrail_012MZ = cube_handrail_012.clone();
   cube_handrail_012.position.set(0, 0, -5.5815);
-  cube_handrail_012MZ.position.set(0, 0, 7.6983);
-  cube_handrail_012MZ.applyMatrix(
-    cube_handrail_012MZ.matrixWorld.makeScale(1, 1, -1),
+  cube_handrail_012MZ.scale.set(
+    cube_handrail_012MZ.scale.x,
+    cube_handrail_012MZ.scale.y,
+    -cube_handrail_012MZ.scale.z,
   );
+  cube_handrail_012MZ.position.set(0, 0, -7.6983);
   let cube_handrail_012MirroredZ = new THREE.Group();
   cube_handrail_012MirroredZ.add(cube_handrail_012, cube_handrail_012MZ);
   cube_handrail_012MirroredZ.position.set(87.9709, 14.5346, 0);
@@ -1805,10 +1839,12 @@ function CreateStation() {
   cylinder_handrail_017.setRotation(1.5708, -0.0, -3.1416);
   let cylinder_handrail_017MZ = cylinder_handrail_017.clone();
   cylinder_handrail_017.position.set(0, 0, -5.5823);
-  cylinder_handrail_017MZ.position.set(0, 0, 7.6976);
-  cylinder_handrail_017MZ.applyMatrix(
-    cylinder_handrail_017MZ.matrixWorld.makeScale(1, 1, -1),
+  cylinder_handrail_017MZ.scale.set(
+    cylinder_handrail_017MZ.scale.x,
+    cylinder_handrail_017MZ.scale.y,
+    -cylinder_handrail_017MZ.scale.z,
   );
+  cylinder_handrail_017MZ.position.set(0, 0, -7.6976);
   let cylinder_handrail_017MirroredZ = new THREE.Group();
   cylinder_handrail_017MirroredZ.add(
     cylinder_handrail_017,
@@ -1840,8 +1876,12 @@ function CreateStation() {
   cube_043.setRotation(1.5708, 0.0, 0.0);
   let cube_043MZ = cube_043.clone();
   cube_043.position.set(0, 0, -5.01);
-  cube_043MZ.position.set(0, 0, -5.01);
-  cube_043MZ.applyMatrix(cube_043MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_043MZ.scale.set(
+    cube_043MZ.scale.x,
+    cube_043MZ.scale.y,
+    -cube_043MZ.scale.z,
+  );
+  cube_043MZ.position.set(0, 0, 5.01);
   let cube_043MirroredZ = new THREE.Group();
   cube_043MirroredZ.add(cube_043, cube_043MZ);
   cube_043MirroredZ.position.set(53.6094, 7.359, 0);
@@ -1851,8 +1891,12 @@ function CreateStation() {
   cube_044.setRotation(1.5708, 0.0, 0.0);
   let cube_044MZ = cube_044.clone();
   cube_044.position.set(0, 0, -2.5808);
-  cube_044MZ.position.set(0, 0, -2.5808);
-  cube_044MZ.applyMatrix(cube_044MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_044MZ.scale.set(
+    cube_044MZ.scale.x,
+    cube_044MZ.scale.y,
+    -cube_044MZ.scale.z,
+  );
+  cube_044MZ.position.set(0, 0, 2.5808);
   let cube_044MirroredZ = new THREE.Group();
   cube_044MirroredZ.add(cube_044, cube_044MZ);
   cube_044MirroredZ.position.set(53.6094, 7.9044, 0);
@@ -1907,8 +1951,12 @@ function CreateStation() {
   cube_050.setRotation(0.0, 0.0, -0.0);
   let cube_050MX = cube_050.clone();
   cube_050.position.set(52.3403, 0, 0);
-  cube_050MX.position.set(-52.416, 0, 0);
-  cube_050MX.applyMatrix(cube_050MX.matrixWorld.makeScale(-1, 1, 1));
+  cube_050MX.scale.set(
+    -cube_050MX.scale.x,
+    cube_050MX.scale.y,
+    cube_050MX.scale.z,
+  );
+  cube_050MX.position.set(52.416, 0, 0);
   let cube_050MirroredX = new THREE.Group();
   cube_050MirroredX.add(cube_050, cube_050MX);
   cube_050MirroredX.position.set(0, 8.8056, -0.0);
@@ -1918,8 +1966,12 @@ function CreateStation() {
   cube_051.setRotation(1.5708, 0.0, 0.0);
   let cube_051MZ = cube_051.clone();
   cube_051.position.set(0, 0, 0.8682);
-  cube_051MZ.position.set(0, 0, 0.8682);
-  cube_051MZ.applyMatrix(cube_051MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_051MZ.scale.set(
+    cube_051MZ.scale.x,
+    cube_051MZ.scale.y,
+    -cube_051MZ.scale.z,
+  );
+  cube_051MZ.position.set(0, 0, -0.8682);
   let cube_051MirroredZ = new THREE.Group();
   cube_051MirroredZ.add(cube_051, cube_051MZ);
   cube_051MirroredZ.position.set(52.3403, 7.9374, 0);
@@ -1929,8 +1981,12 @@ function CreateStation() {
   cube_052.setRotation(2.3562, 0.0, 0.0);
   let cube_052MZ = cube_052.clone();
   cube_052.position.set(0, 0, 0.6139);
-  cube_052MZ.position.set(0, 0, 0.6139);
-  cube_052MZ.applyMatrix(cube_052MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_052MZ.scale.set(
+    cube_052MZ.scale.x,
+    cube_052MZ.scale.y,
+    -cube_052MZ.scale.z,
+  );
+  cube_052MZ.position.set(0, 0, -0.6139);
   let cube_052MirroredZ = new THREE.Group();
   cube_052MirroredZ.add(cube_052, cube_052MZ);
   cube_052MirroredZ.position.set(52.3403, 7.3235, 0);
@@ -1940,8 +1996,12 @@ function CreateStation() {
   cube_053.setRotation(0.7854, 0.0, 0.0);
   let cube_053MZ = cube_053.clone();
   cube_053.position.set(0, 0, 0.6139);
-  cube_053MZ.position.set(0, 0, 0.6139);
-  cube_053MZ.applyMatrix(cube_053MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_053MZ.scale.set(
+    cube_053MZ.scale.x,
+    cube_053MZ.scale.y,
+    -cube_053MZ.scale.z,
+  );
+  cube_053MZ.position.set(0, 0, -0.6139);
   let cube_053MirroredZ = new THREE.Group();
   cube_053MirroredZ.add(cube_053, cube_053MZ);
   cube_053MirroredZ.position.set(52.3403, 8.5513, 0);
@@ -2059,8 +2119,12 @@ function CreateStation() {
   cube_072.setRotation(0.0, 0.0, -0.0);
   let cube_072MZ = cube_072.clone();
   cube_072.position.set(0, 0, 18.6043);
-  cube_072MZ.position.set(0, 0, 18.6043);
-  cube_072MZ.applyMatrix(cube_072MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_072MZ.scale.set(
+    cube_072MZ.scale.x,
+    cube_072MZ.scale.y,
+    -cube_072MZ.scale.z,
+  );
+  cube_072MZ.position.set(0, 0, -18.6043);
   let cube_072MirroredZ = new THREE.Group();
   cube_072MirroredZ.add(cube_072, cube_072MZ);
   cube_072MirroredZ.position.set(-1.2151, -2.8464, 0);
@@ -2070,8 +2134,12 @@ function CreateStation() {
   cube_073.setRotation(-1.0876, 0.0, 0.0);
   let cube_073MZ = cube_073.clone();
   cube_073.position.set(0, 0, 22.347);
-  cube_073MZ.position.set(0, 0, 22.347);
-  cube_073MZ.applyMatrix(cube_073MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_073MZ.scale.set(
+    cube_073MZ.scale.x,
+    cube_073MZ.scale.y,
+    -cube_073MZ.scale.z,
+  );
+  cube_073MZ.position.set(0, 0, -22.347);
   let cube_073MirroredZ = new THREE.Group();
   cube_073MirroredZ.add(cube_073, cube_073MZ);
   cube_073MirroredZ.position.set(-1.4681, -2.5929, 0);
@@ -2081,8 +2149,12 @@ function CreateStation() {
   cube_074.setRotation(0.0, 0.0, -0.0);
   let cube_074MZ = cube_074.clone();
   cube_074.position.set(0, 0, 16.1386);
-  cube_074MZ.position.set(0, 0, 16.1386);
-  cube_074MZ.applyMatrix(cube_074MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_074MZ.scale.set(
+    cube_074MZ.scale.x,
+    cube_074MZ.scale.y,
+    -cube_074MZ.scale.z,
+  );
+  cube_074MZ.position.set(0, 0, -16.1386);
   let cube_074MirroredZ = new THREE.Group();
   cube_074MirroredZ.add(cube_074, cube_074MZ);
   cube_074MirroredZ.position.set(-1.2151, -2.4946, 0);
@@ -2092,8 +2164,12 @@ function CreateStation() {
   cube_075.setRotation(0.0, 0.0, -0.0);
   let cube_075MZ = cube_075.clone();
   cube_075.position.set(0, 0, 21.0701);
-  cube_075MZ.position.set(0, 0, 21.0701);
-  cube_075MZ.applyMatrix(cube_075MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_075MZ.scale.set(
+    cube_075MZ.scale.x,
+    cube_075MZ.scale.y,
+    -cube_075MZ.scale.z,
+  );
+  cube_075MZ.position.set(0, 0, -21.0701);
   let cube_075MirroredZ = new THREE.Group();
   cube_075MirroredZ.add(cube_075, cube_075MZ);
   cube_075MirroredZ.position.set(-1.2151, -2.4946, 0);
@@ -2103,8 +2179,12 @@ function CreateStation() {
   cube_076.setRotation(1.5708, 0.0, 0.0);
   let cube_076MZ = cube_076.clone();
   cube_076.position.set(0, 0, 22.5792);
-  cube_076MZ.position.set(0, 0, 22.5792);
-  cube_076MZ.applyMatrix(cube_076MZ.matrixWorld.makeScale(1, 1, -1));
+  cube_076MZ.scale.set(
+    cube_076MZ.scale.x,
+    cube_076MZ.scale.y,
+    -cube_076MZ.scale.z,
+  );
+  cube_076MZ.position.set(0, 0, -22.5792);
   let cube_076MirroredZ = new THREE.Group();
   cube_076MirroredZ.add(cube_076, cube_076MZ);
   cube_076MirroredZ.position.set(-1.4681, -0.7137, 0);
@@ -2493,10 +2573,12 @@ function CreateStation() {
   cube_floor_columns.setRotation(0.0, 0.0, -0.0);
   let cube_floor_columnsMZ = cube_floor_columns.clone();
   cube_floor_columns.position.set(0, 0, -8.8396);
-  cube_floor_columnsMZ.position.set(0, 0, -8.8396);
-  cube_floor_columnsMZ.applyMatrix(
-    cube_floor_columnsMZ.matrixWorld.makeScale(1, 1, -1),
+  cube_floor_columnsMZ.scale.set(
+    cube_floor_columnsMZ.scale.x,
+    cube_floor_columnsMZ.scale.y,
+    -cube_floor_columnsMZ.scale.z,
   );
+  cube_floor_columnsMZ.position.set(0, 0, 8.8396);
   let cube_floor_columnsMirroredZ = new THREE.Group();
   cube_floor_columnsMirroredZ.add(cube_floor_columns, cube_floor_columnsMZ);
   cube_floor_columnsMirroredZ.position.set(15.9462, 0.5578, 0);
@@ -2517,10 +2599,12 @@ function CreateStation() {
   cube_floor_sided.setRotation(0.0, 0.0, -0.0);
   let cube_floor_sidedMZ = cube_floor_sided.clone();
   cube_floor_sided.position.set(0, 0, -11.612);
-  cube_floor_sidedMZ.position.set(0, 0, -11.612);
-  cube_floor_sidedMZ.applyMatrix(
-    cube_floor_sidedMZ.matrixWorld.makeScale(1, 1, -1),
+  cube_floor_sidedMZ.scale.set(
+    cube_floor_sidedMZ.scale.x,
+    cube_floor_sidedMZ.scale.y,
+    -cube_floor_sidedMZ.scale.z,
   );
+  cube_floor_sidedMZ.position.set(0, 0, 11.612);
   let cube_floor_sidedMirroredZ = new THREE.Group();
   cube_floor_sidedMirroredZ.add(cube_floor_sided, cube_floor_sidedMZ);
   cube_floor_sidedMirroredZ.position.set(0.3561, 0.5394, 0);
@@ -2533,10 +2617,12 @@ function CreateStation() {
   cube_floor_trainsside.setRotation(0.0, 0.0, -0.0);
   let cube_floor_trainssideMZ = cube_floor_trainsside.clone();
   cube_floor_trainsside.position.set(0, 0, -13.6124);
-  cube_floor_trainssideMZ.position.set(0, 0, -13.6124);
-  cube_floor_trainssideMZ.applyMatrix(
-    cube_floor_trainssideMZ.matrixWorld.makeScale(1, 1, -1),
+  cube_floor_trainssideMZ.scale.set(
+    cube_floor_trainssideMZ.scale.x,
+    cube_floor_trainssideMZ.scale.y,
+    -cube_floor_trainssideMZ.scale.z,
   );
+  cube_floor_trainssideMZ.position.set(0, 0, 13.6124);
   let cube_floor_trainssideMirroredZ = new THREE.Group();
   cube_floor_trainssideMirroredZ.add(
     cube_floor_trainsside,
@@ -2752,10 +2838,12 @@ function CreateStation() {
   cube_coloumnsupper_001.setRotation(0.0, 0.0, -0.0);
   let cube_coloumnsupper_001MZ = cube_coloumnsupper_001.clone();
   cube_coloumnsupper_001.position.set(0, 0, -6.1536);
-  cube_coloumnsupper_001MZ.position.set(0, 0, -6.1536);
-  cube_coloumnsupper_001MZ.applyMatrix(
-    cube_coloumnsupper_001MZ.matrixWorld.makeScale(1, 1, -1),
+  cube_coloumnsupper_001MZ.scale.set(
+    cube_coloumnsupper_001MZ.scale.x,
+    cube_coloumnsupper_001MZ.scale.y,
+    -cube_coloumnsupper_001MZ.scale.z,
   );
+  cube_coloumnsupper_001MZ.position.set(0, 0, 6.1536);
   let cube_coloumnsupper_001MirroredZ = new THREE.Group();
   cube_coloumnsupper_001MirroredZ.add(
     cube_coloumnsupper_001,
@@ -2771,10 +2859,12 @@ function CreateStation() {
   cube_coloumnsupper_002.setRotation(-0.7258, 0.0, 0.0);
   let cube_coloumnsupper_002MZ = cube_coloumnsupper_002.clone();
   cube_coloumnsupper_002.position.set(0, 0, -6.124);
-  cube_coloumnsupper_002MZ.position.set(0, 0, -6.124);
-  cube_coloumnsupper_002MZ.applyMatrix(
-    cube_coloumnsupper_002MZ.matrixWorld.makeScale(1, 1, -1),
+  cube_coloumnsupper_002MZ.scale.set(
+    cube_coloumnsupper_002MZ.scale.x,
+    cube_coloumnsupper_002MZ.scale.y,
+    -cube_coloumnsupper_002MZ.scale.z,
   );
+  cube_coloumnsupper_002MZ.position.set(0, 0, 6.124);
   let cube_coloumnsupper_002MirroredZ = new THREE.Group();
   cube_coloumnsupper_002MirroredZ.add(
     cube_coloumnsupper_002,
@@ -2790,10 +2880,12 @@ function CreateStation() {
   cube_coloumnsupper_003.setRotation(0.0, 0.0, -0.0);
   let cube_coloumnsupper_003MZ = cube_coloumnsupper_003.clone();
   cube_coloumnsupper_003.position.set(0, 0, -7.1651);
-  cube_coloumnsupper_003MZ.position.set(0, 0, -7.1651);
-  cube_coloumnsupper_003MZ.applyMatrix(
-    cube_coloumnsupper_003MZ.matrixWorld.makeScale(1, 1, -1),
+  cube_coloumnsupper_003MZ.scale.set(
+    cube_coloumnsupper_003MZ.scale.x,
+    cube_coloumnsupper_003MZ.scale.y,
+    -cube_coloumnsupper_003MZ.scale.z,
   );
+  cube_coloumnsupper_003MZ.position.set(0, 0, 7.1651);
   let cube_coloumnsupper_003MirroredZ = new THREE.Group();
   cube_coloumnsupper_003MirroredZ.add(
     cube_coloumnsupper_003,
@@ -3100,7 +3192,7 @@ function CreateScene(WC: number, HC: number) {
     // объявление сцены
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x444488);
-    camera = new THREE.PerspectiveCamera(70, WC / HC, 0.001, 1000);
+    camera = new THREE.PerspectiveCamera(70, WC / HC, 0.1, 1000);
     renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,

@@ -207,7 +207,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             result += f'var {c_name}= {name}.clone();\n'
             result += f"{name}.position.set(0, 0, {-round(ly, 4)});\n"
             result += f'{c_name}.scale.set({c_name}.scale.x, {c_name}.scale.y, -{c_name}.scale.z);\n'
-            result += f'{c_name}.position.set(0, 0, {-dy});\n'
+            result += f'{c_name}.position.set(0, 0, {dy});\n'
             result += f'var {name}MirroredZ = new THREE.Group();\n'
             result += f'{name}MirroredZ.add({name}, {c_name});\n'
             name += "MirroredZ"

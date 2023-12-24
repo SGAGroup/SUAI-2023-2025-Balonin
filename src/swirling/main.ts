@@ -54,12 +54,18 @@ export function restart(ms: number) {
 THREE.Object3D.prototype.applyMatrix = THREE.Object3D.prototype.applyMatrix4;
 let sceneexist: boolean | undefined = undefined;
 
-// balon setup begin
-let F: boolean = true;
-const X = 0,
+// balon ignore begin
+let X = 0,
   Y = 0,
   Z = 0,
   W = 1;
+let F: boolean = true;
+// balon ignore end
+// РАБОЧЕЕ
+// balon setup begin
+F = true;
+(X = 0), (Y = 0), (Z = 0), (W = 1);
+// balon setup end
 
 // const animatables: {
 //   doors: {
@@ -72,7 +78,6 @@ const X = 0,
 // } = {
 //   doors: [],
 // };
-// balon setup end
 
 // balon ignore begin
 let WC: number, HC: number;
@@ -177,10 +182,10 @@ function main() {
         (WC = window.innerWidth * 0.75),
         (HC = window.innerHeight * 0.75),
       );
+      // balon setup
       CreateScene(WC, HC);
       initParameters();
       CreateWEBCAM(W * (5 * WEBDX - WEBSIZ / 4), -8.1 * W, W * 3);
-      // balon setup
 
       station = CreateStation();
       station.position.set(X, Y, Z);
@@ -249,7 +254,7 @@ function animateControls(time: number) {
 
     const target = new THREE.Vector3();
     controls.getObject().getWorldDirection(target);
-    console.log(target);
+    // console.log(target);
 
     // 2m tall
     // raycaster.ray.origin.y -= 1;
@@ -498,21 +503,22 @@ function CreateWEBCAM(XC: number, YC: number, ZC: number) {
 
 function GetDISbySonarV() {
   raycasterV.set(raycasterV_pos, raycasterV_dir);
-  intersects = raycasterV.intersectObjects(scene.children);
+  intersects = raycasterV.intersectObjects(scene.children, true);
 
   COLV = '#000000';
   if (intersects.length > 0) {
-    // console.warn(intersects);
-    // puts('Нашел объект снизу');
     let DISV = intersects[0].distance;
     if (DISV > 10) DISV = 10;
     LineV.scale.z = DISV / W;
     LineV.visible = true;
-    let INTERSECTED = intersects[0].object;
-    // balon ignore
-    // @ts-expect-error Мы украли это из работающего проекта
-    COLV = '#' + INTERSECTED.material.color.getHexString();
-    // puts(`Цвет снизу: ${COLV}`);
+
+    const colors = intersects.map(
+      // @ts-expect-error Мы украли это из работающего проекта
+      (i) => '#' + i.object.material.color.getHex().toString(16),
+    );
+    COLV = colors[0];
+    console.warn(`Цвет снизу: ${COLV}`);
+
     if (COLV === BORDERCOL.toLowerCase()) {
       puts('Коснулся границы');
       isBorderTouched = true;
@@ -532,13 +538,14 @@ function initParameters() {
 }
 
 function iniRobot() {
-  WEBCOL = zeros(WEBSIZ); // МАТРИЦА ЦВЕТОВ
+  isBorderTouched = false;
+  WEBSIZ = 9; // СТОРОНА МАТРИЦЫ
   DISV = 0; // Дистанция по вертикали
   COLV = '#f8ff50'; // Цвет по вертикали
   FLGV = false; // Флаг дорожки
   RR = AR = XR = YR = 0; // ГЛОНАС
 
-  V = V0 = 0.05; // Скорость
+  V = V0 = 0.01; // Скорость
   STPX = -1;
   STPY = 0; // Элементарные перемещения
   Timer = -10; // Переменная реле времени поворота
@@ -551,7 +558,7 @@ function iniRobot() {
   // ПАРАМЕТРЫ СИСТЕМЫ ЦЕЛИ
   HOMECOL = '#fd9412'; // ЦВЕТ ДОРОЖКИ ДОМОЙ
   TREECOL = '#994422'; // ЦВЕТ ДЕРЕВА
-  BORDERCOL = '#FFBF00';
+  BORDERCOL = '#ff8500';
   TREEDIS = -100; // ДИСТАНЦИЯ ДО ДЕРЕВА
   TREESDX = -100; // КООРДИНАТЫ ДЕРЕВА НА ТАБЛО
   TRESHCOL = '#ffffff'; // ЦВЕТ МУСОРА
@@ -559,7 +566,6 @@ function iniRobot() {
   TRESHSDX = -100; // КООРДИНАТЫ МУСОРА НА ТАБЛО
   TRESHANGLE = 0; // КООРДИНАТЫ УГЛА НА ЦЕЛЬ
   // ПАРАМЕТРЫ СИСТЕМЫ ЗРЕНИЯ
-  WEBSIZ = 9; // СТОРОНА МАТРИЦЫ
   WEBDIS = mulp(ones(WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
   WEBCOL = zeros(WEBSIZ); // МАТРИЦА ЦВЕТОВ
   for (let i = 0; i < WEBSIZ; i++)
@@ -669,31 +675,24 @@ function GetWEBCAM() {
       raycaster_WEB.set(raycaster_WEB_pos, raycaster_WEB_dir);
       intersects = raycaster_WEB.intersectObjects(scene.children);
 
-      scene.remove(V_Helper);
-      V_Helper = new THREE.ArrowHelper(
-        raycasterV.ray.direction,
-        raycasterV.ray.origin,
-        8,
-        0xff0000,
-      );
-      // scene.add(V_Helper);
-      if (IZ === Math.round(WEBSIZ / 2) && IX === Math.round(WEBSIZ / 2)) {
-        scene.remove(H_Helper);
-        H_Helper = new THREE.ArrowHelper(
-          raycaster_WEB.ray.direction,
-          raycaster_WEB.ray.origin,
-          8,
-          0xff0000,
-        );
-        // scene.add(H_Helper);
-      }
-      // H_Helper = new THREE.ArrowHelper(
-      //   raycaster_WEB.ray.direction,
-      //   raycaster_WEB.ray.origin,
+      // scene.remove(V_Helper);
+      // V_Helper = new THREE.ArrowHelper(
+      //   raycasterV.ray.direction,
+      //   raycasterV.ray.origin,
       //   8,
       //   0xff0000,
       // );
-      // scene.add(H_Helper);
+      // scene.add(V_Helper);
+      // if (IZ === Math.round(WEBSIZ / 2) && IX === Math.round(WEBSIZ / 2)) {
+      //   scene.remove(H_Helper);
+      //   H_Helper = new THREE.ArrowHelper(
+      //     raycaster_WEB.ray.direction,
+      //     raycaster_WEB.ray.origin,
+      //     8,
+      //     0xff0000,
+      //   );
+      //   scene.add(H_Helper);
+      // }
 
       WEBDIS = mulp(ones(WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
 
@@ -3101,7 +3100,6 @@ function CreateScene(WC: number, HC: number) {
     // объявление сцены
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x444488);
-    scene.fog = new THREE.Fog(0x333333, 10, 15);
     camera = new THREE.PerspectiveCamera(70, WC / HC, 0.001, 1000);
     renderer = new THREE.WebGLRenderer({
       alpha: true,

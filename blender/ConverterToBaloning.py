@@ -234,7 +234,7 @@ class OBJECT_OT_run_script(bpy.types.Operator):
     def get_mesh_with_modifiers(self, obj, name, material_name, isFunction):
         psr = False
         mir = False
-        _, _, delta_x, _ = "", "", 0, "" if isFunction else self.get_parameters(obj)
+        _, _, delta_x, _ = ("", "", 0, "") if isFunction else self.get_parameters(obj)
         x,y,z = obj.mesh_dimensions
         bykvs = ["i","j","k","f","u","w","h"]
         try:

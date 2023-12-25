@@ -190,7 +190,8 @@ class OBJECT_OT_run_script(bpy.types.Operator):
             bex = True
             blx = True
             c_name = name + "MX"
-            result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
+            if not psr:
+                result += f'{name}.setRotation({round(ex + delta_x, 4)}, {round(ez, 4)}, {round(-ey, 4)});\n'
             result += f'var {c_name}= {name}.clone();\n'
             result += f"{name}.position.set({round(lx, 4)}, 0, 0);\n"
             result += f'{c_name}.scale.set(-{c_name}.scale.x, {c_name}.scale.y, {c_name}.scale.z);\n'

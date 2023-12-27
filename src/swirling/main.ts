@@ -378,7 +378,10 @@ function animatorByName(
 
     for (const it of animations) {
       if (it.startTime > clock || it.startTime + it.time <= clock) continue;
-      const objects = scene.getObjectsByProperty('name', it.objectName);
+      const objects = scene.getObjsByProperty(
+        'name',
+        it.objectName,
+      ) as THREE.Object3D<THREE.Object3DEventMap>[];
       for (const object of objects) {
         if (it.type === 'position') {
           object.position.lerpVectors(
@@ -9692,6 +9695,24 @@ function CreateScene(WC: number, HC: number) {
     this.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), x_rot);
     this.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), z_rot);
     this.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), y_rot);
+  };
+  THREE.Object3D.prototype.getObjsByProperty = function (
+    name,
+    value,
+    result = [],
+  ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((this as any)[name] === value) {
+      result.push(this);
+    }
+
+    const children = this.children;
+
+    for (let i = 0, l = children.length; i < l; i++) {
+      children[i].getObjsByProperty(name, value, result);
+    }
+
+    return result;
   };
 
   if (typeof sceneexist == 'undefined') {

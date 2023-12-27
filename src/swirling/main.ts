@@ -1,7 +1,3 @@
-///TODO: 0) Поднять камеру у роботов
-///TODO: 1) Двери у поездов
-///TODO: 2) Робот-пылесос, вытирающий "мокрый" пол
-///TODO: 3) Сделать так, чтобы роботы не сталкивались друг с другом
 import * as THREE from '../types';
 
 interface RobotData {
@@ -411,27 +407,19 @@ function animatorByName(
       ) as THREE.Object3D<THREE.Object3DEventMap>[];
       for (const object of objects) {
         if (it.type === 'position') {
-          object.position.lerpVectors(
-            object.position,
-            it.vector,
-            1 / (it.time - (clock - it.startTime)),
-          );
+          object.position.lerp(it.vector, (clock - it.startTime) / it.time);
         }
         if (it.type === 'rotation') {
           object.rotation.setFromVector3(
             new THREE.Vector3().lerpVectors(
               new THREE.Vector3().setFromEuler(object.rotation),
               it.vector,
-              1 / (it.time - (clock - it.startTime)),
+              (clock - it.startTime) / it.time,
             ),
           );
         }
         if (it.type === 'scale') {
-          object.scale.lerpVectors(
-            object.scale,
-            it.vector,
-            1 / (it.time - (clock - it.startTime)),
-          );
+          object.scale.lerp(it.vector, (clock - it.startTime) / it.time);
         }
       }
     }
@@ -2136,8 +2124,9 @@ function animateTrains() {
 
   if (current < EPS) {
     // Если начался новый цикл
-    RemoveTrainsFromScene(); // Удалить текущие поезда со сцены
-    DrawTrains(); // Пересоздать поезда
+    // RemoveTrainsFromScene(); // Удалить текущие поезда со сцены
+    MoveTrainsToStart();
+    // DrawTrains(); // Пересоздать поезда
     AddTrainsToScene(); // Добавить поезда на сцену
   }
 
@@ -2188,6 +2177,13 @@ function animateTrains() {
   function RemoveTrainsFromScene() {
     trains.forEach((train) => scene.remove(train));
     resetAnimateDoors();
+  }
+
+  function MoveTrainsToStart() {
+    trains.forEach((train) => {
+      const { x, y, z } = train.userData.startPos;
+      train.position.set(x, y, z);
+    });
   }
 
   function DrawTrains() {
@@ -4604,7 +4600,7 @@ function iniTrains() {
   trains = [];
   trainSummaryTime = 600;
   trainArriveTime = 200;
-  trainStayTime = 150;
+  trainStayTime = 130;
 }
 
 function IniSonarV(robotData: Partial<RobotData>) {

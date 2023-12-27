@@ -378,7 +378,7 @@ function animatorByName(
 
     for (const it of animations) {
       if (it.startTime > clock || it.startTime + it.time <= clock) continue;
-      const objects = scene.getObjsByProperty(
+      const objects = scene.GetObjectsByProperty(
         'name',
         it.objectName,
       ) as THREE.Object3D<THREE.Object3DEventMap>[];
@@ -9696,7 +9696,7 @@ function CreateScene(WC: number, HC: number) {
     this.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), z_rot);
     this.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), y_rot);
   };
-  THREE.Object3D.prototype.getObjsByProperty = function (
+  THREE.Object3D.prototype.GetObjectsByProperty = function (
     name,
     value,
     result = [],
@@ -9709,7 +9709,7 @@ function CreateScene(WC: number, HC: number) {
     const children = this.children;
 
     for (let i = 0, l = children.length; i < l; i++) {
-      children[i].getObjsByProperty(name, value, result);
+      children[i].GetObjectsByProperty(name, value, result);
     }
 
     return result;

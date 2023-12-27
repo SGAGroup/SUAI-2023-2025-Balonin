@@ -54,7 +54,7 @@ function puts(s: unknown) {
   console.log(s);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-lets
 function OpenCanvas(_name: string, _WC: number, _HC: number) {
   //
 }
@@ -167,6 +167,8 @@ function main() {
       // balon setup
       cameras = {};
       currentCamera = undefined;
+      //@ts-expect-error tak nuzhno
+      document.ChangeCamera = ChangeCamera;
 
       CreateScene(WC, HC);
       initParameters();
@@ -190,7 +192,6 @@ function main() {
       Station.position.set(X, Y, Z);
       Station.scale.set(W, W, W);
       scene.add(Station);
-      // station.rotation.set(PI, 0, 0);
 
       RobotM = DrawRobotM();
       RobotM.position.set(X, Y + 1, Z);
@@ -215,8 +216,6 @@ function main() {
     }
   }
 
-  //@ts-expect-error tak nuzhno
-  document.ChangeCamera = ChangeCamera;
   F = true;
   // puts(tick);
   restart(20);
@@ -230,12 +229,8 @@ function render() {
   requestAnimationFrame(render);
 
   if (F) {
-    // if ((RobotMData as RobotData).V > 0) GetWEBCAM();
-    // else (RobotMData as RobotData).LineH.visible = false;
     if (RobotMData.V > 0) GetDISbySonarV(RobotMData);
     else RobotMData.LineV.visible = false;
-    // if ((CleanRobotData as RobotData).V > 0) GetWEBCAM();
-    // else (CleanRobotData as RobotData).LineH.visible = false;
     if (CleanRobotData.V > 0) GetDISbySonarV(CleanRobotData);
     else CleanRobotData.LineV.visible = false;
 
@@ -256,127 +251,9 @@ function animate() {
   animateCleanFloor();
   animateWetFloor();
   animateTrains();
-  // animateDoors();
 }
 
 animate();
-
-function iniDoorsAnimation() {
-  return animatorByName(
-    [
-      {
-        type: 'position',
-        vector: new THREE.Vector3(1, 0, 0),
-        objectName: 'leftDoor',
-        startTime: 0,
-        time: 60,
-      },
-      {
-        type: 'position',
-        vector: new THREE.Vector3(-1, 0, 0),
-        objectName: 'rightDoor',
-        startTime: 0,
-        time: 60,
-      },
-      {
-        type: 'position',
-        vector: new THREE.Vector3(0, 0, 0),
-        objectName: 'leftDoor',
-        startTime: 60,
-        time: 60,
-      },
-      {
-        type: 'position',
-        vector: new THREE.Vector3(0, 0, 0),
-        objectName: 'rightDoor',
-        startTime: 60,
-        time: 60,
-      },
-    ],
-    120,
-    1,
-  );
-}
-function DrawTrainDoor() {
-  const rightDoor = DrawRightDoorFunction();
-  rightDoor.scale.set(1.0, 1.0, 1.0);
-  rightDoor.setRotation(0.0, 0.0, -0.0);
-  const leftDoor = rightDoor.clone();
-  leftDoor.updateMatrixWorld(true);
-  rightDoor.position.set(0.0, 0, 0);
-  leftDoor.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-  leftDoor.position.set(-0.0, 0, 0);
-  const resultDoor = new THREE.Group();
-  resultDoor.add(rightDoor, leftDoor);
-  resultDoor.position.set(0, 0.0, 0.0);
-  const out = new THREE.Group();
-  rightDoor.name = 'rightDoor';
-  leftDoor.name = 'leftDoor';
-  out.add(resultDoor);
-  return out;
-}
-
-/**
- * Конструктор анимаций
- * @param animations - массив анимаций
- * @param type 'position' | 'rotation' | 'scale' - подвид анимации
- * @param vector THREE.Vector3 - целевой вектор, получаемый в конце анимации
- * @param object THREE.Object3D || string - объект на который применяются анимации или имя обьектов
- * @param startTime number - тик начала анимации
- * @param time number - длительность анимации
- *
- * @param endtime - тик прерывания анимаций
- * @param times - количество повторений
- *
- * @returns функция анимации
- */
-function animator(
-  animations: {
-    type: string;
-    vector: THREE.Vector3;
-    object: THREE.Object3D;
-    startTime: number;
-    time: number;
-  }[],
-  endtime: number,
-  times: number,
-) {
-  let clock = 0;
-  return function () {
-    if (clock === endtime) {
-      times--;
-      clock = 0;
-    }
-    if (!times) return;
-    clock++;
-    for (const it of animations) {
-      if (it.startTime > clock || it.startTime + it.time <= clock) continue;
-      if (it.type === 'position') {
-        it.object.position.lerpVectors(
-          it.object.position,
-          it.vector,
-          1 / (it.time - (clock - it.startTime)),
-        );
-      }
-      if (it.type === 'rotation') {
-        it.object.rotation.setFromVector3(
-          new THREE.Vector3().lerpVectors(
-            new THREE.Vector3().setFromEuler(it.object.rotation),
-            it.vector,
-            1 / (it.time - (clock - it.startTime)),
-          ),
-        );
-      }
-      if (it.type === 'scale') {
-        it.object.scale.lerpVectors(
-          it.object.scale,
-          it.vector,
-          1 / (it.time - (clock - it.startTime)),
-        );
-      }
-    }
-  };
-}
 
 function animatorByName(
   animations: {
@@ -411,11 +288,9 @@ function animatorByName(
         }
         if (it.type === 'rotation') {
           object.rotation.setFromVector3(
-            new THREE.Vector3().lerpVectors(
-              new THREE.Vector3().setFromEuler(object.rotation),
-              it.vector,
-              (clock - it.startTime) / it.time,
-            ),
+            new THREE.Vector3()
+              .setFromEuler(object.rotation)
+              .lerp(it.vector, (clock - it.startTime) / it.time),
           );
         }
         if (it.type === 'scale') {
@@ -449,15 +324,6 @@ function animateWetFloor() {
   const y =
     (((RobotMData as RobotData).YR - pos.z) / size.y + 0.5) * imageSize.y;
 
-  // const gradient = wetFloorCtx.createRadialGradient(x, y, 0, x, y, 200);
-  // gradient.addColorStop(0, '#0000ff');
-  // gradient.addColorStop(1, '#ffff00');
-  // wetFloorCtx.strokeStyle = gradient;
-  // wetFloorCtx.lineWidth = 20;
-  // wetFloorCtx.lineCap = 'round';
-  // wetFloorCtx.lineTo(x, y);
-  // wetFloorCtx.stroke();
-
   wetFloorCtx.fillStyle = '#0000ff';
   wetFloorCtx.beginPath();
   wetFloorCtx.arc(x, y, 20, 0, PI * 2);
@@ -465,7 +331,6 @@ function animateWetFloor() {
   wetFloorCtx.fill();
 
   wetFloorTex.needsUpdate = true;
-  // wetFloorCtx.globalCompositeOperation = 'destination-atop';
 }
 
 function animateCleanFloor() {
@@ -491,12 +356,436 @@ function animateCleanFloor() {
   wetFloorCtx.arc(x, y, w, 0, PI * 2);
   wetFloorCtx.closePath();
   wetFloorCtx.fill();
-  // wetFloorCtx.fillStyle = style;
-  // wetFloorCtx.fillRect(x - w / 2, y - w / 2, w / 2, w / 2);
-  // wetFloorCtx.stroke();
   wetFloorTex.needsUpdate = true;
 }
 
+function animateTrains() {
+  const EPS = 100; // in milliseconds
+  const current = tick % trainSummaryTime; //Текущее время цикла
+
+  const isArrived = current > trainArriveTime;
+  const isStay =
+    trainArriveTime < current && current <= trainArriveTime + trainStayTime;
+
+  if (!trains || trains.length === 0) {
+    DrawTrains();
+  }
+
+  if (current < EPS) {
+    // Если начался новый цикл
+    // RemoveTrainsFromScene(); // Удалить текущие поезда со сцены
+    MoveTrainsToStart();
+    // DrawTrains(); // Пересоздать поезда
+    AddTrainsToScene(); // Добавить поезда на сцену
+  }
+
+  for (const train of trains) {
+    if (!train.userData.startPos) {
+      console.error(
+        `У поезда ${train.id} нет стартовой позиции. Cм: userData.startPos`,
+      );
+      return;
+    }
+    if (!train.userData.arrivePos) {
+      console.error(
+        `У поезда ${train.id} нет позиции прибытия. Cм: userData.arrivePos`,
+      );
+      return;
+    }
+    if (!train.userData.endPos) {
+      console.error(`У поезда ${train.id} нет userData.endPos`);
+      return;
+    }
+
+    //console.log(train.position);
+
+    if (!isArrived)
+      // Поезд приезжает
+      // Передвижение из туннеля к платформе
+      train.position.lerpVectors(
+        train.userData.startPos,
+        train.userData.arrivePos,
+        easeOutQuad(current / trainArriveTime),
+      );
+    else if (!isStay)
+      // Поезд уезжает
+      // Движение от платформы к следующей станции
+      train.position.lerpVectors(
+        train.userData.arrivePos,
+        train.userData.endPos,
+        easeInQuad(
+          (current - trainArriveTime - trainStayTime) /
+            (trainSummaryTime - trainArriveTime - trainStayTime),
+        ),
+      );
+    if (isStay) {
+      animateDoors();
+    }
+  }
+
+  function MoveTrainsToStart() {
+    trains.forEach((train) => {
+      const { x, y, z } = train.userData.startPos;
+      train.position.set(x, y, z);
+      resetAnimateDoors();
+    });
+  }
+
+  function DrawTrains() {
+    const trainCreationData: Array<{
+      startPos: THREE.Vector3;
+      arrivePos: THREE.Vector3;
+      endPos: THREE.Vector3;
+    }> = [
+      {
+        startPos: new THREE.Vector3(150, -1, -18.604),
+        arrivePos: new THREE.Vector3(-20, -1, -18.604),
+        endPos: new THREE.Vector3(-250, -1, -18.604),
+      },
+      {
+        startPos: new THREE.Vector3(-150, -1, 18.604),
+        arrivePos: new THREE.Vector3(-20, -1, 18.604),
+        endPos: new THREE.Vector3(250, -1, 18.604),
+      },
+    ];
+
+    trains = trainCreationData.map((data) => {
+      const { startPos } = data;
+
+      const train = DrawTrain();
+      train.userData = data;
+      {
+        const { x, y, z } = startPos;
+        train.position.set(x, y, z);
+      }
+      return train;
+    });
+  }
+
+  function AddTrainsToScene() {
+    trains.forEach((train) => scene.add(train));
+  }
+
+  function easeOutQuad(t: number, b: number = 0, c: number = 1, d: number = 1) {
+    return -c * (t /= d) * (t - 2) + b;
+  }
+
+  function easeInQuad(t: number, b: number = 0, c: number = 1, d: number = 1) {
+    return c * (t /= d) * t + b;
+  }
+}
+
+function animateRobot(robotObj: THREE.Object3D, robotData: RobotData) {
+  // ГЛОНАС ДАТЧИК
+  robotData.XR = robotObj.position.x;
+  robotData.YR = robotObj.position.z;
+  robotData.AR = abs(robotObj.rotation.y);
+  if (robotData.AR > 2 * PI) robotData.AR -= 2 * PI;
+  robotData.RR = sqrt(pow(robotData.XR - X, 2) + pow(robotData.YR - Y, 2));
+
+  // ОПРОС ВЕБКАМЕРЫ
+  // DisWEBCAM(); // LineH.rotation.z=sin(0.8*tick);
+  // РЕФЛЕКСЫ
+  switch (true) {
+    case robotData.isBorderTouched: //КАСАНИЕ ГРАНИЦЫ
+      // См. https://www.desmos.com/calculator/rgjllht2hk
+      const multiplier = 50; // m_ult;
+      const worldOrigin = new THREE.Vector3(20, 0, 0); // O
+
+      const robotForward = new THREE.Vector3(
+        cos(robotObj.rotation.z),
+        0,
+        -sin(robotObj.rotation.z),
+      );
+
+      const toCenterVec = worldOrigin.sub(robotObj.position.clone());
+
+      const randomDirection = new THREE.Vector3(
+        random(1),
+        0,
+        random(1),
+      ).normalize();
+
+      const D = robotObj.position.clone().distanceTo(worldOrigin) / multiplier;
+      randomDirection.add(toCenterVec.multiplyScalar(D));
+
+      const deltaInRadians = robotForward
+        .clone()
+        .setComponent(1, 0)
+        .angleTo(randomDirection);
+
+      robotObj.rotateZ(deltaInRadians);
+      robotData.isBorderTouched = false;
+      break;
+    // МАНЕВР ПОВОРОТА
+    case tick - robotData.Timer <= robotData.NUMTURN:
+      robotObj.rotation.y -= robotData.ANGLE / robotData.NUMTURN;
+      robotData.CR = cos(robotObj.rotation.y);
+      robotData.SR = sin(robotObj.rotation.y);
+      robotData.STPX = robotData.V * robotData.CR;
+      robotData.STPY = robotData.V * robotData.SR;
+      robotData.TRESHTimer = -10;
+      break;
+    // МАНЕВР ПОВОРОТА НА МУСОР
+    default:
+      switch (true) {
+        default:
+          switch (true) {
+            default: // ПЕРЕМЕЩЕНИЕ
+              robotData.CR = cos(robotObj.rotation.z);
+              robotData.SR = sin(robotObj.rotation.z);
+              robotData.STPX = robotData.V * robotData.CR;
+              robotData.STPY = robotData.V * -robotData.SR;
+              robotObj.position.x = robotObj.position.x + robotData.STPX;
+              robotObj.position.z = robotObj.position.z + robotData.STPY;
+          }
+      }
+  }
+  // puts(currentCase);
+
+  SetSonarV(robotObj, robotData);
+  OutWEBCAM(robotData);
+}
+
+function iniDoorsAnimation() {
+  return animatorByName(
+    [
+      {
+        type: 'position',
+        vector: new THREE.Vector3(1, 0, 0),
+        objectName: 'leftDoor',
+        startTime: 0,
+        time: 100,
+      },
+      {
+        type: 'position',
+        vector: new THREE.Vector3(-1, 0, 0),
+        objectName: 'rightDoor',
+        startTime: 0,
+        time: 100,
+      },
+      {
+        type: 'position',
+        vector: new THREE.Vector3(0, 0, 0),
+        objectName: 'leftDoor',
+        startTime: 100,
+        time: 100,
+      },
+      {
+        type: 'position',
+        vector: new THREE.Vector3(0, 0, 0),
+        objectName: 'rightDoor',
+        startTime: 100,
+        time: 100,
+      },
+    ],
+    300,
+    1,
+  );
+}
+function initParameters() {
+  clock = new THREE.Clock();
+
+  //@ts-expect-error eto nuzhno
+  RobotMData = {};
+  //@ts-expect-error eto nuzhno
+  CleanRobotData = {};
+
+  iniRobot(RobotMData);
+  iniRobot(CleanRobotData);
+  iniTrains();
+  [animateDoors, resetAnimateDoors] = iniDoorsAnimation();
+  IniSonarV(RobotMData);
+  IniSonarV(CleanRobotData);
+}
+
+function iniRobot(robotData: Partial<RobotData>) {
+  robotData.isBorderTouched = false;
+  robotData.WEBSIZ = 9; // СТОРОНА МАТРИЦЫ
+  robotData.DISV = 0; // Дистанция по вертикали
+  robotData.COLV = '#f8ff50'; // Цвет по вертикали
+  robotData.FLGV = false; // Флаг дорожки
+  robotData.RR = robotData.AR = robotData.XR = robotData.YR = 0; // ГЛОНАС
+
+  robotData.V = robotData.V0 = 0.05; // Скорость
+  robotData.STPX = -1;
+  robotData.STPY = 0; // Элементарные перемещения
+  robotData.Timer = -10; // Переменная реле времени поворота
+  robotData.TRESHTimer = -10; // Переменная времени мусора
+  // FLAMETimer = -10; // Переменная времени пламени
+  robotData.HOMETimer = 100; // Переменная времени желания домой
+  robotData.HOMESleep = 2000; // Переменная времени сна
+  robotData.NUMTURN = 5; // Число шагов на поворот
+  robotData.ANGLE = 0; // Угол поворота корпуса
+  // ПАРАМЕТРЫ СИСТЕМЫ ЦЕЛИ
+  robotData.HOMECOL = '#fd9412'; // ЦВЕТ ДОРОЖКИ ДОМОЙ
+  robotData.TREECOL = '#994422'; // ЦВЕТ ДЕРЕВА
+
+  robotData.BORDERCOL = '#ff8500'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
+
+  // balon ignore
+  // У нас и у балонина разные цвета почему-то. Предполагается, что из-за версии
+  // balon ignore
+  robotData.BORDERCOL = '#ffbf00'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
+
+  robotData.TREEDIS = -100; // ДИСТАНЦИЯ ДО ДЕРЕВА
+  robotData.TREESDX = -100; // КООРДИНАТЫ ДЕРЕВА НА ТАБЛО
+  robotData.TRESHCOL = '#ffffff'; // ЦВЕТ МУСОРА
+  robotData.TRESHDIS = -100; // ДИСТАНЦИЯ ДО МУСОРА
+  robotData.TRESHSDX = -100; // КООРДИНАТЫ МУСОРА НА ТАБЛО
+  robotData.TRESHANGLE = 0; // КООРДИНАТЫ УГЛА НА ЦЕЛЬ
+  // ПАРАМЕТРЫ СИСТЕМЫ ЗРЕНИЯ
+  robotData.WEBDIS = mulp(ones(robotData.WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
+  robotData.WEBCOL = zeros(robotData.WEBSIZ); // МАТРИЦА ЦВЕТОВ
+  for (let i = 0; i < robotData.WEBSIZ; i++)
+    for (let j = 0; j < robotData.WEBSIZ; j++)
+      robotData.WEBCOL[i][j] = '#f8ff50';
+  robotData.WEBDZ = 0.05; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ВЫСОТЕ
+  robotData.WEBDX = 0.1; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ШИРИНЕ
+}
+
+function iniTrains() {
+  trains = [];
+  trainSummaryTime = 800;
+  trainArriveTime = 200;
+  trainStayTime = 300;
+}
+
+function IniSonarV(robotData: Partial<RobotData>) {
+  // СОЗДАНИЕ ПЕРЕМЕННЫХ СОНАРА
+  robotData.raycasterV_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
+  robotData.raycasterV_dir = new THREE.Vector3(0, -W, 0); // вектор, куда запускаем луч
+  robotData.raycasterV = new THREE.Raycaster(undefined, undefined, 0, 100);
+
+  robotData.intersects = robotData.raycasterV.intersectObjects(scene.children);
+}
+function GetDISbySonarV(robotData: RobotData) {
+  robotData.raycasterV.set(robotData.raycasterV_pos, robotData.raycasterV_dir);
+  robotData.intersects = robotData.raycasterV.intersectObjects(
+    scene.children,
+    true,
+  );
+
+  robotData.COLV = '#000000';
+  if (robotData.intersects.length > 0) {
+    let DISV = robotData.intersects[0].distance;
+    if (DISV > 10) DISV = 10;
+    robotData.LineV.scale.z = DISV / W;
+    robotData.LineV.visible = true;
+
+    const colors = robotData.intersects.map(
+      // @ts-expect-error Мы украли это из работающего проекта
+      (i) => '#' + i.object.material.color.getHex().toString(16),
+    );
+    robotData.COLV = colors[0];
+    // console.warn(`Цвет снизу: ${COLV}`);
+
+    if (robotData.COLV === robotData.BORDERCOL.toLowerCase()) {
+      puts('Коснулся границы');
+      robotData.isBorderTouched = true;
+    }
+    // puts(COLV);
+  } else {
+    robotData.LineV.visible = false;
+  }
+}
+function SetSonarV(robot: THREE.Object3D, robotData: Partial<RobotData>) {
+  if (!robotData || !robotData.raycasterV_pos || !robotData.Sonar) return;
+  // ВЫЧИСЛЯЕМ НОВЫЕ КООРДИНАТЫ СОНАРА
+  const CR = cos(robot.rotation.z);
+  const SR = sin(robot.rotation.z);
+  robotData.raycasterV_pos.y = RobotM.position.y;
+  robotData.raycasterV_pos.x =
+    robot.position.x + (W * robotData.Sonar.position.x * CR) / 3;
+  robotData.raycasterV_pos.z =
+    robot.position.z + (W * robotData.Sonar.position.x * -SR) / 3;
+}
+
+function DisWEBCAM(robotData: RobotData) {
+  // ВЫТАЩИМ СРЕДНЮЮ КООРДИНАТУ ДЕРЕВА И МУСОРА ИЗ ТАБЛО
+  let N1, N2;
+  N1 = N2 = 0;
+  let S1, S2;
+  S1 = S2 = 0;
+  robotData.TREESDX = -100;
+  robotData.TREEDIS = 0;
+  robotData.TRESHSDX = -100;
+  robotData.TRESHDIS = 0;
+  for (let i = 0; i < robotData.WEBSIZ; i++)
+    for (let j = 0; j < robotData.WEBSIZ; j++) {
+      robotData.DIS = robotData.WEBDIS[i][j];
+      const Col = robotData.WEBCOL[i][j];
+      if (Col == robotData.TREECOL) {
+        N1++;
+        S1 += j;
+        robotData.TREEDIS += robotData.DIS;
+      }
+      if (Col == robotData.TRESHCOL) {
+        N2++;
+        S2 += j;
+        robotData.TRESHDIS += robotData.DIS;
+      }
+    }
+  if (N1) {
+    robotData.TREESDX = S1 / N1;
+    robotData.TREEDIS = robotData.TREEDIS / N1; // LineH.scale.x=TREEDIS/W;
+  } else robotData.TREEDIS = 100;
+  if (N2) {
+    robotData.TRESHSDX = S2 / N2;
+    robotData.TRESHDIS = robotData.TRESHDIS / N2;
+    robotData.LineH.scale.x = robotData.TRESHDIS / W;
+  } else robotData.TRESHDIS = 100; // putm(WEBCOL); putm(WEBDIS);
+}
+
+function OutWEBCAM(robotData: RobotData) {
+  let i, j, Col;
+  for (i = 0; i < robotData.WEBSIZ; i++)
+    for (j = 0; j < robotData.WEBSIZ; j++) {
+      robotData.DIS = robotData.WEBDIS[i][j];
+      Col = robotData.WEBCOL[i][j];
+      const ColR = floor((parseInt(Col.slice(1, 3), 16) * 5) / robotData.DIS);
+      const ColG = floor((parseInt(Col.slice(3, 5), 16) * 5) / robotData.DIS);
+      const ColB = floor((parseInt(Col.slice(5, 7), 16) * 5) / robotData.DIS);
+      Col = RGB2HEX(ColR, ColG, ColB);
+      // Graphcube[i][j].position.z = ColBW / 500;
+      // balon ignore
+      // @ts-expect-error У балонина работает
+      robotData.Materialcube[i][j].color.set(Col);
+    }
+}
+
+function CreateWEBCAM(
+  XC: number,
+  YC: number,
+  ZC: number,
+  robotData: RobotData,
+) {
+  // ПАРАМЕТРЫ ЛУЧА
+  robotData.raycaster_WEB_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
+  robotData.raycaster_WEB_dir = new THREE.Vector3(W, 0, 0); // вектор, куда запускаем луч
+  robotData.raycaster_WEB = new THREE.Raycaster(undefined, undefined, 0, 10);
+  robotData.intersects = robotData.raycaster_WEB.intersectObjects(
+    scene.children,
+  );
+
+  // WEBDX ШАГ РАЗВЕРТКИ ЛУЧА ПО ШИРИНЕ
+  // WEBDZ ШАГ РАЗВЕРТКИ ЛУЧА ПО ВЫСОТЕ
+  const DX = 5 * robotData.WEBDX;
+  const DY = 0.1;
+  const DZ = 5 * robotData.WEBDZ;
+  const Graphcube = zeros(robotData.WEBSIZ);
+  robotData.Materialcube = zeros(robotData.WEBSIZ);
+  const geometry = new THREE.BoxGeometry(DX, DY, DZ);
+  for (let i = 0; i < robotData.WEBSIZ; i++)
+    for (let j = 0; j < robotData.WEBSIZ; j++) {
+      robotData.Materialcube[i][j] = new THREE.MeshBasicMaterial({
+        color: 0xf8ff50,
+      });
+      Graphcube[i][j] = new THREE.Mesh(geometry, robotData.Materialcube[i][j]);
+      Graphcube[i][j].position.set(XC + DX * j, YC, ZC - DZ * i);
+      scene.add(Graphcube[i][j]);
+    }
+}
 function DrawWetFloor() {
   const baseSize = 256;
 
@@ -533,8 +822,6 @@ function DrawWetFloor() {
     color: new THREE.Color(0.477, 0.3902, 0.2623),
     metalness: 0.3,
     roughness: 1,
-    // metalness: 0.123,
-    // roughness: 0.1508,
     metalnessMap: wetFloorTex,
     roughnessMap: wetFloorTex,
   });
@@ -552,9 +839,41 @@ function DrawWetFloor() {
     return 1 << (31 - Math.clz32(n));
   }
 }
+function DrawTrain() {
+  const trainLength = 3; //Количество вагонов в поезде
 
+  const originVagon = DrawVagon();
+  const boundingBox = new THREE.Box3().setFromObject(originVagon);
+  const vagonLength = boundingBox.max.x - boundingBox.min.x;
+
+  const train = new THREE.Object3D();
+  for (let i = 0; i < trainLength; i++) {
+    const newVagon = originVagon.clone();
+    newVagon.position.x = i * (vagonLength + 0.3);
+    train.add(newVagon);
+  }
+  return train;
+}
+function DrawTrainDoor() {
+  const rightDoor = DrawRightDoorFunction();
+  rightDoor.scale.set(1.0, 1.0, 1.0);
+  rightDoor.setRotation(0.0, 0.0, -0.0);
+  const leftDoor = rightDoor.clone();
+  leftDoor.updateMatrixWorld(true);
+  rightDoor.position.set(0.0, 0, 0);
+  leftDoor.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+  leftDoor.position.set(-0.0, 0, 0);
+  const resultDoor = new THREE.Group();
+  resultDoor.add(rightDoor, leftDoor);
+  resultDoor.position.set(0, 0.0, 0.0);
+  const out = new THREE.Group();
+  rightDoor.name = 'rightDoor';
+  leftDoor.name = 'leftDoor';
+  out.add(resultDoor);
+  return out;
+}
 function DrawRobotM() {
-  let MetalMaterial = new THREE.MeshStandardMaterial({
+  const MetalMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.477, 0.477, 0.477),
     metalness: 1.0,
     roughness: 0.5,
@@ -1942,90 +2261,90 @@ function DrawRobotM() {
 }
 
 function DrawCleanRobot() {
-  let Material_002 = new THREE.MeshStandardMaterial({
+  const Material_002 = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.0504, 0.209, 1.0),
     roughness: 0.5,
   });
-  let Material_001 = new THREE.MeshStandardMaterial({
+  const Material_001 = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.0, 0.0, 0.0),
     roughness: 0.5,
   });
-  let Material_006 = new THREE.MeshStandardMaterial({
+  const Material_006 = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.1788, 0.1788, 0.1788),
     roughness: 0.5,
   });
-  let Material_007 = new THREE.MeshStandardMaterial({
+  const Material_007 = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.504, 0.4274, 0.4433),
     roughness: 0.5,
   });
-  let Material_005 = new THREE.MeshStandardMaterial({
+  const Material_005 = new THREE.MeshStandardMaterial({
     color: new THREE.Color(1.0, 0.0146, 0.0039),
     roughness: 0.5,
   });
-  let Material_003 = new THREE.MeshStandardMaterial({
+  const Material_003 = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.0154, 0.8, 0.0),
     roughness: 0.5,
   });
-  let cylinder_brushesMaterial = new THREE.MeshStandardMaterial({
+  const cylinder_brushesMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.2254, 0.0735, 0.8924),
   });
-  let Material = new THREE.MeshStandardMaterial({
+  const Material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(1.0, 1.0, 1.0),
     metalness: 1.0,
     roughness: 0.5,
   });
 
-  let cylinder_bodyGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-  let cylinder_body = new THREE.Mesh(cylinder_bodyGeometry, Material_002);
+  const cylinder_bodyGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_body = new THREE.Mesh(cylinder_bodyGeometry, Material_002);
   cylinder_body.position.set(0.0, 0.1347, -0.0);
   cylinder_body.scale.set(0.5636, -0.0994, 0.5636);
 
-  let cylinder_wheel2Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-  let cylinder_wheel2 = new THREE.Mesh(cylinder_wheel2Geometry, Material_001);
+  const cylinder_wheel2Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_wheel2 = new THREE.Mesh(cylinder_wheel2Geometry, Material_001);
   cylinder_wheel2.position.set(-0.3844, 0.0394, 0.2595);
   cylinder_wheel2.scale.set(-0.0516, -0.0176, -0.0515);
   cylinder_wheel2.setRotation(1.8196, -4.5347, 1.5422);
 
-  let sphere_supportGeometry = new THREE.SphereGeometry(1, 32, 16);
-  let sphere_support = new THREE.Mesh(sphere_supportGeometry, Material_006);
+  const sphere_supportGeometry = new THREE.SphereGeometry(1, 32, 16);
+  const sphere_support = new THREE.Mesh(sphere_supportGeometry, Material_006);
   sphere_support.position.set(0.0, 0.0515, -0.4844);
   sphere_support.scale.set(0.0434, 0.0434, 0.0434);
 
-  let cylinder_wheel3Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-  let cylinder_wheel3 = new THREE.Mesh(cylinder_wheel3Geometry, Material_001);
+  const cylinder_wheel3Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_wheel3 = new THREE.Mesh(cylinder_wheel3Geometry, Material_001);
   cylinder_wheel3.position.set(0.0001, 0.0052, -0.4846);
   cylinder_wheel3.scale.set(-0.0159, -0.0054, -0.0158);
   cylinder_wheel3.setRotation(1.8196, -1.8235, 1.5422);
 
-  let cylinder_wheel1Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-  let cylinder_wheel1 = new THREE.Mesh(cylinder_wheel1Geometry, Material_001);
+  const cylinder_wheel1Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_wheel1 = new THREE.Mesh(cylinder_wheel1Geometry, Material_001);
   cylinder_wheel1.position.set(0.3747, 0.0394, 0.2595);
   cylinder_wheel1.scale.set(-0.0516, -0.0176, -0.0515);
   cylinder_wheel1.setRotation(-1.322, -2.628, 1.5994);
 
-  let cube_displayGeometry = new THREE.BoxGeometry(2, 2, 2);
-  let cube_display = new THREE.Mesh(cube_displayGeometry, Material_007);
+  const cube_displayGeometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_display = new THREE.Mesh(cube_displayGeometry, Material_007);
   cube_display.position.set(0.0, 0.2231, -0.0);
   cube_display.scale.set(-0.2711, -0.0151, -0.2711);
 
-  let cylinder_button_offGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-  let cylinder_button_off = new THREE.Mesh(
+  const cylinder_button_offGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_button_off = new THREE.Mesh(
     cylinder_button_offGeometry,
     Material_005,
   );
   cylinder_button_off.position.set(0.0516, 0.2185, -0.4293);
   cylinder_button_off.scale.set(0.0227, 0.0227, 0.0227);
 
-  let cylinder_button_onGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-  let cylinder_button_on = new THREE.Mesh(
+  const cylinder_button_onGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_button_on = new THREE.Mesh(
     cylinder_button_onGeometry,
     Material_003,
   );
   cylinder_button_on.position.set(-0.0509, 0.2185, -0.4293);
   cylinder_button_on.scale.set(0.0227, 0.0227, 0.0227);
 
-  let cylinder_brushesGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-  let cylinder_brushes = new THREE.Mesh(
+  const cylinder_brushesGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_brushes = new THREE.Mesh(
     cylinder_brushesGeometry,
     cylinder_brushesMaterial,
   );
@@ -2033,19 +2352,19 @@ function DrawCleanRobot() {
   cylinder_brushes.scale.set(0.0802, 0.28, 0.0802);
   cylinder_brushes.setRotation(0.0, 0.0, -1.5708);
 
-  let cube_antenna1Geometry = new THREE.BoxGeometry(2, 2, 2);
-  let cube_antenna1 = new THREE.Mesh(cube_antenna1Geometry, Material);
+  const cube_antenna1Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_antenna1 = new THREE.Mesh(cube_antenna1Geometry, Material);
   cube_antenna1.position.set(-0.441, 0.3083, -0.0);
   cube_antenna1.scale.set(-0.0949, -0.0088, -0.0041);
   cube_antenna1.setRotation(0.0, 0.0, -1.0986);
 
-  let cube_antenna2Geometry = new THREE.BoxGeometry(2, 2, 2);
-  let cube_antenna2 = new THREE.Mesh(cube_antenna2Geometry, Material);
+  const cube_antenna2Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_antenna2 = new THREE.Mesh(cube_antenna2Geometry, Material);
   cube_antenna2.position.set(0.4558, 0.3083, -0.0);
   cube_antenna2.scale.set(-0.0949, -0.0088, -0.0041);
   cube_antenna2.setRotation(0.0, 3.1416, -1.0986);
 
-  let robot = new THREE.Group();
+  const robot = new THREE.Group();
   robot.add(
     cylinder_body,
     cylinder_wheel2,
@@ -2063,7 +2382,7 @@ function DrawCleanRobot() {
   robot.rotateY(-PI / 2);
   robot.position.z -= 0.1;
 
-  let out = new THREE.Group();
+  const out = new THREE.Group();
   out.add(robot);
 
   // ===== CAMERA 2
@@ -2079,8 +2398,8 @@ function DrawCleanRobot() {
   CleanRobotData.Sonar.scale.setScalar(0.2);
 
   // Линия луча
-  let geometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 9);
-  let material = new THREE.MeshLambertMaterial({ color: 0xffdd00 });
+  const geometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 9);
+  const material = new THREE.MeshLambertMaterial({ color: 0xffdd00 });
 
   let Linetelo;
   Linetelo = new THREE.Mesh(geometry, material);
@@ -2107,127 +2426,954 @@ function DrawCleanRobot() {
   }
 }
 
-function animateTrains() {
-  const EPS = 100; // in milliseconds
-  const MILLISECONDS_IN_SECOND = 1000;
-  const current = tick % trainSummaryTime; //Текущее время цикла
-  // const current =
-  //   (clock.getElapsedTime() * MILLISECONDS_IN_SECOND) % trainSummaryTime; //Текущее время цикла
-  // console.log(current);
-  const isArrived = current > trainArriveTime;
-  const isStay =
-    trainArriveTime < current && current <= trainArriveTime + trainStayTime;
+function DrawVagonDecorations() {
+  const FloorTileMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.686, 0.6165, 0.3163),
+    roughness: 0.5,
+  });
+  const Metall_RustMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.08, 0.0213, 0.0026),
+    metalness: 0.8254,
+    roughness: 0.8849,
+  });
+  const RoofTilesMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(1.0, 1.0, 1.0),
+    metalness: 1.0,
+  });
+  const Floor_CentralMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.3902, 0.2623),
+    metalness: 0.123,
+    roughness: 0.1508,
+  });
+  const MetalMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.477, 0.477, 0.477),
+    metalness: 1.0,
+    roughness: 0.5,
+  });
+  const Green_PictureMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.0351, 0.4869, 0.0138),
+    roughness: 0.5,
+  });
+  const Floor_StripesMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(1.0, 0.5225, 0.0),
+  });
+  const WhiteDotsMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(1.0, 1.0, 1.0),
+  });
+  const PurpleMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.3581, 0.0, 0.8),
+    roughness: 0.5,
+  });
 
-  if (!trains || trains.length === 0) {
-    DrawTrains();
+  const cube_307Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_307 = new THREE.Mesh(cube_307Geometry, FloorTileMaterial);
+  cube_307.position.set(0.0127, 6.3994, -1.6438);
+  cube_307.scale.set(12.5105, 0.1214, 0.8001);
+  cube_307.setRotation(-0.2859, 0.0, 0.0);
+
+  const cube_308Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_308 = new THREE.Mesh(cube_308Geometry, FloorTileMaterial);
+  cube_308.position.set(0.0127, 6.725, -0.7205);
+  cube_308.scale.set(12.5105, 0.1214, 0.2164);
+  cube_308.setRotation(1.5708, 0.0, 0.0);
+
+  const cube_309Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_309 = new THREE.Mesh(cube_309Geometry, Metall_RustMaterial);
+  cube_309.position.set(0.0127, 6.725, -0.6018);
+  cube_309.scale.set(12.4539, 0.0107, 0.1974);
+  cube_309.setRotation(1.5708, 0.0, 0.0);
+
+  const cylinder_021Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_021Group = new THREE.Group();
+  for (let i = 0; i < 9; i++) {
+    const cylinder_021 = new THREE.Mesh(
+      cylinder_021Geometry,
+      Metall_RustMaterial,
+    );
+    cylinder_021.scale.set(0.3252, 0.052, 0.3252);
+    cylinder_021.position.set(-2.732 * i, 0, 0);
+    cylinder_021Group.add(cylinder_021);
   }
-
-  if (current < EPS) {
-    // Если начался новый цикл
-    // RemoveTrainsFromScene(); // Удалить текущие поезда со сцены
-    MoveTrainsToStart();
-    // DrawTrains(); // Пересоздать поезда
-    AddTrainsToScene(); // Добавить поезда на сцену
+  cylinder_021Group.position.set(10.931, 6.8703, 0.006);
+  const sphere_002Geometry = new THREE.SphereGeometry(1, 32, 16);
+  const sphere_002Group = new THREE.Group();
+  for (let i = 0; i < 9; i++) {
+    const sphere_002 = new THREE.Mesh(sphere_002Geometry, RoofTilesMaterial);
+    sphere_002.scale.set(0.2453, 0.2164, 0.2453);
+    sphere_002.position.set(-2.7314 * i, 0, 0);
+    sphere_002Group.add(sphere_002);
   }
-
-  for (const train of trains) {
-    if (!train.userData.startPos) {
-      console.error(
-        `У поезда ${train.id} нет стартовой позиции. Cм: userData.startPos`,
-      );
-      return;
-    }
-    if (!train.userData.arrivePos) {
-      console.error(
-        `У поезда ${train.id} нет позиции прибытия. Cм: userData.arrivePos`,
-      );
-      return;
-    }
-    if (!train.userData.endPos) {
-      console.error(`У поезда ${train.id} нет userData.endPos`);
-      return;
-    }
-
-    //console.log(train.position);
-
-    if (!isArrived)
-      // Поезд приезжает
-      // Передвижение из туннеля к платформе
-      train.position.lerpVectors(
-        train.userData.startPos,
-        train.userData.arrivePos,
-        easeOutQuad(current / trainArriveTime),
-      );
-    else if (!isStay)
-      // Поезд уезжает
-      // Движение от платформы к следующей станции
-      train.position.lerpVectors(
-        train.userData.arrivePos,
-        train.userData.endPos,
-        easeInQuad(
-          (current - trainArriveTime - trainStayTime) /
-            (trainSummaryTime - trainArriveTime - trainStayTime),
-        ),
-      );
-    if (isStay) {
-      animateDoors();
-    }
+  sphere_002Group.position.set(10.931, 6.8266, 0.006);
+  const cube_310Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_310Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_310 = new THREE.Mesh(cube_310Geometry, Floor_CentralMaterial);
+    cube_310.scale.set(0.0702, 0.2701, 0.4985);
+    cube_310.position.set(6.4288 * i, 0, 0);
+    cube_310Group.add(cube_310);
   }
-
-  function RemoveTrainsFromScene() {
-    trains.forEach((train) => scene.remove(train));
-    resetAnimateDoors();
+  cube_310Group.position.set(-8.4084, 2.5756, -1.8708);
+  const cube_311Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_311Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_311 = new THREE.Mesh(cube_311Geometry, Floor_CentralMaterial);
+    cube_311.scale.set(0.0702, 0.1597, 0.5837);
+    cube_311.position.set(6.4288 * i, 0, 0);
+    cube_311Group.add(cube_311);
   }
-
-  function MoveTrainsToStart() {
-    trains.forEach((train) => {
-      const { x, y, z } = train.userData.startPos;
-      train.position.set(x, y, z);
-    });
+  cube_311Group.position.set(-8.4084, 3.0054, -1.7856);
+  const cube_312Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_312Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_312 = new THREE.Mesh(cube_312Geometry, Floor_CentralMaterial);
+    cube_312.scale.set(0.0702, 0.1597, 0.2747);
+    cube_312.position.set(6.4288 * i, 0, 0);
+    cube_312Group.add(cube_312);
   }
-
-  function DrawTrains() {
-    const trainCreationData: Array<{
-      startPos: THREE.Vector3;
-      arrivePos: THREE.Vector3;
-      endPos: THREE.Vector3;
-    }> = [
-      {
-        startPos: new THREE.Vector3(150, -1, -18.604),
-        arrivePos: new THREE.Vector3(-20, -1, -18.604),
-        endPos: new THREE.Vector3(-250, -1, -18.604),
-      },
-      {
-        startPos: new THREE.Vector3(-150, -1, 18.604),
-        arrivePos: new THREE.Vector3(-20, -1, 18.604),
-        endPos: new THREE.Vector3(250, -1, 18.604),
-      },
-    ];
-
-    trains = trainCreationData.map((data) => {
-      const { startPos } = data;
-
-      const train = DrawTrain();
-      train.userData = data;
-      {
-        const { x, y, z } = startPos;
-        train.position.set(x, y, z);
-      }
-      return train;
-    });
+  cube_312Group.setRotation(1.5708, 0.0, 0.0);
+  cube_312Group.position.set(-8.4084, 3.4397, -2.2097);
+  const cube_313Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_313Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_313 = new THREE.Mesh(cube_313Geometry, Floor_CentralMaterial);
+    cube_313.scale.set(0.0702, 0.1264, 0.2747);
+    cube_313.position.set(6.4288 * i, 0, 0);
+    cube_313Group.add(cube_313);
   }
-
-  function AddTrainsToScene() {
-    trains.forEach((train) => scene.add(train));
+  cube_313Group.setRotation(3.1416, 0.0, 0.0);
+  cube_313Group.position.set(-8.4084, 3.8408, -2.0946);
+  const cube_314Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_314Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_314 = new THREE.Mesh(cube_314Geometry, Floor_CentralMaterial);
+    cube_314.scale.set(0.0702, 0.1264, 0.3091);
+    cube_314.position.set(6.4288 * i, 0, 0);
+    cube_314Group.add(cube_314);
   }
-
-  function easeOutQuad(t: number, b: number = 0, c: number = 1, d: number = 1) {
-    return -c * (t /= d) * (t - 2) + b;
+  cube_314Group.setRotation(1.9635, 0.0, 0.0);
+  cube_314Group.position.set(-8.4084, 3.4772, -2.055);
+  const cube_315Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_315Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_315 = new THREE.Mesh(cube_315Geometry, Floor_CentralMaterial);
+    cube_315.scale.set(0.0702, 0.1519, 0.4307);
+    cube_315.position.set(6.4288 * i, 0, 0);
+    cube_315Group.add(cube_315);
   }
-
-  function easeInQuad(t: number, b: number = 0, c: number = 1, d: number = 1) {
-    return c * (t /= d) * t + b;
+  cube_315Group.setRotation(0.3405, 0.0, 0.0);
+  cube_315Group.position.set(-8.4084, 3.1657, -1.6586);
+  const cube_316Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_316Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_316 = new THREE.Mesh(cube_316Geometry, Floor_CentralMaterial);
+    cube_316.scale.set(0.0702, 0.1519, 0.2855);
+    cube_316.position.set(6.4288 * i, 0, 0);
+    cube_316Group.add(cube_316);
   }
+  cube_316Group.setRotation(1.8909, 0.0, -0.0);
+  cube_316Group.position.set(-8.4084, 2.6225, -1.4359);
+  const cube_317Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_317Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_317 = new THREE.Mesh(cube_317Geometry, Floor_CentralMaterial);
+    cube_317.scale.set(0.0702, 0.2701, 0.4985);
+    cube_317.position.set(6.4288 * i, 0, 0);
+    cube_317Group.add(cube_317);
+  }
+  cube_317Group.position.set(-4.4057, 2.5756, -1.8708);
+  const cube_318Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_318Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_318 = new THREE.Mesh(cube_318Geometry, Floor_CentralMaterial);
+    cube_318.scale.set(0.0702, 0.1597, 0.5837);
+    cube_318.position.set(6.4288 * i, 0, 0);
+    cube_318Group.add(cube_318);
+  }
+  cube_318Group.position.set(-4.4057, 3.0054, -1.7856);
+  const cube_319Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_319Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_319 = new THREE.Mesh(cube_319Geometry, Floor_CentralMaterial);
+    cube_319.scale.set(0.0702, 0.1597, 0.2747);
+    cube_319.position.set(6.4288 * i, 0, 0);
+    cube_319Group.add(cube_319);
+  }
+  cube_319Group.setRotation(1.5708, 0.0, 0.0);
+  cube_319Group.position.set(-4.4057, 3.4397, -2.2097);
+  const cube_320Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_320Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_320 = new THREE.Mesh(cube_320Geometry, Floor_CentralMaterial);
+    cube_320.scale.set(0.0702, 0.1264, 0.2747);
+    cube_320.position.set(6.4288 * i, 0, 0);
+    cube_320Group.add(cube_320);
+  }
+  cube_320Group.setRotation(3.1416, 0.0, 0.0);
+  cube_320Group.position.set(-4.4057, 3.8408, -2.0946);
+  const cube_321Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_321Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_321 = new THREE.Mesh(cube_321Geometry, Floor_CentralMaterial);
+    cube_321.scale.set(0.0702, 0.1264, 0.3091);
+    cube_321.position.set(6.4288 * i, 0, 0);
+    cube_321Group.add(cube_321);
+  }
+  cube_321Group.setRotation(1.9635, 0.0, 0.0);
+  cube_321Group.position.set(-4.4057, 3.4772, -2.055);
+  const cube_322Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_322Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_322 = new THREE.Mesh(cube_322Geometry, Floor_CentralMaterial);
+    cube_322.scale.set(0.0702, 0.1519, 0.4307);
+    cube_322.position.set(6.4288 * i, 0, 0);
+    cube_322Group.add(cube_322);
+  }
+  cube_322Group.setRotation(0.3405, 0.0, 0.0);
+  cube_322Group.position.set(-4.4057, 3.1657, -1.6586);
+  const cube_323Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_323Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_323 = new THREE.Mesh(cube_323Geometry, Floor_CentralMaterial);
+    cube_323.scale.set(0.0702, 0.1519, 0.2855);
+    cube_323.position.set(6.4288 * i, 0, 0);
+    cube_323Group.add(cube_323);
+  }
+  cube_323Group.setRotation(1.8909, 0.0, -0.0);
+  cube_323Group.position.set(-4.4057, 2.6225, -1.4359);
+  const cylinder_022Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_022Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_022 = new THREE.Mesh(cylinder_022Geometry, MetalMaterial);
+    cylinder_022.scale.set(0.039, 0.4636, 0.039);
+    cylinder_022.position.set(6.4289 * i, 0, 0);
+    cylinder_022Group.add(cylinder_022);
+  }
+  cylinder_022Group.position.set(-8.4084, 3.6063, -1.3034);
+  const cylinder_023Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_023Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_023 = new THREE.Mesh(cylinder_023Geometry, MetalMaterial);
+    cylinder_023.scale.set(0.039, 0.2801, 0.039);
+    cylinder_023.position.set(6.4297 * i, 0, 0);
+    cylinder_023Group.add(cylinder_023);
+  }
+  cylinder_023Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_023Group.position.set(-8.4084, 3.8477, -1.5809);
+  const cylinder_024Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_024Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_024 = new THREE.Mesh(cylinder_024Geometry, MetalMaterial);
+    cylinder_024.scale.set(0.0483, 0.033, 0.0483);
+    cylinder_024.position.set(6.4293 * i, 0, 0);
+    cylinder_024Group.add(cylinder_024);
+  }
+  cylinder_024Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_024Group.position.set(-8.4084, 3.8477, -1.787);
+  const cylinder_025Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_025Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_025 = new THREE.Mesh(cylinder_025Geometry, MetalMaterial);
+    cylinder_025.scale.set(0.0543, 0.0831, 0.0543);
+    cylinder_025.position.set(6.4289 * i, 0, 0);
+    cylinder_025Group.add(cylinder_025);
+  }
+  cylinder_025Group.position.set(-8.4084, 3.2062, -1.3034);
+  const sphere_003Geometry = new THREE.SphereGeometry(1, 32, 16);
+  const sphere_003Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const sphere_003 = new THREE.Mesh(sphere_003Geometry, MetalMaterial);
+    sphere_003.scale.set(0.0552, 0.0552, 0.0552);
+    sphere_003.position.set(6.4265 * i, 0, 0);
+    sphere_003Group.add(sphere_003);
+  }
+  sphere_003Group.position.set(-8.4084, 4.0978, -1.3034);
+  const cylinder_026Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_026Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_026 = new THREE.Mesh(cylinder_026Geometry, MetalMaterial);
+    cylinder_026.scale.set(0.039, 0.5356, 0.039);
+    cylinder_026.position.set(6.4297 * i, 0, 0);
+    cylinder_026Group.add(cylinder_026);
+  }
+  cylinder_026Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_026Group.position.set(-4.4057, 4.0978, -1.8363);
+  const cylinder_027Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_027Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_027 = new THREE.Mesh(cylinder_027Geometry, MetalMaterial);
+    cylinder_027.scale.set(0.0508, 0.0545, 0.0508);
+    cylinder_027.position.set(6.4299 * i, 0, 0);
+    cylinder_027Group.add(cylinder_027);
+  }
+  cylinder_027Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_027Group.position.set(-8.4084, 4.0978, -2.3174);
+  const cylinder_028Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_028Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_028 = new THREE.Mesh(cylinder_028Geometry, MetalMaterial);
+    cylinder_028.scale.set(0.039, 0.5356, 0.039);
+    cylinder_028.position.set(6.4297 * i, 0, 0);
+    cylinder_028Group.add(cylinder_028);
+  }
+  cylinder_028Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_028Group.position.set(-8.4084, 4.0978, -1.8363);
+  const cylinder_029Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_029Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_029 = new THREE.Mesh(cylinder_029Geometry, MetalMaterial);
+    cylinder_029.scale.set(0.0508, 0.0545, 0.0508);
+    cylinder_029.position.set(6.4289 * i, 0, 0);
+    cylinder_029Group.add(cylinder_029);
+  }
+  cylinder_029Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_029Group.position.set(-4.4057, 4.0978, -2.3174);
+  const sphere_004Geometry = new THREE.SphereGeometry(1, 32, 16);
+  const sphere_004Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const sphere_004 = new THREE.Mesh(sphere_004Geometry, MetalMaterial);
+    sphere_004.scale.set(0.0552, 0.0552, 0.0552);
+    sphere_004.position.set(6.4309 * i, 0, 0);
+    sphere_004Group.add(sphere_004);
+  }
+  sphere_004Group.position.set(-4.4057, 4.0978, -1.3034);
+  const cube_324Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_324Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_324 = new THREE.Mesh(cube_324Geometry, Metall_RustMaterial);
+    cube_324.scale.set(2.0087, 0.071, 0.5573);
+    cube_324.position.set(6.4279 * i, 0, 0);
+    cube_324Group.add(cube_324);
+  }
+  cube_324Group.setRotation(3.1416, 0.0, 0.0);
+  cube_324Group.position.set(-6.4071, 3.067, -1.8271);
+  const cube_325Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_325Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_325 = new THREE.Mesh(cube_325Geometry, Metall_RustMaterial);
+    cube_325.scale.set(2.0087, 0.071, 0.4356);
+    cube_325.position.set(6.4279 * i, 0, 0);
+    cube_325Group.add(cube_325);
+  }
+  cube_325Group.setRotation(4.465, 0.0, 0.0);
+  cube_325Group.position.set(-6.4071, 3.4491, -2.2037);
+  const cube_326Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_326Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_326 = new THREE.Mesh(cube_326Geometry, Floor_CentralMaterial);
+    cube_326.scale.set(2.0087, 0.071, 0.4033);
+    cube_326.position.set(6.4279 * i, 0, 0);
+    cube_326Group.add(cube_326);
+  }
+  cube_326Group.setRotation(1.8968, 0.0, 0.0);
+  cube_326Group.position.set(-6.4071, 2.6874, -1.4993);
+  const cylinder_030Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_030Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_030 = new THREE.Mesh(cylinder_030Geometry, MetalMaterial);
+    cylinder_030.scale.set(0.039, 0.4636, 0.039);
+    cylinder_030.position.set(6.4289 * i, 0, 0);
+    cylinder_030Group.add(cylinder_030);
+  }
+  cylinder_030Group.position.set(-4.4057, 3.6063, -1.3034);
+  const cylinder_031Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_031Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_031 = new THREE.Mesh(cylinder_031Geometry, MetalMaterial);
+    cylinder_031.scale.set(0.039, 0.2801, 0.039);
+    cylinder_031.position.set(6.4297 * i, 0, 0);
+    cylinder_031Group.add(cylinder_031);
+  }
+  cylinder_031Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_031Group.position.set(-4.4057, 3.8477, -1.5809);
+  const cylinder_032Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_032Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_032 = new THREE.Mesh(cylinder_032Geometry, MetalMaterial);
+    cylinder_032.scale.set(0.0483, 0.033, 0.0483);
+    cylinder_032.position.set(6.4283 * i, 0, 0);
+    cylinder_032Group.add(cylinder_032);
+  }
+  cylinder_032Group.setRotation(1.5708, 0.0, 0.0);
+  cylinder_032Group.position.set(-4.4057, 3.8477, -1.787);
+  const cylinder_033Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_033Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_033 = new THREE.Mesh(cylinder_033Geometry, MetalMaterial);
+    cylinder_033.scale.set(0.0543, 0.0831, 0.0543);
+    cylinder_033.position.set(6.4289 * i, 0, 0);
+    cylinder_033Group.add(cylinder_033);
+  }
+  cylinder_033Group.position.set(-4.4057, 3.2062, -1.3034);
+  const cube_327Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_327 = new THREE.Mesh(cube_327Geometry, Green_PictureMaterial);
+  cube_327.position.set(-4.8635, 4.8871, -2.3676);
+  cube_327.scale.set(0.5148, 0.0124, 0.5964);
+  cube_327.setRotation(1.5708, 0.0, 0.0);
+
+  const cube_328Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_328 = new THREE.Mesh(cube_328Geometry, Floor_StripesMaterial);
+  cube_328.position.set(7.984, 4.8871, -2.3676);
+  cube_328.scale.set(0.5148, 0.0124, 0.5964);
+  cube_328.setRotation(1.5708, 0.0, 0.0);
+
+  const cube_329Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_329Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_329 = new THREE.Mesh(cube_329Geometry, Floor_CentralMaterial);
+    cube_329.scale.set(0.0702, 0.2701, 0.4985);
+    cube_329.position.set(6.4288 * i, 0, 0);
+    cube_329Group.add(cube_329);
+  }
+  cube_329Group.setRotation(0.0, 3.1416, 0.0);
+  cube_329Group.position.set(8.4518, 2.5756, 1.8774);
+  const cube_330Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_330Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_330 = new THREE.Mesh(cube_330Geometry, Floor_CentralMaterial);
+    cube_330.scale.set(0.0702, 0.1597, 0.5837);
+    cube_330.position.set(6.4288 * i, 0, 0);
+    cube_330Group.add(cube_330);
+  }
+  cube_330Group.setRotation(0.0, 3.1416, 0.0);
+  cube_330Group.position.set(8.4518, 3.0054, 1.7922);
+  const cube_331Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_331Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_331 = new THREE.Mesh(cube_331Geometry, Floor_CentralMaterial);
+    cube_331.scale.set(0.0702, 0.1597, 0.2747);
+    cube_331.position.set(6.4288 * i, 0, 0);
+    cube_331Group.add(cube_331);
+  }
+  cube_331Group.setRotation(1.5708, 3.1416, 0.0);
+  cube_331Group.position.set(8.4518, 3.4397, 2.2163);
+  const cube_332Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_332Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_332 = new THREE.Mesh(cube_332Geometry, Floor_CentralMaterial);
+    cube_332.scale.set(0.0702, 0.1264, 0.2747);
+    cube_332.position.set(6.4288 * i, 0, 0);
+    cube_332Group.add(cube_332);
+  }
+  cube_332Group.setRotation(3.1416, 3.1416, 0.0);
+  cube_332Group.position.set(8.4518, 3.8408, 2.1012);
+  const cube_333Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_333Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_333 = new THREE.Mesh(cube_333Geometry, Floor_CentralMaterial);
+    cube_333.scale.set(0.0702, 0.1264, 0.3091);
+    cube_333.position.set(6.4288 * i, 0, 0);
+    cube_333Group.add(cube_333);
+  }
+  cube_333Group.setRotation(1.9635, 3.1416, 0.0);
+  cube_333Group.position.set(8.4518, 3.4772, 2.0616);
+  const cube_334Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_334Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_334 = new THREE.Mesh(cube_334Geometry, Floor_CentralMaterial);
+    cube_334.scale.set(0.0702, 0.1519, 0.4307);
+    cube_334.position.set(6.4288 * i, 0, 0);
+    cube_334Group.add(cube_334);
+  }
+  cube_334Group.setRotation(0.3405, 3.1416, 0.0);
+  cube_334Group.position.set(8.4518, 3.1657, 1.6652);
+  const cube_335Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_335Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_335 = new THREE.Mesh(cube_335Geometry, Floor_CentralMaterial);
+    cube_335.scale.set(0.0702, 0.1519, 0.2855);
+    cube_335.position.set(6.4288 * i, 0, 0);
+    cube_335Group.add(cube_335);
+  }
+  cube_335Group.setRotation(1.8909, 3.1416, 0.0);
+  cube_335Group.position.set(8.4518, 2.6225, 1.4425);
+  const cube_336Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_336Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_336 = new THREE.Mesh(cube_336Geometry, Floor_CentralMaterial);
+    cube_336.scale.set(0.0702, 0.2701, 0.4985);
+    cube_336.position.set(6.4288 * i, 0, 0);
+    cube_336Group.add(cube_336);
+  }
+  cube_336Group.setRotation(0.0, 3.1416, 0.0);
+  cube_336Group.position.set(4.4491, 2.5756, 1.8774);
+  const cube_337Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_337Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_337 = new THREE.Mesh(cube_337Geometry, Floor_CentralMaterial);
+    cube_337.scale.set(0.0702, 0.1597, 0.5837);
+    cube_337.position.set(6.4288 * i, 0, 0);
+    cube_337Group.add(cube_337);
+  }
+  cube_337Group.setRotation(0.0, 3.1416, 0.0);
+  cube_337Group.position.set(4.4491, 3.0054, 1.7922);
+  const cube_338Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_338Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_338 = new THREE.Mesh(cube_338Geometry, Floor_CentralMaterial);
+    cube_338.scale.set(0.0702, 0.1597, 0.2747);
+    cube_338.position.set(6.4288 * i, 0, 0);
+    cube_338Group.add(cube_338);
+  }
+  cube_338Group.setRotation(1.5708, 3.1416, 0.0);
+  cube_338Group.position.set(4.4491, 3.4397, 2.2163);
+  const cube_339Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_339Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_339 = new THREE.Mesh(cube_339Geometry, Floor_CentralMaterial);
+    cube_339.scale.set(0.0702, 0.1264, 0.2747);
+    cube_339.position.set(6.4288 * i, 0, 0);
+    cube_339Group.add(cube_339);
+  }
+  cube_339Group.setRotation(3.1416, 3.1416, 0.0);
+  cube_339Group.position.set(4.4491, 3.8408, 2.1012);
+  const cube_340Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_340Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_340 = new THREE.Mesh(cube_340Geometry, Floor_CentralMaterial);
+    cube_340.scale.set(0.0702, 0.1264, 0.3091);
+    cube_340.position.set(6.4288 * i, 0, 0);
+    cube_340Group.add(cube_340);
+  }
+  cube_340Group.setRotation(1.9635, 3.1416, 0.0);
+  cube_340Group.position.set(4.4491, 3.4772, 2.0616);
+  const cube_341Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_341Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_341 = new THREE.Mesh(cube_341Geometry, Floor_CentralMaterial);
+    cube_341.scale.set(0.0702, 0.1519, 0.4307);
+    cube_341.position.set(6.4288 * i, 0, 0);
+    cube_341Group.add(cube_341);
+  }
+  cube_341Group.setRotation(0.3405, 3.1416, 0.0);
+  cube_341Group.position.set(4.4491, 3.1657, 1.6652);
+  const cube_342Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_342Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_342 = new THREE.Mesh(cube_342Geometry, Floor_CentralMaterial);
+    cube_342.scale.set(0.0702, 0.1519, 0.2855);
+    cube_342.position.set(6.4288 * i, 0, 0);
+    cube_342Group.add(cube_342);
+  }
+  cube_342Group.setRotation(1.8909, 3.1416, 0.0);
+  cube_342Group.position.set(4.4491, 2.6225, 1.4425);
+  const cylinder_034Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_034Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_034 = new THREE.Mesh(cylinder_034Geometry, MetalMaterial);
+    cylinder_034.scale.set(0.039, 0.4636, 0.039);
+    cylinder_034.position.set(6.4289 * i, 0, 0);
+    cylinder_034Group.add(cylinder_034);
+  }
+  cylinder_034Group.setRotation(0.0, 3.1416, 0.0);
+  cylinder_034Group.position.set(8.4518, 3.6063, 1.31);
+  const cylinder_035Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_035Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_035 = new THREE.Mesh(cylinder_035Geometry, MetalMaterial);
+    cylinder_035.scale.set(0.039, 0.2801, 0.039);
+    cylinder_035.position.set(6.4297 * i, 0, 0);
+    cylinder_035Group.add(cylinder_035);
+  }
+  cylinder_035Group.setRotation(1.5708, 3.1416, 0.0);
+  cylinder_035Group.position.set(8.4518, 3.8477, 1.5875);
+  const cylinder_036Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_036Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_036 = new THREE.Mesh(cylinder_036Geometry, MetalMaterial);
+    cylinder_036.scale.set(0.0483, 0.033, 0.0483);
+    cylinder_036.position.set(6.4293 * i, 0, 0);
+    cylinder_036Group.add(cylinder_036);
+  }
+  cylinder_036Group.setRotation(1.5708, 3.1416, 0.0);
+  cylinder_036Group.position.set(8.4518, 3.8477, 1.7936);
+  const cylinder_037Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_037Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_037 = new THREE.Mesh(cylinder_037Geometry, MetalMaterial);
+    cylinder_037.scale.set(0.0543, 0.0831, 0.0543);
+    cylinder_037.position.set(6.4289 * i, 0, 0);
+    cylinder_037Group.add(cylinder_037);
+  }
+  cylinder_037Group.setRotation(0.0, 3.1416, 0.0);
+  cylinder_037Group.position.set(8.4518, 3.2062, 1.31);
+  const sphere_005Geometry = new THREE.SphereGeometry(1, 32, 16);
+  const sphere_005Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const sphere_005 = new THREE.Mesh(sphere_005Geometry, MetalMaterial);
+    sphere_005.scale.set(0.0552, 0.0552, 0.0552);
+    sphere_005.position.set(6.4265 * i, 0, 0);
+    sphere_005Group.add(sphere_005);
+  }
+  sphere_005Group.setRotation(0.0, 3.1416, 0.0);
+  sphere_005Group.position.set(8.4518, 4.0978, 1.31);
+  const cylinder_038Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_038Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_038 = new THREE.Mesh(cylinder_038Geometry, MetalMaterial);
+    cylinder_038.scale.set(0.039, 0.5356, 0.039);
+    cylinder_038.position.set(6.4297 * i, 0, 0);
+    cylinder_038Group.add(cylinder_038);
+  }
+  cylinder_038Group.setRotation(1.5708, 3.1416, 0.0);
+  cylinder_038Group.position.set(4.4491, 4.0978, 1.8429);
+  const cylinder_040Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_040Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_040 = new THREE.Mesh(cylinder_040Geometry, MetalMaterial);
+    cylinder_040.scale.set(0.039, 0.5356, 0.039);
+    cylinder_040.position.set(6.4297 * i, 0, 0);
+    cylinder_040Group.add(cylinder_040);
+  }
+  cylinder_040Group.setRotation(1.5708, 3.1416, 0.0);
+  cylinder_040Group.position.set(8.4518, 4.0978, 1.8429);
+  const cylinder_041Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_041Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_041 = new THREE.Mesh(cylinder_041Geometry, MetalMaterial);
+    cylinder_041.scale.set(0.0508, 0.0545, 0.0508);
+    cylinder_041.position.set(6.4289 * i, 0, 0);
+    cylinder_041Group.add(cylinder_041);
+  }
+  cylinder_041Group.setRotation(1.5708, 3.1416, 0.0);
+  cylinder_041Group.position.set(4.4491, 4.0978, 2.3241);
+  const sphere_006Geometry = new THREE.SphereGeometry(1, 32, 16);
+  const sphere_006Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const sphere_006 = new THREE.Mesh(sphere_006Geometry, MetalMaterial);
+    sphere_006.scale.set(0.0552, 0.0552, 0.0552);
+    sphere_006.position.set(6.4309 * i, 0, 0);
+    sphere_006Group.add(sphere_006);
+  }
+  sphere_006Group.setRotation(0.0, 3.1416, 0.0);
+  sphere_006Group.position.set(4.4491, 4.0978, 1.31);
+  const cube_343Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_343Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_343 = new THREE.Mesh(cube_343Geometry, Metall_RustMaterial);
+    cube_343.scale.set(2.0087, 0.071, 0.5573);
+    cube_343.position.set(6.4279 * i, 0, 0);
+    cube_343Group.add(cube_343);
+  }
+  cube_343Group.setRotation(3.1416, 3.1416, 0.0);
+  cube_343Group.position.set(6.4504, 3.067, 1.8337);
+  const cube_344Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_344Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_344 = new THREE.Mesh(cube_344Geometry, Metall_RustMaterial);
+    cube_344.scale.set(2.0087, 0.071, 0.4356);
+    cube_344.position.set(6.4279 * i, 0, 0);
+    cube_344Group.add(cube_344);
+  }
+  cube_344Group.setRotation(4.465, 3.1416, 0.0);
+  cube_344Group.position.set(6.4504, 3.4491, 2.2104);
+  const cube_345Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_345Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cube_345 = new THREE.Mesh(cube_345Geometry, Floor_CentralMaterial);
+    cube_345.scale.set(2.0087, 0.071, 0.4033);
+    cube_345.position.set(6.4279 * i, 0, 0);
+    cube_345Group.add(cube_345);
+  }
+  cube_345Group.setRotation(1.8968, 3.1416, 0.0);
+  cube_345Group.position.set(6.4504, 2.6874, 1.5059);
+  const cylinder_042Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_042Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_042 = new THREE.Mesh(cylinder_042Geometry, MetalMaterial);
+    cylinder_042.scale.set(0.039, 0.4636, 0.039);
+    cylinder_042.position.set(6.4289 * i, 0, 0);
+    cylinder_042Group.add(cylinder_042);
+  }
+  cylinder_042Group.setRotation(0.0, 3.1416, 0.0);
+  cylinder_042Group.position.set(4.4491, 3.6063, 1.31);
+  const cylinder_043Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_043Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_043 = new THREE.Mesh(cylinder_043Geometry, MetalMaterial);
+    cylinder_043.scale.set(0.039, 0.2801, 0.039);
+    cylinder_043.position.set(6.4297 * i, 0, 0);
+    cylinder_043Group.add(cylinder_043);
+  }
+  cylinder_043Group.setRotation(1.5708, 3.1416, 0.0);
+  cylinder_043Group.position.set(4.4491, 3.8477, 1.5875);
+  const cylinder_044Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_044Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_044 = new THREE.Mesh(cylinder_044Geometry, MetalMaterial);
+    cylinder_044.scale.set(0.0483, 0.033, 0.0483);
+    cylinder_044.position.set(6.4283 * i, 0, 0);
+    cylinder_044Group.add(cylinder_044);
+  }
+  cylinder_044Group.setRotation(1.5708, 3.1416, 0.0);
+  cylinder_044Group.position.set(4.4491, 3.8477, 1.7936);
+  const cylinder_045Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_045Group = new THREE.Group();
+  for (let i = 0; i < 3; i++) {
+    const cylinder_045 = new THREE.Mesh(cylinder_045Geometry, MetalMaterial);
+    cylinder_045.scale.set(0.0543, 0.0831, 0.0543);
+    cylinder_045.position.set(6.4289 * i, 0, 0);
+    cylinder_045Group.add(cylinder_045);
+  }
+  cylinder_045Group.setRotation(0.0, 3.1416, 0.0);
+  cylinder_045Group.position.set(4.4491, 3.2062, 1.31);
+  const cube_346Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_346 = new THREE.Mesh(cube_346Geometry, Floor_StripesMaterial);
+  cube_346.position.set(1.5609, 4.8871, 2.3723);
+  cube_346.scale.set(0.5148, 0.0124, 0.5964);
+  cube_346.setRotation(1.5708, 0.0, 0.0);
+
+  const cube_347Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_347 = new THREE.Mesh(cube_347Geometry, WhiteDotsMaterial);
+  cube_347.position.set(0.0113, 5.8328, -2.3649);
+  cube_347.scale.set(1.973, 0.0148, 0.1951);
+  cube_347.setRotation(1.5708, 0.0, 0.0);
+
+  const cylinder_046Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_046 = new THREE.Mesh(cylinder_046Geometry, PurpleMaterial);
+  cylinder_046.position.set(-1.7525, 5.8328, -2.3461);
+  cylinder_046.scale.set(0.1498, 0.0122, 0.1498);
+  cylinder_046.setRotation(1.5708, 0.0, 0.0);
+
+  const cube_348Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_348 = new THREE.Mesh(cube_348Geometry, PurpleMaterial);
+  cube_348.position.set(0.0113, 5.8328, -2.3606);
+  cube_348.scale.set(1.8175, 0.0148, 0.0586);
+  cube_348.setRotation(1.5708, 0.0, 0.0);
+
+  const cylinder_047Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_047 = new THREE.Mesh(
+    cylinder_047Geometry,
+    Green_PictureMaterial,
+  );
+  cylinder_047.position.set(0.5851, 5.8328, -2.3461);
+  cylinder_047.scale.set(0.1489, 0.0121, 0.1489);
+  cylinder_047.setRotation(1.6353, 0.0, -4.7124);
+
+  const cylinder_048Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_048 = new THREE.Mesh(
+    cylinder_048Geometry,
+    Floor_StripesMaterial,
+  );
+  cylinder_048.position.set(-0.5837, 5.8328, -2.3461);
+  cylinder_048.scale.set(0.1489, 0.0121, 0.1489);
+  cylinder_048.setRotation(1.4952, 0.0, -1.5708);
+
+  const cube_349Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_349 = new THREE.Mesh(cube_349Geometry, WhiteDotsMaterial);
+  cube_349.position.set(6.4755, 5.8328, 2.3389);
+  cube_349.scale.set(1.973, 0.0148, 0.1951);
+  cube_349.setRotation(1.5708, 3.1416, 0.0);
+
+  const cylinder_049Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_049 = new THREE.Mesh(cylinder_049Geometry, PurpleMaterial);
+  cylinder_049.position.set(8.2393, 5.8328, 2.3201);
+  cylinder_049.scale.set(0.1498, 0.0122, 0.1498);
+  cylinder_049.setRotation(1.5708, 3.1416, 0.0);
+
+  const cube_350Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_350 = new THREE.Mesh(cube_350Geometry, PurpleMaterial);
+  cube_350.position.set(6.4755, 5.8328, 2.3346);
+  cube_350.scale.set(1.8175, 0.0148, 0.0586);
+  cube_350.setRotation(1.5708, 3.1416, 0.0);
+
+  const cylinder_050Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_050 = new THREE.Mesh(
+    cylinder_050Geometry,
+    Green_PictureMaterial,
+  );
+  cylinder_050.position.set(5.9017, 5.8328, 2.3201);
+  cylinder_050.scale.set(0.1489, 0.0121, 0.1489);
+  cylinder_050.setRotation(4.7769, 0.0, -4.7124);
+
+  const cylinder_051Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_051 = new THREE.Mesh(
+    cylinder_051Geometry,
+    Floor_StripesMaterial,
+  );
+  cylinder_051.position.set(7.0705, 5.8328, 2.3201);
+  cylinder_051.scale.set(0.1489, 0.0121, 0.1489);
+  cylinder_051.setRotation(-1.6464, 0.0, -1.5708);
+
+  const cube_351Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_351 = new THREE.Mesh(cube_351Geometry, WhiteDotsMaterial);
+  cube_351.position.set(-6.4193, 5.8328, 2.3389);
+  cube_351.scale.set(1.973, 0.0148, 0.1951);
+  cube_351.setRotation(1.5708, 3.1416, 0.0);
+
+  const cylinder_052Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_052 = new THREE.Mesh(cylinder_052Geometry, PurpleMaterial);
+  cylinder_052.position.set(-4.6554, 5.8328, 2.3201);
+  cylinder_052.scale.set(0.1498, 0.0122, 0.1498);
+  cylinder_052.setRotation(1.5708, 3.1416, 0.0);
+
+  const cube_352Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_352 = new THREE.Mesh(cube_352Geometry, PurpleMaterial);
+  cube_352.position.set(-6.4193, 5.8328, 2.3346);
+  cube_352.scale.set(1.8175, 0.0148, 0.0586);
+  cube_352.setRotation(1.5708, 3.1416, 0.0);
+
+  const cylinder_053Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_053 = new THREE.Mesh(
+    cylinder_053Geometry,
+    Green_PictureMaterial,
+  );
+  cylinder_053.position.set(-6.993, 5.8328, 2.3201);
+  cylinder_053.scale.set(0.1489, 0.0121, 0.1489);
+  cylinder_053.setRotation(4.7769, 0.0, -4.7124);
+
+  const cylinder_054Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_054 = new THREE.Mesh(
+    cylinder_054Geometry,
+    Floor_StripesMaterial,
+  );
+  cylinder_054.position.set(-5.8242, 5.8328, 2.3201);
+  cylinder_054.scale.set(0.1489, 0.0121, 0.1489);
+  cylinder_054.setRotation(-1.6464, 0.0, -1.5708);
+
+  const cylinder_055Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_055 = new THREE.Mesh(cylinder_055Geometry, MetalMaterial);
+  cylinder_055.position.set(0.0127, 6.1242, -0.7744);
+  cylinder_055.scale.set(0.039, 12.4875, 0.039);
+  cylinder_055.setRotation(1.5708, 1.5708, 0.0);
+
+  const cylinder_056Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_056 = new THREE.Mesh(cylinder_056Geometry, MetalMaterial);
+  cylinder_056.position.set(0.0127, 6.1242, 0.786);
+  cylinder_056.scale.set(0.039, 12.4875, 0.039);
+  cylinder_056.setRotation(1.5708, 1.5708, 0.0);
+
+  const cylinder_057Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_057Group = new THREE.Group();
+  for (let i = 0; i < 5; i++) {
+    const cylinder_057 = new THREE.Mesh(cylinder_057Geometry, MetalMaterial);
+    cylinder_057.scale.set(0.0389, 0.2166, 0.0389);
+    cylinder_057.position.set(5.5554 * i, 0, 0);
+    cylinder_057Group.add(cylinder_057);
+  }
+  cylinder_057Group.position.set(-10.8298, 6.3231, -0.7744);
+  const cylinder_058Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  const cylinder_058Group = new THREE.Group();
+  for (let i = 0; i < 5; i++) {
+    const cylinder_058 = new THREE.Mesh(cylinder_058Geometry, MetalMaterial);
+    cylinder_058.scale.set(0.0389, 0.2162, 0.0389);
+    cylinder_058.position.set(5.5456 * i, 0, 0);
+    cylinder_058Group.add(cylinder_058);
+  }
+  cylinder_058Group.position.set(-10.8298, 6.3231, 0.7876);
+  const cube_353Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_353 = new THREE.Mesh(cube_353Geometry, FloorTileMaterial);
+  cube_353.position.set(0.0127, 6.3994, 1.6559);
+  cube_353.scale.set(12.5105, 0.1214, 0.8001);
+  cube_353.setRotation(-0.2859, 3.1416, 0.0);
+
+  const cube_116Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_116 = new THREE.Mesh(cube_116Geometry, FloorTileMaterial);
+  cube_116.position.set(0.0127, 6.725, 0.7325);
+  cube_116.scale.set(12.5105, 0.1214, 0.2164);
+  cube_116.setRotation(1.5708, 0.0, 0.0);
+
+  const cube_145Geometry = new THREE.BoxGeometry(2, 2, 2);
+  const cube_145 = new THREE.Mesh(cube_145Geometry, Metall_RustMaterial);
+  cube_145.position.set(0.0127, 6.725, 0.6138);
+  cube_145.scale.set(12.4539, 0.0107, 0.1974);
+  cube_145.setRotation(1.5708, 0.0, 0.0);
+
+  const out = new THREE.Group();
+  out.add(
+    cube_307,
+    cube_308,
+    cube_309,
+    cylinder_021Group,
+    sphere_002Group,
+    cube_310Group,
+    cube_311Group,
+    cube_312Group,
+    cube_313Group,
+    cube_314Group,
+    cube_315Group,
+    cube_316Group,
+    cube_317Group,
+    cube_318Group,
+    cube_319Group,
+    cube_320Group,
+    cube_321Group,
+    cube_322Group,
+    cube_323Group,
+    cylinder_022Group,
+    cylinder_023Group,
+    cylinder_024Group,
+    cylinder_025Group,
+    sphere_003Group,
+    cylinder_026Group,
+    cylinder_027Group,
+    cylinder_028Group,
+    cylinder_029Group,
+    sphere_004Group,
+    cube_324Group,
+    cube_325Group,
+    cube_326Group,
+    cylinder_030Group,
+    cylinder_031Group,
+    cylinder_032Group,
+    cylinder_033Group,
+    cube_327,
+    cube_328,
+    cube_329Group,
+    cube_330Group,
+    cube_331Group,
+    cube_332Group,
+    cube_333Group,
+    cube_334Group,
+    cube_335Group,
+    cube_336Group,
+    cube_337Group,
+    cube_338Group,
+    cube_339Group,
+    cube_340Group,
+    cube_341Group,
+    cube_342Group,
+    cylinder_034Group,
+    cylinder_035Group,
+    cylinder_036Group,
+    cylinder_037Group,
+    sphere_005Group,
+    cylinder_038Group,
+    cylinder_040Group,
+    cylinder_041Group,
+    sphere_006Group,
+    cube_343Group,
+    cube_344Group,
+    cube_345Group,
+    cylinder_042Group,
+    cylinder_043Group,
+    cylinder_044Group,
+    cylinder_045Group,
+    cube_346,
+    cube_347,
+    cylinder_046,
+    cube_348,
+    cylinder_047,
+    cylinder_048,
+    cube_349,
+    cylinder_049,
+    cube_350,
+    cylinder_050,
+    cylinder_051,
+    cube_351,
+    cylinder_052,
+    cube_352,
+    cylinder_053,
+    cylinder_054,
+    cylinder_055,
+    cylinder_056,
+    cylinder_057Group,
+    cylinder_058Group,
+    cube_353,
+    cube_116,
+    cube_145,
+  );
+
+  return out;
 }
 
 function DrawVagon() {
@@ -4076,11 +5222,11 @@ function DrawVagon() {
   }
   DrawTrainDoorFunctionEntityGroupMZ.updateMatrixWorld(true);
 
-  DrawTrainDoorFunctionEntityGroup.position.set(0, 0, -2.4411);
+  DrawTrainDoorFunctionEntityGroup.position.set(0, 0, -2.4011);
   DrawTrainDoorFunctionEntityGroupMZ.applyMatrix(
     new THREE.Matrix4().makeScale(1, 1, -1),
   );
-  DrawTrainDoorFunctionEntityGroupMZ.position.set(0, 0, 2.4411);
+  DrawTrainDoorFunctionEntityGroupMZ.position.set(0, 0, 2.4011);
 
   const DrawTrainDoorFunctionEntityGroupMirroredZ = new THREE.Group();
   DrawTrainDoorFunctionEntityGroupMirroredZ.add(
@@ -4088,8 +5234,11 @@ function DrawVagon() {
     DrawTrainDoorFunctionEntityGroupMZ,
   );
   DrawTrainDoorFunctionEntityGroupMirroredZ.position.set(-9.6225, 2.2455, 0);
+
+  const Decor = DrawVagonDecorations();
   const out = new THREE.Group();
   out.add(
+    Decor,
     cylinder_wheel_008MirroredZ,
     cylinder_wheel_009MirroredZ,
     cylinder_wheel_010MirroredZ,
@@ -4383,343 +5532,6 @@ function DrawRightDoorFunction() {
   return out;
 }
 
-function DrawTrain() {
-  const trainLength = 3; //Количество вагонов в поезде
-
-  const originVagon = DrawVagon();
-  const boundingBox = new THREE.Box3().setFromObject(originVagon);
-  const vagonLength = boundingBox.max.x - boundingBox.min.x;
-
-  const train = new THREE.Object3D();
-  for (let i = 0; i < trainLength; i++) {
-    const newVagon = originVagon.clone();
-    newVagon.position.x = i * (vagonLength + 0.3);
-    train.add(newVagon);
-  }
-  return train;
-}
-
-function animateRobot(robotObj: THREE.Object3D, robotData: RobotData) {
-  // ГЛОНАС ДАТЧИК
-  robotData.XR = robotObj.position.x;
-  robotData.YR = robotObj.position.z;
-  robotData.AR = abs(robotObj.rotation.y);
-  if (robotData.AR > 2 * PI) robotData.AR -= 2 * PI;
-  robotData.RR = sqrt(pow(robotData.XR - X, 2) + pow(robotData.YR - Y, 2));
-
-  // ОПРОС ВЕБКАМЕРЫ
-  // DisWEBCAM(); // LineH.rotation.z=sin(0.8*tick);
-  // РЕФЛЕКСЫ
-  switch (true) {
-    case robotData.isBorderTouched: //КАСАНИЕ ГРАНИЦЫ
-      // См. https://www.desmos.com/calculator/rgjllht2hk
-      const multiplier = 50; // m_ult;
-      const worldOrigin = new THREE.Vector3(20, 0, 0); // O
-
-      const robotForward = new THREE.Vector3(
-        cos(robotObj.rotation.z),
-        0,
-        -sin(robotObj.rotation.z),
-      );
-
-      const toCenterVec = worldOrigin.sub(robotObj.position.clone());
-
-      const randomDirection = new THREE.Vector3(
-        random(1),
-        0,
-        random(1),
-      ).normalize();
-
-      const D = robotObj.position.clone().distanceTo(worldOrigin) / multiplier;
-      randomDirection.add(toCenterVec.multiplyScalar(D));
-
-      const deltaInRadians = robotForward
-        .clone()
-        .setComponent(1, 0)
-        .angleTo(randomDirection);
-
-      robotObj.rotateZ(deltaInRadians);
-      robotData.isBorderTouched = false;
-      break;
-    // МАНЕВР ПОВОРОТА
-    case tick - robotData.Timer <= robotData.NUMTURN:
-      robotObj.rotation.y -= robotData.ANGLE / robotData.NUMTURN;
-      robotData.CR = cos(robotObj.rotation.y);
-      robotData.SR = sin(robotObj.rotation.y);
-      robotData.STPX = robotData.V * robotData.CR;
-      robotData.STPY = robotData.V * robotData.SR;
-      robotData.TRESHTimer = -10;
-      break;
-    // МАНЕВР ПОВОРОТА НА МУСОР
-    default:
-      switch (true) {
-        default:
-          switch (true) {
-            default: // ПЕРЕМЕЩЕНИЕ
-              robotData.CR = cos(robotObj.rotation.z);
-              robotData.SR = sin(robotObj.rotation.z);
-              robotData.STPX = robotData.V * robotData.CR;
-              robotData.STPY = robotData.V * -robotData.SR;
-              robotObj.position.x = robotObj.position.x + robotData.STPX;
-              robotObj.position.z = robotObj.position.z + robotData.STPY;
-          }
-      }
-  }
-  // puts(currentCase);
-
-  SetSonarV(robotObj, robotData);
-  OutWEBCAM(robotData);
-}
-
-function CreateWEBCAM(
-  XC: number,
-  YC: number,
-  ZC: number,
-  robotData: RobotData,
-) {
-  // ПАРАМЕТРЫ ЛУЧА
-  robotData.raycaster_WEB_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
-  robotData.raycaster_WEB_dir = new THREE.Vector3(W, 0, 0); // вектор, куда запускаем луч
-  robotData.raycaster_WEB = new THREE.Raycaster(undefined, undefined, 0, 10);
-  robotData.intersects = robotData.raycaster_WEB.intersectObjects(
-    scene.children,
-  );
-
-  // WEBDX ШАГ РАЗВЕРТКИ ЛУЧА ПО ШИРИНЕ
-  // WEBDZ ШАГ РАЗВЕРТКИ ЛУЧА ПО ВЫСОТЕ
-  let DX = 5 * robotData.WEBDX;
-  let DY = 0.1;
-  let DZ = 5 * robotData.WEBDZ;
-  let Graphcube = zeros(robotData.WEBSIZ);
-  robotData.Materialcube = zeros(robotData.WEBSIZ);
-  let geometry = new THREE.BoxGeometry(DX, DY, DZ);
-  for (let i = 0; i < robotData.WEBSIZ; i++)
-    for (let j = 0; j < robotData.WEBSIZ; j++) {
-      robotData.Materialcube[i][j] = new THREE.MeshBasicMaterial({
-        color: 0xf8ff50,
-      });
-      Graphcube[i][j] = new THREE.Mesh(geometry, robotData.Materialcube[i][j]);
-      Graphcube[i][j].position.set(XC + DX * j, YC, ZC - DZ * i);
-      scene.add(Graphcube[i][j]);
-    }
-}
-
-function GetDISbySonarV(robotData: RobotData) {
-  robotData.raycasterV.set(robotData.raycasterV_pos, robotData.raycasterV_dir);
-  robotData.intersects = robotData.raycasterV.intersectObjects(
-    scene.children,
-    true,
-  );
-
-  robotData.COLV = '#000000';
-  if (robotData.intersects.length > 0) {
-    let DISV = robotData.intersects[0].distance;
-    if (DISV > 10) DISV = 10;
-    robotData.LineV.scale.z = DISV / W;
-    robotData.LineV.visible = true;
-
-    const colors = robotData.intersects.map(
-      // @ts-expect-error Мы украли это из работающего проекта
-      (i) => '#' + i.object.material.color.getHex().toString(16),
-    );
-    robotData.COLV = colors[0];
-    // console.warn(`Цвет снизу: ${COLV}`);
-
-    if (robotData.COLV === robotData.BORDERCOL.toLowerCase()) {
-      puts('Коснулся границы');
-      robotData.isBorderTouched = true;
-    }
-    // puts(COLV);
-  } else {
-    robotData.LineV.visible = false;
-  }
-}
-
-function initParameters() {
-  clock = new THREE.Clock();
-
-  //@ts-expect-error eto nuzhno
-  RobotMData = {};
-  //@ts-expect-error eto nuzhno
-  CleanRobotData = {};
-
-  iniRobot(RobotMData);
-  iniRobot(CleanRobotData);
-  iniTrains();
-  [animateDoors, resetAnimateDoors] = iniDoorsAnimation();
-  IniSonarV(RobotMData);
-  IniSonarV(CleanRobotData);
-}
-
-function iniRobot(robotData: Partial<RobotData>) {
-  robotData.isBorderTouched = false;
-  robotData.WEBSIZ = 9; // СТОРОНА МАТРИЦЫ
-  robotData.DISV = 0; // Дистанция по вертикали
-  robotData.COLV = '#f8ff50'; // Цвет по вертикали
-  robotData.FLGV = false; // Флаг дорожки
-  robotData.RR = robotData.AR = robotData.XR = robotData.YR = 0; // ГЛОНАС
-
-  robotData.V = robotData.V0 = 0.05; // Скорость
-  robotData.STPX = -1;
-  robotData.STPY = 0; // Элементарные перемещения
-  robotData.Timer = -10; // Переменная реле времени поворота
-  robotData.TRESHTimer = -10; // Переменная времени мусора
-  // FLAMETimer = -10; // Переменная времени пламени
-  robotData.HOMETimer = 100; // Переменная времени желания домой
-  robotData.HOMESleep = 2000; // Переменная времени сна
-  robotData.NUMTURN = 5; // Число шагов на поворот
-  robotData.ANGLE = 0; // Угол поворота корпуса
-  // ПАРАМЕТРЫ СИСТЕМЫ ЦЕЛИ
-  robotData.HOMECOL = '#fd9412'; // ЦВЕТ ДОРОЖКИ ДОМОЙ
-  robotData.TREECOL = '#994422'; // ЦВЕТ ДЕРЕВА
-
-  robotData.BORDERCOL = '#ff8500'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
-
-  // balon ignore
-  // У нас и у балонина разные цвета почему-то. Предполагается, что из-за версии
-  // balon ignore
-  robotData.BORDERCOL = '#ffbf00'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
-
-  robotData.TREEDIS = -100; // ДИСТАНЦИЯ ДО ДЕРЕВА
-  robotData.TREESDX = -100; // КООРДИНАТЫ ДЕРЕВА НА ТАБЛО
-  robotData.TRESHCOL = '#ffffff'; // ЦВЕТ МУСОРА
-  robotData.TRESHDIS = -100; // ДИСТАНЦИЯ ДО МУСОРА
-  robotData.TRESHSDX = -100; // КООРДИНАТЫ МУСОРА НА ТАБЛО
-  robotData.TRESHANGLE = 0; // КООРДИНАТЫ УГЛА НА ЦЕЛЬ
-  // ПАРАМЕТРЫ СИСТЕМЫ ЗРЕНИЯ
-  robotData.WEBDIS = mulp(ones(robotData.WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
-  robotData.WEBCOL = zeros(robotData.WEBSIZ); // МАТРИЦА ЦВЕТОВ
-  for (let i = 0; i < robotData.WEBSIZ; i++)
-    for (let j = 0; j < robotData.WEBSIZ; j++)
-      robotData.WEBCOL[i][j] = '#f8ff50';
-  robotData.WEBDZ = 0.05; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ВЫСОТЕ
-  robotData.WEBDX = 0.1; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ШИРИНЕ
-}
-
-function iniTrains() {
-  trains = [];
-  trainSummaryTime = 600;
-  trainArriveTime = 200;
-  trainStayTime = 130;
-}
-
-function IniSonarV(robotData: Partial<RobotData>) {
-  // СОЗДАНИЕ ПЕРЕМЕННЫХ СОНАРА
-  robotData.raycasterV_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
-  robotData.raycasterV_dir = new THREE.Vector3(0, -W, 0); // вектор, куда запускаем луч
-  robotData.raycasterV = new THREE.Raycaster(undefined, undefined, 0, 100);
-
-  robotData.intersects = robotData.raycasterV.intersectObjects(scene.children);
-}
-
-function SetSonarV(robot: THREE.Object3D, robotData: Partial<RobotData>) {
-  if (!robotData || !robotData.raycasterV_pos || !robotData.Sonar) return;
-  // ВЫЧИСЛЯЕМ НОВЫЕ КООРДИНАТЫ СОНАРА
-  const CR = cos(robot.rotation.z);
-  const SR = sin(robot.rotation.z);
-  robotData.raycasterV_pos.y = RobotM.position.y;
-  robotData.raycasterV_pos.x =
-    robot.position.x + (W * robotData.Sonar.position.x * CR) / 3;
-  robotData.raycasterV_pos.z =
-    robot.position.z + (W * robotData.Sonar.position.x * -SR) / 3;
-}
-
-function GetWEBCAM(robotObj: THREE.Object3D, robotData: RobotData) {
-  //FIXME: remove
-  return;
-  for (let IZ = 0; IZ < robotData.WEBSIZ; IZ++)
-    for (let IX = 0; IX < robotData.WEBSIZ; IX++) {
-      // ВЫБОР АМПЛИТУД РАЗВЕРТКИ ЛУЧА ВЕБКАМЕРЫ
-      const DZ = robotData.WEBDZ * ((robotData.WEBSIZ - 1) / 2 - IZ);
-      const DX = robotData.WEBDX * ((robotData.WEBSIZ - 1) / 2 - IX); // puts(DX)
-      // ВЫЧИСЛЯЕМ НОВЫЕ КООРДИНАТЫ СОНАРА
-      const CR = cos(robotObj.rotation.z + DX);
-      const SR = sin(robotObj.rotation.z + DX);
-      robotData.raycaster_WEB_pos.x =
-        robotObj.position.x + W * robotData.Sonar.position.x * CR - 0.5;
-      robotData.raycaster_WEB_pos.z =
-        robotObj.position.z + W * robotData.Sonar.position.x * -SR + 0.5;
-      robotData.raycaster_WEB_dir = new THREE.Vector3(CR, sin(DZ), -SR);
-      robotData.raycaster_WEB.set(
-        robotData.raycaster_WEB_pos,
-        robotData.raycaster_WEB_dir,
-      );
-      robotData.intersects = robotData.raycaster_WEB.intersectObjects(
-        scene.children,
-      );
-
-      robotData.WEBDIS = mulp(ones(robotData.WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
-
-      let DIS = 100;
-      if (robotData.intersects.length > 0) {
-        DIS = robotData.intersects[0].distance; // puts(DIS);
-        if (DIS > 10) DIS = 10;
-        robotData.WEBDIS[IZ][IX] = DIS / W;
-        const INTERSECTED = robotData.intersects[0].object;
-        // balon ignore
-        // @ts-expect-error Ну опять балонин
-        const Col = INTERSECTED.material.color.getHex();
-        robotData.WEBCOL[IZ][IX] = '#' + Col.toString(16);
-      } else {
-        robotData.WEBDIS[IZ][IX] = DIS / W;
-        robotData.WEBCOL[IZ][IX] = '#000000';
-      }
-    }
-}
-
-function DisWEBCAM(robotData: RobotData) {
-  // ВЫТАЩИМ СРЕДНЮЮ КООРДИНАТУ ДЕРЕВА И МУСОРА ИЗ ТАБЛО
-  let N1, N2;
-  N1 = N2 = 0;
-  let S1, S2;
-  S1 = S2 = 0;
-  robotData.TREESDX = -100;
-  robotData.TREEDIS = 0;
-  robotData.TRESHSDX = -100;
-  robotData.TRESHDIS = 0;
-  for (let i = 0; i < robotData.WEBSIZ; i++)
-    for (let j = 0; j < robotData.WEBSIZ; j++) {
-      robotData.DIS = robotData.WEBDIS[i][j];
-      let Col = robotData.WEBCOL[i][j];
-      if (Col == robotData.TREECOL) {
-        N1++;
-        S1 += j;
-        robotData.TREEDIS += robotData.DIS;
-      }
-      if (Col == robotData.TRESHCOL) {
-        N2++;
-        S2 += j;
-        robotData.TRESHDIS += robotData.DIS;
-      }
-    }
-  if (N1) {
-    robotData.TREESDX = S1 / N1;
-    robotData.TREEDIS = robotData.TREEDIS / N1; // LineH.scale.x=TREEDIS/W;
-  } else robotData.TREEDIS = 100;
-  if (N2) {
-    robotData.TRESHSDX = S2 / N2;
-    robotData.TRESHDIS = robotData.TRESHDIS / N2;
-    robotData.LineH.scale.x = robotData.TRESHDIS / W;
-  } else robotData.TRESHDIS = 100; // putm(WEBCOL); putm(WEBDIS);
-}
-
-function OutWEBCAM(robotData: RobotData) {
-  let i, j, Col;
-  for (i = 0; i < robotData.WEBSIZ; i++)
-    for (j = 0; j < robotData.WEBSIZ; j++) {
-      robotData.DIS = robotData.WEBDIS[i][j];
-      Col = robotData.WEBCOL[i][j];
-      let ColR = floor((parseInt(Col.slice(1, 3), 16) * 5) / robotData.DIS);
-      let ColG = floor((parseInt(Col.slice(3, 5), 16) * 5) / robotData.DIS);
-      let ColB = floor((parseInt(Col.slice(5, 7), 16) * 5) / robotData.DIS);
-      Col = RGB2HEX(ColR, ColG, ColB);
-      // Graphcube[i][j].position.z = ColBW / 500;
-      // balon ignore
-      // @ts-expect-error У балонина работает
-      robotData.Materialcube[i][j].color.set(Col);
-    }
-}
-
 function DrawStation() {
   const ColoumnMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.0, 0.0, 0.0),
@@ -4784,6 +5596,17 @@ function DrawStation() {
   const FloorTileMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.686, 0.6165, 0.3163),
     roughness: 0.5,
+  });
+  const textureLoader = new THREE.TextureLoader();
+  textureLoader.crossOrigin = 'Anonymous';
+  const myTexture = textureLoader.load(
+    'http://livelab.spb.ru/labs/files/metromap2023r.jpg',
+  );
+
+  const MapMaterial = new THREE.MeshStandardMaterial({
+    roughness: 0.5,
+    color: new THREE.Color(1, 1, 1),
+    map: myTexture,
   });
 
   const cube_imageGeometry = new THREE.BoxGeometry(2, 2, 2);
@@ -5878,7 +6701,7 @@ function DrawStation() {
   const cube_066Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_066Group = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const cube_066 = new THREE.Mesh(cube_066Geometry, WhiteDotsMaterial);
+    const cube_066 = new THREE.Mesh(cube_066Geometry, MapMaterial);
     cube_066.scale.set(0.0392, 0.6686, 0.47);
     cube_066.position.set(12.001 * i, 0, 0);
     cube_066Group.add(cube_066);
@@ -5887,7 +6710,7 @@ function DrawStation() {
   const cube_067Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_067Group = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const cube_067 = new THREE.Mesh(cube_067Geometry, WhiteDotsMaterial);
+    const cube_067 = new THREE.Mesh(cube_067Geometry, MapMaterial);
     cube_067.scale.set(0.0392, 0.6686, 0.47);
     cube_067.position.set(12.001 * i, 0, 0);
     cube_067Group.add(cube_067);
@@ -5896,7 +6719,7 @@ function DrawStation() {
   const cube_068Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_068Group = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const cube_068 = new THREE.Mesh(cube_068Geometry, WhiteDotsMaterial);
+    const cube_068 = new THREE.Mesh(cube_068Geometry, MapMaterial);
     cube_068.scale.set(0.0392, 0.6686, 0.47);
     cube_068.position.set(12.001 * i, 0, 0);
     cube_068Group.add(cube_068);
@@ -5905,7 +6728,7 @@ function DrawStation() {
   const cube_069Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_069Group = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const cube_069 = new THREE.Mesh(cube_069Geometry, WhiteDotsMaterial);
+    const cube_069 = new THREE.Mesh(cube_069Geometry, MapMaterial);
     cube_069.scale.set(0.0392, 0.6686, 0.47);
     cube_069.position.set(12.001 * i, 0, 0);
     cube_069Group.add(cube_069);

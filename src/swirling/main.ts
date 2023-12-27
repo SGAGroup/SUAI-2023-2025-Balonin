@@ -4,10 +4,61 @@
 ///TODO: 3) Сделать так, чтобы роботы не сталкивались друг с другом
 import * as THREE from '../types';
 
+interface RobotData {
+  Sonar: THREE.Object3D;
+  LineV: THREE.Object3D;
+  LineH: THREE.Object3D;
+  raycasterV_pos: THREE.Vector3;
+  raycasterV_dir: THREE.Vector3;
+  raycasterV: THREE.Raycaster;
+  intersects: THREE.Intersection[];
+  XR: number;
+  YR: number;
+  AR: number;
+  RR: number;
+  Timer: number;
+  NUMTURN: number;
+  V: number;
+  ANGLE: number; // используется только тут
+  STPX: number; // только тут
+  STPY: number; // только тут
+  TRESHDIS: number;
+  COLV: string;
+  V0: number;
+  TREEDIS: number;
+  CR: number;
+  SR: number;
+  raycaster_WEB_pos: THREE.Vector3; // откуда запускаем луч
+  raycaster_WEB_dir: THREE.Vector3; // вектор, куда запускаем луч
+  raycaster_WEB: THREE.Raycaster;
+  WEBDX: number;
+  WEBDZ: number;
+  WEBSIZ: number;
+  WEBDIS: Matrix<number>;
+  WEBCOL: Matrix<string>;
+  Materialcube: Matrix<THREE.Material>;
+  TREECOL: string;
+  TRESHCOL: string;
+  BORDERCOL: '#ff8500' | '#ffbf00';
+  //----------BALONIN------LOCAL----
+  isBorderTouched: boolean;
+  DIS: number;
+  FLGV: boolean;
+  DISV: number;
+  TRESHTimer: number;
+  HOMETimer: number;
+  HOMESleep: number;
+  HOMECOL: string;
+  TREESDX: number;
+  TRESHSDX: number;
+  TRESHANGLE: number;
+}
+
 function puts(s: unknown) {
   console.log(s);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function OpenCanvas(_name: string, _WC: number, _HC: number) {
   //
 }
@@ -78,64 +129,11 @@ let controls: THREE.OrbitControls;
 
 let Station: THREE.Object3D;
 
-let FCamera: boolean;
-let Sonar: THREE.Mesh;
-let LineH: THREE.Object3D;
-let LineV: THREE.Object3D;
+let CleanRobot: THREE.Object3D;
+let CleanRobotData: RobotData;
 
-let raycasterV_pos: THREE.Vector3;
-let raycasterV_dir: THREE.Vector3;
-let raycasterV: THREE.Raycaster;
-let intersects: THREE.Intersection[];
-let Robot: THREE.Object3D;
-let XR: number;
-let YR: number;
-let AR: number;
-let RR: number;
-let Timer: number;
-let NUMTURN: number;
-let V: number = 0;
-let ANGLE: number = 0; // используется только тут
-let STPX: number; // только тут
-let STPY: number; // только тут
-
-let TRESHTimer: number = 0;
-let TRESHANGLE: number = 0;
-let TRESHDIS: number = 0;
-let HOMETimer: number = 0;
-let FLGV: boolean | undefined;
-let HOMECOL: string;
-let COLV: string;
-let DISV: number = 0;
-let HOMESleep: number = 0;
-let V0 = 0;
-let TREEDIS = 0;
-let TRESHSDX = 0;
-let CR = 0;
-let SR = 0;
-
-//webcam
-let raycaster_WEB_pos: THREE.Vector3; // откуда запускаем луч
-let raycaster_WEB_dir: THREE.Vector3; // вектор, куда запускаем луч
-let raycaster_WEB: THREE.Raycaster;
-let WEBDX: number;
-let WEBDZ: number;
-let WEBSIZ: number;
-let WEBDIS: Matrix<number>;
-let WEBCOL: Matrix<string>;
-let Materialcube: Matrix<THREE.Material>;
-
-let TREESDX = 0;
-let TREECOL: string;
-let TRESHCOL: string;
-let BORDERCOL: '#ff8500' | '#ffbf00';
-//-------------BALONIN------LOCAL----
-
-let isBorderTouched: boolean = false;
-let DIS: number;
-
-let V_Helper: THREE.ArrowHelper;
-let H_Helper: THREE.ArrowHelper;
+let RobotM: THREE.Object3D;
+let RobotMData: RobotData;
 
 let clock: THREE.Clock;
 
@@ -147,6 +145,7 @@ let trainStayTime: number;
 let cameras: Partial<{
   main: THREE.Camera;
   robot: THREE.Camera;
+  robotCleaner: THREE.Camera;
   poi: Array<THREE.Camera>;
 }>;
 let currentCamera: THREE.Camera | undefined;
@@ -176,30 +175,51 @@ function main() {
       CreateScene(WC, HC);
       initParameters();
       initChangeCameraControls();
-      CreateWEBCAM(W * (5 * WEBDX - WEBSIZ / 4), -8.1 * W, W * 3);
+
+      //TODO: CreateWEBCAM for each robot
+      CreateWEBCAM(
+        W * (5 * RobotMData.WEBDX - RobotMData.WEBSIZ / 4),
+        -8.1 * W,
+        W * 3,
+        RobotMData,
+      );
+      CreateWEBCAM(
+        W * (5 * CleanRobotData.WEBDX - CleanRobotData.WEBSIZ / 4),
+        -8.1 * W,
+        W * 3,
+        CleanRobotData,
+      );
 
       Station = DrawStation();
       Station.position.set(X, Y, Z);
       Station.scale.set(W, W, W);
-      // scene.add(Station);
+      scene.add(Station);
       // station.rotation.set(PI, 0, 0);
 
-      Robot = DrawRobot();
-      Robot.position.set(X, Y + 1, Z);
-      Robot.rotateX(-PI / 2);
-      Robot.rotateZ(PI / 3);
-      Robot.scale.set(W, W, W);
-      // scene.add(Robot);
+      RobotM = DrawRobotM();
+      RobotM.position.set(X, Y + 1, Z);
+      RobotM.rotateX(-PI / 2);
+      RobotM.rotateZ(PI / 3);
+      RobotM.scale.set(W, W, W);
+      scene.add(RobotM);
+
+      CleanRobot = DrawCleanRobot();
+      CleanRobot.position.set(X, Y + 1, Z);
+      CleanRobot.rotateX(-PI / 2);
+      CleanRobot.rotateZ(-PI / 16);
+      CleanRobot.scale.set(W, W, W);
+      scene.add(CleanRobot);
 
       WetFloor = DrawWetFloor()!;
       WetFloor.position.set(X, Y, Z);
       WetFloor.scale.set(W, W, W);
-      // scene.add(WetFloor);
+      scene.add(WetFloor);
 
       render();
     }
   }
 
+  //@ts-expect-error tak nuzhno
   document.ChangeCamera = ChangeCamera;
   F = true;
   // puts(tick);
@@ -214,10 +234,14 @@ function render() {
   requestAnimationFrame(render);
 
   if (F) {
-    if (V > 0) GetWEBCAM();
-    else LineH.visible = false;
-    if (V > 0) GetDISbySonarV();
-    else LineV.visible = false;
+    // if ((RobotMData as RobotData).V > 0) GetWEBCAM();
+    // else (RobotMData as RobotData).LineH.visible = false;
+    if (RobotMData.V > 0) GetDISbySonarV(RobotMData);
+    else RobotMData.LineV.visible = false;
+    // if ((CleanRobotData as RobotData).V > 0) GetWEBCAM();
+    // else (CleanRobotData as RobotData).LineH.visible = false;
+    if (CleanRobotData.V > 0) GetDISbySonarV(CleanRobotData);
+    else CleanRobotData.LineV.visible = false;
 
     F = false;
   }
@@ -229,10 +253,13 @@ function render() {
   if (currentCamera) renderer.render(scene, currentCamera);
 }
 function animate() {
-  DisWEBCAM();
-  animateRobot();
+  DisWEBCAM(RobotMData as RobotData);
+  DisWEBCAM(CleanRobotData as RobotData);
+  animateRobot(RobotM, RobotMData as RobotData);
+  animateRobot(CleanRobot, CleanRobotData as RobotData);
+  animateCleanFloor();
   animateWetFloor();
-  animateTrains();
+  // animateTrains();
   // animateDoors();
 }
 
@@ -429,19 +456,56 @@ function animateWetFloor() {
   const pos = floor.position;
   const { imageSize } = floor.userData;
 
-  const x = ((XR - pos.x) / size.x + 0.5) * imageSize.x;
-  const y = ((YR - pos.z) / size.y + 0.5) * imageSize.y;
+  const x =
+    (((RobotMData as RobotData).XR - pos.x) / size.x + 0.5) * imageSize.x;
+  const y =
+    (((RobotMData as RobotData).YR - pos.z) / size.y + 0.5) * imageSize.y;
 
-  const gradient = wetFloorCtx.createRadialGradient(x, y, 0, x, y, 200);
-  gradient.addColorStop(0, '#0000ff');
-  gradient.addColorStop(1, '#ffff00');
+  // const gradient = wetFloorCtx.createRadialGradient(x, y, 0, x, y, 200);
+  // gradient.addColorStop(0, '#0000ff');
+  // gradient.addColorStop(1, '#ffff00');
+  // wetFloorCtx.strokeStyle = gradient;
+  // wetFloorCtx.lineWidth = 20;
+  // wetFloorCtx.lineCap = 'round';
+  // wetFloorCtx.lineTo(x, y);
+  // wetFloorCtx.stroke();
 
-  wetFloorCtx.strokeStyle = gradient;
-  wetFloorCtx.lineWidth = 20;
-  wetFloorCtx.lineCap = 'round';
-  wetFloorCtx.lineTo(x, y);
-  wetFloorCtx.stroke();
+  wetFloorCtx.fillStyle = '#0000ff';
+  wetFloorCtx.beginPath();
+  wetFloorCtx.arc(x, y, 20, 0, PI * 2);
+  wetFloorCtx.closePath();
+  wetFloorCtx.fill();
 
+  wetFloorTex.needsUpdate = true;
+  // wetFloorCtx.globalCompositeOperation = 'destination-atop';
+}
+
+function animateCleanFloor() {
+  if (!wetFloorCtx || !wetFloorTex) return;
+  const { floor } = WetFloor.userData;
+  const boundingBox = new THREE.Box3().setFromObject(floor);
+  const size = {
+    x: boundingBox.max.x - boundingBox.min.x,
+    y: boundingBox.max.z - boundingBox.min.z,
+  };
+
+  const pos = floor.position;
+  const { imageSize } = floor.userData;
+
+  const x = ((CleanRobotData.XR - pos.x) / size.x + 0.5) * imageSize.x;
+  const y = ((CleanRobotData.YR - pos.z) / size.y + 0.5) * imageSize.y;
+
+  const style = '#ffff00';
+  const w = 20;
+
+  wetFloorCtx.fillStyle = style;
+  wetFloorCtx.beginPath();
+  wetFloorCtx.arc(x, y, w, 0, PI * 2);
+  wetFloorCtx.closePath();
+  wetFloorCtx.fill();
+  // wetFloorCtx.fillStyle = style;
+  // wetFloorCtx.fillRect(x - w / 2, y - w / 2, w / 2, w / 2);
+  // wetFloorCtx.stroke();
   wetFloorTex.needsUpdate = true;
 }
 
@@ -461,13 +525,11 @@ function DrawWetFloor() {
   if (aspectRatio < 0)
     image = new Image(baseSize, nearestPowerOf2(baseSize / aspectRatio));
   else image = new Image(baseSize * nearestPowerOf2(aspectRatio), baseSize);
-  console.log(aspectRatio);
-  console.log(image);
 
   const canvasEl = document.createElement('canvas');
   canvasEl.width = image.width;
   canvasEl.height = image.height;
-  // document.body.append(canvasEl);
+  document.body.append(canvasEl);
   const ctx = canvasEl.getContext('2d');
   if (!ctx) return console.error('Почему-то нет контекста');
   wetFloorCtx = ctx;
@@ -476,6 +538,7 @@ function DrawWetFloor() {
   ctx.fillStyle = '#ffc920';
   ctx.fillRect(0, 0, image.width, image.height);
   ctx.beginPath();
+
   wetFloorTex = new THREE.CanvasTexture(canvasEl);
 
   floor.material = new THREE.MeshStandardMaterial({
@@ -495,7 +558,6 @@ function DrawWetFloor() {
   const out = new THREE.Object3D();
   out.add(floor);
   out.userData = { floor };
-
   return out;
 
   function nearestPowerOf2(n: number) {
@@ -503,8 +565,8 @@ function DrawWetFloor() {
   }
 }
 
-function DrawRobot() {
-  const MetalMaterial = new THREE.MeshStandardMaterial({
+function DrawRobotM() {
+  let MetalMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.477, 0.477, 0.477),
     metalness: 1.0,
     roughness: 0.5,
@@ -1859,9 +1921,9 @@ function DrawRobot() {
   out.add(cameras.robot);
 
   // откуда
-  Sonar = DrawSphere();
-  Sonar.position.set(1.2, 0, 0);
-  Sonar.scale.setScalar(0.2);
+  RobotMData.Sonar = DrawSphere();
+  RobotMData.Sonar.position.set(1.2, 0, 0);
+  RobotMData.Sonar.scale.setScalar(0.2);
 
   // Линия луча
   const geometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 9);
@@ -1871,18 +1933,184 @@ function DrawRobot() {
   Linetelo = new THREE.Mesh(geometry, material);
   Linetelo.position.x = 0.5;
   Linetelo.rotation.z = PI / 2;
-  LineH = new THREE.Object3D();
-  LineH.add(Linetelo);
-  LineH.position.x = Sonar.position.x;
+  RobotMData.LineH = new THREE.Object3D();
+  RobotMData.LineH.add(Linetelo);
+  RobotMData.LineH.position.x = RobotMData.Sonar.position.x;
   Linetelo = new THREE.Mesh(geometry, material);
   Linetelo.position.z = -0.5;
   Linetelo.rotation.x = PI / 2;
-  LineV = new THREE.Object3D();
-  LineV.add(Linetelo);
-  LineV.position.x = Sonar.position.x;
-  out.add(Sonar, LineH, LineV);
+  RobotMData.LineV = new THREE.Object3D();
+  RobotMData.LineV.add(Linetelo);
+  RobotMData.LineV.position.x = RobotMData.Sonar.position.x;
+  out.add(RobotMData.Sonar, RobotMData.LineH, RobotMData.LineV);
 
   return out;
+  function DrawSphere() {
+    const geometry = new THREE.SphereGeometry(0.5, 32, 16);
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const sphere = new THREE.Mesh(geometry, material);
+    return sphere;
+  }
+}
+
+function DrawCleanRobot() {
+  let Material_002 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.0504, 0.209, 1.0),
+    roughness: 0.5,
+  });
+  let Material_001 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.0, 0.0, 0.0),
+    roughness: 0.5,
+  });
+  let Material_006 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.1788, 0.1788, 0.1788),
+    roughness: 0.5,
+  });
+  let Material_007 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.504, 0.4274, 0.4433),
+    roughness: 0.5,
+  });
+  let Material_005 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(1.0, 0.0146, 0.0039),
+    roughness: 0.5,
+  });
+  let Material_003 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.0154, 0.8, 0.0),
+    roughness: 0.5,
+  });
+  let cylinder_brushesMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.2254, 0.0735, 0.8924),
+  });
+  let Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(1.0, 1.0, 1.0),
+    metalness: 1.0,
+    roughness: 0.5,
+  });
+
+  let cylinder_bodyGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  let cylinder_body = new THREE.Mesh(cylinder_bodyGeometry, Material_002);
+  cylinder_body.position.set(0.0, 0.1347, -0.0);
+  cylinder_body.scale.set(0.5636, -0.0994, 0.5636);
+
+  let cylinder_wheel2Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  let cylinder_wheel2 = new THREE.Mesh(cylinder_wheel2Geometry, Material_001);
+  cylinder_wheel2.position.set(-0.3844, 0.0394, 0.2595);
+  cylinder_wheel2.scale.set(-0.0516, -0.0176, -0.0515);
+  cylinder_wheel2.setRotation(1.8196, -4.5347, 1.5422);
+
+  let sphere_supportGeometry = new THREE.SphereGeometry(1, 32, 16);
+  let sphere_support = new THREE.Mesh(sphere_supportGeometry, Material_006);
+  sphere_support.position.set(0.0, 0.0515, -0.4844);
+  sphere_support.scale.set(0.0434, 0.0434, 0.0434);
+
+  let cylinder_wheel3Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  let cylinder_wheel3 = new THREE.Mesh(cylinder_wheel3Geometry, Material_001);
+  cylinder_wheel3.position.set(0.0001, 0.0052, -0.4846);
+  cylinder_wheel3.scale.set(-0.0159, -0.0054, -0.0158);
+  cylinder_wheel3.setRotation(1.8196, -1.8235, 1.5422);
+
+  let cylinder_wheel1Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  let cylinder_wheel1 = new THREE.Mesh(cylinder_wheel1Geometry, Material_001);
+  cylinder_wheel1.position.set(0.3747, 0.0394, 0.2595);
+  cylinder_wheel1.scale.set(-0.0516, -0.0176, -0.0515);
+  cylinder_wheel1.setRotation(-1.322, -2.628, 1.5994);
+
+  let cube_displayGeometry = new THREE.BoxGeometry(2, 2, 2);
+  let cube_display = new THREE.Mesh(cube_displayGeometry, Material_007);
+  cube_display.position.set(0.0, 0.2231, -0.0);
+  cube_display.scale.set(-0.2711, -0.0151, -0.2711);
+
+  let cylinder_button_offGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  let cylinder_button_off = new THREE.Mesh(
+    cylinder_button_offGeometry,
+    Material_005,
+  );
+  cylinder_button_off.position.set(0.0516, 0.2185, -0.4293);
+  cylinder_button_off.scale.set(0.0227, 0.0227, 0.0227);
+
+  let cylinder_button_onGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  let cylinder_button_on = new THREE.Mesh(
+    cylinder_button_onGeometry,
+    Material_003,
+  );
+  cylinder_button_on.position.set(-0.0509, 0.2185, -0.4293);
+  cylinder_button_on.scale.set(0.0227, 0.0227, 0.0227);
+
+  let cylinder_brushesGeometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+  let cylinder_brushes = new THREE.Mesh(
+    cylinder_brushesGeometry,
+    cylinder_brushesMaterial,
+  );
+  cylinder_brushes.position.set(0.0, 0.0858, -0.0);
+  cylinder_brushes.scale.set(0.0802, 0.28, 0.0802);
+  cylinder_brushes.setRotation(0.0, 0.0, -1.5708);
+
+  let cube_antenna1Geometry = new THREE.BoxGeometry(2, 2, 2);
+  let cube_antenna1 = new THREE.Mesh(cube_antenna1Geometry, Material);
+  cube_antenna1.position.set(-0.441, 0.3083, -0.0);
+  cube_antenna1.scale.set(-0.0949, -0.0088, -0.0041);
+  cube_antenna1.setRotation(0.0, 0.0, -1.0986);
+
+  let cube_antenna2Geometry = new THREE.BoxGeometry(2, 2, 2);
+  let cube_antenna2 = new THREE.Mesh(cube_antenna2Geometry, Material);
+  cube_antenna2.position.set(0.4558, 0.3083, -0.0);
+  cube_antenna2.scale.set(-0.0949, -0.0088, -0.0041);
+  cube_antenna2.setRotation(0.0, 3.1416, -1.0986);
+
+  let robot = new THREE.Group();
+  robot.add(
+    cylinder_body,
+    cylinder_wheel2,
+    sphere_support,
+    cylinder_wheel3,
+    cylinder_wheel1,
+    cube_display,
+    cylinder_button_off,
+    cylinder_button_on,
+    cylinder_brushes,
+    cube_antenna1,
+    cube_antenna2,
+  );
+  robot.rotateX(PI / 2);
+  robot.rotateY(-PI / 2);
+  robot.position.z -= 0.1;
+
+  let out = new THREE.Group();
+  out.add(robot);
+
+  // ===== CAMERA 2
+  // Cam = DrawSphere(); Cam.position.set(3,0,-0.5); telo.add(Cam);
+  cameras.robotCleaner = new THREE.PerspectiveCamera(75, WC / HC, 1, 1000);
+  cameras.robotCleaner.rotation.set(PI / 2, -PI / 2, 0);
+  cameras.robotCleaner.position.set(-4, 0, 2);
+  out.add(cameras.robotCleaner);
+
+  // откуда
+  CleanRobotData.Sonar = DrawSphere();
+  CleanRobotData.Sonar.position.set(0.5, 0, 0);
+  CleanRobotData.Sonar.scale.setScalar(0.2);
+
+  // Линия луча
+  let geometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 9);
+  let material = new THREE.MeshLambertMaterial({ color: 0xffdd00 });
+
+  let Linetelo;
+  Linetelo = new THREE.Mesh(geometry, material);
+  Linetelo.position.x = 0.5;
+  Linetelo.rotation.z = PI / 2;
+  CleanRobotData.LineH = new THREE.Object3D();
+  CleanRobotData.LineH.add(Linetelo);
+  CleanRobotData.LineH.position.x = CleanRobotData.Sonar.position.x;
+  Linetelo = new THREE.Mesh(geometry, material);
+  Linetelo.position.z = -0.5;
+  Linetelo.rotation.x = PI / 2;
+  CleanRobotData.LineV = new THREE.Object3D();
+  CleanRobotData.LineV.add(Linetelo);
+  CleanRobotData.LineV.position.x = CleanRobotData.Sonar.position.x;
+  out.add(CleanRobotData.Sonar, CleanRobotData.LineH, CleanRobotData.LineV);
+
+  return out;
+
   function DrawSphere() {
     const geometry = new THREE.SphereGeometry(0.5, 32, 16);
     const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -7126,33 +7354,30 @@ function DrawTrain() {
   return train;
 }
 
-function animateRobot() {
-  let currentCase = '';
-  // debugger;
+function animateRobot(robotObj: THREE.Object3D, robotData: RobotData) {
   // ГЛОНАС ДАТЧИК
-  XR = Robot.position.x;
-  YR = Robot.position.z;
-  AR = abs(Robot.rotation.y);
-  if (AR > 2 * PI) AR -= 2 * PI;
-  RR = sqrt(pow(XR - X, 2) + pow(YR - Y, 2));
-  // console.warn(Robot.rotation);
+  robotData.XR = robotObj.position.x;
+  robotData.YR = robotObj.position.z;
+  robotData.AR = abs(robotObj.rotation.y);
+  if (robotData.AR > 2 * PI) robotData.AR -= 2 * PI;
+  robotData.RR = sqrt(pow(robotData.XR - X, 2) + pow(robotData.YR - Y, 2));
 
   // ОПРОС ВЕБКАМЕРЫ
   // DisWEBCAM(); // LineH.rotation.z=sin(0.8*tick);
   // РЕФЛЕКСЫ
   switch (true) {
-    case isBorderTouched: //КАСАНИЕ ГРАНИЦЫ
+    case robotData.isBorderTouched: //КАСАНИЕ ГРАНИЦЫ
       // См. https://www.desmos.com/calculator/rgjllht2hk
       const multiplier = 50; // m_ult;
       const worldOrigin = new THREE.Vector3(0, 0, 0); // O
 
       const robotForward = new THREE.Vector3(
-        cos(Robot.rotation.z),
+        cos(robotObj.rotation.z),
         0,
-        -sin(Robot.rotation.z),
+        -sin(robotObj.rotation.z),
       );
 
-      const toCenterVec = worldOrigin.sub(Robot.position.clone());
+      const toCenterVec = worldOrigin.sub(robotObj.position.clone());
 
       const randomDirection = new THREE.Vector3(
         random(1),
@@ -7160,7 +7385,7 @@ function animateRobot() {
         random(1),
       ).normalize();
 
-      const D = Robot.position.clone().distanceTo(worldOrigin) / multiplier;
+      const D = robotObj.position.clone().distanceTo(worldOrigin) / multiplier;
       randomDirection.add(toCenterVec.multiplyScalar(D));
 
       const deltaInRadians = robotForward
@@ -7168,233 +7393,161 @@ function animateRobot() {
         .setComponent(1, 0)
         .angleTo(randomDirection);
 
-      Robot.rotateZ(deltaInRadians);
-      isBorderTouched = false;
+      robotObj.rotateZ(deltaInRadians);
+      robotData.isBorderTouched = false;
       break;
     // МАНЕВР ПОВОРОТА
-    case tick - Timer <= NUMTURN:
-      currentCase = 'Маневр поворота';
-      Robot.rotation.y -= ANGLE / NUMTURN;
-      CR = cos(Robot.rotation.y);
-      SR = sin(Robot.rotation.y);
-      STPX = V * CR;
-      STPY = V * SR;
-      TRESHTimer = -10;
+    case tick - robotData.Timer <= robotData.NUMTURN:
+      robotObj.rotation.y -= robotData.ANGLE / robotData.NUMTURN;
+      robotData.CR = cos(robotObj.rotation.y);
+      robotData.SR = sin(robotObj.rotation.y);
+      robotData.STPX = robotData.V * robotData.CR;
+      robotData.STPY = robotData.V * robotData.SR;
+      robotData.TRESHTimer = -10;
       break;
     // МАНЕВР ПОВОРОТА НА МУСОР
-    case tick - TRESHTimer <= NUMTURN:
-      currentCase = 'Маневр поворота на мусор';
-      Robot.rotation.z -= TRESHANGLE / NUMTURN;
-      CR = cos(Robot.rotation.y);
-      SR = sin(Robot.rotation.y);
-      STPX = V * CR;
-      STPY = V * SR;
-      Timer = -10;
-      break;
-    // ЗАБРАЛ МУСОР
-    // case TRESHDIS < 4 * W:
-    // Tresh.position.set(X, Y, Z + 1000 * W);
-    // Papirosa.position.set(X, Y, Z + 1000 * W);
-    // Flame.visible = true;
-    // FLAMETimer = tick;
-    // shootingSound.play();
-    // break;
-    // case Flame.visible && tick - FLAMETimer == NUMTURN:
-    // FLAMETimer = -10;
-    // Flame.visible = false;
-    // break;
-    // case YR > 22 * W && XR <= W && Tresh.position.z > 100:
-    // НОВЫЙ МУСОР
-    // let TrX = X - (1 - 2 * randint(1)) * 19 * W;
-    // let TrY = Y + (1 - 2 * randint(1)) * 12 * W;
-    // Tresh.position.set(TrX, TrY, Z + W / 5);
-    // Papirosa.position.set(TrX, TrY, Z + W / 5);
-    // Flame.position.set(TrX, TrY, Z + W / 5);
-    // Flame.visible = false;
-    // break;
     default:
-      // УЧЕТ ФЛАГА ДОРОЖКИ
       switch (true) {
-        case tick > HOMETimer:
-          // СПУСТИТЬ КУРОК ПОИСКА ДОМА
-          currentCase = 'Поиск дома';
-          if (COLV == HOMECOL) FLGV = true;
-          if (FLGV)
-            if (V > 0) {
-              // РОБОТ ДОМА?
-              if (COLV != HOMECOL) DISV = 100;
-              // ПРИЕХАЛИ (УГОЛ И УДАЛЕНИЕ ОТ ЦЕНТРА)
-              if (abs(AR - PI / 2) < 0.3)
-                if (RR < 15 * W) {
-                  HOMESleep = tick + 200;
-                  V = 0;
-                }
-            }
-          if (tick > HOMESleep) {
-            if (V == 0) {
-              HOMETimer = tick + 400;
-              HOMESleep = tick + 8000;
-            }
-            LineH.visible = true;
-            FLGV = false;
-            V = V0;
-          }
-      }
-      switch (true) {
-        // СЕНСОР ДЕРЕВА (Timer времени маневра)
-        case TREEDIS < 5 * W: // МОМЕНТ НАЧАЛА ВРАЩЕНИЯ
-          currentCase = 'Сенсор дерева';
-          if (tick - Timer > NUMTURN) {
-            Timer = tick;
-            ANGLE = PI / 4;
-            if (RR < 22 * W) ANGLE = -ANGLE;
-          }
-          TREEDIS = 10;
-          break;
-        // СЕНСОР ДОРОЖКИ
-        case DISV > W:
-          currentCase = 'Сенсор дорожки';
-          DISV = 0; // МОМЕНТ НАЧАЛА ВРАЩЕНИЯ
-          if (tick - Timer > NUMTURN) {
-            Timer = tick;
-            ANGLE = (random(1) * PI) / 4;
-            if (abs(ANGLE) < PI / 5) ANGLE = (sign(ANGLE) * PI) / 5;
-            if (RR < 22 * W) ANGLE = -ANGLE;
-          }
-          break;
         default:
           switch (true) {
-            // СЕНСОР МУСОРА (Timer времени маневра НА МУСОР)
-            case TRESHDIS < 25 * W && TRESHTimer < 0: // МОМЕНТ НАЧАЛА ВРАЩЕНИЯ
-              currentCase = 'Cенсор мусора';
-              if (tick - TRESHTimer > NUMTURN) {
-                TRESHTimer = tick;
-                TRESHANGLE = atan((0.5 * W * TRESHSDX) / pow(TRESHDIS, 2));
-              }
-              TRESHDIS = 100; // puts(TRESHANGLE);
-              break;
             default: // ПЕРЕМЕЩЕНИЕ
-              currentCase = 'Перемещение';
-
-              // debugger;
-              CR = cos(Robot.rotation.z);
-              SR = sin(Robot.rotation.z);
-              STPX = V * CR;
-              STPY = V * -SR;
-              Robot.position.x = Robot.position.x + STPX;
-              Robot.position.z = Robot.position.z + STPY;
+              robotData.CR = cos(robotObj.rotation.z);
+              robotData.SR = sin(robotObj.rotation.z);
+              robotData.STPX = robotData.V * robotData.CR;
+              robotData.STPY = robotData.V * -robotData.SR;
+              robotObj.position.x = robotObj.position.x + robotData.STPX;
+              robotObj.position.z = robotObj.position.z + robotData.STPY;
           }
       }
   }
   // puts(currentCase);
 
-  SetSonarV();
-  OutWEBCAM();
+  SetSonarV(robotObj, robotData);
+  OutWEBCAM(robotData);
 }
 
-function CreateWEBCAM(XC: number, YC: number, ZC: number) {
+function CreateWEBCAM(
+  XC: number,
+  YC: number,
+  ZC: number,
+  robotData: RobotData,
+) {
   // ПАРАМЕТРЫ ЛУЧА
-  raycaster_WEB_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
-  raycaster_WEB_dir = new THREE.Vector3(W, 0, 0); // вектор, куда запускаем луч
-  raycaster_WEB = new THREE.Raycaster(undefined, undefined, 0, 10);
-  intersects = raycaster_WEB.intersectObjects(scene.children);
+  robotData.raycaster_WEB_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
+  robotData.raycaster_WEB_dir = new THREE.Vector3(W, 0, 0); // вектор, куда запускаем луч
+  robotData.raycaster_WEB = new THREE.Raycaster(undefined, undefined, 0, 10);
+  robotData.intersects = robotData.raycaster_WEB.intersectObjects(
+    scene.children,
+  );
 
   // WEBDX ШАГ РАЗВЕРТКИ ЛУЧА ПО ШИРИНЕ
   // WEBDZ ШАГ РАЗВЕРТКИ ЛУЧА ПО ВЫСОТЕ
-  const DX = 5 * WEBDX;
-  const DY = 0.1;
-  const DZ = 5 * WEBDZ;
-  const Graphcube = zeros(WEBSIZ);
-  Materialcube = zeros(WEBSIZ);
-  const geometry = new THREE.BoxGeometry(DX, DY, DZ);
-  for (let i = 0; i < WEBSIZ; i++)
-    for (let j = 0; j < WEBSIZ; j++) {
-      Materialcube[i][j] = new THREE.MeshBasicMaterial({ color: 0xf8ff50 });
-      Graphcube[i][j] = new THREE.Mesh(geometry, Materialcube[i][j]);
+  let DX = 5 * robotData.WEBDX;
+  let DY = 0.1;
+  let DZ = 5 * robotData.WEBDZ;
+  let Graphcube = zeros(robotData.WEBSIZ);
+  robotData.Materialcube = zeros(robotData.WEBSIZ);
+  let geometry = new THREE.BoxGeometry(DX, DY, DZ);
+  for (let i = 0; i < robotData.WEBSIZ; i++)
+    for (let j = 0; j < robotData.WEBSIZ; j++) {
+      robotData.Materialcube[i][j] = new THREE.MeshBasicMaterial({
+        color: 0xf8ff50,
+      });
+      Graphcube[i][j] = new THREE.Mesh(geometry, robotData.Materialcube[i][j]);
       Graphcube[i][j].position.set(XC + DX * j, YC, ZC - DZ * i);
       scene.add(Graphcube[i][j]);
     }
 }
 
-function GetDISbySonarV() {
-  raycasterV.set(raycasterV_pos, raycasterV_dir);
-  intersects = raycasterV.intersectObjects(scene.children, true);
+function GetDISbySonarV(robotData: RobotData) {
+  robotData.raycasterV.set(robotData.raycasterV_pos, robotData.raycasterV_dir);
+  robotData.intersects = robotData.raycasterV.intersectObjects(
+    scene.children,
+    true,
+  );
 
-  COLV = '#000000';
-  if (intersects.length > 0) {
-    let DISV = intersects[0].distance;
+  robotData.COLV = '#000000';
+  if (robotData.intersects.length > 0) {
+    let DISV = robotData.intersects[0].distance;
     if (DISV > 10) DISV = 10;
-    LineV.scale.z = DISV / W;
-    LineV.visible = true;
+    robotData.LineV.scale.z = DISV / W;
+    robotData.LineV.visible = true;
 
-    const colors = intersects.map(
+    const colors = robotData.intersects.map(
       // @ts-expect-error Мы украли это из работающего проекта
       (i) => '#' + i.object.material.color.getHex().toString(16),
     );
-    COLV = colors[0];
+    robotData.COLV = colors[0];
     // console.warn(`Цвет снизу: ${COLV}`);
 
-    if (COLV === BORDERCOL.toLowerCase()) {
+    if (robotData.COLV === robotData.BORDERCOL.toLowerCase()) {
       puts('Коснулся границы');
-      isBorderTouched = true;
+      robotData.isBorderTouched = true;
     }
     // puts(COLV);
   } else {
-    LineV.visible = false;
+    robotData.LineV.visible = false;
   }
 }
 
 function initParameters() {
   clock = new THREE.Clock();
 
-  iniRobot();
+  //@ts-expect-error eto nuzhno
+  RobotMData = {};
+  //@ts-expect-error eto nuzhno
+  CleanRobotData = {};
+
+  iniRobot(RobotMData);
+  iniRobot(CleanRobotData);
   iniTrains();
   [animateDoors, resetAnimateDoors] = iniDoorsAnimation();
-  IniSonarV();
+  IniSonarV(RobotMData);
 }
 
-function iniRobot() {
-  isBorderTouched = false;
-  WEBSIZ = 9; // СТОРОНА МАТРИЦЫ
-  DISV = 0; // Дистанция по вертикали
-  COLV = '#f8ff50'; // Цвет по вертикали
-  FLGV = false; // Флаг дорожки
-  RR = AR = XR = YR = 0; // ГЛОНАС
+function iniRobot(robotData: Partial<RobotData>) {
+  robotData.isBorderTouched = false;
+  robotData.WEBSIZ = 9; // СТОРОНА МАТРИЦЫ
+  robotData.DISV = 0; // Дистанция по вертикали
+  robotData.COLV = '#f8ff50'; // Цвет по вертикали
+  robotData.FLGV = false; // Флаг дорожки
+  robotData.RR = robotData.AR = robotData.XR = robotData.YR = 0; // ГЛОНАС
 
-  V = V0 = 0.05; // Скорость
-  STPX = -1;
-  STPY = 0; // Элементарные перемещения
-  Timer = -10; // Переменная реле времени поворота
-  TRESHTimer = -10; // Переменная времени мусора
+  robotData.V = robotData.V0 = 0.05; // Скорость
+  robotData.STPX = -1;
+  robotData.STPY = 0; // Элементарные перемещения
+  robotData.Timer = -10; // Переменная реле времени поворота
+  robotData.TRESHTimer = -10; // Переменная времени мусора
   // FLAMETimer = -10; // Переменная времени пламени
-  HOMETimer = 100; // Переменная времени желания домой
-  HOMESleep = 2000; // Переменная времени сна
-  NUMTURN = 5; // Число шагов на поворот
-  ANGLE = 0; // Угол поворота корпуса
+  robotData.HOMETimer = 100; // Переменная времени желания домой
+  robotData.HOMESleep = 2000; // Переменная времени сна
+  robotData.NUMTURN = 5; // Число шагов на поворот
+  robotData.ANGLE = 0; // Угол поворота корпуса
   // ПАРАМЕТРЫ СИСТЕМЫ ЦЕЛИ
-  HOMECOL = '#fd9412'; // ЦВЕТ ДОРОЖКИ ДОМОЙ
-  TREECOL = '#994422'; // ЦВЕТ ДЕРЕВА
+  robotData.HOMECOL = '#fd9412'; // ЦВЕТ ДОРОЖКИ ДОМОЙ
+  robotData.TREECOL = '#994422'; // ЦВЕТ ДЕРЕВА
 
-  BORDERCOL = '#ff8500'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
+  robotData.BORDERCOL = '#ff8500'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
 
   // balon ignore
   // У нас и у балонина разные цвета почему-то. Предполагается, что из-за версии
   // balon ignore
-  BORDERCOL = '#ffbf00'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
+  robotData.BORDERCOL = '#ffbf00'; // ЦВЕТ ГРАНИЦЫ ПЕРЕМЕЩЕНИЯ РОБОТА
 
-  TREEDIS = -100; // ДИСТАНЦИЯ ДО ДЕРЕВА
-  TREESDX = -100; // КООРДИНАТЫ ДЕРЕВА НА ТАБЛО
-  TRESHCOL = '#ffffff'; // ЦВЕТ МУСОРА
-  TRESHDIS = -100; // ДИСТАНЦИЯ ДО МУСОРА
-  TRESHSDX = -100; // КООРДИНАТЫ МУСОРА НА ТАБЛО
-  TRESHANGLE = 0; // КООРДИНАТЫ УГЛА НА ЦЕЛЬ
+  robotData.TREEDIS = -100; // ДИСТАНЦИЯ ДО ДЕРЕВА
+  robotData.TREESDX = -100; // КООРДИНАТЫ ДЕРЕВА НА ТАБЛО
+  robotData.TRESHCOL = '#ffffff'; // ЦВЕТ МУСОРА
+  robotData.TRESHDIS = -100; // ДИСТАНЦИЯ ДО МУСОРА
+  robotData.TRESHSDX = -100; // КООРДИНАТЫ МУСОРА НА ТАБЛО
+  robotData.TRESHANGLE = 0; // КООРДИНАТЫ УГЛА НА ЦЕЛЬ
   // ПАРАМЕТРЫ СИСТЕМЫ ЗРЕНИЯ
-  WEBDIS = mulp(ones(WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
-  WEBCOL = zeros(WEBSIZ); // МАТРИЦА ЦВЕТОВ
-  for (let i = 0; i < WEBSIZ; i++)
-    for (let j = 0; j < WEBSIZ; j++) WEBCOL[i][j] = '#f8ff50';
-  WEBDZ = 0.05; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ВЫСОТЕ
-  WEBDX = 0.1; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ШИРИНЕ
+  robotData.WEBDIS = mulp(ones(robotData.WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
+  robotData.WEBCOL = zeros(robotData.WEBSIZ); // МАТРИЦА ЦВЕТОВ
+  for (let i = 0; i < robotData.WEBSIZ; i++)
+    for (let j = 0; j < robotData.WEBSIZ; j++)
+      robotData.WEBCOL[i][j] = '#f8ff50';
+  robotData.WEBDZ = 0.05; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ВЫСОТЕ
+  robotData.WEBDX = 0.1; // ШАГ РАЗВЕРТКИ ЛУЧА ПО ШИРИНЕ
 }
 
 function iniTrains() {
@@ -7404,129 +7557,120 @@ function iniTrains() {
   trainStayTime = 2000;
 }
 
-function IniSonarV() {
+function IniSonarV(robotData: Partial<RobotData>) {
   // СОЗДАНИЕ ПЕРЕМЕННЫХ СОНАРА
-  raycasterV_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
-  raycasterV_dir = new THREE.Vector3(0, -W, 0); // вектор, куда запускаем луч
-  raycasterV = new THREE.Raycaster(undefined, undefined, 0, 100);
+  robotData.raycasterV_pos = new THREE.Vector3(0, 0, Z + W); // откуда запускаем луч
+  robotData.raycasterV_dir = new THREE.Vector3(0, -W, 0); // вектор, куда запускаем луч
+  robotData.raycasterV = new THREE.Raycaster(undefined, undefined, 0, 100);
 
-  intersects = raycasterV.intersectObjects(scene.children);
+  robotData.intersects = robotData.raycasterV.intersectObjects(scene.children);
 }
 
-function SetSonarV() {
+function SetSonarV(robot: THREE.Object3D, robotData: Partial<RobotData>) {
+  if (!robotData || !robotData.raycasterV_pos || !robotData.Sonar) return;
   // ВЫЧИСЛЯЕМ НОВЫЕ КООРДИНАТЫ СОНАРА
-  const CR = cos(Robot.rotation.z);
-  const SR = sin(Robot.rotation.z);
-  raycasterV_pos.y = Robot.position.y;
-  raycasterV_pos.x = Robot.position.x + (W * Sonar.position.x * CR) / 3;
-  raycasterV_pos.z = Robot.position.z + (W * Sonar.position.x * -SR) / 3;
+  const CR = cos(robot.rotation.z);
+  const SR = sin(robot.rotation.z);
+  robotData.raycasterV_pos.y = RobotM.position.y;
+  robotData.raycasterV_pos.x =
+    robot.position.x + (W * robotData.Sonar.position.x * CR) / 3;
+  robotData.raycasterV_pos.z =
+    robot.position.z + (W * robotData.Sonar.position.x * -SR) / 3;
 }
 
-function GetWEBCAM() {
+function GetWEBCAM(robotObj: THREE.Object3D, robotData: RobotData) {
   //FIXME: remove
   return;
-  for (let IZ = 0; IZ < WEBSIZ; IZ++)
-    for (let IX = 0; IX < WEBSIZ; IX++) {
+  for (let IZ = 0; IZ < robotData.WEBSIZ; IZ++)
+    for (let IX = 0; IX < robotData.WEBSIZ; IX++) {
       // ВЫБОР АМПЛИТУД РАЗВЕРТКИ ЛУЧА ВЕБКАМЕРЫ
-      const DZ = WEBDZ * ((WEBSIZ - 1) / 2 - IZ);
-      const DX = WEBDX * ((WEBSIZ - 1) / 2 - IX); // puts(DX)
+      const DZ = robotData.WEBDZ * ((robotData.WEBSIZ - 1) / 2 - IZ);
+      const DX = robotData.WEBDX * ((robotData.WEBSIZ - 1) / 2 - IX); // puts(DX)
       // ВЫЧИСЛЯЕМ НОВЫЕ КООРДИНАТЫ СОНАРА
-      const CR = cos(Robot.rotation.z + DX);
-      const SR = sin(Robot.rotation.z + DX);
-      raycaster_WEB_pos.x = Robot.position.x + W * Sonar.position.x * CR - 0.5;
-      raycaster_WEB_pos.z = Robot.position.z + W * Sonar.position.x * -SR + 0.5;
-      raycaster_WEB_dir = new THREE.Vector3(CR, sin(DZ), -SR);
-      raycaster_WEB.set(raycaster_WEB_pos, raycaster_WEB_dir);
-      intersects = raycaster_WEB.intersectObjects(scene.children);
+      const CR = cos(robotObj.rotation.z + DX);
+      const SR = sin(robotObj.rotation.z + DX);
+      robotData.raycaster_WEB_pos.x =
+        robotObj.position.x + W * robotData.Sonar.position.x * CR - 0.5;
+      robotData.raycaster_WEB_pos.z =
+        robotObj.position.z + W * robotData.Sonar.position.x * -SR + 0.5;
+      robotData.raycaster_WEB_dir = new THREE.Vector3(CR, sin(DZ), -SR);
+      robotData.raycaster_WEB.set(
+        robotData.raycaster_WEB_pos,
+        robotData.raycaster_WEB_dir,
+      );
+      robotData.intersects = robotData.raycaster_WEB.intersectObjects(
+        scene.children,
+      );
 
-      // scene.remove(V_Helper);
-      // V_Helper = new THREE.ArrowHelper(
-      //   raycasterV.ray.direction,
-      //   raycasterV.ray.origin,
-      //   8,
-      //   0xff0000,
-      // );
-      // scene.add(V_Helper);
-      // if (IZ === Math.round(WEBSIZ / 2) && IX === Math.round(WEBSIZ / 2)) {
-      //   scene.remove(H_Helper);
-      //   H_Helper = new THREE.ArrowHelper(
-      //     raycaster_WEB.ray.direction,
-      //     raycaster_WEB.ray.origin,
-      //     8,
-      //     0xff0000,
-      //   );
-      //   scene.add(H_Helper);
-      // }
-
-      WEBDIS = mulp(ones(WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
+      robotData.WEBDIS = mulp(ones(robotData.WEBSIZ), 100); // МАТРИЦА ДИСТАНЦИЙ
 
       let DIS = 100;
-      if (intersects.length > 0) {
-        DIS = intersects[0].distance; // puts(DIS);
+      if (robotData.intersects.length > 0) {
+        DIS = robotData.intersects[0].distance; // puts(DIS);
         if (DIS > 10) DIS = 10;
-        WEBDIS[IZ][IX] = DIS / W;
-        const INTERSECTED = intersects[0].object;
+        robotData.WEBDIS[IZ][IX] = DIS / W;
+        const INTERSECTED = robotData.intersects[0].object;
         // balon ignore
         // @ts-expect-error Ну опять балонин
         const Col = INTERSECTED.material.color.getHex();
-        WEBCOL[IZ][IX] = '#' + Col.toString(16);
+        robotData.WEBCOL[IZ][IX] = '#' + Col.toString(16);
       } else {
-        WEBDIS[IZ][IX] = DIS / W;
-        WEBCOL[IZ][IX] = '#000000';
+        robotData.WEBDIS[IZ][IX] = DIS / W;
+        robotData.WEBCOL[IZ][IX] = '#000000';
       }
     }
 }
 
-function DisWEBCAM() {
+function DisWEBCAM(robotData: RobotData) {
   // ВЫТАЩИМ СРЕДНЮЮ КООРДИНАТУ ДЕРЕВА И МУСОРА ИЗ ТАБЛО
   let N1, N2;
   N1 = N2 = 0;
   let S1, S2;
   S1 = S2 = 0;
-  TREESDX = -100;
-  TREEDIS = 0;
-  TRESHSDX = -100;
-  TRESHDIS = 0;
-  for (let i = 0; i < WEBSIZ; i++)
-    for (let j = 0; j < WEBSIZ; j++) {
-      DIS = WEBDIS[i][j];
-      const Col = WEBCOL[i][j];
-      if (Col == TREECOL) {
+  robotData.TREESDX = -100;
+  robotData.TREEDIS = 0;
+  robotData.TRESHSDX = -100;
+  robotData.TRESHDIS = 0;
+  for (let i = 0; i < robotData.WEBSIZ; i++)
+    for (let j = 0; j < robotData.WEBSIZ; j++) {
+      robotData.DIS = robotData.WEBDIS[i][j];
+      let Col = robotData.WEBCOL[i][j];
+      if (Col == robotData.TREECOL) {
         N1++;
         S1 += j;
-        TREEDIS += DIS;
+        robotData.TREEDIS += robotData.DIS;
       }
-      if (Col == TRESHCOL) {
+      if (Col == robotData.TRESHCOL) {
         N2++;
         S2 += j;
-        TRESHDIS += DIS;
+        robotData.TRESHDIS += robotData.DIS;
       }
     }
   if (N1) {
-    TREESDX = S1 / N1;
-    TREEDIS = TREEDIS / N1; // LineH.scale.x=TREEDIS/W;
-  } else TREEDIS = 100;
+    robotData.TREESDX = S1 / N1;
+    robotData.TREEDIS = robotData.TREEDIS / N1; // LineH.scale.x=TREEDIS/W;
+  } else robotData.TREEDIS = 100;
   if (N2) {
-    TRESHSDX = S2 / N2;
-    TRESHDIS = TRESHDIS / N2;
-    LineH.scale.x = TRESHDIS / W;
-  } else TRESHDIS = 100; // putm(WEBCOL); putm(WEBDIS);
+    robotData.TRESHSDX = S2 / N2;
+    robotData.TRESHDIS = robotData.TRESHDIS / N2;
+    robotData.LineH.scale.x = robotData.TRESHDIS / W;
+  } else robotData.TRESHDIS = 100; // putm(WEBCOL); putm(WEBDIS);
 }
 
-function OutWEBCAM() {
+function OutWEBCAM(robotData: RobotData) {
   let i, j, Col;
-  for (i = 0; i < WEBSIZ; i++)
-    for (j = 0; j < WEBSIZ; j++) {
-      DIS = WEBDIS[i][j];
-      Col = WEBCOL[i][j];
-      const ColR = floor((parseInt(Col.slice(1, 3), 16) * 5) / DIS);
-      const ColG = floor((parseInt(Col.slice(3, 5), 16) * 5) / DIS);
-      const ColB = floor((parseInt(Col.slice(5, 7), 16) * 5) / DIS);
+  for (i = 0; i < robotData.WEBSIZ; i++)
+    for (j = 0; j < robotData.WEBSIZ; j++) {
+      robotData.DIS = robotData.WEBDIS[i][j];
+      Col = robotData.WEBCOL[i][j];
+      let ColR = floor((parseInt(Col.slice(1, 3), 16) * 5) / robotData.DIS);
+      let ColG = floor((parseInt(Col.slice(3, 5), 16) * 5) / robotData.DIS);
+      let ColB = floor((parseInt(Col.slice(5, 7), 16) * 5) / robotData.DIS);
       Col = RGB2HEX(ColR, ColG, ColB);
       // Graphcube[i][j].position.z = ColBW / 500;
       // balon ignore
       // @ts-expect-error У балонина работает
-      Materialcube[i][j].color.set(Col);
+      robotData.Materialcube[i][j].color.set(Col);
     }
 }
 
@@ -9797,7 +9941,7 @@ function ChangeCamera(e: Event) {
 
   const value = select.value;
   if (!value.includes('poi'))
-    currentCamera = cameras[value as 'main' | 'robot'];
+    currentCamera = cameras[value as 'main' | 'robot' | 'robotCleaner'];
   else {
     const index = parseInt(value.split('_')[1]);
     currentCamera = cameras.poi?.[index];

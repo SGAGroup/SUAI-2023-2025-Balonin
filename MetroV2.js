@@ -1881,15 +1881,15 @@ for (var i = 0; i < 3; i++) {
  cube_310Group.add(wheel_hold_p);
 }
 cube_310Group.position.set(-8.4084, 2.5756, -1.8708);
-var cube_311Geometry = new THREE.BoxGeometry(2, 2, 2);
-var cube_311Group = new THREE.Group();
+var wheel_balkaGeometry = new THREE.BoxGeometry(2, 2, 2);
+var wheel_balkaGroup = new THREE.Group();
 for (var i = 0; i < 3; i++) {
- var cube_311 = new THREE.Mesh(cube_311Geometry, Floor_CentralMaterial);
- cube_311.scale.set(0.0702, 0.1597, 0.5837);
- cube_311.position.set(6.4288 * i, 0, 0);
- cube_311Group.add(cube_311);
+ var wheel_balka = new THREE.Mesh(wheel_balkaGeometry, Floor_CentralMaterial);
+ wheel_balka.scale.set(0.0702, 0.1597, 0.5837);
+ wheel_balka.position.set(6.4288 * i, 0, 0);
+ wheel_balkaGroup.add(wheel_balka);
 }
-cube_311Group.position.set(-8.4084, 3.0054, -1.7856);
+wheel_balkaGroup.position.set(-8.4084, 3.0054, -1.7856);
 var cube_312Geometry = new THREE.BoxGeometry(2, 2, 2);
 var cube_312Group = new THREE.Group();
 for (var i = 0; i < 3; i++) {
@@ -2606,7 +2606,7 @@ cube_145.position.set(0.0127, 6.725, 0.6138);
 cube_145.scale.set(12.4539, 0.0107, 0.1974);
 cube_145.setRotation(1.5708, 0.0, 0.0);
 var out = new THREE.Group();
-out.add(train_base, wheel_hold_u, cyl_Group, sphere_002Group, cube_310Group, cube_311Group, cube_312Group, cube_313Group, cube_314Group, cube_315Group, cube_316Group, cube_317Group, cube_318Group, cube_319Group, cube_320Group, cube_321Group, cube_322Group, cube_323Group, cylinder_022Group, cylinder_023Group, cylinder_024Group, cylinder_025Group, sphere_003Group, cylinder_026Group, cylinder_027Group, cylinder_028Group, cylinder_029Group, sphere_004Group, cube_324Group, cube_325Group, cube_326Group, cylinder_030Group, cylinder_031Group, cylinder_032Group, cylinder_033Group, cube_327, cube_328, cube_329Group, cube_330Group, cube_331Group, cube_332Group, cube_333Group, cube_334Group, cube_335Group, cube_336Group, cube_337Group, cube_338Group, cube_339Group, cube_340Group, cube_341Group, cube_342Group, cylinder_034Group, cylinder_035Group, cylinder_036Group, cylinder_037Group, sphere_005Group, cylinder_038Group, cylinder_040Group, cylinder_041Group, sphere_006Group, cube_343Group, cube_344Group, cube_345Group, cylinder_042Group, cylinder_043Group, cylinder_044Group, cylinder_045Group, cube_346, cube_347, cylinder_046, cube_348, cylinder_047, cylinder_048, cube_349, cylinder_049, cube_350, cylinder_050, cylinder_051, cube_351, cylinder_052, cube_352, cylinder_053, cylinder_054, cylinder_055, cylinder_056, cylinder_057Group, cylinder_058Group, cube_353, cube_116, cube_145);
+out.add(train_base, wheel_hold_u, cyl_Group, sphere_002Group, cube_310Group, wheel_balkaGroup, cube_312Group, cube_313Group, cube_314Group, cube_315Group, cube_316Group, cube_317Group, cube_318Group, cube_319Group, cube_320Group, cube_321Group, cube_322Group, cube_323Group, cylinder_022Group, cylinder_023Group, cylinder_024Group, cylinder_025Group, sphere_003Group, cylinder_026Group, cylinder_027Group, cylinder_028Group, cylinder_029Group, sphere_004Group, cube_324Group, cube_325Group, cube_326Group, cylinder_030Group, cylinder_031Group, cylinder_032Group, cylinder_033Group, cube_327, cube_328, cube_329Group, cube_330Group, cube_331Group, cube_332Group, cube_333Group, cube_334Group, cube_335Group, cube_336Group, cube_337Group, cube_338Group, cube_339Group, cube_340Group, cube_341Group, cube_342Group, cylinder_034Group, cylinder_035Group, cylinder_036Group, cylinder_037Group, sphere_005Group, cylinder_038Group, cylinder_040Group, cylinder_041Group, sphere_006Group, cube_343Group, cube_344Group, cube_345Group, cylinder_042Group, cylinder_043Group, cylinder_044Group, cylinder_045Group, cube_346, cube_347, cylinder_046, cube_348, cylinder_047, cylinder_048, cube_349, cylinder_049, cube_350, cylinder_050, cylinder_051, cube_351, cylinder_052, cube_352, cylinder_053, cylinder_054, cylinder_055, cylinder_056, cylinder_057Group, cylinder_058Group, cube_353, cube_116, cube_145);
 return out;
 }
 function DrawVagon() {
@@ -2641,8 +2641,15 @@ var wheel_hold_u = new THREE.Mesh(geo, ColonaMat);
 var support = new THREE.Group();
     support.add(wheel_hold_u,wheel_hold_p);
 
+//балка соединяющая колёса
+var wheel_balka = new THREE.Mesh(geo, ColonaMat);
+    wheel_balka.position.set(-8.3, 0.8, -1.85);
+    wheel_balka.scale.set(3, 0.1, 0.1);
+var wheel_balkaMirroredZ = new THREE.Group();
+    wheel_balkaMirroredZ.add(wheel_balka);
+
 var cube_308MirroredZ = new THREE.Group();
-cube_308MirroredZ.position.x = -6.13;
+    cube_308MirroredZ.position.x = -6.13;
     cube_308MirroredZ.add(support);
 
 //цилиндры у блока колёс
@@ -2653,28 +2660,13 @@ for (var i = 0; i < 3; i++) {
  cyl_021.position.x = 0.5*i;
  cyl_Group.add(cyl_021);
 }
-cyl_Group.position.set(0.2,0,-2);
+cyl_Group.position.set(-8.8,1,-2);
 
-
-var cyl_021GroupMirroredZ = new THREE.Group();
-    cyl_021GroupMirroredZ.add(cyl_Group);
-    cyl_021GroupMirroredZ.position.set(-9,1,0);
 
 var geo = new THREE.BoxGeometry(2,2,2);
-var cube_311 = new THREE.Mesh(geo, ColonaMat);
-    cube_311.scale.set(2.8418, 0.1639, 0.0489);
-var cube_311MZ = cube_311.clone();
-    cube_311MZ.updateMatrixWorld(true);
-    cube_311.position.set(0, 0, -1.8431);
-    cube_311MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_311MZ.position.set(0, 0, 1.8431);
-var cube_311MirroredZ = new THREE.Group();
-    cube_311MirroredZ.add(cube_311, cube_311MZ);
-    cube_311MirroredZ.position.set(-8.2678, 0.7884, 0);
-
 var cube_312 = new THREE.Mesh(geo, ColonaMat);
     cube_312.scale.set(0.1708, 0.1639, 0.3627);
-    cube_312.setRotation(-0.5678, 0.0, 0.0);
+    cube_312.setRotation(-0.5678, 0, 0);
 var cube_312MZ = cube_312.clone();
     cube_312MZ.updateMatrixWorld(true);
     cube_312.position.set(0, 0, -1.3783);
@@ -4306,7 +4298,7 @@ DrawTrainDoorFunctionEntityGroupMirroredZ.add(DrawTrainDoorFunctionEntityGroup, 
 DrawTrainDoorFunctionEntityGroupMirroredZ.position.set(-9.6225, 2.2455, 0);
 var Decor = DrawVagonDecorations();
 var out = new THREE.Group();
-out.add(Decor, wheel_008MirZ, train_base, cube_308MirroredZ, cyl_021GroupMirroredZ, cube_311MirroredZ, cube_312MirroredZ, cube_313MirroredZ, cube_314MirroredZ, cube_315MirroredZ, cube_316MirroredZ, cylinder_wheel_012MirroredZ, cylinder_wheel_013MirroredZ, cylinder_wheel_014MirroredZ, cylinder_wheel_015MirroredZ, cube_317MirroredZ, cube_318MirroredZ, cube_319MirroredZ, cube_320MirroredZ, cube_321MirroredZ, cube_322MirroredZ, cube_323MirroredZ, cube_324MirroredZ, cube_325MirroredZ, cube_326MirroredZ, cube_327MirroredZ, cylinder_022MirroredZ, sphere_002MirroredZ, cube_328MirroredZ, cube_329MirroredZ, cube_330MirroredZ, cube_331, cube_332, cube_333, cube_334MirroredZMirroredY, cube_335MirroredZ, cube_336MirroredZMirroredY, cube_337MirroredXMirroredZMirroredY, cube_338, cube_339MirroredZMirroredY, cube_340MirroredY, cube_341MirroredZ, cube_342MirroredXMirroredZMirroredY, cube_343MirroredZMirroredY, cylinder_023GroupMirroredZ, cube_344MirroredZ, cube_345MirroredZ, cylinder_024MirroredZ, sphere_003MirroredZ, cube_346MirroredZ, cube_347MirroredZ, cube_348MirroredZ, cube_349, cube_350, cube_351MirroredZMirroredY, cube_352MirroredZ, cube_353MirroredZMirroredY, cube_354MirroredXMirroredZMirroredY, cube_355, cube_356MirroredZMirroredY, cube_357MirroredY, cube_358MirroredZ, cube_359MirroredXMirroredZMirroredY, cube_360MirroredZMirroredY, cube_361, cube_362, cube_363, cube_364, cube_365, cube_372, cube_373, cube_374, cube_409Group, cube_410Group, cube_411, cube_412Group, cube_413Group, cube_414Group, cube_415GroupMirroredY, cube_416GroupMirroredY, cube_417GroupMirroredY, cube_418Group, cube_419Group, cube_420Group, cube_421Group, cube_422Group, cube_423Group, cube_424Group, cube_425GroupMirroredY, cube_426GroupMirroredY, cube_427GroupMirroredY, cube_428Group, cube_429Group, cube_430, cube_431Group, cube_432Group, cube_433Group, cube_442Group, cube_443Group, cube_444Group, cube_445Group, cube_446Group, cube_447Group, cube_448Group, cube_449Group, cube_450Group, cube_451Group, cube_452Group, cube_453Group, cube_454Group, cube_455Group, cube_456Group, cube_457Group, cube_458Group, cube_459Group, cube_460Group, cube_461Group, cube_462GroupMirroredZ, cube_463, cube_464Group, cube_465Group, cube_466Group, cube_475Group, cube_476Group, cube_477Group, cube_478Group, cube_479Group, cube_480Group, cube_481Group, cube_482Group, cube_483Group, cube_484Group, cube_485Group, cube_486Group, cube_487Group, cube_488Group, cube_489Group, cube_490Group, cube_491Group, cube_492Group, cube_493MirroredZ, cylinder_025, cube_494MirroredZ, cylinder_026, cube_495MirroredZ, cylinder_027, cube_496MirroredZ, cylinder_028, cube_497, cube_533Group, cube_542Group, DrawTrainDoorFunctionEntityGroupMirroredZ);
+out.add(Decor, wheel_008MirZ, train_base, cube_308MirroredZ, cyl_Group, wheel_balkaMirroredZ, cube_312MirroredZ, cube_313MirroredZ, cube_314MirroredZ, cube_315MirroredZ, cube_316MirroredZ, cylinder_wheel_012MirroredZ, cylinder_wheel_013MirroredZ, cylinder_wheel_014MirroredZ, cylinder_wheel_015MirroredZ, cube_317MirroredZ, cube_318MirroredZ, cube_319MirroredZ, cube_320MirroredZ, cube_321MirroredZ, cube_322MirroredZ, cube_323MirroredZ, cube_324MirroredZ, cube_325MirroredZ, cube_326MirroredZ, cube_327MirroredZ, cylinder_022MirroredZ, sphere_002MirroredZ, cube_328MirroredZ, cube_329MirroredZ, cube_330MirroredZ, cube_331, cube_332, cube_333, cube_334MirroredZMirroredY, cube_335MirroredZ, cube_336MirroredZMirroredY, cube_337MirroredXMirroredZMirroredY, cube_338, cube_339MirroredZMirroredY, cube_340MirroredY, cube_341MirroredZ, cube_342MirroredXMirroredZMirroredY, cube_343MirroredZMirroredY, cylinder_023GroupMirroredZ, cube_344MirroredZ, cube_345MirroredZ, cylinder_024MirroredZ, sphere_003MirroredZ, cube_346MirroredZ, cube_347MirroredZ, cube_348MirroredZ, cube_349, cube_350, cube_351MirroredZMirroredY, cube_352MirroredZ, cube_353MirroredZMirroredY, cube_354MirroredXMirroredZMirroredY, cube_355, cube_356MirroredZMirroredY, cube_357MirroredY, cube_358MirroredZ, cube_359MirroredXMirroredZMirroredY, cube_360MirroredZMirroredY, cube_361, cube_362, cube_363, cube_364, cube_365, cube_372, cube_373, cube_374, cube_409Group, cube_410Group, cube_411, cube_412Group, cube_413Group, cube_414Group, cube_415GroupMirroredY, cube_416GroupMirroredY, cube_417GroupMirroredY, cube_418Group, cube_419Group, cube_420Group, cube_421Group, cube_422Group, cube_423Group, cube_424Group, cube_425GroupMirroredY, cube_426GroupMirroredY, cube_427GroupMirroredY, cube_428Group, cube_429Group, cube_430, cube_431Group, cube_432Group, cube_433Group, cube_442Group, cube_443Group, cube_444Group, cube_445Group, cube_446Group, cube_447Group, cube_448Group, cube_449Group, cube_450Group, cube_451Group, cube_452Group, cube_453Group, cube_454Group, cube_455Group, cube_456Group, cube_457Group, cube_458Group, cube_459Group, cube_460Group, cube_461Group, cube_462GroupMirroredZ, cube_463, cube_464Group, cube_465Group, cube_466Group, cube_475Group, cube_476Group, cube_477Group, cube_478Group, cube_479Group, cube_480Group, cube_481Group, cube_482Group, cube_483Group, cube_484Group, cube_485Group, cube_486Group, cube_487Group, cube_488Group, cube_489Group, cube_490Group, cube_491Group, cube_492Group, cube_493MirroredZ, cylinder_025, cube_494MirroredZ, cylinder_026, cube_495MirroredZ, cylinder_027, cube_496MirroredZ, cylinder_028, cube_497, cube_533Group, cube_542Group, DrawTrainDoorFunctionEntityGroupMirroredZ);
 return out;
 }
 function DrawRightDoorFunction() {

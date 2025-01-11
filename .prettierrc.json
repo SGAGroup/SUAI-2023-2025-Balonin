@@ -5,6 +5,7 @@
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
   "tabWidth": 2,
-  "endOfLine": "crlf",
+  "endOfLine": "lf",
+  "arrayBracketNewline": false,
   "semi": true
 }

@@ -2617,12 +2617,9 @@ var GlassMat = new THREE.MeshStandardMaterial({color: new THREE.Color(0.2227, 0.
 var Ceiling_trainMat = new THREE.MeshStandardMaterial({color: new THREE.Color(0.3757, 0.298, 0.0955),roughness:0.12,});
 var Floor_trainMat = new THREE.MeshStandardMaterial({color: new THREE.Color(0.3506, 0.1574, 0.0969), metalness:1,roughness: 0.5});
 
-//Колёсные пары
-var wheel_base = new THREE.Group();
-var wheel_base_half = new THREE.Group();
-
+function DrawWheelBase(){
 //колёсо
-var geo = new THREE.CylinderGeometry(1,1,2,16);
+var geo = new THREE.CylinderGeometry(1,1,2,12);
 var wheel_white = new THREE.Mesh(geo, RoofTilesMat);
 var wheel_black = new THREE.Mesh(geo, ColonaMat);
     wheel_black.scale.set(0.8,0.1,0.8);  wheel_black.rotation.x = PI/2;
@@ -2635,224 +2632,60 @@ var geo = new THREE.BoxGeometry(2,2,2);
 var wheel_hold_p = new THREE.Mesh(geo, ColonaMat);
 var wheel_hold_u = new THREE.Mesh(geo, ColonaMat);
     wheel_hold_u.scale.set(0.2,0.4,0.2); wheel_hold_u.position.y =  0.4; 
-    wheel_hold_p.scale.set(0.2,0.2,0.4); wheel_hold_p.position.z = -0.3; 
+    wheel_hold_p.scale.set(0.2,0.2,0.5); wheel_hold_p.position.z = -0.35; 
     wheel_hold_p.rotation.x = -PI/9;
 var stoika = new THREE.Group(); stoika.add(wheel_hold_u,wheel_hold_p);
-stoika.position.y = 0.9;
-stoika.position.z = -1;
-    // stoika.position.set(0,0.9,-0.1);
-    stoika.position.x = -6.15;
+    stoika.position.set(0,0.9,-0.1);
 //колесо с креплением
-var wheel_full = new THREE.Group();    
-    wheel_full.add(stoika,wheel);
-    wheel_full.position.set(-6.15,0,-1);
-// var wheel_full_1 = wheel_full.clone(); wheel_full_1.position.x = -10.5;
-
-
-
-// var wheel_1 = wheel.clone();   wheel_1.position.x = -10.4;
-
-
-
-
-
-wheel_base_half.add(wheel_full);
-wheel_base.add(wheel_base_half);
-
+var wheel_full = new THREE.Group();    wheel_full.add(wheel, stoika);
+    wheel_full.position.set(2,0,1);
+var wheel_full_1 = wheel_full.clone(); wheel_full_1.position.x = -2;
 //балка соединяющая колёса
 var wheel_balka = new THREE.Mesh(geo, ColonaMat);
-    wheel_balka.position.set(-8.3, 0.8, -1.85);
-    wheel_balka.scale.set(3, 0.1, 0.1);
-var wheel_balkaMirroredZ = new THREE.Group();
-    wheel_balkaMirroredZ.add(wheel_balka);
-
+    wheel_balka.position.set(0,0.8,0.15);
+    wheel_balka.scale.set(3,0.15,0.1);
 //рейка колёс, прилегающая к корпусу
-var cube_314 = new THREE.Mesh(geo, ColonaMat);
-    cube_314.position.set(-8.26, 1.58, -2.35);
-    cube_314.scale.set(2.85, 0.15, 0.05);
-var cube_314MirroredZ = new THREE.Group();
-    cube_314MirroredZ.add(cube_314);
-
+var wheel_balka_top = new THREE.Mesh(geo, ColonaMat);
+    wheel_balka_top.position.set(0,1.7,-0.4);
+    wheel_balka_top.scale.set(3,0.2,0.1);
 //лицевая балка крепления колёс
-var cube_315 = new THREE.Mesh(geo, ColonaMat);
-    cube_315.position.set(-8.26, 0.77, -2.39);
-    cube_315.scale.set(1.05, 0.16, 0.08);
-var cube_315MirroredZ = new THREE.Group();
-    cube_315MirroredZ.add(cube_315);
-
+var wheel_balka_fr = new THREE.Mesh(geo, ColonaMat);
+    wheel_balka_fr.position.y = 0.8;
+    wheel_balka_fr.scale.set(1,0.2,0.1);
 //цилиндры у блока колёс
-var geo = new THREE.CylinderGeometry(0.2,0.2,0.9,6,1,true);
-var cyl_Group = new THREE.Group();
-for (var i = 0; i < 3; i++) {
- var cyl_021 = new THREE.Mesh(geo, ColonaMat);
- cyl_021.position.x = 0.5*i;
- cyl_Group.add(cyl_021);
+var geo = new THREE.CylinderGeometry(0.2,0.2,1.1,6,1,true);
+var cyl_gr = new THREE.Group();
+    for (var i = 0; i < 3; i++) {
+    var cyl = new THREE.Mesh(geo, ColonaMat);
+    cyl.position.x = 0.5*i;
+    cyl_gr.add(cyl);
+}cyl_gr.position.set(-0.5,1,0);
+//Половина колёсной базы
+var wheel_base_half = new THREE.Group(); wheel_base_half.position.z = -2;
+    wheel_base_half.add(wheel_full,wheel_full_1,wheel_balka,wheel_balka_top,wheel_balka_fr,cyl_gr);
+var wheel_base_half_1 = wheel_base_half.clone(); wheel_base_half_1.rotation.x = PI;
+    wheel_base_half_1.position.z = 2; wheel_base_half_1.scale.y = -1;
+//Сборка всего и юст
+var wheel_base = new THREE.Group();
+var WS = 1; wheel_base.scale.set(WS,WS,WS);
+    wheel_base.add(wheel_base_half,wheel_base_half_1);
+return wheel_base;
 }
-cyl_Group.position.set(-8.8,1,-2);
+
+var wheel_base_1 = DrawWheelBase();
+    wheel_base_1.position.x = -8.5;
+
+var wheel_base_2 = DrawWheelBase();
+    wheel_base_2.position.x =  9;
 
 var geo = new THREE.BoxGeometry(2, 2, 2);
 var train_base = new THREE.Mesh(geo, Blue_PictureMaterial);
     train_base.position.set(0,1.97,0);
     train_base.scale.set(12.58, 0.26, 2.47);
 
-var geo = new THREE.CylinderGeometry(1, 1, 2, 32);
-var cylinder_wheel_012 = new THREE.Mesh(geo, ColonaMat);
-    cylinder_wheel_012.scale.set(0.8096, 0.1641, 0.8096);
-    cylinder_wheel_012.setRotation(1.5708, 0.0, 0.0);
-var cylinder_wheel_012MZ = cylinder_wheel_012.clone();
-    cylinder_wheel_012MZ.updateMatrixWorld(true);
-    cylinder_wheel_012.position.set(0, 0, -2.124);
-    cylinder_wheel_012MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cylinder_wheel_012MZ.position.set(0, 0, 2.124);
-var cylinder_wheel_012MirroredZ = new THREE.Group();
-    cylinder_wheel_012MirroredZ.add(cylinder_wheel_012, cylinder_wheel_012MZ);
-    cylinder_wheel_012MirroredZ.position.set(11.1541, 0.7716, 0);
-
-var cylinder_wheel_013 = new THREE.Mesh(geo, RoofTilesMat);
-    cylinder_wheel_013.scale.set(0.509, 0.1032, 0.509);
-    cylinder_wheel_013.setRotation(1.5708, 0.0, 0.0);
-var cylinder_wheel_013MZ = cylinder_wheel_013.clone();
-    cylinder_wheel_013MZ.updateMatrixWorld(true);
-    cylinder_wheel_013.position.set(0, 0, -2.3912);
-    cylinder_wheel_013MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cylinder_wheel_013MZ.position.set(0, 0, 2.3912);
-var cylinder_wheel_013MirroredZ = new THREE.Group();
-    cylinder_wheel_013MirroredZ.add(cylinder_wheel_013, cylinder_wheel_013MZ);
-    cylinder_wheel_013MirroredZ.position.set(11.1541, 0.7716, 0);
-
-var cylinder_wheel_014 = new THREE.Mesh(geo, ColonaMat);
-    cylinder_wheel_014.scale.set(0.8096, 0.1641, 0.8096);
-    cylinder_wheel_014.setRotation(1.5708, 0.0, 0.0);
-var cylinder_wheel_014MZ = cylinder_wheel_014.clone();
-    cylinder_wheel_014MZ.updateMatrixWorld(true);
-    cylinder_wheel_014.position.set(0, 0, -2.124);
-    cylinder_wheel_014MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cylinder_wheel_014MZ.position.set(0, 0, 2.124);
-var cylinder_wheel_014MirroredZ = new THREE.Group();
-    cylinder_wheel_014MirroredZ.add(cylinder_wheel_014, cylinder_wheel_014MZ);
-    cylinder_wheel_014MirroredZ.position.set(6.8881, 0.7716, 0);
-
-var cylinder_wheel_015 = new THREE.Mesh(geo, RoofTilesMat);
-    cylinder_wheel_015.scale.set(0.509, 0.1032, 0.509);
-    cylinder_wheel_015.setRotation(1.5708, 0.0, 0.0);
-var cylinder_wheel_015MZ = cylinder_wheel_015.clone();
-    cylinder_wheel_015MZ.updateMatrixWorld(true);
-    cylinder_wheel_015.position.set(0, 0, -2.3912);
-    cylinder_wheel_015MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cylinder_wheel_015MZ.position.set(0, 0, 2.3912);
-var cylinder_wheel_015MirroredZ = new THREE.Group();
-    cylinder_wheel_015MirroredZ.add(cylinder_wheel_015, cylinder_wheel_015MZ);
-    cylinder_wheel_015MirroredZ.position.set(6.8881, 0.7716, 0);
-
 var geo = new THREE.BoxGeometry(2,2,2);
-var cube_317 = new THREE.Mesh(geo, ColonaMat);
-    cube_317.scale.set(0.1708, 0.4672, 0.1996);
 
-var cube_317MZ = cube_317.clone();
-    cube_317MZ.updateMatrixWorld(true);
-    cube_317.position.set(0, 0, -1.1446);
-    cube_317MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_317MZ.position.set(0, 0, 1.1446);
-var cube_317MirroredZ = new THREE.Group();
-    cube_317MirroredZ.add(cube_317, cube_317MZ);
-    cube_317MirroredZ.position.set(11.1541, 1.2844, 0);
-
-var cube_318 = new THREE.Mesh(geo, ColonaMat);
-    cube_318.scale.set(0.1708, 0.2173, 0.1996);
-    cube_318.setRotation(0.0, 0.0, -0.0);
-var cube_318MZ = cube_318.clone();
-    cube_318MZ.updateMatrixWorld(true);
-    cube_318.position.set(0, 0, -1.763);
-    cube_318MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_318MZ.position.set(0, 0, 1.7629);
-var cube_318MirroredZ = new THREE.Group();
-    cube_318MirroredZ.add(cube_318, cube_318MZ);
-    cube_318MirroredZ.position.set(11.1541, 0.7716, 0);
-
-var cube_319 = new THREE.Mesh(geo, ColonaMat);
-    cube_319.scale.set(0.1708, 0.1639, 0.3627);
-    cube_319.setRotation(-0.5678, 0.0, 0.0);
-var cube_319MZ = cube_319.clone();
-    cube_319MZ.updateMatrixWorld(true);
-    cube_319.position.set(0, 0, -1.3783);
-    cube_319MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_319MZ.position.set(0, 0, 1.3783);
-var cube_319MirroredZ = new THREE.Group();
-    cube_319MirroredZ.add(cube_319, cube_319MZ);
-    cube_319MirroredZ.position.set(11.1541, 0.9047, 0);
-
-var cube_320 = new THREE.Mesh(geo, ColonaMat);
-    cube_320.scale.set(2.8418, 0.1639, 0.0489);
-    cube_320.setRotation(0.0, 0.0, -0.0);
-var cube_320MZ = cube_320.clone();
-    cube_320MZ.updateMatrixWorld(true);
-    cube_320.position.set(0, 0, -1.8431);
-    cube_320MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_320MZ.position.set(0, 0, 1.8431);
-var cube_320MirroredZ = new THREE.Group();
-    cube_320MirroredZ.add(cube_320, cube_320MZ);
-    cube_320MirroredZ.position.set(9.0211, 0.7884, 0);
-
-var cube_321 = new THREE.Mesh(geo, ColonaMat);
-    cube_321.scale.set(0.1708, 0.1639, 0.3627);
-    cube_321.setRotation(-0.5678, 0.0, 0.0);
-var cube_321MZ = cube_321.clone();
-    cube_321MZ.updateMatrixWorld(true);
-    cube_321.position.set(0, 0, -1.3783);
-    cube_321MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_321MZ.position.set(0, 0, 1.3783);
-var cube_321MirroredZ = new THREE.Group();
-    cube_321MirroredZ.add(cube_321, cube_321MZ);
-    cube_321MirroredZ.position.set(6.8881, 0.9047, 0);
-
-var cube_322 = new THREE.Mesh(geo, ColonaMat);
-    cube_322.scale.set(0.1708, 0.4672, 0.1996);
-
-var cube_322MZ = cube_322.clone();
-    cube_322MZ.updateMatrixWorld(true);
-    cube_322.position.set(0, 0, -1.1446);
-    cube_322MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_322MZ.position.set(0, 0, 1.1446);
-var cube_322MirroredZ = new THREE.Group();
-    cube_322MirroredZ.add(cube_322, cube_322MZ);
-    cube_322MirroredZ.position.set(6.8881, 1.2844, 0);
-
-var cube_323 = new THREE.Mesh(geo, ColonaMat);
-    cube_323.scale.set(2.8418, 0.1639, 0.0489);
-
-var cube_323MZ = cube_323.clone();
-    cube_323MZ.updateMatrixWorld(true);
-    cube_323.position.set(0, 0, -2.3571);
-    cube_323MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_323MZ.position.set(0, 0, 2.357);
-var cube_323MirroredZ = new THREE.Group();
-    cube_323MirroredZ.add(cube_323, cube_323MZ);
-    cube_323MirroredZ.position.set(9.0211, 1.5807, 0);
-
-var cube_324 = new THREE.Mesh(geo, ColonaMat);
-    cube_324.scale.set(1.0521, 0.1639, 0.0812);
-
-var cube_324MZ = cube_324.clone();
-    cube_324MZ.updateMatrixWorld(true);
-    cube_324.position.set(0, 0, -2.3912);
-    cube_324MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_324MZ.position.set(0, 0, 2.3912);
-var cube_324MirroredZ = new THREE.Group();
-    cube_324MirroredZ.add(cube_324, cube_324MZ);
-    cube_324MirroredZ.position.set(9.0211, 0.7716, 0);
-
-var cube_325 = new THREE.Mesh(geo, ColonaMat);
-    cube_325.scale.set(0.1708, 0.2173, 0.1996);
-
-var cube_325MZ = cube_325.clone();
-    cube_325MZ.updateMatrixWorld(true);
-    cube_325.position.set(0, 0, -1.763);
-    cube_325MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_325MZ.position.set(0, 0, 1.7629);
-var cube_325MirroredZ = new THREE.Group();
-    cube_325MirroredZ.add(cube_325, cube_325MZ);
-    cube_325MirroredZ.position.set(6.8881, 0.7716, 0);
-
+//train part
 var cube_326 = new THREE.Mesh(geo, Blue_PictureMaterial);
     cube_326.scale.set(0.9318, 0.051, 2.4701);
     cube_326.setRotation(1.5708, 0.0, 0.0);
@@ -2864,7 +2697,7 @@ var cube_326MZ = cube_326.clone();
 var cube_326MirroredZ = new THREE.Group();
     cube_326MirroredZ.add(cube_326, cube_326MZ);
     cube_326MirroredZ.position.set(-11.6586, 4.7166, 0);
-
+//train part
 var cube_327 = new THREE.Mesh(geo, Blue_PictureMaterial);
     cube_327.scale.set(0.8412, 0.0446, 0.9062);
     cube_327.setRotation(1.5708, 1.5708, 0.0);
@@ -2876,6 +2709,7 @@ var cube_327MZ = cube_327.clone();
 var cube_327MirroredZ = new THREE.Group();
     cube_327MirroredZ.add(cube_327, cube_327MZ);
     cube_327MirroredZ.position.set(-12.5457, 3.1527, 0);
+//train part (lights)
 var cylinder_022Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
 var cylinder_022 = new THREE.Mesh(cylinder_022Geometry, Floor_StripesMat);
     cylinder_022.scale.set(0.3106, 0.044, 0.3106);
@@ -2888,7 +2722,7 @@ var cylinder_022MZ = cylinder_022.clone();
 var cylinder_022MirroredZ = new THREE.Group();
     cylinder_022MirroredZ.add(cylinder_022, cylinder_022MZ);
     cylinder_022MirroredZ.position.set(-12.593, 3.1527, 0);
-
+//train part (back lights)
 var geo = new THREE.SphereGeometry(1, 32, 16);
 var sphere_002 = new THREE.Mesh(geo, RoofTilesMat);
     sphere_002.scale.set(0.2749, 0.0831, 0.2749);
@@ -2901,7 +2735,7 @@ var sphere_002MZ = sphere_002.clone();
 var sphere_002MirroredZ = new THREE.Group();
     sphere_002MirroredZ.add(sphere_002, sphere_002MZ);
     sphere_002MirroredZ.position.set(-12.6391, 3.1527, 0);
-
+//train part
 var geo = new THREE.BoxGeometry(2, 2, 2);
 var cube_328 = new THREE.Mesh(geo, Blue_PictureMaterial);
     cube_328.scale.set(0.1275, 0.0446, 0.9062);
@@ -2914,7 +2748,7 @@ var cube_328MZ = cube_328.clone();
 var cube_328MirroredZ = new THREE.Group();
     cube_328MirroredZ.add(cube_328, cube_328MZ);
     cube_328MirroredZ.position.set(-12.5457, 4.965, 0);
-
+//train part
 var cube_329 = new THREE.Mesh(geo, Blue_PictureMaterial);
     cube_329.scale.set(0.1275, 0.0446, 0.9062);
     cube_329.setRotation(1.5708, 1.5708, 0.0);
@@ -2926,7 +2760,7 @@ var cube_329MZ = cube_329.clone();
 var cube_329MirroredZ = new THREE.Group();
     cube_329MirroredZ.add(cube_329, cube_329MZ);
     cube_329MirroredZ.position.set(-12.5457, 4.965, 0);
-
+//train part
 var cube_330 = new THREE.Mesh(geo, Blue_PictureMaterial);
     cube_330.scale.set(0.8412, 0.0446, 0.681);
     cube_330.setRotation(1.5708, 1.5708, 0.0);
@@ -2938,6 +2772,8 @@ var cube_330MZ = cube_330.clone();
 var cube_330MirroredZ = new THREE.Group();
     cube_330MirroredZ.add(cube_330, cube_330MZ);
     cube_330MirroredZ.position.set(-12.5457, 6.5057, 0);
+
+//train part
 var geo = new THREE.BoxGeometry(2, 2, 2);
 var cube_331 = new THREE.Mesh(geo, Train_blueMat);
     cube_331.position.set(-12.5457, 3.1527, -0.0);
@@ -3120,24 +2956,6 @@ var cube_343MirroredZMirroredY = new THREE.Group();
     cube_343MirroredZMirroredY.add(cube_343MirroredZ, cube_343MirroredZMY);
     cube_343MirroredZMirroredY.position.set(-12.5457, 0, 0);
 
-var geo = new THREE.CylinderGeometry(1, 1, 2, 32);
-var cylinder_023Group = new THREE.Group();
-for (var i = 0; i < 4; i++) {
- var cylinder_023 = new THREE.Mesh(geo, ColonaMat);
- cylinder_023.scale.set(0.1218, 0.3642, 0.1218);
- cylinder_023.position.set(0.4874 * i, 0, 0);
- cylinder_023Group.add(cylinder_023);
-}
-
-var cylinder_023GroupMZ = cylinder_023Group.clone();
-    cylinder_023GroupMZ.updateMatrixWorld(true);
-    cylinder_023Group.position.set(0, 0, -2.102);
-    cylinder_023GroupMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cylinder_023GroupMZ.position.set(0, 0, 2.102);
-var cylinder_023GroupMirroredZ = new THREE.Group();
-    cylinder_023GroupMirroredZ.add(cylinder_023Group, cylinder_023GroupMZ);
-    cylinder_023GroupMirroredZ.position.set(8.3088, 1.0627, 0);
-
 var geo = new THREE.BoxGeometry(2, 2, 2);
 var cube_344 = new THREE.Mesh(geo, Blue_PictureMaterial);
     cube_344.scale.set(-0.9318, 0.051, 2.4701);
@@ -3162,6 +2980,7 @@ var cube_345MZ = cube_345.clone();
 var cube_345MirroredZ = new THREE.Group();
     cube_345MirroredZ.add(cube_345, cube_345MZ);
     cube_345MirroredZ.position.set(12.5445, 3.1527, 0);
+    
 var geo = new THREE.CylinderGeometry(1, 1, 2, 32);
 var cylinder_024 = new THREE.Mesh(geo, Floor_StripesMat);
     cylinder_024.scale.set(0.3106, -0.044, 0.3106);
@@ -3437,6 +3256,7 @@ var cube_374 = new THREE.Mesh(geo, Train_blueMat);
     cube_374.scale.set(0.1266, 0.0351, 0.9188);
     cube_374.setRotation(1.5708, 1.5708, 0.0);
 
+//train side panels (down)
 var cube_409Group = new THREE.Group();
 for (var i = 0; i < 3; i++) {
  var cube_409 = new THREE.Mesh(geo, Blue_PictureMaterial);
@@ -3446,6 +3266,7 @@ for (var i = 0; i < 3; i++) {
 }
 cube_409Group.setRotation(1.5708, 0.0, 0.0);
 cube_409Group.position.set(-6.4204, 3.1279, 2.4191);
+
 
 var cube_410Group = new THREE.Group();
 for (var i = 0; i < 3; i++) {
@@ -3457,11 +3278,13 @@ for (var i = 0; i < 3; i++) {
 cube_410Group.setRotation(1.5708, 0.0, 0.0);
 cube_410Group.position.set(-6.4204, 6.2439, 2.4191);
 
+//top side panel
 var cube_411 = new THREE.Mesh(geo, Blue_PictureMaterial);
 cube_411.position.set(-0.001, 7.0636, -2.4216);
 cube_411.scale.set(10.7268, 0.051, 0.1232);
 cube_411.setRotation(1.5708, 0.0, 0.0);
 
+//train side panel (window)
 var cube_412Group = new THREE.Group();
 for (var i = 0; i < 3; i++) {
  var cube_412 = new THREE.Mesh(geo, Blue_PictureMaterial);
@@ -3917,6 +3740,7 @@ for (var i = 0; i < 5; i++) {
 }
 cube_461Group.position.set(4.7305, 1.2702, 1.8725);
 
+//top decor elements of train
 var cube_462Group = new THREE.Group();
 for (var i = 0; i < 31; i++) {
  var cube_462 = new THREE.Mesh(geo, Train_blueMat);
@@ -3924,7 +3748,7 @@ for (var i = 0; i < 31; i++) {
  cube_462.position.set(0.7865 * i, 0, 0);
  cube_462Group.add(cube_462);
 }
-cube_462Group.setRotation(-0.5843, 0.0, 0.0);
+cube_462Group.rotation.x = -PI/4;
 var cube_462GroupMZ = cube_462Group.clone();
 cube_462GroupMZ.updateMatrixWorld(true);
 cube_462Group.position.set(0, 0, -1.5788);
@@ -3933,6 +3757,7 @@ cube_462GroupMZ.position.set(0, 0, 1.5787);
 var cube_462GroupMirroredZ = new THREE.Group();
 cube_462GroupMirroredZ.add(cube_462Group, cube_462GroupMZ);
 cube_462GroupMirroredZ.position.set(-11.6149, 7.3227, 0);
+
 
 var cube_463 = new THREE.Mesh(geo, Blue_PictureMaterial);
 cube_463.position.set(12.1903, 7.2829, 0);
@@ -4264,7 +4089,7 @@ DrawTrainDoorFunctionEntityGroupMirroredZ.add(DrawTrainDoorFunctionEntityGroup, 
 DrawTrainDoorFunctionEntityGroupMirroredZ.position.set(-9.6225, 2.2455, 0);
 var Decor = DrawVagonDecorations();
 var out = new THREE.Group();
-out.add(Decor, wheel_base, train_base, stoika, cyl_Group, wheel_balkaMirroredZ, cube_314MirroredZ, cube_315MirroredZ, cylinder_wheel_012MirroredZ, cylinder_wheel_013MirroredZ, cylinder_wheel_014MirroredZ, cylinder_wheel_015MirroredZ, cube_317MirroredZ, cube_318MirroredZ, cube_319MirroredZ, cube_320MirroredZ, cube_321MirroredZ, cube_322MirroredZ, cube_323MirroredZ, cube_324MirroredZ, cube_325MirroredZ, cube_326MirroredZ, cube_327MirroredZ, cylinder_022MirroredZ, sphere_002MirroredZ, cube_328MirroredZ, cube_329MirroredZ, cube_330MirroredZ, cube_331, cube_332, cube_333, cube_334MirroredZMirroredY, cube_335MirroredZ, cube_336MirroredZMirroredY, cube_337MirroredXMirroredZMirroredY, cube_338, cube_339MirroredZMirroredY, cube_340MirroredY, cube_341MirroredZ, cube_342MirroredXMirroredZMirroredY, cube_343MirroredZMirroredY, cylinder_023GroupMirroredZ, cube_344MirroredZ, cube_345MirroredZ, cylinder_024MirroredZ, sphere_003MirroredZ, cube_346MirroredZ, cube_347MirroredZ, cube_348MirroredZ, cube_349, cube_350, cube_351MirroredZMirroredY, cube_352MirroredZ, cube_353MirroredZMirroredY, cube_354MirroredXMirroredZMirroredY, cube_355, cube_356MirroredZMirroredY, cube_357MirroredY, cube_358MirroredZ, cube_359MirroredXMirroredZMirroredY, cube_360MirroredZMirroredY, cube_361, cube_362, cube_363, cube_364, cube_365, cube_372, cube_373, cube_374, cube_409Group, cube_410Group, cube_411, cube_412Group, cube_413Group, cube_414Group, cube_415GroupMirroredY, cube_416GroupMirroredY, cube_417GroupMirroredY, cube_418Group, cube_419Group, cube_420Group, cube_421Group, cube_422Group, cube_423Group, cube_424Group, cube_425GroupMirroredY, cube_426GroupMirroredY, cube_427GroupMirroredY, cube_428Group, cube_429Group, cube_430, cube_431Group, cube_432Group, cube_433Group, cube_442Group, cube_443Group, cube_444Group, cube_445Group, cube_446Group, cube_447Group, cube_448Group, cube_449Group, cube_450Group, cube_451Group, cube_452Group, cube_453Group, cube_454Group, cube_455Group, cube_456Group, cube_457Group, cube_458Group, cube_459Group, cube_460Group, cube_461Group, cube_462GroupMirroredZ, cube_463, cube_464Group, cube_465Group, cube_466Group, cube_475Group, cube_476Group, cube_477Group, cube_478Group, cube_479Group, cube_480Group, cube_481Group, cube_482Group, cube_483Group, cube_484Group, cube_485Group, cube_486Group, cube_487Group, cube_488Group, cube_489Group, cube_490Group, cube_491Group, cube_492Group, cube_493MirroredZ, cylinder_025, cube_494MirroredZ, cylinder_026, cube_495MirroredZ, cylinder_027, cube_496MirroredZ, cylinder_028, cube_497, cube_533Group, cube_542Group, DrawTrainDoorFunctionEntityGroupMirroredZ);
+out.add(Decor, wheel_base_1, wheel_base_2, train_base, cube_326MirroredZ, cube_327MirroredZ, cylinder_022MirroredZ, sphere_002MirroredZ, cube_328MirroredZ, cube_329MirroredZ, cube_330MirroredZ, cube_331, cube_332, cube_333, cube_334MirroredZMirroredY, cube_335MirroredZ, cube_336MirroredZMirroredY, cube_337MirroredXMirroredZMirroredY, cube_338, cube_339MirroredZMirroredY, cube_340MirroredY, cube_341MirroredZ, cube_342MirroredXMirroredZMirroredY, cube_343MirroredZMirroredY, cube_344MirroredZ, cube_345MirroredZ, cylinder_024MirroredZ, sphere_003MirroredZ, cube_346MirroredZ, cube_347MirroredZ, cube_348MirroredZ, cube_349, cube_350, cube_351MirroredZMirroredY, cube_352MirroredZ, cube_353MirroredZMirroredY, cube_354MirroredXMirroredZMirroredY, cube_355, cube_356MirroredZMirroredY, cube_357MirroredY, cube_358MirroredZ, cube_359MirroredXMirroredZMirroredY, cube_360MirroredZMirroredY, cube_361, cube_362, cube_363, cube_364, cube_365, cube_372, cube_373, cube_374, cube_409Group, cube_410Group, cube_411, cube_412Group, cube_413Group, cube_414Group, cube_415GroupMirroredY, cube_416GroupMirroredY, cube_417GroupMirroredY, cube_418Group, cube_419Group, cube_420Group, cube_421Group, cube_422Group, cube_423Group, cube_424Group, cube_425GroupMirroredY, cube_426GroupMirroredY, cube_427GroupMirroredY, cube_428Group, cube_429Group, cube_430, cube_431Group, cube_432Group, cube_433Group, cube_442Group, cube_443Group, cube_444Group, cube_445Group, cube_446Group, cube_447Group, cube_448Group, cube_449Group, cube_450Group, cube_451Group, cube_452Group, cube_453Group, cube_454Group, cube_455Group, cube_456Group, cube_457Group, cube_458Group, cube_459Group, cube_460Group, cube_461Group, cube_462GroupMirroredZ, cube_463, cube_464Group, cube_465Group, cube_466Group, cube_475Group, cube_476Group, cube_477Group, cube_478Group, cube_479Group, cube_480Group, cube_481Group, cube_482Group, cube_483Group, cube_484Group, cube_485Group, cube_486Group, cube_487Group, cube_488Group, cube_489Group, cube_490Group, cube_491Group, cube_492Group, cube_493MirroredZ, cylinder_025, cube_494MirroredZ, cylinder_026, cube_495MirroredZ, cylinder_027, cube_496MirroredZ, cylinder_028, cube_497, cube_533Group, cube_542Group, DrawTrainDoorFunctionEntityGroupMirroredZ);
 return out;
 }
 function DrawRightDoorFunction() {

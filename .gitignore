@@ -30,6 +30,8 @@ package-lock.json
 out/
 /generated.balon*
 /.private
+/input.txt
+/output.txt
 
 # stuff
 /__pycache__/

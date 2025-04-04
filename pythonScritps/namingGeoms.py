@@ -2,13 +2,13 @@ import re
 
 # Словарь соответствий геометрий и их новых имен
 geometry_map = {
-    'BoxGeometry(2, 2, 2)': 'boxGeom',
-    'CylinderGeometry(1, 1, 2, 32)': 'cylinderGeom',
-    'SphereGeometry(1, 32, 16)': 'sphereGeom',
-    'ConeGeometry(1, 2, 32)': 'coneGeom',
-    'TorusGeometry(1, 0.25, 12, 48)': 'torusGeom',
-    'PlaneGeometry(2, 2)': 'planeGeom',
-    'IcosahedronGeometry(1, 1)': 'icosahedronGeom'
+    'BoxGeometry(2, 2, 2)': 'boxGeo',
+    'CylinderGeometry(1, 1, 2, 32)': 'cylinderGeo',
+    'SphereGeometry(1, 32, 16)': 'sphereGeo',
+    'ConeGeometry(1, 2, 32)': 'coneGeo',
+    'TorusGeometry(1, 0.25, 12, 48)': 'torusGeo',
+    'PlaneGeometry(2, 2)': 'planeGeo',
+    'IcosahedronGeometry(1, 1)': 'icosahedronGeo'
 }
 
 def process_file(input_file, output_file):

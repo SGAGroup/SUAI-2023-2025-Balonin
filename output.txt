@@ -156,12 +156,12 @@ function render() {
     console.log(intR, intL, intF, intB, isOnObject);
 
     const delta = (time - prevTime) / 1000;
-    velocity.x -= velocity.x * 10.0 * delta;
-    velocity.z -= velocity.z * 10.0 * delta;
+    velocity.x -= velocity.x * 10.00 * delta;
+    velocity.z -= velocity.z * 10.00 * delta;
     0;
 
     if (!isFly) {
-      velocity.y -= 9.8 * 10.0 * delta; // 50.00 = mass
+      velocity.y -= 9.80 * 10.00 * delta; // 50.00 = mass
     }
 
     direction.z = Number(moveForward) - Number(moveBackward);
@@ -216,7 +216,7 @@ function render() {
 }
 
 function initParameters() {
-  objectFit = 1.3;
+  objectFit = 1.30;
   moveForward = false;
   moveBackward = false;
   moveLeft = false;
@@ -289,13 +289,13 @@ function initParameters() {
 
 function createRobot() {
   const cuberemoveMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.6, 0.66, 0.76),
+    color: new THREE.Color(0.60, 0.66, 0.76),
   });
 
   const cuberemoveGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cuberemove = new THREE.Mesh(cuberemoveGeometry, cuberemoveMaterial);
   cuberemove.position.set(-0.57, 1.83, -0.08);
-  cuberemove.scale.set(0.5, 1.0, 0.5);
+  cuberemove.scale.set(0.50, 1.00, 0.50);
 
   const out = new THREE.Group();
   out.add(cuberemove);
@@ -306,16 +306,16 @@ function createRobot() {
 function createKolonna() {
   const KolonnaMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0, 0, 0),
-    roughness: 0.5,
+    roughness: 0.50,
   });
   const LatunMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.78, 0.8, 0.08),
-    metalness: 1.0,
-    roughness: 0.5,
+    color: new THREE.Color(0.78, 0.80, 0.08),
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const KolonnayaPlitkaMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.37, 0.27, 0.15),
-    roughness: 0.5,
+    roughness: 0.50,
   });
 
   const cylinderkolonna_002Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
@@ -332,7 +332,7 @@ function createKolonna() {
     LatunMaterial,
   );
   cylinderkolonna_008.position.set(0, 2.37, 0);
-  cylinderkolonna_008.scale.set(0.7, 0.21, 0.7);
+  cylinderkolonna_008.scale.set(0.70, 0.21, 0.70);
 
   const cylinderkolonna_009Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderkolonna_009 = new THREE.Mesh(
@@ -356,7 +356,7 @@ function createKolonna() {
     LatunMaterial,
   );
   cylinderkolonna_011.position.set(0, -2.06, 0);
-  cylinderkolonna_011.scale.set(0.7, 0.21, 0.7);
+  cylinderkolonna_011.scale.set(0.70, 0.21, 0.70);
 
   const cylinderkolonna_012Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderkolonna_012 = new THREE.Mesh(
@@ -374,12 +374,12 @@ function createKolonna() {
   const cube_001Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_001 = new THREE.Mesh(cube_001Geometry, KolonnayaPlitkaMaterial);
   cube_001.position.set(0, -0.42, -0.92);
-  cube_001.scale.set(1.0, 1.93, 1.0);
+  cube_001.scale.set(1.00, 1.93, 1.00);
 
   const cube_002Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cube_002 = new THREE.Mesh(cube_002Geometry, KolonnayaPlitkaMaterial);
-  cube_002.position.set(0, 2.7, -0.92);
-  cube_002.scale.set(1.55, 1.55, 1.0);
+  cube_002.position.set(0, 2.70, -0.92);
+  cube_002.scale.set(1.55, 1.55, 1.00);
   cube_002.setRotation(0, 0, -0.79);
 
   const out = new THREE.Group();
@@ -400,66 +400,66 @@ function createKolonna() {
 
 function createMetroStation() {
   const PortretMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0, 0, 0.8),
-    roughness: 0.5,
+    color: new THREE.Color(0, 0, 0.80),
+    roughness: 0.50,
   });
   const LatunMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.78, 0.8, 0.08),
-    metalness: 1.0,
-    roughness: 0.2,
+    color: new THREE.Color(0.78, 0.80, 0.08),
+    metalness: 1.00,
+    roughness: 0.20,
   });
   const Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.8, 0.8, 0.8),
-    roughness: 0.5,
+    color: new THREE.Color(0.80, 0.80, 0.80),
+    roughness: 0.50,
   });
   const MetalMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.48, 0.48, 0.48),
-    metalness: 1.0,
-    roughness: 0.5,
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const GlassMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.33, 0.33, 0.33),
     transparent: true,
     opacity: 0.32,
-    roughness: 0.5,
+    roughness: 0.50,
   });
   const Metal_004Material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.48, 0.48, 0.48),
-    metalness: 1.0,
-    roughness: 0.5,
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const Metal_005Material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.48, 0.48, 0.48),
-    metalness: 1.0,
-    roughness: 0.5,
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const Metal_006Material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.48, 0.48, 0.48),
-    metalness: 1.0,
-    roughness: 0.5,
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const Metal_001Material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.48, 0.48, 0.48),
-    metalness: 1.0,
-    roughness: 0.5,
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const Metal_002Material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.48, 0.48, 0.48),
-    metalness: 1.0,
-    roughness: 0.5,
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const Metal_003Material = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.48, 0.48, 0.48),
-    metalness: 1.0,
-    roughness: 0.5,
+    metalness: 1.00,
+    roughness: 0.50,
   });
   const NapolnayaPlitkaMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.69, 0.62, 0.32),
-    roughness: 0.5,
+    roughness: 0.50,
   });
   const KolonnaMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0, 0, 0),
-    roughness: 0.5,
+    roughness: 0.50,
   });
 
   const cubeportretGeometry = new THREE.BoxGeometry(2, 2, 2);
@@ -470,7 +470,7 @@ function createMetroStation() {
   const cubeobramlenieGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeobramlenie = new THREE.Mesh(cubeobramlenieGeometry, LatunMaterial);
   cubeobramlenie.position.set(-31.33, 5.09, 3.55);
-  cubeobramlenie.scale.set(0.2, 5.14, 0.23);
+  cubeobramlenie.scale.set(0.20, 5.14, 0.23);
 
   const cubeobramlenie_001Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeobramlenie_001 = new THREE.Mesh(
@@ -478,7 +478,7 @@ function createMetroStation() {
     LatunMaterial,
   );
   cubeobramlenie_001.position.set(-31.33, 5.09, -3.67);
-  cubeobramlenie_001.scale.set(0.2, 5.14, 0.23);
+  cubeobramlenie_001.scale.set(0.20, 5.14, 0.23);
 
   const cubeobramlenie_002Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeobramlenie_002 = new THREE.Mesh(
@@ -486,7 +486,7 @@ function createMetroStation() {
     LatunMaterial,
   );
   cubeobramlenie_002.position.set(-31.33, 9.98, 0);
-  cubeobramlenie_002.scale.set(0.2, 3.64, 0.27);
+  cubeobramlenie_002.scale.set(0.20, 3.64, 0.27);
   cubeobramlenie_002.setRotation(1.57, 0, 0);
 
   const cubemalayakrysha_001Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -522,7 +522,7 @@ function createMetroStation() {
     cubebolshayakrysha_001Geometry,
     Material,
   );
-  cubebolshayakrysha_001.scale.set(49.23, 0.17, 4.8);
+  cubebolshayakrysha_001.scale.set(49.23, 0.17, 4.80);
   const cubebolshayakrysha_001MZ = cubebolshayakrysha_001.clone();
   cubebolshayakrysha_001.position.set(0, 0, 19.54);
   cubebolshayakrysha_001MZ.position.set(0, 0, -19.54);
@@ -585,7 +585,7 @@ function createMetroStation() {
   const cubesmotritelGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cubesmotritel = new THREE.Mesh(cubesmotritelGeometry, MetalMaterial);
   cubesmotritel.position.set(48.83, 1.63, -0.73);
-  cubesmotritel.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel.scale.set(0.80, 0.80, 0.07);
 
   const cubesmotritel_001Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubesmotritel_001 = new THREE.Mesh(
@@ -593,7 +593,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_001.position.set(48.82, 3.57, 0);
-  cubesmotritel_001.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_001.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_001.setRotation(-1.57, 4.71, 0);
 
   const cubesmotritel_002Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -602,7 +602,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_002.position.set(49.56, 2.98, 0);
-  cubesmotritel_002.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_002.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_002.setRotation(0, 4.71, 0);
 
   const cubesmotritel_003Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -610,8 +610,8 @@ function createMetroStation() {
     cubesmotritel_003Geometry,
     GlassMaterial,
   );
-  cubesmotritel_003.position.set(48.8, 2.98, 0.73);
-  cubesmotritel_003.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_003.position.set(48.80, 2.98, 0.73);
+  cubesmotritel_003.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_003.setRotation(0, 3.14, 0);
 
   const cubesmotritel_004Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -620,7 +620,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_004.position.set(48.07, 2.98, 0);
-  cubesmotritel_004.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_004.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_004.setRotation(0, 1.57, 0);
 
   const cubesmotritel_005Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -629,7 +629,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_005.position.set(48.83, 2.98, -0.73);
-  cubesmotritel_005.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_005.scale.set(0.80, 0.50, 0.07);
 
   const cubesmotritel_006Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubesmotritel_006 = new THREE.Mesh(
@@ -637,7 +637,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_006.position.set(48.82, 0.89, 0);
-  cubesmotritel_006.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_006.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_006.setRotation(-1.57, 4.71, 0);
 
   const cubesmotritel_007Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -645,8 +645,8 @@ function createMetroStation() {
     cubesmotritel_007Geometry,
     MetalMaterial,
   );
-  cubesmotritel_007.position.set(48.8, 1.63, 0.73);
-  cubesmotritel_007.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_007.position.set(48.80, 1.63, 0.73);
+  cubesmotritel_007.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_007.setRotation(0, 3.14, 0);
 
   const cubesmotritel_008Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -655,7 +655,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_008.position.set(49.56, 1.63, 0);
-  cubesmotritel_008.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_008.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_008.setRotation(0, 4.71, 0);
 
   const cubesmotritel_009Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -664,7 +664,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_009.position.set(48.07, 1.63, 0);
-  cubesmotritel_009.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_009.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_009.setRotation(0, 1.57, 0);
 
   const cubesmotritel_010Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -672,8 +672,8 @@ function createMetroStation() {
     cubesmotritel_010Geometry,
     MetalMaterial,
   );
-  cubesmotritel_010.position.set(65.5, 14.83, -0.73);
-  cubesmotritel_010.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_010.position.set(65.50, 14.83, -0.73);
+  cubesmotritel_010.scale.set(0.80, 0.80, 0.07);
 
   const cubesmotritel_011Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubesmotritel_011 = new THREE.Mesh(
@@ -681,7 +681,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_011.position.set(65.49, 16.77, 0);
-  cubesmotritel_011.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_011.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_011.setRotation(-1.57, 4.71, 0);
 
   const cubesmotritel_012Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -690,7 +690,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_012.position.set(66.23, 16.18, 0);
-  cubesmotritel_012.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_012.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_012.setRotation(0, 4.71, 0);
 
   const cubesmotritel_013Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -699,7 +699,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_013.position.set(65.47, 16.18, 0.73);
-  cubesmotritel_013.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_013.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_013.setRotation(0, 3.14, 0);
 
   const cubesmotritel_014Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -708,7 +708,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_014.position.set(64.74, 16.18, 0);
-  cubesmotritel_014.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_014.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_014.setRotation(0, 1.57, 0);
 
   const cubesmotritel_015Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -716,8 +716,8 @@ function createMetroStation() {
     cubesmotritel_015Geometry,
     GlassMaterial,
   );
-  cubesmotritel_015.position.set(65.5, 16.18, -0.73);
-  cubesmotritel_015.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_015.position.set(65.50, 16.18, -0.73);
+  cubesmotritel_015.scale.set(0.80, 0.50, 0.07);
 
   const cubesmotritel_016Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubesmotritel_016 = new THREE.Mesh(
@@ -725,7 +725,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_016.position.set(65.49, 14.09, 0);
-  cubesmotritel_016.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_016.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_016.setRotation(-1.57, 4.71, 0);
 
   const cubesmotritel_017Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -734,7 +734,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_017.position.set(65.47, 14.83, 0.73);
-  cubesmotritel_017.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_017.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_017.setRotation(0, 3.14, 0);
 
   const cubesmotritel_018Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -743,7 +743,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_018.position.set(66.23, 14.83, 0);
-  cubesmotritel_018.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_018.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_018.setRotation(0, 4.71, 0);
 
   const cubesmotritel_019Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -752,27 +752,27 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_019.position.set(64.74, 14.83, 0);
-  cubesmotritel_019.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_019.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_019.setRotation(0, 1.57, 0);
 
   const cubelestnicaGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cubelestnicaGroup = new THREE.Group();
   for (let i = 0; i < 29; i++) {
     const cubelestnica = new THREE.Mesh(cubelestnicaGeometry, MetalMaterial);
-    cubelestnica.scale.set(0.23, 0.23, 1.0);
+    cubelestnica.scale.set(0.23, 0.23, 1.00);
     cubelestnica.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnicaGroup.add(cubelestnica);
   }
   cubelestnicaGroup.position.set(50.17, 1.08, -2.42);
   const cubenapolnikGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cubenapolnik = new THREE.Mesh(cubenapolnikGeometry, MetalMaterial);
-  cubenapolnik.position.set(49.1, 0.74, -2.42);
-  cubenapolnik.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik.position.set(49.10, 0.74, -2.42);
+  cubenapolnik.scale.set(1.40, 0.95, 0.11);
   cubenapolnik.setRotation(1.57, 0, 0);
 
   const cubeporuchenGeometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen = new THREE.Mesh(cubeporuchenGeometry, MetalMaterial);
-  cubeporuchen.scale.set(9.05, 0.9, 0.15);
+  cubeporuchen.scale.set(9.05, 0.90, 0.15);
   const cubeporuchenMZ = cubeporuchen.clone();
   cubeporuchen.position.set(0, 0, -1.36);
   cubeporuchenMZ.position.set(0, 0, -3.48);
@@ -780,7 +780,7 @@ function createMetroStation() {
   cubeporuchenMZ.setRotation(0, 0, 0.79);
   const cubeporuchenMirroredZ = new THREE.Group();
   cubeporuchenMirroredZ.add(cubeporuchen, cubeporuchenMZ);
-  cubeporuchenMirroredZ.position.set(56.74, 8.0, 0);
+  cubeporuchenMirroredZ.position.set(56.74, 8.00, 0);
   const cubeporuchen_001Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_001 = new THREE.Mesh(
     cubeporuchen_001Geometry,
@@ -794,13 +794,13 @@ function createMetroStation() {
   cubeporuchen_001MZ.setRotation(0, 0, 0);
   const cubeporuchen_001MirroredZ = new THREE.Group();
   cubeporuchen_001MirroredZ.add(cubeporuchen_001, cubeporuchen_001MZ);
-  cubeporuchen_001MirroredZ.position.set(49.1, 1.37, 0);
+  cubeporuchen_001MirroredZ.position.set(49.10, 1.37, 0);
   const cylinderporuchen_002Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_002 = new THREE.Mesh(
     cylinderporuchen_002Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_002.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_002.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_002MZ = cylinderporuchen_002.clone();
   cylinderporuchen_002.position.set(0, 0, -1.36);
   cylinderporuchen_002MZ.position.set(0, 0, -3.48);
@@ -817,7 +817,7 @@ function createMetroStation() {
     cylinderporuchen_003Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_003.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_003.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_003MZ = cylinderporuchen_003.clone();
   cylinderporuchen_003.position.set(0, 0, -1.36);
   cylinderporuchen_003MZ.position.set(0, 0, -3.48);
@@ -834,7 +834,7 @@ function createMetroStation() {
     cylinderporuchen_004Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_004.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_004.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_004MZ = cylinderporuchen_004.clone();
   cylinderporuchen_004.position.set(0, 0, -1.36);
   cylinderporuchen_004MZ.position.set(0, 0, -3.48);
@@ -865,7 +865,7 @@ function createMetroStation() {
     cylinderporuchen_006Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_006.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_006.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_006MZ = cylinderporuchen_006.clone();
   cylinderporuchen_006.position.set(0, 0, -1.36);
   cylinderporuchen_006MZ.position.set(0, 0, -3.48);
@@ -883,7 +883,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubenapolnik_001.position.set(64.58, 14.14, -2.42);
-  cubenapolnik_001.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_001.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_001.setRotation(1.57, 0, 0);
 
   const cubelestnica_005Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -893,18 +893,18 @@ function createMetroStation() {
       cubelestnica_005Geometry,
       Metal_004Material,
     );
-    cubelestnica_005.scale.set(0.23, 0.23, 1.0);
+    cubelestnica_005.scale.set(0.23, 0.23, 1.00);
     cubelestnica_005.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnica_005Group.add(cubelestnica_005);
   }
-  cubelestnica_005Group.position.set(50.17, 1.08, -5.1);
+  cubelestnica_005Group.position.set(50.17, 1.08, -5.10);
   const cubenapolnik_011Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubenapolnik_011 = new THREE.Mesh(
     cubenapolnik_011Geometry,
     Metal_004Material,
   );
-  cubenapolnik_011.position.set(49.1, 0.74, -5.11);
-  cubenapolnik_011.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_011.position.set(49.10, 0.74, -5.11);
+  cubenapolnik_011.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_011.setRotation(1.57, 0, 0);
 
   const cubeporuchen_014Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -912,7 +912,7 @@ function createMetroStation() {
     cubeporuchen_014Geometry,
     Metal_004Material,
   );
-  cubeporuchen_014.scale.set(9.05, 0.9, 0.15);
+  cubeporuchen_014.scale.set(9.05, 0.90, 0.15);
   const cubeporuchen_014MZ = cubeporuchen_014.clone();
   cubeporuchen_014.position.set(0, 0, -4.05);
   cubeporuchen_014MZ.position.set(0, 0, -6.16);
@@ -920,7 +920,7 @@ function createMetroStation() {
   cubeporuchen_014MZ.setRotation(0, 0, 0.79);
   const cubeporuchen_014MirroredZ = new THREE.Group();
   cubeporuchen_014MirroredZ.add(cubeporuchen_014, cubeporuchen_014MZ);
-  cubeporuchen_014MirroredZ.position.set(56.74, 8.0, 0);
+  cubeporuchen_014MirroredZ.position.set(56.74, 8.00, 0);
   const cubeporuchen_013Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_013 = new THREE.Mesh(
     cubeporuchen_013Geometry,
@@ -934,13 +934,13 @@ function createMetroStation() {
   cubeporuchen_013MZ.setRotation(0, 0, 0);
   const cubeporuchen_013MirroredZ = new THREE.Group();
   cubeporuchen_013MirroredZ.add(cubeporuchen_013, cubeporuchen_013MZ);
-  cubeporuchen_013MirroredZ.position.set(49.1, 1.37, 0);
+  cubeporuchen_013MirroredZ.position.set(49.10, 1.37, 0);
   const cylinderporuchen_020Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_020 = new THREE.Mesh(
     cylinderporuchen_020Geometry,
     Metal_004Material,
   );
-  cylinderporuchen_020.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_020.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_020MZ = cylinderporuchen_020.clone();
   cylinderporuchen_020.position.set(0, 0, -4.05);
   cylinderporuchen_020MZ.position.set(0, 0, -6.16);
@@ -957,7 +957,7 @@ function createMetroStation() {
     cylinderporuchen_019Geometry,
     Metal_004Material,
   );
-  cylinderporuchen_019.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_019.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_019MZ = cylinderporuchen_019.clone();
   cylinderporuchen_019.position.set(0, 0, -4.05);
   cylinderporuchen_019MZ.position.set(0, 0, -6.16);
@@ -974,7 +974,7 @@ function createMetroStation() {
     cylinderporuchen_018Geometry,
     Metal_004Material,
   );
-  cylinderporuchen_018.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_018.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_018MZ = cylinderporuchen_018.clone();
   cylinderporuchen_018.position.set(0, 0, -4.05);
   cylinderporuchen_018MZ.position.set(0, 0, -6.16);
@@ -1005,7 +1005,7 @@ function createMetroStation() {
     cylinderporuchen_017Geometry,
     Metal_004Material,
   );
-  cylinderporuchen_017.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_017.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_017MZ = cylinderporuchen_017.clone();
   cylinderporuchen_017.position.set(0, 0, -4.05);
   cylinderporuchen_017MZ.position.set(0, 0, -6.16);
@@ -1023,7 +1023,7 @@ function createMetroStation() {
     Metal_004Material,
   );
   cubenapolnik_010.position.set(64.58, 14.14, -5.11);
-  cubenapolnik_010.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_010.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_010.setRotation(1.57, 0, 0);
 
   const cubelestnica_006Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1033,7 +1033,7 @@ function createMetroStation() {
       cubelestnica_006Geometry,
       Metal_005Material,
     );
-    cubelestnica_006.scale.set(0.23, 0.23, 1.0);
+    cubelestnica_006.scale.set(0.23, 0.23, 1.00);
     cubelestnica_006.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnica_006Group.add(cubelestnica_006);
   }
@@ -1043,8 +1043,8 @@ function createMetroStation() {
     cubenapolnik_013Geometry,
     Metal_005Material,
   );
-  cubenapolnik_013.position.set(49.1, 0.74, 2.36);
-  cubenapolnik_013.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_013.position.set(49.10, 0.74, 2.36);
+  cubenapolnik_013.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_013.setRotation(1.57, 0, 0);
 
   const cubeporuchen_017Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1052,7 +1052,7 @@ function createMetroStation() {
     cubeporuchen_017Geometry,
     Metal_005Material,
   );
-  cubeporuchen_017.scale.set(9.05, 0.9, 0.15);
+  cubeporuchen_017.scale.set(9.05, 0.90, 0.15);
   const cubeporuchen_017MZ = cubeporuchen_017.clone();
   cubeporuchen_017.position.set(0, 0, 3.43);
   cubeporuchen_017MZ.position.set(0, 0, 1.31);
@@ -1060,7 +1060,7 @@ function createMetroStation() {
   cubeporuchen_017MZ.setRotation(0, 0, 0.79);
   const cubeporuchen_017MirroredZ = new THREE.Group();
   cubeporuchen_017MirroredZ.add(cubeporuchen_017, cubeporuchen_017MZ);
-  cubeporuchen_017MirroredZ.position.set(56.74, 8.0, 0);
+  cubeporuchen_017MirroredZ.position.set(56.74, 8.00, 0);
   const cubeporuchen_016Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_016 = new THREE.Mesh(
     cubeporuchen_016Geometry,
@@ -1074,13 +1074,13 @@ function createMetroStation() {
   cubeporuchen_016MZ.setRotation(0, 0, 0);
   const cubeporuchen_016MirroredZ = new THREE.Group();
   cubeporuchen_016MirroredZ.add(cubeporuchen_016, cubeporuchen_016MZ);
-  cubeporuchen_016MirroredZ.position.set(49.1, 1.37, 0);
+  cubeporuchen_016MirroredZ.position.set(49.10, 1.37, 0);
   const cylinderporuchen_024Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_024 = new THREE.Mesh(
     cylinderporuchen_024Geometry,
     Metal_005Material,
   );
-  cylinderporuchen_024.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_024.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_024MZ = cylinderporuchen_024.clone();
   cylinderporuchen_024.position.set(0, 0, 3.43);
   cylinderporuchen_024MZ.position.set(0, 0, 1.31);
@@ -1097,7 +1097,7 @@ function createMetroStation() {
     cylinderporuchen_023Geometry,
     Metal_005Material,
   );
-  cylinderporuchen_023.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_023.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_023MZ = cylinderporuchen_023.clone();
   cylinderporuchen_023.position.set(0, 0, 3.43);
   cylinderporuchen_023MZ.position.set(0, 0, 1.31);
@@ -1114,7 +1114,7 @@ function createMetroStation() {
     cylinderporuchen_022Geometry,
     Metal_005Material,
   );
-  cylinderporuchen_022.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_022.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_022MZ = cylinderporuchen_022.clone();
   cylinderporuchen_022.position.set(0, 0, 3.43);
   cylinderporuchen_022MZ.position.set(0, 0, 1.31);
@@ -1145,7 +1145,7 @@ function createMetroStation() {
     cylinderporuchen_021Geometry,
     Metal_005Material,
   );
-  cylinderporuchen_021.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_021.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_021MZ = cylinderporuchen_021.clone();
   cylinderporuchen_021.position.set(0, 0, 3.43);
   cylinderporuchen_021MZ.position.set(0, 0, 1.31);
@@ -1163,7 +1163,7 @@ function createMetroStation() {
     Metal_005Material,
   );
   cubenapolnik_012.position.set(64.58, 14.14, 2.36);
-  cubenapolnik_012.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_012.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_012.setRotation(1.57, 0, 0);
 
   const cubelestnica_007Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1173,7 +1173,7 @@ function createMetroStation() {
       cubelestnica_007Geometry,
       Metal_006Material,
     );
-    cubelestnica_007.scale.set(0.23, 0.23, 1.0);
+    cubelestnica_007.scale.set(0.23, 0.23, 1.00);
     cubelestnica_007.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnica_007Group.add(cubelestnica_007);
   }
@@ -1183,8 +1183,8 @@ function createMetroStation() {
     cubenapolnik_015Geometry,
     Metal_006Material,
   );
-  cubenapolnik_015.position.set(49.1, 0.74, 5.1);
-  cubenapolnik_015.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_015.position.set(49.10, 0.74, 5.10);
+  cubenapolnik_015.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_015.setRotation(1.57, 0, 0);
 
   const cubeporuchen_020Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1192,7 +1192,7 @@ function createMetroStation() {
     cubeporuchen_020Geometry,
     Metal_006Material,
   );
-  cubeporuchen_020.scale.set(9.05, 0.9, 0.15);
+  cubeporuchen_020.scale.set(9.05, 0.90, 0.15);
   const cubeporuchen_020MZ = cubeporuchen_020.clone();
   cubeporuchen_020.position.set(0, 0, 6.16);
   cubeporuchen_020MZ.position.set(0, 0, 4.05);
@@ -1200,7 +1200,7 @@ function createMetroStation() {
   cubeporuchen_020MZ.setRotation(0, 0, 0.79);
   const cubeporuchen_020MirroredZ = new THREE.Group();
   cubeporuchen_020MirroredZ.add(cubeporuchen_020, cubeporuchen_020MZ);
-  cubeporuchen_020MirroredZ.position.set(56.74, 8.0, 0);
+  cubeporuchen_020MirroredZ.position.set(56.74, 8.00, 0);
   const cubeporuchen_019Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_019 = new THREE.Mesh(
     cubeporuchen_019Geometry,
@@ -1214,13 +1214,13 @@ function createMetroStation() {
   cubeporuchen_019MZ.setRotation(0, 0, 0);
   const cubeporuchen_019MirroredZ = new THREE.Group();
   cubeporuchen_019MirroredZ.add(cubeporuchen_019, cubeporuchen_019MZ);
-  cubeporuchen_019MirroredZ.position.set(49.1, 1.37, 0);
+  cubeporuchen_019MirroredZ.position.set(49.10, 1.37, 0);
   const cylinderporuchen_028Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_028 = new THREE.Mesh(
     cylinderporuchen_028Geometry,
     Metal_006Material,
   );
-  cylinderporuchen_028.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_028.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_028MZ = cylinderporuchen_028.clone();
   cylinderporuchen_028.position.set(0, 0, 6.16);
   cylinderporuchen_028MZ.position.set(0, 0, 4.05);
@@ -1237,7 +1237,7 @@ function createMetroStation() {
     cylinderporuchen_027Geometry,
     Metal_006Material,
   );
-  cylinderporuchen_027.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_027.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_027MZ = cylinderporuchen_027.clone();
   cylinderporuchen_027.position.set(0, 0, 6.16);
   cylinderporuchen_027MZ.position.set(0, 0, 4.05);
@@ -1254,7 +1254,7 @@ function createMetroStation() {
     cylinderporuchen_026Geometry,
     Metal_006Material,
   );
-  cylinderporuchen_026.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_026.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_026MZ = cylinderporuchen_026.clone();
   cylinderporuchen_026.position.set(0, 0, 6.16);
   cylinderporuchen_026MZ.position.set(0, 0, 4.05);
@@ -1285,7 +1285,7 @@ function createMetroStation() {
     cylinderporuchen_025Geometry,
     Metal_006Material,
   );
-  cylinderporuchen_025.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_025.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_025MZ = cylinderporuchen_025.clone();
   cylinderporuchen_025.position.set(0, 0, 6.16);
   cylinderporuchen_025MZ.position.set(0, 0, 4.05);
@@ -1302,8 +1302,8 @@ function createMetroStation() {
     cubenapolnik_014Geometry,
     Metal_006Material,
   );
-  cubenapolnik_014.position.set(64.58, 14.14, 5.1);
-  cubenapolnik_014.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_014.position.set(64.58, 14.14, 5.10);
+  cubenapolnik_014.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_014.setRotation(1.57, 0, 0);
 
   const cubesmotritel_020Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1312,7 +1312,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_020.position.set(110.44, 15.32, -40.44);
-  cubesmotritel_020.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_020.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_020.setRotation(0, 3.14, 0);
 
   const cubesmotritel_021Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1321,7 +1321,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_021.position.set(110.45, 17.26, -41.17);
-  cubesmotritel_021.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_021.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_021.setRotation(-1.57, 7.85, 0);
 
   const cubesmotritel_022Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1330,7 +1330,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_022.position.set(109.71, 16.67, -41.17);
-  cubesmotritel_022.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_022.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_022.setRotation(0, 7.85, 0);
 
   const cubesmotritel_023Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1338,8 +1338,8 @@ function createMetroStation() {
     cubesmotritel_023Geometry,
     GlassMaterial,
   );
-  cubesmotritel_023.position.set(110.47, 16.67, -41.9);
-  cubesmotritel_023.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_023.position.set(110.47, 16.67, -41.90);
+  cubesmotritel_023.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_023.setRotation(0, 6.28, 0);
 
   const cubesmotritel_024Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1347,8 +1347,8 @@ function createMetroStation() {
     cubesmotritel_024Geometry,
     GlassMaterial,
   );
-  cubesmotritel_024.position.set(111.2, 16.67, -41.17);
-  cubesmotritel_024.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_024.position.set(111.20, 16.67, -41.17);
+  cubesmotritel_024.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_024.setRotation(0, 4.71, 0);
 
   const cubesmotritel_025Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1357,7 +1357,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_025.position.set(110.44, 16.67, -40.44);
-  cubesmotritel_025.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_025.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_025.setRotation(0, 3.14, 0);
 
   const cubesmotritel_026Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1366,7 +1366,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_026.position.set(110.45, 14.58, -41.17);
-  cubesmotritel_026.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_026.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_026.setRotation(-1.57, 7.85, 0);
 
   const cubesmotritel_027Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1374,8 +1374,8 @@ function createMetroStation() {
     cubesmotritel_027Geometry,
     MetalMaterial,
   );
-  cubesmotritel_027.position.set(110.47, 15.32, -41.9);
-  cubesmotritel_027.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_027.position.set(110.47, 15.32, -41.90);
+  cubesmotritel_027.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_027.setRotation(0, 6.28, 0);
 
   const cubesmotritel_028Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1384,7 +1384,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_028.position.set(109.71, 15.32, -41.17);
-  cubesmotritel_028.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_028.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_028.setRotation(0, 7.85, 0);
 
   const cubesmotritel_029Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1392,8 +1392,8 @@ function createMetroStation() {
     cubesmotritel_029Geometry,
     MetalMaterial,
   );
-  cubesmotritel_029.position.set(111.2, 15.32, -41.17);
-  cubesmotritel_029.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_029.position.set(111.20, 15.32, -41.17);
+  cubesmotritel_029.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_029.setRotation(0, 4.71, 0);
 
   const cubesmotritel_030Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1402,7 +1402,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_030.position.set(46.91, 75.24, -40.44);
-  cubesmotritel_030.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_030.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_030.setRotation(0, 3.14, 0);
   const cubesmotritel_031Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubesmotritel_031 = new THREE.Mesh(
@@ -1410,7 +1410,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_031.position.set(46.92, 77.18, -41.17);
-  cubesmotritel_031.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_031.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_031.setRotation(-1.57, 7.85, 0);
 
   const cubesmotritel_032Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1419,7 +1419,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_032.position.set(46.18, 76.59, -41.17);
-  cubesmotritel_032.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_032.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_032.setRotation(0, 7.85, 0);
 
   const cubesmotritel_033Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1427,8 +1427,8 @@ function createMetroStation() {
     cubesmotritel_033Geometry,
     GlassMaterial,
   );
-  cubesmotritel_033.position.set(46.94, 76.59, -41.9);
-  cubesmotritel_033.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_033.position.set(46.94, 76.59, -41.90);
+  cubesmotritel_033.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_033.setRotation(0, 6.28, 0);
 
   const cubesmotritel_034Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1437,7 +1437,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_034.position.set(47.67, 76.59, -41.17);
-  cubesmotritel_034.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_034.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_034.setRotation(0, 4.71, 0);
 
   const cubesmotritel_035Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1446,7 +1446,7 @@ function createMetroStation() {
     GlassMaterial,
   );
   cubesmotritel_035.position.set(46.91, 76.59, -40.44);
-  cubesmotritel_035.scale.set(0.8, 0.5, 0.07);
+  cubesmotritel_035.scale.set(0.80, 0.50, 0.07);
   cubesmotritel_035.setRotation(0, 3.14, 0);
 
   const cubesmotritel_036Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1454,8 +1454,8 @@ function createMetroStation() {
     cubesmotritel_036Geometry,
     MetalMaterial,
   );
-  cubesmotritel_036.position.set(46.92, 74.5, -41.17);
-  cubesmotritel_036.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_036.position.set(46.92, 74.50, -41.17);
+  cubesmotritel_036.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_036.setRotation(-1.57, 7.85, 0);
 
   const cubesmotritel_037Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1463,8 +1463,8 @@ function createMetroStation() {
     cubesmotritel_037Geometry,
     MetalMaterial,
   );
-  cubesmotritel_037.position.set(46.94, 75.24, -41.9);
-  cubesmotritel_037.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_037.position.set(46.94, 75.24, -41.90);
+  cubesmotritel_037.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_037.setRotation(0, 6.28, 0);
 
   const cubesmotritel_038Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1473,7 +1473,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_038.position.set(46.18, 75.24, -41.17);
-  cubesmotritel_038.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_038.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_038.setRotation(0, 7.85, 0);
 
   const cubesmotritel_039Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1482,7 +1482,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubesmotritel_039.position.set(47.67, 75.24, -41.17);
-  cubesmotritel_039.scale.set(0.8, 0.8, 0.07);
+  cubesmotritel_039.scale.set(0.80, 0.80, 0.07);
   cubesmotritel_039.setRotation(0, 4.71, 0);
 
   const cubelestnica_004Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1492,19 +1492,19 @@ function createMetroStation() {
       cubelestnica_004Geometry,
       MetalMaterial,
     );
-    cubelestnica_004.scale.set(0.23, 0.23, 1.0);
+    cubelestnica_004.scale.set(0.23, 0.23, 1.00);
     cubelestnica_004.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnica_004Group.add(cubelestnica_004);
   }
   cubelestnica_004Group.setRotation(0, 3.14, 0);
-  cubelestnica_004Group.position.set(109.1, 14.77, -38.75);
+  cubelestnica_004Group.position.set(109.10, 14.77, -38.75);
   const cubenapolnik_008Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubenapolnik_008 = new THREE.Mesh(
     cubenapolnik_008Geometry,
     MetalMaterial,
   );
   cubenapolnik_008.position.set(110.17, 14.43, -38.74);
-  cubenapolnik_008.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_008.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_008.setRotation(1.57, 3.14, 0);
 
   const cubeporuchen_028Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1512,7 +1512,7 @@ function createMetroStation() {
     cubeporuchen_028Geometry,
     MetalMaterial,
   );
-  cubeporuchen_028.scale.set(42.24, 0.9, 0.15);
+  cubeporuchen_028.scale.set(42.24, 0.90, 0.15);
   const cubeporuchen_028MZ = cubeporuchen_028.clone();
   cubeporuchen_028.position.set(0, 0, -39.81);
   cubeporuchen_028MZ.position.set(0, 0, -37.69);
@@ -1540,7 +1540,7 @@ function createMetroStation() {
     cylinderporuchen_030Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_030.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_030.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_030MZ = cylinderporuchen_030.clone();
   cylinderporuchen_030.position.set(0, 0, -39.81);
   cylinderporuchen_030MZ.position.set(0, 0, -37.69);
@@ -1551,13 +1551,13 @@ function createMetroStation() {
     cylinderporuchen_030,
     cylinderporuchen_030MZ,
   );
-  cylinderporuchen_030MirroredZ.position.set(109.1, 15.22, 0);
+  cylinderporuchen_030MirroredZ.position.set(109.10, 15.22, 0);
   const cylinderporuchen_031Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_031 = new THREE.Mesh(
     cylinderporuchen_031Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_031.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_031.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_031MZ = cylinderporuchen_031.clone();
   cylinderporuchen_031.position.set(0, 0, -39.81);
   cylinderporuchen_031MZ.position.set(0, 0, -37.69);
@@ -1574,7 +1574,7 @@ function createMetroStation() {
     cylinderporuchen_032Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_032.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_032.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_032MZ = cylinderporuchen_032.clone();
   cylinderporuchen_032.position.set(0, 0, -39.81);
   cylinderporuchen_032MZ.position.set(0, 0, -37.69);
@@ -1585,7 +1585,7 @@ function createMetroStation() {
     cylinderporuchen_032,
     cylinderporuchen_032MZ,
   );
-  cylinderporuchen_032MirroredZ.position.set(111.2, 14.93, 0);
+  cylinderporuchen_032MirroredZ.position.set(111.20, 14.93, 0);
   const cubeporuchen_033Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_033 = new THREE.Mesh(
     cubeporuchen_033Geometry,
@@ -1605,7 +1605,7 @@ function createMetroStation() {
     cylinderporuchen_034Geometry,
     MetalMaterial,
   );
-  cylinderporuchen_034.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_034.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_034MZ = cylinderporuchen_034.clone();
   cylinderporuchen_034.position.set(0, 0, -39.81);
   cylinderporuchen_034MZ.position.set(0, 0, -37.69);
@@ -1623,7 +1623,7 @@ function createMetroStation() {
     MetalMaterial,
   );
   cubenapolnik_009.position.set(48.14, 74.28, -38.74);
-  cubenapolnik_009.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_009.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_009.setRotation(1.57, 3.14, 0);
 
   const cubelestnica_001Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1633,19 +1633,19 @@ function createMetroStation() {
       cubelestnica_001Geometry,
       Metal_001Material,
     );
-    cubelestnica_001.scale.set(0.23, 0.23, 1.0);
+    cubelestnica_001.scale.set(0.23, 0.23, 1.00);
     cubelestnica_001.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnica_001Group.add(cubelestnica_001);
   }
   cubelestnica_001Group.setRotation(0, 3.14, 0);
-  cubelestnica_001Group.position.set(109.1, 14.77, -36.0);
+  cubelestnica_001Group.position.set(109.10, 14.77, -36.00);
   const cubenapolnik_002Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubenapolnik_002 = new THREE.Mesh(
     cubenapolnik_002Geometry,
     Metal_001Material,
   );
   cubenapolnik_002.position.set(110.17, 14.43, -35.99);
-  cubenapolnik_002.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_002.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_002.setRotation(1.57, 3.14, 0);
 
   const cubeporuchen_003Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1653,7 +1653,7 @@ function createMetroStation() {
     cubeporuchen_003Geometry,
     Metal_001Material,
   );
-  cubeporuchen_003.scale.set(42.24, 0.9, 0.15);
+  cubeporuchen_003.scale.set(42.24, 0.90, 0.15);
   const cubeporuchen_003MZ = cubeporuchen_003.clone();
   cubeporuchen_003.position.set(0, 0, -37.05);
   cubeporuchen_003MZ.position.set(0, 0, -34.94);
@@ -1681,7 +1681,7 @@ function createMetroStation() {
     cylinderporuchen_015Geometry,
     Metal_001Material,
   );
-  cylinderporuchen_015.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_015.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_015MZ = cylinderporuchen_015.clone();
   cylinderporuchen_015.position.set(0, 0, -37.05);
   cylinderporuchen_015MZ.position.set(0, 0, -34.94);
@@ -1692,13 +1692,13 @@ function createMetroStation() {
     cylinderporuchen_015,
     cylinderporuchen_015MZ,
   );
-  cylinderporuchen_015MirroredZ.position.set(109.1, 15.22, 0);
+  cylinderporuchen_015MirroredZ.position.set(109.10, 15.22, 0);
   const cylinderporuchen_014Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_014 = new THREE.Mesh(
     cylinderporuchen_014Geometry,
     Metal_001Material,
   );
-  cylinderporuchen_014.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_014.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_014MZ = cylinderporuchen_014.clone();
   cylinderporuchen_014.position.set(0, 0, -37.05);
   cylinderporuchen_014MZ.position.set(0, 0, -34.94);
@@ -1715,7 +1715,7 @@ function createMetroStation() {
     cylinderporuchen_013Geometry,
     Metal_001Material,
   );
-  cylinderporuchen_013.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_013.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_013MZ = cylinderporuchen_013.clone();
   cylinderporuchen_013.position.set(0, 0, -37.05);
   cylinderporuchen_013MZ.position.set(0, 0, -34.94);
@@ -1726,7 +1726,7 @@ function createMetroStation() {
     cylinderporuchen_013,
     cylinderporuchen_013MZ,
   );
-  cylinderporuchen_013MirroredZ.position.set(111.2, 14.93, 0);
+  cylinderporuchen_013MirroredZ.position.set(111.20, 14.93, 0);
   const cubeporuchen_010Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_010 = new THREE.Mesh(
     cubeporuchen_010Geometry,
@@ -1746,7 +1746,7 @@ function createMetroStation() {
     cylinderporuchen_001Geometry,
     Metal_001Material,
   );
-  cylinderporuchen_001.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_001.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_001MZ = cylinderporuchen_001.clone();
   cylinderporuchen_001.position.set(0, 0, -37.05);
   cylinderporuchen_001MZ.position.set(0, 0, -34.94);
@@ -1764,7 +1764,7 @@ function createMetroStation() {
     Metal_001Material,
   );
   cubenapolnik_007.position.set(48.14, 74.28, -35.99);
-  cubenapolnik_007.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_007.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_007.setRotation(1.57, 3.14, 0);
 
   const cubelestnica_002Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1774,19 +1774,19 @@ function createMetroStation() {
       cubelestnica_002Geometry,
       Metal_002Material,
     );
-    cubelestnica_002.scale.set(0.23, 0.23, 1.0);
+    cubelestnica_002.scale.set(0.23, 0.23, 1.00);
     cubelestnica_002.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnica_002Group.add(cubelestnica_002);
   }
   cubelestnica_002Group.setRotation(0, 3.14, 0);
-  cubelestnica_002Group.position.set(109.1, 14.77, -43.58);
+  cubelestnica_002Group.position.set(109.10, 14.77, -43.58);
   const cubenapolnik_004Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubenapolnik_004 = new THREE.Mesh(
     cubenapolnik_004Geometry,
     Metal_002Material,
   );
   cubenapolnik_004.position.set(110.17, 14.43, -43.57);
-  cubenapolnik_004.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_004.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_004.setRotation(1.57, 3.14, 0);
 
   const cubeporuchen_006Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1794,7 +1794,7 @@ function createMetroStation() {
     cubeporuchen_006Geometry,
     Metal_002Material,
   );
-  cubeporuchen_006.scale.set(42.24, 0.9, 0.15);
+  cubeporuchen_006.scale.set(42.24, 0.90, 0.15);
   const cubeporuchen_006MZ = cubeporuchen_006.clone();
   cubeporuchen_006.position.set(0, 0, -44.64);
   cubeporuchen_006MZ.position.set(0, 0, -42.52);
@@ -1822,7 +1822,7 @@ function createMetroStation() {
     cylinderporuchen_008Geometry,
     Metal_002Material,
   );
-  cylinderporuchen_008.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_008.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_008MZ = cylinderporuchen_008.clone();
   cylinderporuchen_008.position.set(0, 0, -44.63);
   cylinderporuchen_008MZ.position.set(0, 0, -42.52);
@@ -1833,13 +1833,13 @@ function createMetroStation() {
     cylinderporuchen_008,
     cylinderporuchen_008MZ,
   );
-  cylinderporuchen_008MirroredZ.position.set(109.1, 15.22, 0);
+  cylinderporuchen_008MirroredZ.position.set(109.10, 15.22, 0);
   const cylinderporuchen_007Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_007 = new THREE.Mesh(
     cylinderporuchen_007Geometry,
     Metal_002Material,
   );
-  cylinderporuchen_007.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_007.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_007MZ = cylinderporuchen_007.clone();
   cylinderporuchen_007.position.set(0, 0, -44.63);
   cylinderporuchen_007MZ.position.set(0, 0, -42.52);
@@ -1856,7 +1856,7 @@ function createMetroStation() {
     cylinderporuchen_016Geometry,
     Metal_002Material,
   );
-  cylinderporuchen_016.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_016.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_016MZ = cylinderporuchen_016.clone();
   cylinderporuchen_016.position.set(0, 0, -44.63);
   cylinderporuchen_016MZ.position.set(0, 0, -42.52);
@@ -1867,7 +1867,7 @@ function createMetroStation() {
     cylinderporuchen_016,
     cylinderporuchen_016MZ,
   );
-  cylinderporuchen_016MirroredZ.position.set(111.2, 14.93, 0);
+  cylinderporuchen_016MirroredZ.position.set(111.20, 14.93, 0);
   const cubeporuchen_004Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_004 = new THREE.Mesh(
     cubeporuchen_004Geometry,
@@ -1887,7 +1887,7 @@ function createMetroStation() {
     cylinderporuchen_005Geometry,
     Metal_002Material,
   );
-  cylinderporuchen_005.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_005.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_005MZ = cylinderporuchen_005.clone();
   cylinderporuchen_005.position.set(0, 0, -44.63);
   cylinderporuchen_005MZ.position.set(0, 0, -42.52);
@@ -1905,7 +1905,7 @@ function createMetroStation() {
     Metal_002Material,
   );
   cubenapolnik_003.position.set(48.14, 74.28, -43.57);
-  cubenapolnik_003.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_003.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_003.setRotation(1.57, 3.14, 0);
 
   const cubelestnica_003Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1915,19 +1915,19 @@ function createMetroStation() {
       cubelestnica_003Geometry,
       Metal_003Material,
     );
-    cubelestnica_003.scale.set(0.23, 0.23, 1.0);
+    cubelestnica_003.scale.set(0.23, 0.23, 1.00);
     cubelestnica_003.position.set(0.46 * i, 0.46 * i, 0);
     cubelestnica_003Group.add(cubelestnica_003);
   }
   cubelestnica_003Group.setRotation(0, 3.14, 0);
-  cubelestnica_003Group.position.set(109.1, 14.77, -46.46);
+  cubelestnica_003Group.position.set(109.10, 14.77, -46.46);
   const cubenapolnik_006Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubenapolnik_006 = new THREE.Mesh(
     cubenapolnik_006Geometry,
     Metal_003Material,
   );
   cubenapolnik_006.position.set(110.17, 14.43, -46.45);
-  cubenapolnik_006.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_006.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_006.setRotation(1.57, 3.14, 0);
 
   const cubeporuchen_009Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -1935,10 +1935,10 @@ function createMetroStation() {
     cubeporuchen_009Geometry,
     Metal_003Material,
   );
-  cubeporuchen_009.scale.set(42.24, 0.9, 0.15);
+  cubeporuchen_009.scale.set(42.24, 0.90, 0.15);
   const cubeporuchen_009MZ = cubeporuchen_009.clone();
   cubeporuchen_009.position.set(0, 0, -47.52);
-  cubeporuchen_009MZ.position.set(0, 0, -45.4);
+  cubeporuchen_009MZ.position.set(0, 0, -45.40);
   cubeporuchen_009.setRotation(0, 3.14, 0.79);
   cubeporuchen_009MZ.setRotation(0, -3.14, 0.79);
   const cubeporuchen_009MirroredZ = new THREE.Group();
@@ -1952,7 +1952,7 @@ function createMetroStation() {
   cubeporuchen_008.scale.set(1.09, 0.84, 0.15);
   const cubeporuchen_008MZ = cubeporuchen_008.clone();
   cubeporuchen_008.position.set(0, 0, -47.52);
-  cubeporuchen_008MZ.position.set(0, 0, -45.4);
+  cubeporuchen_008MZ.position.set(0, 0, -45.40);
   cubeporuchen_008.setRotation(0, 3.14, 0);
   cubeporuchen_008MZ.setRotation(0, -3.14, 0);
   const cubeporuchen_008MirroredZ = new THREE.Group();
@@ -1963,10 +1963,10 @@ function createMetroStation() {
     cylinderporuchen_012Geometry,
     Metal_003Material,
   );
-  cylinderporuchen_012.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_012.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_012MZ = cylinderporuchen_012.clone();
   cylinderporuchen_012.position.set(0, 0, -47.52);
-  cylinderporuchen_012MZ.position.set(0, 0, -45.4);
+  cylinderporuchen_012MZ.position.set(0, 0, -45.40);
   cylinderporuchen_012.setRotation(1.57, 3.14, 0);
   cylinderporuchen_012MZ.setRotation(-1.57, -3.14, 0);
   const cylinderporuchen_012MirroredZ = new THREE.Group();
@@ -1974,16 +1974,16 @@ function createMetroStation() {
     cylinderporuchen_012,
     cylinderporuchen_012MZ,
   );
-  cylinderporuchen_012MirroredZ.position.set(109.1, 15.22, 0);
+  cylinderporuchen_012MirroredZ.position.set(109.10, 15.22, 0);
   const cylinderporuchen_011Geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
   const cylinderporuchen_011 = new THREE.Mesh(
     cylinderporuchen_011Geometry,
     Metal_003Material,
   );
-  cylinderporuchen_011.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_011.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_011MZ = cylinderporuchen_011.clone();
   cylinderporuchen_011.position.set(0, 0, -47.52);
-  cylinderporuchen_011MZ.position.set(0, 0, -45.4);
+  cylinderporuchen_011MZ.position.set(0, 0, -45.40);
   cylinderporuchen_011.setRotation(1.57, 3.14, 0);
   cylinderporuchen_011MZ.setRotation(-1.57, -3.14, 0);
   const cylinderporuchen_011MirroredZ = new THREE.Group();
@@ -1997,10 +1997,10 @@ function createMetroStation() {
     cylinderporuchen_010Geometry,
     Metal_003Material,
   );
-  cylinderporuchen_010.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_010.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_010MZ = cylinderporuchen_010.clone();
   cylinderporuchen_010.position.set(0, 0, -47.52);
-  cylinderporuchen_010MZ.position.set(0, 0, -45.4);
+  cylinderporuchen_010MZ.position.set(0, 0, -45.40);
   cylinderporuchen_010.setRotation(1.57, 3.14, 0);
   cylinderporuchen_010MZ.setRotation(-1.57, -3.14, 0);
   const cylinderporuchen_010MirroredZ = new THREE.Group();
@@ -2008,7 +2008,7 @@ function createMetroStation() {
     cylinderporuchen_010,
     cylinderporuchen_010MZ,
   );
-  cylinderporuchen_010MirroredZ.position.set(111.2, 14.93, 0);
+  cylinderporuchen_010MirroredZ.position.set(111.20, 14.93, 0);
   const cubeporuchen_007Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubeporuchen_007 = new THREE.Mesh(
     cubeporuchen_007Geometry,
@@ -2017,7 +2017,7 @@ function createMetroStation() {
   cubeporuchen_007.scale.set(1.09, 0.84, 0.15);
   const cubeporuchen_007MZ = cubeporuchen_007.clone();
   cubeporuchen_007.position.set(0, 0, -47.52);
-  cubeporuchen_007MZ.position.set(0, 0, -45.4);
+  cubeporuchen_007MZ.position.set(0, 0, -45.40);
   cubeporuchen_007.setRotation(0, 3.14, -3.14);
   cubeporuchen_007MZ.setRotation(0, -3.14, -3.14);
   const cubeporuchen_007MirroredZ = new THREE.Group();
@@ -2028,10 +2028,10 @@ function createMetroStation() {
     cylinderporuchen_009Geometry,
     Metal_003Material,
   );
-  cylinderporuchen_009.scale.set(1.0, 0.15, 1.0);
+  cylinderporuchen_009.scale.set(1.00, 0.15, 1.00);
   const cylinderporuchen_009MZ = cylinderporuchen_009.clone();
   cylinderporuchen_009.position.set(0, 0, -47.52);
-  cylinderporuchen_009MZ.position.set(0, 0, -45.4);
+  cylinderporuchen_009MZ.position.set(0, 0, -45.40);
   cylinderporuchen_009.setRotation(1.57, 3.14, -3.14);
   cylinderporuchen_009MZ.setRotation(-1.57, -3.14, -3.14);
   const cylinderporuchen_009MirroredZ = new THREE.Group();
@@ -2046,7 +2046,7 @@ function createMetroStation() {
     Metal_003Material,
   );
   cubenapolnik_005.position.set(48.14, 74.28, -46.45);
-  cubenapolnik_005.scale.set(1.4, 0.95, 0.11);
+  cubenapolnik_005.scale.set(1.40, 0.95, 0.11);
   cubenapolnik_005.setRotation(1.57, 3.14, 0);
 
   const cubeplatformaGeometry = new THREE.BoxGeometry(2, 2, 2);
@@ -2082,14 +2082,14 @@ function createMetroStation() {
     NapolnayaPlitkaMaterial,
   );
   cubezadnyayactena.position.set(-41.14, 5.74, 0);
-  cubezadnyayactena.scale.set(9.43, 6.68, 13.3);
+  cubezadnyayactena.scale.set(9.43, 6.68, 13.30);
 
   const cubezadnyayactena_005Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubezadnyayactena_005 = new THREE.Mesh(
     cubezadnyayactena_005Geometry,
     NapolnayaPlitkaMaterial,
   );
-  cubezadnyayactena_005.position.set(-50.9, 5.74, 0);
+  cubezadnyayactena_005.position.set(-50.90, 5.74, 0);
   cubezadnyayactena_005.scale.set(1.39, 13.25, 26.38);
 
   const cubeplatforma_001Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -2097,7 +2097,7 @@ function createMetroStation() {
     cubeplatforma_001Geometry,
     NapolnayaPlitkaMaterial,
   );
-  cubeplatforma_001.position.set(81.4, 4.95, 0);
+  cubeplatforma_001.position.set(81.40, 4.95, 0);
   cubeplatforma_001.scale.set(18.86, 9.18, 10.26);
 
   const cubeplatforma_002Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -2132,7 +2132,7 @@ function createMetroStation() {
     cubeplatforma_005Geometry,
     NapolnayaPlitkaMaterial,
   );
-  cubeplatforma_005.position.set(80.4, 11.8, -11.18);
+  cubeplatforma_005.position.set(80.40, 11.80, -11.18);
   cubeplatforma_005.scale.set(18.86, 13.61, -1.64);
 
   const cubeplatforma_006Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -2141,7 +2141,7 @@ function createMetroStation() {
     NapolnayaPlitkaMaterial,
   );
   cubeplatforma_006.position.set(103.25, 16.27, -16.34);
-  cubeplatforma_006.scale.set(8.11, 9.18, -1.5);
+  cubeplatforma_006.scale.set(8.11, 9.18, -1.50);
   cubeplatforma_006.setRotation(0, 0.66, 0);
 
   const cubeplatforma_007Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -2149,7 +2149,7 @@ function createMetroStation() {
     cubeplatforma_007Geometry,
     NapolnayaPlitkaMaterial,
   );
-  cubeplatforma_007.position.set(109.06, 16.38, -27.1);
+  cubeplatforma_007.position.set(109.06, 16.38, -27.10);
   cubeplatforma_007.scale.set(6.47, 9.18, -2.11);
   cubeplatforma_007.setRotation(0, 1.57, 0);
 
@@ -2159,7 +2159,7 @@ function createMetroStation() {
     NapolnayaPlitkaMaterial,
   );
   cubeplatforma_008.position.set(4.23, 17.18, -40.22);
-  cubeplatforma_008.scale.set(9.9, 57.16, 45.22);
+  cubeplatforma_008.scale.set(9.90, 57.16, 45.22);
   cubeplatforma_008.setRotation(0, 1.57, 0);
 
   const cubenadkolonnie_001Geometry = new THREE.BoxGeometry(2, 2, 2);
@@ -2189,7 +2189,7 @@ function createMetroStation() {
   cubenadkolonnie_002MZ.setRotation(0.73, 0, 0);
   const cubenadkolonnie_002MirroredZ = new THREE.Group();
   cubenadkolonnie_002MirroredZ.add(cubenadkolonnie_002, cubenadkolonnie_002MZ);
-  cubenadkolonnie_002MirroredZ.position.set(0, 6.6, 0);
+  cubenadkolonnie_002MirroredZ.position.set(0, 6.60, 0);
   const cubenadkolonnie_003Geometry = new THREE.BoxGeometry(2, 2, 2);
   const cubenadkolonnie_003 = new THREE.Mesh(
     cubenadkolonnie_003Geometry,
@@ -2472,7 +2472,7 @@ function setupcontrols(scene: THREE.Scene) {
       this.minPolarAngle = 0; // radians
       this.maxPolarAngle = Math.PI; // radians
 
-      this.pointerSpeed = 1.0;
+      this.pointerSpeed = 1.00;
 
       this._onMouseMove = this.onMouseMove.bind(this);
       this._onPointerlockChange = this.onPointerlockChange.bind(this);
@@ -2662,7 +2662,7 @@ function setupcontrols(scene: THREE.Scene) {
   }
 
   controls = new PointerLockControls(camera, renderer.domElement);
-  controls.getObject().position.set(-0.57, 2.7, -0.08);
+  controls.getObject().position.set(-0.57, 2.70, -0.08);
   scene.add(controls.getObject());
 
   const onKeyDown = function (event: KeyboardEvent) {

@@ -29,6 +29,17 @@ dist-ssr
 package-lock.json
 out/
 /generated.balon*
+/.private
 
 # stuff
 /__pycache__/
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml

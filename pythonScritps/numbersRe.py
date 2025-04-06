@@ -9,8 +9,8 @@ def process_file(input_file, output_file):
         
         if abs_num < 0.0005:
             return '0'
-        elif abs_num < 0.009:
-            return "{0:.4f}".format(round(num, 4))
+        # elif abs_num < 0.009:
+        #     return "{0:.4f}".format(round(num, 4))
         elif abs_num >= 10:
             # Округляем до 1 знака, убираем незначащие нули
             formatted = "{0:.1f}".format(round(num, 1))

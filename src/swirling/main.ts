@@ -786,13 +786,14 @@ function CreateWEBCAM(
       scene.add(Graphcube[i][j]);
     }
 }
+// Draw Functions Start
 function DrawWetFloor() {
   const boxGeo = new THREE.BoxGeometry(2, 2, 2);
   const baseSize = 256;
 
   const floor = new THREE.Mesh(boxGeo);
-  floor.position.set(24.3999, 0.574, -0.0);
-  floor.scale.set(56.1089, 0.2965, 6.3485);
+  floor.position.set(24.4, 0.57, 0);
+  floor.scale.set(56.1, 0.3, 6.35);
 
   const boundingBox = new THREE.Box3().setFromObject(floor);
   const aspectRatio =
@@ -819,7 +820,7 @@ function DrawWetFloor() {
   wetFloorTex = new THREE.CanvasTexture(canvasEl);
 
   floor.material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.3902, 0.2623),
+    color: new THREE.Color(0.48, 0.39, 0.26),
     metalness: 0.3,
     roughness: 1,
     metalnessMap: wetFloorTex,
@@ -856,16 +857,16 @@ function DrawTrain() {
 }
 function DrawTrainDoor() {
   const rightDoor = DrawRightDoorFunction();
-  rightDoor.scale.set(1.0, 1.0, 1.0);
-  rightDoor.setRotation(0.0, 0.0, -0.0);
+  rightDoor.scale.set(1, 1, 1);
+  rightDoor.setRotation(0, 0, 0);
   const leftDoor = rightDoor.clone();
   leftDoor.updateMatrixWorld(true);
-  rightDoor.position.set(0.0, 0, 0);
+  rightDoor.position.set(0, 0, 0);
   leftDoor.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-  leftDoor.position.set(-0.0, 0, 0);
+  leftDoor.position.set(0, 0, 0);
   const resultDoor = new THREE.Group();
   resultDoor.add(rightDoor, leftDoor);
-  resultDoor.position.set(0, 0.0, 0.0);
+  resultDoor.position.set(0, 0, 0);
   const out = new THREE.Group();
   rightDoor.name = 'rightDoor';
   leftDoor.name = 'leftDoor';
@@ -874,57 +875,57 @@ function DrawTrainDoor() {
 }
 function DrawRobotM() {
   const MetalMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.477, 0.477),
-    metalness: 1.0,
+    color: new THREE.Color(0.48, 0.48, 0.48),
+    metalness: 1,
     roughness: 0.5,
   });
   const ColoumnMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0, 0.0, 0.0),
+    color: new THREE.Color(0, 0, 0),
     roughness: 0.5,
   });
   const Metall_RustMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.08, 0.0213, 0.0026),
-    metalness: 0.8254,
-    roughness: 0.8849,
+    color: new THREE.Color(0.08, 0.02, 0),
+    metalness: 0.83,
+    roughness: 0.88,
   });
   const Washer_mainMaterialDS = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0228, 0.1325, 0.1523),
+    color: new THREE.Color(0.02, 0.13, 0.15),
     side: THREE.DoubleSide,
     roughness: 0.5,
   });
   const Washer_mainMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0228, 0.1325, 0.1523),
+    color: new THREE.Color(0.02, 0.13, 0.15),
     roughness: 0.5,
   });
   const WhiteDotsMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
+    color: new THREE.Color(1, 1, 1),
   });
   const Floor_StripesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 0.5225, 0.0),
+    color: new THREE.Color(1, 0.52, 0),
   });
   const BrassMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.7948, 0.7991, 0.0045),
-    metalness: 0.9127,
+    color: new THREE.Color(0.79, 0.8, 0),
+    metalness: 0.91,
     roughness: 0.1,
   });
   const Floor_trainMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.3506, 0.1574, 0.0969),
-    metalness: 1.0,
-    roughness: 0.5397,
+    color: new THREE.Color(0.35, 0.16, 0.1),
+    metalness: 1,
+    roughness: 0.54,
   });
   const kub108Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.1516, 0.8829, 0.4275),
+    color: new THREE.Color(0.15, 0.88, 0.43),
   });
   const Blue_PictureMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.1467, 0.2457, 0.8),
+    color: new THREE.Color(0.15, 0.25, 0.8),
     roughness: 0.5,
   });
   const Green_PictureMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0351, 0.4869, 0.0138),
+    color: new THREE.Color(0.04, 0.49, 0.01),
     roughness: 0.5,
   });
   const Train_blueMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0343, 0.1009, 0.652),
+    color: new THREE.Color(0.03, 0.1, 0.65),
     roughness: 0.5,
   });
 
@@ -933,1101 +934,1101 @@ function DrawRobotM() {
   const sphereGeo = new THREE.SphereGeometry(1, 32, 16);
   const planeGeo = new THREE.PlaneGeometry(2, 2);
 
-  const kub038 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub038.position.set(0.9393, 0.0739, -0.0005);
-  kub038.scale.set(0.1139, 0.0767, 0.5205);
+  const kub38 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub38.position.set(0.94, 0.07, -0);
+  kub38.scale.set(0.11, 0.08, 0.52);
 
-  const kub039 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub039.position.set(0.7271, 0.1346, -0.0005);
-  kub039.scale.set(0.2689, 0.0901, 0.233);
-  kub039.setRotation(0.3098, 1.5708, 0.0);
+  const kub39 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub39.position.set(0.73, 0.13, -0);
+  kub39.scale.set(0.27, 0.09, 0.23);
+  kub39.setRotation(0.31, 1.57, 0);
 
-  const cyl008 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl008.position.set(0.6385, 0.1628, -0.0005);
-  cyl008.scale.set(0.0746, 0.5291, 0.0746);
-  cyl008.setRotation(1.5708, 0.0, 0.0);
+  const cyl8 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl8.position.set(0.64, 0.16, -0);
+  cyl8.scale.set(0.07, 0.53, 0.07);
+  cyl8.setRotation(1.57, 0, 0);
 
-  const cyl009 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
-  cyl009.scale.set(0.1018, 0.0604, 0.1018);
-  cyl009.setRotation(1.5708, 0.0, 0.0);
-  const cyl009MZ = cyl009.clone();
-  cyl009MZ.updateMatrixWorld(true);
-  cyl009.position.set(0, 0, 0.5);
-  cyl009MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl009MZ.position.set(0, 0, -0.5009);
-  const cyl009MrZ = new THREE.Group();
-  cyl009MrZ.add(cyl009, cyl009MZ);
-  cyl009MrZ.position.set(0.6385, 0.1628, 0);
-  const pln001 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln001.scale.set(0.0762, 0.089, 0.0743);
-  pln001.setRotation(1.5708, 0.0, -1.3109);
-  const pln001MZ = pln001.clone();
-  pln001MZ.updateMatrixWorld(true);
-  pln001.position.set(0, 0, 0.0898);
-  pln001MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln001MZ.position.set(0, 0, -0.0907);
-  const pln001MrZ = new THREE.Group();
-  pln001MrZ.add(pln001, pln001MZ);
-  pln001MrZ.position.set(0.563, 0.8232, 0);
-  const pln002 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln002.scale.set(0.0565, 0.089, 0.0743);
-  pln002.setRotation(1.5708, 0.0, -1.3866);
-  const pln002MZ = pln002.clone();
-  pln002MZ.updateMatrixWorld(true);
-  pln002.position.set(0, 0, 0.0898);
-  pln002MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln002MZ.position.set(0, 0, -0.0907);
-  const pln002MrZ = new THREE.Group();
-  pln002MrZ.add(pln002, pln002MZ);
-  pln002MrZ.position.set(0.5929, 0.694, 0);
-  const pln003 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln003.scale.set(0.0466, 0.089, 0.0743);
-  pln003.setRotation(1.5708, 0.0, -1.4353);
-  const pln003MZ = pln003.clone();
-  pln003MZ.updateMatrixWorld(true);
-  pln003.position.set(0, 0, 0.0898);
-  pln003MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln003MZ.position.set(0, 0, -0.0907);
-  const pln003MrZ = new THREE.Group();
-  pln003MrZ.add(pln003, pln003MZ);
-  pln003MrZ.position.set(0.6096, 0.5922, 0);
-  const pln004 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln004.scale.set(0.0401, 0.089, 0.0743);
-  pln004.setRotation(1.5708, 0.0, -1.5094);
-  const pln004MZ = pln004.clone();
-  pln004MZ.updateMatrixWorld(true);
-  pln004.position.set(0, 0, 0.0898);
-  pln004MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln004MZ.position.set(0, 0, -0.0907);
-  const pln004MrZ = new THREE.Group();
-  pln004MrZ.add(pln004, pln004MZ);
-  pln004MrZ.position.set(0.6183, 0.506, 0);
-  const pln005 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln005.scale.set(0.0487, 0.089, 0.0743);
-  pln005.setRotation(1.5708, 0.0, -1.57);
-  const pln005MZ = pln005.clone();
-  pln005MZ.updateMatrixWorld(true);
-  pln005.position.set(0, 0, 0.0898);
-  pln005MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln005MZ.position.set(0, 0, -0.0907);
-  const pln005MrZ = new THREE.Group();
-  pln005MrZ.add(pln005, pln005MZ);
-  pln005MrZ.position.set(0.6208, 0.4173, 0);
-  const pln014 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln014.scale.set(0.0762, 0.089, 0.0743);
-  pln014.setRotation(1.8353, 0.0, -1.3109);
-  const pln014MZ = pln014.clone();
-  pln014MZ.updateMatrixWorld(true);
-  pln014.position.set(0, 0, 0.2646);
-  pln014MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln014MZ.position.set(0, 0, -0.2656);
-  const pln014MrZ = new THREE.Group();
-  pln014MrZ.add(pln014, pln014MZ);
-  pln014MrZ.position.set(0.5405, 0.8172, 0);
-  const pln015 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln015.scale.set(0.0565, 0.089, 0.0743);
-  pln015.setRotation(1.8396, -0.0, -1.3866);
-  const pln015MZ = pln015.clone();
-  pln015MZ.updateMatrixWorld(true);
-  pln015.position.set(0, 0, 0.2645);
-  pln015MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln015MZ.position.set(0, 0, -0.2655);
-  const pln015MrZ = new THREE.Group();
-  pln015MrZ.add(pln015, pln015MZ);
-  pln015MrZ.position.set(0.5697, 0.6896, 0);
-  const pln016 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln016.scale.set(0.0466, 0.089, 0.0743);
-  pln016.setRotation(1.8417, 0.0, -1.4353);
-  const pln016MZ = pln016.clone();
-  pln016MZ.updateMatrixWorld(true);
-  pln016.position.set(0, 0, 0.2645);
-  pln016MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln016MZ.position.set(0, 0, -0.2654);
-  const pln016MrZ = new THREE.Group();
-  pln016MrZ.add(pln016, pln016MZ);
-  pln016MrZ.position.set(0.586, 0.589, 0);
-  const pln017 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln017.scale.set(0.0401, 0.089, 0.0743);
-  pln017.setRotation(1.8436, 0.0, -1.5094);
-  const pln017MZ = pln017.clone();
-  pln017MZ.updateMatrixWorld(true);
-  pln017.position.set(0, 0, 0.2644);
-  pln017MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln017MZ.position.set(0, 0, -0.2654);
-  const pln017MrZ = new THREE.Group();
-  pln017MrZ.add(pln017, pln017MZ);
-  pln017MrZ.position.set(0.5944, 0.5045, 0);
-  const pln018 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln018.scale.set(0.0487, 0.089, 0.0743);
-  pln018.setRotation(1.8427, -0.0014, -1.57);
-  const pln018MZ = pln018.clone();
-  pln018MZ.updateMatrixWorld(true);
-  pln018.position.set(0, 0, 0.2644);
-  pln018MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln018MZ.position.set(0, 0, -0.2654);
-  const pln018MrZ = new THREE.Group();
-  pln018MrZ.add(pln018, pln018MZ);
-  pln018MrZ.position.set(0.5968, 0.4173, 0);
-  const pln006 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln006.scale.set(0.0762, 0.089, 0.0743);
-  pln006.setRotation(2.4592, 0.0, -1.3109);
-  const pln006MZ = pln006.clone();
-  pln006MZ.updateMatrixWorld(true);
-  pln006.position.set(0, 0, 0.4066);
-  pln006MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln006MZ.position.set(0, 0, -0.4076);
-  const pln006MrZ = new THREE.Group();
-  pln006MrZ.add(pln006, pln006MZ);
-  pln006MrZ.position.set(0.4513, 0.7935, 0);
-  const pln007 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln007.scale.set(0.0565, 0.089, 0.0743);
-  pln007.setRotation(2.4694, -0.0, -1.3866);
-  const pln007MZ = pln007.clone();
-  pln007MZ.updateMatrixWorld(true);
-  pln007.position.set(0, 0, 0.4059);
-  pln007MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln007MZ.position.set(0, 0, -0.4069);
-  const pln007MrZ = new THREE.Group();
-  pln007MrZ.add(pln007, pln007MZ);
-  pln007MrZ.position.set(0.4795, 0.6693, 0);
-  const pln008 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln008.scale.set(0.0466, 0.089, 0.0743);
-  pln008.setRotation(2.4745, 0.0, -1.4353);
-  const pln008MZ = pln008.clone();
-  pln008MZ.updateMatrixWorld(true);
-  pln008.position.set(0, 0, 0.4054);
-  pln008MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln008MZ.position.set(0, 0, -0.4063);
-  const pln008MrZ = new THREE.Group();
-  pln008MrZ.add(pln008, pln008MZ);
-  pln008MrZ.position.set(0.4938, 0.5741, 0);
-  const pln009 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln009.scale.set(0.0401, 0.089, 0.0743);
-  pln009.setRotation(3.1283, 0.6462, -1.5345);
-  const pln009MZ = pln009.clone();
-  pln009MZ.updateMatrixWorld(true);
-  pln009.position.set(0, 0, 0.4039);
-  pln009MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln009MZ.position.set(0, 0, -0.4049);
-  const pln009MrZ = new THREE.Group();
-  pln009MrZ.add(pln009, pln009MZ);
-  pln009MrZ.position.set(0.5003, 0.494, 0);
-  const pln011 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
-  pln011.scale.set(0.0487, 0.089, 0.0743);
-  pln011.setRotation(2.4807, -0.0014, -1.57);
-  const pln011MZ = pln011.clone();
-  pln011MZ.updateMatrixWorld(true);
-  pln011.position.set(0, 0, 0.4046);
-  pln011MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  pln011MZ.position.set(0, 0, -0.4056);
-  const pln011MrZ = new THREE.Group();
-  pln011MrZ.add(pln011, pln011MZ);
-  pln011MrZ.position.set(0.5027, 0.4143, 0);
-  const kub042 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub042.position.set(0.5929, 0.694, -0.0005);
-  kub042.scale.set(0.0555, 0.0086, 0.013);
-  kub042.setRotation(0.0, 0.0, -1.3866);
+  const cyl9 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
+  cyl9.scale.set(0.1, 0.06, 0.1);
+  cyl9.setRotation(1.57, 0, 0);
+  const cyl9MZ = cyl9.clone();
+  cyl9MZ.updateMatrixWorld(true);
+  cyl9.position.set(0, 0, 0.5);
+  cyl9MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl9MZ.position.set(0, 0, -0.5);
+  const cyl9MrZ = new THREE.Group();
+  cyl9MrZ.add(cyl9, cyl9MZ);
+  cyl9MrZ.position.set(0.64, 0.16, 0);
+  const pln1 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln1.scale.set(0.08, 0.09, 0.07);
+  pln1.setRotation(1.57, 0, -1.31);
+  const pln1MZ = pln1.clone();
+  pln1MZ.updateMatrixWorld(true);
+  pln1.position.set(0, 0, 0.09);
+  pln1MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln1MZ.position.set(0, 0, -0.09);
+  const pln1MrZ = new THREE.Group();
+  pln1MrZ.add(pln1, pln1MZ);
+  pln1MrZ.position.set(0.56, 0.82, 0);
+  const pln2 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln2.scale.set(0.06, 0.09, 0.07);
+  pln2.setRotation(1.57, 0, -1.39);
+  const pln2MZ = pln2.clone();
+  pln2MZ.updateMatrixWorld(true);
+  pln2.position.set(0, 0, 0.09);
+  pln2MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln2MZ.position.set(0, 0, -0.09);
+  const pln2MrZ = new THREE.Group();
+  pln2MrZ.add(pln2, pln2MZ);
+  pln2MrZ.position.set(0.59, 0.69, 0);
+  const pln3 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln3.scale.set(0.05, 0.09, 0.07);
+  pln3.setRotation(1.57, 0, -1.44);
+  const pln3MZ = pln3.clone();
+  pln3MZ.updateMatrixWorld(true);
+  pln3.position.set(0, 0, 0.09);
+  pln3MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln3MZ.position.set(0, 0, -0.09);
+  const pln3MrZ = new THREE.Group();
+  pln3MrZ.add(pln3, pln3MZ);
+  pln3MrZ.position.set(0.61, 0.59, 0);
+  const pln4 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln4.scale.set(0.04, 0.09, 0.07);
+  pln4.setRotation(1.57, 0, -1.51);
+  const pln4MZ = pln4.clone();
+  pln4MZ.updateMatrixWorld(true);
+  pln4.position.set(0, 0, 0.09);
+  pln4MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln4MZ.position.set(0, 0, -0.09);
+  const pln4MrZ = new THREE.Group();
+  pln4MrZ.add(pln4, pln4MZ);
+  pln4MrZ.position.set(0.62, 0.51, 0);
+  const pln5 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln5.scale.set(0.05, 0.09, 0.07);
+  pln5.setRotation(1.57, 0, -1.57);
+  const pln5MZ = pln5.clone();
+  pln5MZ.updateMatrixWorld(true);
+  pln5.position.set(0, 0, 0.09);
+  pln5MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln5MZ.position.set(0, 0, -0.09);
+  const pln5MrZ = new THREE.Group();
+  pln5MrZ.add(pln5, pln5MZ);
+  pln5MrZ.position.set(0.62, 0.42, 0);
+  const pln14 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln14.scale.set(0.08, 0.09, 0.07);
+  pln14.setRotation(1.84, 0, -1.31);
+  const pln14MZ = pln14.clone();
+  pln14MZ.updateMatrixWorld(true);
+  pln14.position.set(0, 0, 0.26);
+  pln14MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln14MZ.position.set(0, 0, -0.27);
+  const pln14MrZ = new THREE.Group();
+  pln14MrZ.add(pln14, pln14MZ);
+  pln14MrZ.position.set(0.54, 0.82, 0);
+  const pln15 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln15.scale.set(0.06, 0.09, 0.07);
+  pln15.setRotation(1.84, 0, -1.39);
+  const pln15MZ = pln15.clone();
+  pln15MZ.updateMatrixWorld(true);
+  pln15.position.set(0, 0, 0.26);
+  pln15MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln15MZ.position.set(0, 0, -0.27);
+  const pln15MrZ = new THREE.Group();
+  pln15MrZ.add(pln15, pln15MZ);
+  pln15MrZ.position.set(0.57, 0.69, 0);
+  const pln16 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln16.scale.set(0.05, 0.09, 0.07);
+  pln16.setRotation(1.84, 0, -1.44);
+  const pln16MZ = pln16.clone();
+  pln16MZ.updateMatrixWorld(true);
+  pln16.position.set(0, 0, 0.26);
+  pln16MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln16MZ.position.set(0, 0, -0.27);
+  const pln16MrZ = new THREE.Group();
+  pln16MrZ.add(pln16, pln16MZ);
+  pln16MrZ.position.set(0.59, 0.59, 0);
+  const pln17 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln17.scale.set(0.04, 0.09, 0.07);
+  pln17.setRotation(1.84, 0, -1.51);
+  const pln17MZ = pln17.clone();
+  pln17MZ.updateMatrixWorld(true);
+  pln17.position.set(0, 0, 0.26);
+  pln17MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln17MZ.position.set(0, 0, -0.27);
+  const pln17MrZ = new THREE.Group();
+  pln17MrZ.add(pln17, pln17MZ);
+  pln17MrZ.position.set(0.59, 0.5, 0);
+  const pln18 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln18.scale.set(0.05, 0.09, 0.07);
+  pln18.setRotation(1.84, -0, -1.57);
+  const pln18MZ = pln18.clone();
+  pln18MZ.updateMatrixWorld(true);
+  pln18.position.set(0, 0, 0.26);
+  pln18MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln18MZ.position.set(0, 0, -0.27);
+  const pln18MrZ = new THREE.Group();
+  pln18MrZ.add(pln18, pln18MZ);
+  pln18MrZ.position.set(0.6, 0.42, 0);
+  const pln6 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln6.scale.set(0.08, 0.09, 0.07);
+  pln6.setRotation(2.46, 0, -1.31);
+  const pln6MZ = pln6.clone();
+  pln6MZ.updateMatrixWorld(true);
+  pln6.position.set(0, 0, 0.41);
+  pln6MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln6MZ.position.set(0, 0, -0.41);
+  const pln6MrZ = new THREE.Group();
+  pln6MrZ.add(pln6, pln6MZ);
+  pln6MrZ.position.set(0.45, 0.79, 0);
+  const pln7 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln7.scale.set(0.06, 0.09, 0.07);
+  pln7.setRotation(2.47, 0, -1.39);
+  const pln7MZ = pln7.clone();
+  pln7MZ.updateMatrixWorld(true);
+  pln7.position.set(0, 0, 0.41);
+  pln7MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln7MZ.position.set(0, 0, -0.41);
+  const pln7MrZ = new THREE.Group();
+  pln7MrZ.add(pln7, pln7MZ);
+  pln7MrZ.position.set(0.48, 0.67, 0);
+  const pln8 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln8.scale.set(0.05, 0.09, 0.07);
+  pln8.setRotation(2.47, 0, -1.44);
+  const pln8MZ = pln8.clone();
+  pln8MZ.updateMatrixWorld(true);
+  pln8.position.set(0, 0, 0.41);
+  pln8MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln8MZ.position.set(0, 0, -0.41);
+  const pln8MrZ = new THREE.Group();
+  pln8MrZ.add(pln8, pln8MZ);
+  pln8MrZ.position.set(0.49, 0.57, 0);
+  const pln9 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln9.scale.set(0.04, 0.09, 0.07);
+  pln9.setRotation(3.13, 0.65, -1.53);
+  const pln9MZ = pln9.clone();
+  pln9MZ.updateMatrixWorld(true);
+  pln9.position.set(0, 0, 0.4);
+  pln9MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln9MZ.position.set(0, 0, -0.4);
+  const pln9MrZ = new THREE.Group();
+  pln9MrZ.add(pln9, pln9MZ);
+  pln9MrZ.position.set(0.5, 0.49, 0);
+  const pln11 = new THREE.Mesh(planeGeo, Washer_mainMaterialDS);
+  pln11.scale.set(0.05, 0.09, 0.07);
+  pln11.setRotation(2.48, -0, -1.57);
+  const pln11MZ = pln11.clone();
+  pln11MZ.updateMatrixWorld(true);
+  pln11.position.set(0, 0, 0.4);
+  pln11MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  pln11MZ.position.set(0, 0, -0.41);
+  const pln11MrZ = new THREE.Group();
+  pln11MrZ.add(pln11, pln11MZ);
+  pln11MrZ.position.set(0.5, 0.41, 0);
+  const kub42 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub42.position.set(0.59, 0.69, -0);
+  kub42.scale.set(0.06, 0.01, 0.01);
+  kub42.setRotation(0, 0, -1.39);
 
-  const kub043 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub043.position.set(0.6094, 0.5931, -0.0005);
-  kub043.scale.set(0.0471, 0.0086, 0.013);
-  kub043.setRotation(0.0, 0.0, -1.4353);
+  const kub43 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub43.position.set(0.61, 0.59, -0);
+  kub43.scale.set(0.05, 0.01, 0.01);
+  kub43.setRotation(0, 0, -1.44);
 
-  const kub044 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub044.position.set(0.6183, 0.5063, -0.0005);
-  kub044.scale.set(0.0407, 0.0086, 0.013);
-  kub044.setRotation(0.0, 0.0, -1.5094);
+  const kub44 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub44.position.set(0.62, 0.51, -0);
+  kub44.scale.set(0.04, 0.01, 0.01);
+  kub44.setRotation(0, 0, -1.51);
 
-  const kub045 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub045.position.set(0.6208, 0.4262, -0.0005);
-  kub045.scale.set(0.0401, 0.0086, 0.013);
-  kub045.setRotation(0.0, 0.0, -1.57);
+  const kub45 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub45.position.set(0.62, 0.43, -0);
+  kub45.scale.set(0.04, 0.01, 0.01);
+  kub45.setRotation(0, 0, -1.57);
 
-  const kub046 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub046.position.set(0.563, 0.8232, -0.0005);
-  kub046.scale.set(0.0783, 0.0086, 0.013);
-  kub046.setRotation(0.0, 0.0, -1.3109);
+  const kub46 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub46.position.set(0.56, 0.82, -0);
+  kub46.scale.set(0.08, 0.01, 0.01);
+  kub46.setRotation(0, 0, -1.31);
 
-  const kub047 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub047.position.set(0.5037, 0.9733, -0.0005);
-  kub047.scale.set(0.0861, 0.0086, 0.013);
-  kub047.setRotation(0.0, 0.0, -1.0922);
+  const kub47 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub47.position.set(0.5, 0.97, -0);
+  kub47.scale.set(0.09, 0.01, 0.01);
+  kub47.setRotation(0, 0, -1.09);
 
-  const kub048 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub048.position.set(0.5892, 0.3456, -0.0005);
-  kub048.scale.set(0.0777, 0.0449, 0.2378);
+  const kub48 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub48.position.set(0.59, 0.35, -0);
+  kub48.scale.set(0.08, 0.04, 0.24);
 
-  const kub049 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub049.scale.set(0.0449, 0.0676, 0.0536);
-  kub049.setRotation(-1.5708, -1.338, -1.5708);
-  const kub049MZ = kub049.clone();
-  kub049MZ.updateMatrixWorld(true);
-  kub049.position.set(0, 0, -0.2749);
-  kub049MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub049MZ.position.set(0, 0, 0.2739);
-  const kub049MrZ = new THREE.Group();
-  kub049MrZ.add(kub049, kub049MZ);
-  kub049MrZ.position.set(0.5887, 0.3456, 0);
-  const kub050 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub050.scale.set(0.0449, 0.0676, 0.0607);
-  kub050.setRotation(-1.0613, 0.0, -1.5708);
-  const kub050MZ = kub050.clone();
-  kub050MZ.updateMatrixWorld(true);
-  kub050.position.set(0, 0, -0.4017);
-  kub050MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub050MZ.position.set(0, 0, 0.4007);
-  const kub050MrZ = new THREE.Group();
-  kub050MrZ.add(kub050, kub050MZ);
-  kub050MrZ.position.set(0.4855, 0.3456, 0);
-  const kub051 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub051.scale.set(0.0449, 0.0676, 0.0566);
-  kub051.setRotation(-0.6742, 0.0, -1.5708);
-  const kub051MZ = kub051.clone();
-  kub051MZ.updateMatrixWorld(true);
-  kub051.position.set(0, 0, -0.3447);
-  kub051MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub051MZ.position.set(0, 0, 0.3437);
-  const kub051MrZ = new THREE.Group();
-  kub051MrZ.add(kub051, kub051MZ);
-  kub051MrZ.position.set(0.5539, 0.3456, 0);
-  const kub052 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub052.scale.set(0.0449, 0.0676, 0.0634);
-  kub052.setRotation(-1.4054, 0.0, -1.5708);
-  const kub052MZ = kub052.clone();
-  kub052MZ.updateMatrixWorld(true);
-  kub052.position.set(0, 0, -0.4341);
-  kub052MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub052MZ.position.set(0, 0, 0.4331);
-  const kub052MrZ = new THREE.Group();
-  kub052MrZ.add(kub052, kub052MZ);
-  kub052MrZ.position.set(0.3918, 0.3456, 0);
-  const kub053 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub053.scale.set(0.0449, 0.0676, 0.2967);
-  kub053.setRotation(-1.7417, 0.0, -1.5708);
-  const kub053MZ = kub053.clone();
-  kub053MZ.updateMatrixWorld(true);
-  kub053.position.set(0, 0, -0.3941);
-  kub053MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub053MZ.position.set(0, 0, 0.3931);
-  const kub053MrZ = new THREE.Group();
-  kub053MrZ.add(kub053, kub053MZ);
-  kub053MrZ.position.set(0.0596, 0.3456, 0);
-  const kub072 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub072.position.set(0.253, 0.2265, -0.0005);
-  kub072.scale.set(0.2689, 0.0995, 0.3515);
+  const kub49 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub49.scale.set(0.04, 0.07, 0.05);
+  kub49.setRotation(-1.57, -1.34, -1.57);
+  const kub49MZ = kub49.clone();
+  kub49MZ.updateMatrixWorld(true);
+  kub49.position.set(0, 0, -0.27);
+  kub49MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub49MZ.position.set(0, 0, 0.27);
+  const kub49MrZ = new THREE.Group();
+  kub49MrZ.add(kub49, kub49MZ);
+  kub49MrZ.position.set(0.59, 0.35, 0);
+  const kub50 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub50.scale.set(0.04, 0.07, 0.06);
+  kub50.setRotation(-1.06, 0, -1.57);
+  const kub50MZ = kub50.clone();
+  kub50MZ.updateMatrixWorld(true);
+  kub50.position.set(0, 0, -0.4);
+  kub50MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub50MZ.position.set(0, 0, 0.4);
+  const kub50MrZ = new THREE.Group();
+  kub50MrZ.add(kub50, kub50MZ);
+  kub50MrZ.position.set(0.49, 0.35, 0);
+  const kub51 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub51.scale.set(0.04, 0.07, 0.06);
+  kub51.setRotation(-0.67, 0, -1.57);
+  const kub51MZ = kub51.clone();
+  kub51MZ.updateMatrixWorld(true);
+  kub51.position.set(0, 0, -0.34);
+  kub51MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub51MZ.position.set(0, 0, 0.34);
+  const kub51MrZ = new THREE.Group();
+  kub51MrZ.add(kub51, kub51MZ);
+  kub51MrZ.position.set(0.55, 0.35, 0);
+  const kub52 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub52.scale.set(0.04, 0.07, 0.06);
+  kub52.setRotation(-1.41, 0, -1.57);
+  const kub52MZ = kub52.clone();
+  kub52MZ.updateMatrixWorld(true);
+  kub52.position.set(0, 0, -0.43);
+  kub52MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub52MZ.position.set(0, 0, 0.43);
+  const kub52MrZ = new THREE.Group();
+  kub52MrZ.add(kub52, kub52MZ);
+  kub52MrZ.position.set(0.39, 0.35, 0);
+  const kub53 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub53.scale.set(0.04, 0.07, 0.3);
+  kub53.setRotation(-1.74, 0, -1.57);
+  const kub53MZ = kub53.clone();
+  kub53MZ.updateMatrixWorld(true);
+  kub53.position.set(0, 0, -0.39);
+  kub53MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub53MZ.position.set(0, 0, 0.39);
+  const kub53MrZ = new THREE.Group();
+  kub53MrZ.add(kub53, kub53MZ);
+  kub53MrZ.position.set(0.06, 0.35, 0);
+  const kub72 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub72.position.set(0.25, 0.23, -0);
+  kub72.scale.set(0.27, 0.1, 0.35);
 
-  const kub073 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub073.position.set(-0.0907, 0.4654, -0.0005);
-  kub073.scale.set(0.5784, 0.0973, 0.3757);
+  const kub73 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub73.position.set(-0.09, 0.47, -0);
+  kub73.scale.set(0.58, 0.1, 0.38);
 
-  const kub074 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub074.scale.set(0.5784, 0.1078, 0.0355);
-  kub074.setRotation(0.0, 0.0641, 0.0);
-  const kub074MZ = kub074.clone();
-  kub074MZ.updateMatrixWorld(true);
-  kub074.position.set(0, 0, -0.386);
-  kub074MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub074MZ.position.set(0, 0, 0.385);
-  const kub074MrZ = new THREE.Group();
-  kub074MrZ.add(kub074, kub074MZ);
-  kub074MrZ.position.set(-0.1438, 0.4107, 0);
-  const kub075 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub075.scale.set(0.5784, 0.0382, 0.0355);
-  kub075.setRotation(0.0, 0.0641, 0.0);
-  const kub075MZ = kub075.clone();
-  kub075MZ.updateMatrixWorld(true);
-  kub075.position.set(0, 0, -0.386);
-  kub075MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub075MZ.position.set(0, 0, 0.385);
-  const kub075MrZ = new THREE.Group();
-  kub075MrZ.add(kub075, kub075MZ);
-  kub075MrZ.position.set(-0.1438, 0.5567, 0);
-  const kub076 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub076.scale.set(0.0555, 0.0086, 0.013);
-  kub076.setRotation(-0.8986, 0.0, -1.3866);
-  const kub076MZ = kub076.clone();
-  kub076MZ.updateMatrixWorld(true);
-  kub076.position.set(0, 0, -0.4561);
-  kub076MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub076MZ.position.set(0, 0, 0.4551);
-  const kub076MrZ = new THREE.Group();
-  kub076MrZ.add(kub076, kub076MZ);
-  kub076MrZ.position.set(0.4123, 0.6581, 0);
-  const kub077 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub077.scale.set(0.0416, 0.0086, 0.013);
-  kub077.setRotation(-0.9037, -0.0001, -1.4353);
-  const kub077MZ = kub077.clone();
-  kub077MZ.updateMatrixWorld(true);
-  kub077.position.set(0, 0, -0.456);
-  kub077MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub077MZ.position.set(0, 0, 0.455);
-  const kub077MrZ = new THREE.Group();
-  kub077MrZ.add(kub077, kub077MZ);
-  kub077MrZ.position.set(0.428, 0.5632, 0);
-  const kub078 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub078.scale.set(0.0682, 0.0086, 0.013);
-  kub078.setRotation(-1.5549, -0.6436, -1.5405);
-  const kub078MZ = kub078.clone();
-  kub078MZ.updateMatrixWorld(true);
-  kub078.position.set(0, 0, -0.4546);
-  kub078MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub078MZ.position.set(0, 0, 0.4537);
-  const kub078MrZ = new THREE.Group();
-  kub078MrZ.add(kub078, kub078MZ);
-  kub078MrZ.position.set(0.4351, 0.4555, 0);
-  const kub080 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub080.scale.set(0.0783, 0.0086, 0.013);
-  kub080.setRotation(-0.8884, -0.0, -1.3109);
-  const kub080MZ = kub080.clone();
-  kub080MZ.updateMatrixWorld(true);
-  kub080.position.set(0, 0, -0.4562);
-  kub080MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub080MZ.position.set(0, 0, 0.4553);
-  const kub080MrZ = new THREE.Group();
-  kub080MrZ.add(kub080, kub080MZ);
-  kub080MrZ.position.set(0.3823, 0.7872, 0);
-  const kub079 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub079.scale.set(0.5693, 0.0382, 0.0355);
-  kub079.setRotation(0.0, 0.0641, 0.0);
-  const kub079MZ = kub079.clone();
-  kub079MZ.updateMatrixWorld(true);
-  kub079.position.set(0, 0, -0.3854);
-  kub079MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub079MZ.position.set(0, 0, 0.3844);
-  const kub079MrZ = new THREE.Group();
-  kub079MrZ.add(kub079, kub079MZ);
-  kub079MrZ.position.set(-0.1529, 0.6332, 0);
-  const kub081 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub081.scale.set(0.0449, 0.0676, 0.0536);
-  kub081.setRotation(0.0, 0.2328, -1.1176);
-  const kub081MZ = kub081.clone();
-  kub081MZ.updateMatrixWorld(true);
-  kub081.position.set(0, 0, -0.2677);
-  kub081MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub081MZ.position.set(0, 0, 0.2668);
-  const kub081MrZ = new THREE.Group();
-  kub081MrZ.add(kub081, kub081MZ);
-  kub081MrZ.position.set(0.5585, 0.3907, 0);
-  const kub082 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-  kub082.scale.set(0.0372, 0.056, 0.0444);
-  kub082.setRotation(0.0, 0.2328, -1.1176);
-  const kub082MZ = kub082.clone();
-  kub082MZ.updateMatrixWorld(true);
-  kub082.position.set(0, 0, -0.2715);
-  kub082MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub082MZ.position.set(0, 0, 0.2705);
-  const kub082MrZ = new THREE.Group();
-  kub082MrZ.add(kub082, kub082MZ);
-  kub082MrZ.position.set(0.5743, 0.3986, 0);
-  const kub083 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub083.scale.set(0.5654, 0.0382, 0.0355);
-  kub083.setRotation(0.0, 0.0641, 0.0);
-  const kub083MZ = kub083.clone();
-  kub083MZ.updateMatrixWorld(true);
-  kub083.position.set(0, 0, -0.3851);
-  kub083MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub083MZ.position.set(0, 0, 0.3842);
-  const kub083MrZ = new THREE.Group();
-  kub083MrZ.add(kub083, kub083MZ);
-  kub083MrZ.position.set(-0.1568, 0.7097, 0);
-  const kub084 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub084.scale.set(0.5537, 0.0382, 0.0355);
-  kub084.setRotation(0.0, 0.0641, 0.0);
-  const kub084MZ = kub084.clone();
-  kub084MZ.updateMatrixWorld(true);
-  kub084.position.set(0, 0, -0.3844);
-  kub084MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub084MZ.position.set(0, 0, 0.3834);
-  const kub084MrZ = new THREE.Group();
-  kub084MrZ.add(kub084, kub084MZ);
-  kub084MrZ.position.set(-0.1685, 0.7862, 0);
-  const cyl010 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl010.scale.set(0.1549, 0.0604, 0.1549);
-  cyl010.setRotation(1.5708, 0.0, 0.0);
-  const cyl010MZ = cyl010.clone();
-  cyl010MZ.updateMatrixWorld(true);
-  cyl010.position.set(0, 0, 0.4147);
-  cyl010MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl010MZ.position.set(0, 0, -0.4157);
-  const cyl010MrZ = new THREE.Group();
-  cyl010MrZ.add(cyl010, cyl010MZ);
-  cyl010MrZ.position.set(0.2474, 0.1409, 0);
-  const cyl011 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl011.scale.set(0.1293, 0.0086, 0.1293);
-  cyl011.setRotation(1.5708, 0.0, 0.0);
-  const cyl011MZ = cyl011.clone();
-  cyl011MZ.updateMatrixWorld(true);
-  cyl011.position.set(0, 0, 0.4746);
-  cyl011MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl011MZ.position.set(0, 0, -0.4756);
-  const cyl011MrZ = new THREE.Group();
-  cyl011MrZ.add(cyl011, cyl011MZ);
-  cyl011MrZ.position.set(0.2474, 0.1409, 0);
-  const cyl013 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl013.scale.set(0.0872, 0.0458, 0.0872);
-  cyl013.setRotation(1.5708, 0.0, 0.0);
-  const cyl013MZ = cyl013.clone();
-  cyl013MZ.updateMatrixWorld(true);
-  cyl013.position.set(0, 0, 0.2746);
-  cyl013MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl013MZ.position.set(0, 0, -0.2755);
-  const cyl013MrZ = new THREE.Group();
-  cyl013MrZ.add(cyl013, cyl013MZ);
-  cyl013MrZ.position.set(0.6385, 0.1628, 0);
-  const kub086 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kub086.scale.set(0.0388, 0.0299, 0.1104);
-  kub086.setRotation(0.3098, 1.5708, 0.0);
-  const kub086MZ = kub086.clone();
-  kub086MZ.updateMatrixWorld(true);
-  kub086.position.set(0, 0, 0.5);
-  kub086MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub086MZ.position.set(0, 0, -0.5009);
-  const kub086MrZ = new THREE.Group();
-  kub086MrZ.add(kub086, kub086MZ);
-  kub086MrZ.position.set(0.7549, 0.1227, 0);
-  const kub088 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub088.scale.set(0.0335, 0.109, 0.0767);
-  kub088.setRotation(1.5708, 1.309, -0.0);
-  const kub088MZ = kub088.clone();
-  kub088MZ.updateMatrixWorld(true);
-  kub088.position.set(0, 0, 0.5241);
-  kub088MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub088MZ.position.set(0, 0, -0.5251);
-  const kub088MrZ = new THREE.Group();
-  kub088MrZ.add(kub088, kub088MZ);
-  kub088MrZ.position.set(0.9393, 0.0739, 0);
-  const kub089 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub089.scale.set(0.0335, 0.109, 0.0767);
-  kub089.setRotation(1.5708, 0.7854, -0.0);
-  const kub089MZ = kub089.clone();
-  kub089MZ.updateMatrixWorld(true);
-  kub089.position.set(0, 0, 0.5313);
-  kub089MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub089MZ.position.set(0, 0, -0.5323);
-  const kub089MrZ = new THREE.Group();
-  kub089MrZ.add(kub089, kub089MZ);
-  kub089MrZ.position.set(0.9351, 0.0739, 0);
-  const kub090 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub090.scale.set(0.0335, 0.109, 0.0767);
-  kub090.setRotation(1.5708, 0.2618, -0.0);
-  const kub090MZ = kub090.clone();
-  kub090MZ.updateMatrixWorld(true);
-  kub090.position.set(0, 0, 0.5355);
-  kub090MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub090MZ.position.set(0, 0, -0.5364);
-  const kub090MrZ = new THREE.Group();
-  kub090MrZ.add(kub090, kub090MZ);
-  kub090MrZ.position.set(0.9279, 0.0739, 0);
-  const kub091 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub091.scale.set(0.0178, 0.0632, 0.0767);
-  kub091.setRotation(1.5708, -0.0, -0.0);
-  const kub091MZ = kub091.clone();
-  kub091MZ.updateMatrixWorld(true);
-  kub091.position.set(0, 0, 0.5862);
-  kub091MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub091MZ.position.set(0, 0, -0.5871);
-  const kub091MrZ = new THREE.Group();
-  kub091MrZ.add(kub091, kub091MZ);
-  kub091MrZ.position.set(0.906, 0.0739, 0);
-  const kub093 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub093.scale.set(0.024, 0.0632, 0.0767);
-  kub093.setRotation(1.5708, -0.3927, -0.0);
-  const kub093MZ = kub093.clone();
-  kub093MZ.updateMatrixWorld(true);
-  kub093.position.set(0, 0, 0.5818);
-  kub093MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub093MZ.position.set(0, 0, -0.5828);
-  const kub093MrZ = new THREE.Group();
-  kub093MrZ.add(kub093, kub093MZ);
-  kub093MrZ.position.set(0.8902, 0.0739, 0);
-  const kub094 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub094.scale.set(0.024, 0.0388, 0.0767);
-  kub094.setRotation(1.5708, -1.1781, -0.0);
-  const kub094MZ = kub094.clone();
-  kub094MZ.updateMatrixWorld(true);
-  kub094.position.set(0, 0, 0.5939);
-  kub094MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub094MZ.position.set(0, 0, -0.5949);
-  const kub094MrZ = new THREE.Group();
-  kub094MrZ.add(kub094, kub094MZ);
-  kub094MrZ.position.set(0.8705, 0.0739, 0);
-  const kub095 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub095.scale.set(0.0333, 0.0388, 0.0767);
-  kub095.setRotation(1.5708, 1.5708, -0.0);
-  const kub095MZ = kub095.clone();
-  kub095MZ.updateMatrixWorld(true);
-  kub095.position.set(0, 0, 0.5533);
-  kub095MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub095MZ.position.set(0, 0, -0.5543);
-  const kub095MrZ = new THREE.Group();
-  kub095MrZ.add(kub095, kub095MZ);
-  kub095MrZ.position.set(0.8643, 0.0739, 0);
-  const kub087 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub087.scale.set(0.0847, 0.5837, 0.089);
-  kub087.setRotation(0.2645, 0.0, -1.3109);
-  const kub087MZ = kub087.clone();
-  kub087MZ.updateMatrixWorld(true);
-  kub087.position.set(0, 0, 0.112);
-  kub087MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub087MZ.position.set(0, 0, -0.113);
-  const kub087MrZ = new THREE.Group();
-  kub087MrZ.add(kub087, kub087MZ);
-  kub087MrZ.position.set(-0.0454, 0.828, 0);
-  const kub096 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub096.scale.set(0.0847, 0.3559, 0.089);
-  kub096.setRotation(0.8884, 0.0, -1.3109);
-  const kub096MZ = kub096.clone();
-  kub096MZ.updateMatrixWorld(true);
-  kub096.position.set(0, 0, 0.1304);
-  kub096MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub096MZ.position.set(0, 0, -0.1314);
-  const kub096MrZ = new THREE.Group();
-  kub096MrZ.add(kub096, kub096MZ);
-  kub096MrZ.position.set(0.193, 0.8914, 0);
-  const kub097 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub097.scale.set(0.0861, 0.0086, 0.013);
-  kub097.setRotation(1.4046, 0.6992, 0.2008);
-  const kub097MZ = kub097.clone();
-  kub097MZ.updateMatrixWorld(true);
-  kub097.position.set(0, 0, 0.4005);
-  kub097MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub097MZ.position.set(0, 0, -0.4015);
-  const kub097MrZ = new THREE.Group();
-  kub097MrZ.add(kub097, kub097MZ);
-  kub097MrZ.position.set(0.3904, 1.0188, 0);
-  const kub098 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub098.scale.set(0.5438, 0.0454, 0.0355);
-  kub098.setRotation(0.0, 0.0641, 0.0);
-  const kub098MZ = kub098.clone();
-  kub098MZ.updateMatrixWorld(true);
-  kub098.position.set(0, 0, -0.3837);
-  kub098MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub098MZ.position.set(0, 0, 0.3828);
-  const kub098MrZ = new THREE.Group();
-  kub098MrZ.add(kub098, kub098MZ);
-  kub098MrZ.position.set(-0.1784, 0.8698, 0);
-  const kub099 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub099.scale.set(0.5438, 0.3097, 0.1828);
-  kub099.setRotation(0.0, 0.0641, 0.0);
-  const kub099MZ = kub099.clone();
-  kub099MZ.updateMatrixWorld(true);
-  kub099.position.set(0, 0, -0.1658);
-  kub099MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub099MZ.position.set(0, 0, 0.1649);
-  const kub099MrZ = new THREE.Group();
-  kub099MrZ.add(kub099, kub099MZ);
-  kub099MrZ.position.set(-0.1644, 0.6126, 0);
+  const kub74 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub74.scale.set(0.58, 0.11, 0.04);
+  kub74.setRotation(0, 0.06, 0);
+  const kub74MZ = kub74.clone();
+  kub74MZ.updateMatrixWorld(true);
+  kub74.position.set(0, 0, -0.39);
+  kub74MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub74MZ.position.set(0, 0, 0.39);
+  const kub74MrZ = new THREE.Group();
+  kub74MrZ.add(kub74, kub74MZ);
+  kub74MrZ.position.set(-0.14, 0.41, 0);
+  const kub75 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub75.scale.set(0.58, 0.04, 0.04);
+  kub75.setRotation(0, 0.06, 0);
+  const kub75MZ = kub75.clone();
+  kub75MZ.updateMatrixWorld(true);
+  kub75.position.set(0, 0, -0.39);
+  kub75MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub75MZ.position.set(0, 0, 0.39);
+  const kub75MrZ = new THREE.Group();
+  kub75MrZ.add(kub75, kub75MZ);
+  kub75MrZ.position.set(-0.14, 0.56, 0);
+  const kub76 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub76.scale.set(0.06, 0.01, 0.01);
+  kub76.setRotation(-0.9, 0, -1.39);
+  const kub76MZ = kub76.clone();
+  kub76MZ.updateMatrixWorld(true);
+  kub76.position.set(0, 0, -0.46);
+  kub76MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub76MZ.position.set(0, 0, 0.46);
+  const kub76MrZ = new THREE.Group();
+  kub76MrZ.add(kub76, kub76MZ);
+  kub76MrZ.position.set(0.41, 0.66, 0);
+  const kub77 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub77.scale.set(0.04, 0.01, 0.01);
+  kub77.setRotation(-0.9, 0, -1.44);
+  const kub77MZ = kub77.clone();
+  kub77MZ.updateMatrixWorld(true);
+  kub77.position.set(0, 0, -0.46);
+  kub77MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub77MZ.position.set(0, 0, 0.46);
+  const kub77MrZ = new THREE.Group();
+  kub77MrZ.add(kub77, kub77MZ);
+  kub77MrZ.position.set(0.43, 0.56, 0);
+  const kub78 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub78.scale.set(0.07, 0.01, 0.01);
+  kub78.setRotation(-1.55, -0.64, -1.54);
+  const kub78MZ = kub78.clone();
+  kub78MZ.updateMatrixWorld(true);
+  kub78.position.set(0, 0, -0.45);
+  kub78MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub78MZ.position.set(0, 0, 0.45);
+  const kub78MrZ = new THREE.Group();
+  kub78MrZ.add(kub78, kub78MZ);
+  kub78MrZ.position.set(0.44, 0.46, 0);
+  const kub80 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub80.scale.set(0.08, 0.01, 0.01);
+  kub80.setRotation(-0.89, 0, -1.31);
+  const kub80MZ = kub80.clone();
+  kub80MZ.updateMatrixWorld(true);
+  kub80.position.set(0, 0, -0.46);
+  kub80MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub80MZ.position.set(0, 0, 0.46);
+  const kub80MrZ = new THREE.Group();
+  kub80MrZ.add(kub80, kub80MZ);
+  kub80MrZ.position.set(0.38, 0.79, 0);
+  const kub79 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub79.scale.set(0.57, 0.04, 0.04);
+  kub79.setRotation(0, 0.06, 0);
+  const kub79MZ = kub79.clone();
+  kub79MZ.updateMatrixWorld(true);
+  kub79.position.set(0, 0, -0.39);
+  kub79MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub79MZ.position.set(0, 0, 0.38);
+  const kub79MrZ = new THREE.Group();
+  kub79MrZ.add(kub79, kub79MZ);
+  kub79MrZ.position.set(-0.15, 0.63, 0);
+  const kub81 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+  kub81.scale.set(0.04, 0.07, 0.05);
+  kub81.setRotation(0, 0.23, -1.12);
+  const kub81MZ = kub81.clone();
+  kub81MZ.updateMatrixWorld(true);
+  kub81.position.set(0, 0, -0.27);
+  kub81MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub81MZ.position.set(0, 0, 0.27);
+  const kub81MrZ = new THREE.Group();
+  kub81MrZ.add(kub81, kub81MZ);
+  kub81MrZ.position.set(0.56, 0.39, 0);
+  const kub82 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
+  kub82.scale.set(0.04, 0.06, 0.04);
+  kub82.setRotation(0, 0.23, -1.12);
+  const kub82MZ = kub82.clone();
+  kub82MZ.updateMatrixWorld(true);
+  kub82.position.set(0, 0, -0.27);
+  kub82MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub82MZ.position.set(0, 0, 0.27);
+  const kub82MrZ = new THREE.Group();
+  kub82MrZ.add(kub82, kub82MZ);
+  kub82MrZ.position.set(0.57, 0.4, 0);
+  const kub83 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub83.scale.set(0.57, 0.04, 0.04);
+  kub83.setRotation(0, 0.06, 0);
+  const kub83MZ = kub83.clone();
+  kub83MZ.updateMatrixWorld(true);
+  kub83.position.set(0, 0, -0.39);
+  kub83MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub83MZ.position.set(0, 0, 0.38);
+  const kub83MrZ = new THREE.Group();
+  kub83MrZ.add(kub83, kub83MZ);
+  kub83MrZ.position.set(-0.16, 0.71, 0);
+  const kub84 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub84.scale.set(0.55, 0.04, 0.04);
+  kub84.setRotation(0, 0.06, 0);
+  const kub84MZ = kub84.clone();
+  kub84MZ.updateMatrixWorld(true);
+  kub84.position.set(0, 0, -0.38);
+  kub84MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub84MZ.position.set(0, 0, 0.38);
+  const kub84MrZ = new THREE.Group();
+  kub84MrZ.add(kub84, kub84MZ);
+  kub84MrZ.position.set(-0.17, 0.79, 0);
+  const cyl10 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl10.scale.set(0.15, 0.06, 0.15);
+  cyl10.setRotation(1.57, 0, 0);
+  const cyl10MZ = cyl10.clone();
+  cyl10MZ.updateMatrixWorld(true);
+  cyl10.position.set(0, 0, 0.41);
+  cyl10MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl10MZ.position.set(0, 0, -0.42);
+  const cyl10MrZ = new THREE.Group();
+  cyl10MrZ.add(cyl10, cyl10MZ);
+  cyl10MrZ.position.set(0.25, 0.14, 0);
+  const cyl11 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl11.scale.set(0.13, 0.01, 0.13);
+  cyl11.setRotation(1.57, 0, 0);
+  const cyl11MZ = cyl11.clone();
+  cyl11MZ.updateMatrixWorld(true);
+  cyl11.position.set(0, 0, 0.47);
+  cyl11MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl11MZ.position.set(0, 0, -0.48);
+  const cyl11MrZ = new THREE.Group();
+  cyl11MrZ.add(cyl11, cyl11MZ);
+  cyl11MrZ.position.set(0.25, 0.14, 0);
+  const cyl13 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl13.scale.set(0.09, 0.05, 0.09);
+  cyl13.setRotation(1.57, 0, 0);
+  const cyl13MZ = cyl13.clone();
+  cyl13MZ.updateMatrixWorld(true);
+  cyl13.position.set(0, 0, 0.27);
+  cyl13MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl13MZ.position.set(0, 0, -0.28);
+  const cyl13MrZ = new THREE.Group();
+  cyl13MrZ.add(cyl13, cyl13MZ);
+  cyl13MrZ.position.set(0.64, 0.16, 0);
+  const kub86 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kub86.scale.set(0.04, 0.03, 0.11);
+  kub86.setRotation(0.31, 1.57, 0);
+  const kub86MZ = kub86.clone();
+  kub86MZ.updateMatrixWorld(true);
+  kub86.position.set(0, 0, 0.5);
+  kub86MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub86MZ.position.set(0, 0, -0.5);
+  const kub86MrZ = new THREE.Group();
+  kub86MrZ.add(kub86, kub86MZ);
+  kub86MrZ.position.set(0.75, 0.12, 0);
+  const kub88 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub88.scale.set(0.03, 0.11, 0.08);
+  kub88.setRotation(1.57, 1.31, 0);
+  const kub88MZ = kub88.clone();
+  kub88MZ.updateMatrixWorld(true);
+  kub88.position.set(0, 0, 0.52);
+  kub88MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub88MZ.position.set(0, 0, -0.53);
+  const kub88MrZ = new THREE.Group();
+  kub88MrZ.add(kub88, kub88MZ);
+  kub88MrZ.position.set(0.94, 0.07, 0);
+  const kub89 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub89.scale.set(0.03, 0.11, 0.08);
+  kub89.setRotation(1.57, 0.79, 0);
+  const kub89MZ = kub89.clone();
+  kub89MZ.updateMatrixWorld(true);
+  kub89.position.set(0, 0, 0.53);
+  kub89MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub89MZ.position.set(0, 0, -0.53);
+  const kub89MrZ = new THREE.Group();
+  kub89MrZ.add(kub89, kub89MZ);
+  kub89MrZ.position.set(0.94, 0.07, 0);
+  const kub90 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub90.scale.set(0.03, 0.11, 0.08);
+  kub90.setRotation(1.57, 0.26, 0);
+  const kub90MZ = kub90.clone();
+  kub90MZ.updateMatrixWorld(true);
+  kub90.position.set(0, 0, 0.54);
+  kub90MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub90MZ.position.set(0, 0, -0.54);
+  const kub90MrZ = new THREE.Group();
+  kub90MrZ.add(kub90, kub90MZ);
+  kub90MrZ.position.set(0.93, 0.07, 0);
+  const kub91 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub91.scale.set(0.02, 0.06, 0.08);
+  kub91.setRotation(1.57, 0, 0);
+  const kub91MZ = kub91.clone();
+  kub91MZ.updateMatrixWorld(true);
+  kub91.position.set(0, 0, 0.59);
+  kub91MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub91MZ.position.set(0, 0, -0.59);
+  const kub91MrZ = new THREE.Group();
+  kub91MrZ.add(kub91, kub91MZ);
+  kub91MrZ.position.set(0.91, 0.07, 0);
+  const kub93 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub93.scale.set(0.02, 0.06, 0.08);
+  kub93.setRotation(1.57, -0.39, 0);
+  const kub93MZ = kub93.clone();
+  kub93MZ.updateMatrixWorld(true);
+  kub93.position.set(0, 0, 0.58);
+  kub93MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub93MZ.position.set(0, 0, -0.58);
+  const kub93MrZ = new THREE.Group();
+  kub93MrZ.add(kub93, kub93MZ);
+  kub93MrZ.position.set(0.89, 0.07, 0);
+  const kub94 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub94.scale.set(0.02, 0.04, 0.08);
+  kub94.setRotation(1.57, -1.18, 0);
+  const kub94MZ = kub94.clone();
+  kub94MZ.updateMatrixWorld(true);
+  kub94.position.set(0, 0, 0.59);
+  kub94MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub94MZ.position.set(0, 0, -0.59);
+  const kub94MrZ = new THREE.Group();
+  kub94MrZ.add(kub94, kub94MZ);
+  kub94MrZ.position.set(0.87, 0.07, 0);
+  const kub95 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub95.scale.set(0.03, 0.04, 0.08);
+  kub95.setRotation(1.57, 1.57, 0);
+  const kub95MZ = kub95.clone();
+  kub95MZ.updateMatrixWorld(true);
+  kub95.position.set(0, 0, 0.55);
+  kub95MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub95MZ.position.set(0, 0, -0.55);
+  const kub95MrZ = new THREE.Group();
+  kub95MrZ.add(kub95, kub95MZ);
+  kub95MrZ.position.set(0.86, 0.07, 0);
+  const kub87 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub87.scale.set(0.08, 0.58, 0.09);
+  kub87.setRotation(0.26, 0, -1.31);
+  const kub87MZ = kub87.clone();
+  kub87MZ.updateMatrixWorld(true);
+  kub87.position.set(0, 0, 0.11);
+  kub87MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub87MZ.position.set(0, 0, -0.11);
+  const kub87MrZ = new THREE.Group();
+  kub87MrZ.add(kub87, kub87MZ);
+  kub87MrZ.position.set(-0.05, 0.83, 0);
+  const kub96 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub96.scale.set(0.08, 0.36, 0.09);
+  kub96.setRotation(0.89, 0, -1.31);
+  const kub96MZ = kub96.clone();
+  kub96MZ.updateMatrixWorld(true);
+  kub96.position.set(0, 0, 0.13);
+  kub96MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub96MZ.position.set(0, 0, -0.13);
+  const kub96MrZ = new THREE.Group();
+  kub96MrZ.add(kub96, kub96MZ);
+  kub96MrZ.position.set(0.19, 0.89, 0);
+  const kub97 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub97.scale.set(0.09, 0.01, 0.01);
+  kub97.setRotation(1.4, 0.7, 0.2);
+  const kub97MZ = kub97.clone();
+  kub97MZ.updateMatrixWorld(true);
+  kub97.position.set(0, 0, 0.4);
+  kub97MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub97MZ.position.set(0, 0, -0.4);
+  const kub97MrZ = new THREE.Group();
+  kub97MrZ.add(kub97, kub97MZ);
+  kub97MrZ.position.set(0.39, 1.02, 0);
+  const kub98 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub98.scale.set(0.54, 0.05, 0.04);
+  kub98.setRotation(0, 0.06, 0);
+  const kub98MZ = kub98.clone();
+  kub98MZ.updateMatrixWorld(true);
+  kub98.position.set(0, 0, -0.38);
+  kub98MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub98MZ.position.set(0, 0, 0.38);
+  const kub98MrZ = new THREE.Group();
+  kub98MrZ.add(kub98, kub98MZ);
+  kub98MrZ.position.set(-0.18, 0.87, 0);
+  const kub99 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub99.scale.set(0.54, 0.31, 0.18);
+  kub99.setRotation(0, 0.06, 0);
+  const kub99MZ = kub99.clone();
+  kub99MZ.updateMatrixWorld(true);
+  kub99.position.set(0, 0, -0.17);
+  kub99MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub99MZ.position.set(0, 0, 0.16);
+  const kub99MrZ = new THREE.Group();
+  kub99MrZ.add(kub99, kub99MZ);
+  kub99MrZ.position.set(-0.16, 0.61, 0);
   const kub100 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub100.scale.set(0.0449, 0.0676, 0.3383);
-  kub100.setRotation(1.5149, 0.0, -1.5708);
+  kub100.scale.set(0.04, 0.07, 0.34);
+  kub100.setRotation(1.51, 0, -1.57);
   const kub100MZ = kub100.clone();
   kub100MZ.updateMatrixWorld(true);
-  kub100.position.set(0, 0, -0.3506);
+  kub100.position.set(0, 0, -0.35);
   kub100MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub100MZ.position.set(0, 0, 0.3496);
+  kub100MZ.position.set(0, 0, 0.35);
   const kub100MrZ = new THREE.Group();
   kub100MrZ.add(kub100, kub100MZ);
-  kub100MrZ.position.set(-0.4006, 0.3456, 0);
+  kub100MrZ.position.set(-0.4, 0.35, 0);
   const kub101 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub101.scale.set(0.3095, 0.0126, 0.013);
-  kub101.setRotation(-1.5708, 0.0641, -1.5708);
+  kub101.scale.set(0.31, 0.01, 0.01);
+  kub101.setRotation(-1.57, 0.06, -1.57);
   const kub101MZ = kub101.clone();
   kub101MZ.updateMatrixWorld(true);
-  kub101.position.set(0, 0, -0.3832);
+  kub101.position.set(0, 0, -0.38);
   kub101MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub101MZ.position.set(0, 0, 0.3822);
+  kub101MZ.position.set(0, 0, 0.38);
   const kub101MrZ = new THREE.Group();
   kub101MrZ.add(kub101, kub101MZ);
-  kub101MrZ.position.set(-0.7233, 0.6164, 0);
+  kub101MrZ.position.set(-0.72, 0.62, 0);
   const kub102 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub102.scale.set(0.0277, 0.0114, 0.0581);
-  kub102.setRotation(1.4661, 1.9292, -0.6546);
+  kub102.scale.set(0.03, 0.01, 0.06);
+  kub102.setRotation(1.47, 1.93, -0.65);
   const kub102MZ = kub102.clone();
   kub102MZ.updateMatrixWorld(true);
-  kub102.position.set(0, 0, -0.461);
+  kub102.position.set(0, 0, -0.46);
   kub102MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub102MZ.position.set(0, 0, 0.4601);
+  kub102MZ.position.set(0, 0, 0.46);
   const kub102MrZ = new THREE.Group();
   kub102MrZ.add(kub102, kub102MZ);
-  kub102MrZ.position.set(0.3396, 0.5026, 0);
-  const cyl014 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl014.scale.set(0.0495, 0.0125, 0.0495);
-  cyl014.setRotation(1.4661, 1.9292, -0.6546);
-  const cyl014MZ = cyl014.clone();
-  cyl014MZ.updateMatrixWorld(true);
-  cyl014.position.set(0, 0, -0.5081);
-  cyl014MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl014MZ.position.set(0, 0, 0.5071);
-  const cyl014MrZ = new THREE.Group();
-  cyl014MrZ.add(cyl014, cyl014MZ);
-  cyl014MrZ.position.set(0.312, 0.5726, 0);
-  const cyl015 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
-  cyl015.scale.set(0.0392, 0.0099, 0.0392);
-  cyl015.setRotation(1.4661, 1.9292, -0.6546);
-  const cyl015MZ = cyl015.clone();
-  cyl015MZ.updateMatrixWorld(true);
-  cyl015.position.set(0, 0, -0.5127);
-  cyl015MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl015MZ.position.set(0, 0, 0.5117);
-  const cyl015MrZ = new THREE.Group();
-  cyl015MrZ.add(cyl015, cyl015MZ);
-  cyl015MrZ.position.set(0.3223, 0.5735, 0);
-  const cyl016 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl016.position.set(-0.6668, 0.1409, -0.0005);
-  cyl016.scale.set(-0.1354, -0.0673, -0.1354);
-  cyl016.setRotation(1.5708, 0.0, 0.0);
+  kub102MrZ.position.set(0.34, 0.5, 0);
+  const cyl14 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl14.scale.set(0.05, 0.01, 0.05);
+  cyl14.setRotation(1.47, 1.93, -0.65);
+  const cyl14MZ = cyl14.clone();
+  cyl14MZ.updateMatrixWorld(true);
+  cyl14.position.set(0, 0, -0.51);
+  cyl14MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl14MZ.position.set(0, 0, 0.51);
+  const cyl14MrZ = new THREE.Group();
+  cyl14MrZ.add(cyl14, cyl14MZ);
+  cyl14MrZ.position.set(0.31, 0.57, 0);
+  const cyl15 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
+  cyl15.scale.set(0.04, 0.01, 0.04);
+  cyl15.setRotation(1.47, 1.93, -0.65);
+  const cyl15MZ = cyl15.clone();
+  cyl15MZ.updateMatrixWorld(true);
+  cyl15.position.set(0, 0, -0.51);
+  cyl15MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl15MZ.position.set(0, 0, 0.51);
+  const cyl15MrZ = new THREE.Group();
+  cyl15MrZ.add(cyl15, cyl15MZ);
+  cyl15MrZ.position.set(0.32, 0.57, 0);
+  const cyl16 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl16.position.set(-0.67, 0.14, -0);
+  cyl16.scale.set(-0.14, -0.07, -0.14);
+  cyl16.setRotation(1.57, 0, 0);
 
-  const cyl017 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl017.position.set(-0.6668, 0.1409, -0.0005);
-  cyl017.scale.set(0.1549, 0.0604, 0.1549);
-  cyl017.setRotation(1.5708, 0.0, 0.0);
+  const cyl17 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl17.position.set(-0.67, 0.14, -0);
+  cyl17.scale.set(0.15, 0.06, 0.15);
+  cyl17.setRotation(1.57, 0, 0);
 
-  const kub085 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub085.scale.set(0.345, 0.3137, 0.2025);
-  kub085.setRotation(0.0, 0.0641, 0.0);
-  const kub085MZ = kub085.clone();
-  kub085MZ.updateMatrixWorld(true);
-  kub085.position.set(0, 0, -0.0847);
-  kub085MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub085MZ.position.set(0, 0, 0.0837);
-  const kub085MrZ = new THREE.Group();
-  kub085MrZ.add(kub085, kub085MZ);
-  kub085MrZ.position.set(-0.4076, 0.5014, 0);
+  const kub85 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
+  kub85.scale.set(0.34, 0.31, 0.2);
+  kub85.setRotation(0, 0.06, 0);
+  const kub85MZ = kub85.clone();
+  kub85MZ.updateMatrixWorld(true);
+  kub85.position.set(0, 0, -0.08);
+  kub85MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub85MZ.position.set(0, 0, 0.08);
+  const kub85MrZ = new THREE.Group();
+  kub85MrZ.add(kub85, kub85MZ);
+  kub85MrZ.position.set(-0.41, 0.5, 0);
   const kub103 = new THREE.Mesh(boxGeo, Floor_trainMaterial);
-  kub103.position.set(-0.7408, 0.5486, -0.0005);
-  kub103.scale.set(-0.068, -0.122, -0.122);
-  kub103.setRotation(0.0, 0.0, -0.3156);
+  kub103.position.set(-0.74, 0.55, -0);
+  kub103.scale.set(-0.07, -0.12, -0.12);
+  kub103.setRotation(0, 0, -0.32);
 
   const kub104 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub104.scale.set(0.0865, 0.5837, 0.089);
-  kub104.setRotation(0.0, 0.0, -1.0914);
+  kub104.scale.set(0.09, 0.58, 0.09);
+  kub104.setRotation(0, 0, -1.09);
   const kub104MZ = kub104.clone();
   kub104MZ.updateMatrixWorld(true);
-  kub104.position.set(0, 0, 0.0898);
+  kub104.position.set(0, 0, 0.09);
   kub104MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub104MZ.position.set(0, 0, -0.0907);
+  kub104MZ.position.set(0, 0, -0.09);
   const kub104MrZ = new THREE.Group();
   kub104MrZ.add(kub104, kub104MZ);
-  kub104MrZ.position.set(-0.0144, 0.7044, 0);
+  kub104MrZ.position.set(-0.01, 0.7, 0);
   const kub105 = new THREE.Mesh(boxGeo, Washer_mainMaterial);
-  kub105.scale.set(0.0847, 0.5828, 0.089);
-  kub105.setRotation(0.0, 0.0, -1.3109);
+  kub105.scale.set(0.08, 0.58, 0.09);
+  kub105.setRotation(0, 0, -1.31);
   const kub105MZ = kub105.clone();
   kub105MZ.updateMatrixWorld(true);
-  kub105.position.set(0, 0, -0.0895);
+  kub105.position.set(0, 0, -0.09);
   kub105MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub105MZ.position.set(0, 0, 0.0885);
+  kub105MZ.position.set(0, 0, 0.09);
   const kub105MrZ = new THREE.Group();
   kub105MrZ.add(kub105, kub105MZ);
-  kub105MrZ.position.set(-0.0782, 0.8192, 0);
+  kub105MrZ.position.set(-0.08, 0.82, 0);
   const kub106 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub106.scale.set(0.0783, 0.0086, 0.013);
-  kub106.setRotation(-0.8884, -0.0, -1.3109);
+  kub106.scale.set(0.08, 0.01, 0.01);
+  kub106.setRotation(-0.89, 0, -1.31);
   const kub106MZ = kub106.clone();
   kub106MZ.updateMatrixWorld(true);
-  kub106.position.set(0, 0, -0.4562);
+  kub106.position.set(0, 0, -0.46);
   kub106MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub106MZ.position.set(0, 0, 0.4553);
+  kub106MZ.position.set(0, 0, 0.46);
   const kub106MrZ = new THREE.Group();
   kub106MrZ.add(kub106, kub106MZ);
-  kub106MrZ.position.set(0.3421, 0.9384, 0);
+  kub106MrZ.position.set(0.34, 0.94, 0);
   const kub107 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub107.scale.set(0.5328, 0.0126, 0.013);
-  kub107.setRotation(1.5708, 0.0641, -3.1416);
+  kub107.scale.set(0.53, 0.01, 0.01);
+  kub107.setRotation(1.57, 0.06, -3.14);
   const kub107MZ = kub107.clone();
   kub107MZ.updateMatrixWorld(true);
-  kub107.position.set(0, 0, -0.4181);
+  kub107.position.set(0, 0, -0.42);
   kub107MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub107MZ.position.set(0, 0, 0.4172);
+  kub107MZ.position.set(0, 0, 0.42);
   const kub107MrZ = new THREE.Group();
   kub107MrZ.add(kub107, kub107MZ);
-  kub107MrZ.position.set(-0.1835, 0.9129, 0);
+  kub107MrZ.position.set(-0.18, 0.91, 0);
   const kub108 = new THREE.Mesh(boxGeo, kub108Material);
-  kub108.scale.set(0.0319, 0.0539, 0.0095);
-  kub108.setRotation(1.5149, 0.0, -1.5708);
+  kub108.scale.set(0.03, 0.05, 0.01);
+  kub108.setRotation(1.51, 0, -1.57);
   const kub108MZ = kub108.clone();
   kub108MZ.updateMatrixWorld(true);
-  kub108.position.set(0, 0, -0.3317);
+  kub108.position.set(0, 0, -0.33);
   kub108MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub108MZ.position.set(0, 0, 0.3307);
+  kub108MZ.position.set(0, 0, 0.33);
   const kub108MrZ = new THREE.Group();
   kub108MrZ.add(kub108, kub108MZ);
-  kub108MrZ.position.set(-0.7324, 0.3456, 0);
+  kub108MrZ.position.set(-0.73, 0.35, 0);
   const kub109 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-  kub109.scale.set(0.0293, 0.0495, 0.0042);
-  kub109.setRotation(1.5149, 0.0, -1.5708);
+  kub109.scale.set(0.03, 0.05, 0);
+  kub109.setRotation(1.51, 0, -1.57);
   const kub109MZ = kub109.clone();
   kub109MZ.updateMatrixWorld(true);
-  kub109.position.set(0, 0, -0.3311);
+  kub109.position.set(0, 0, -0.33);
   kub109MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub109MZ.position.set(0, 0, 0.3302);
+  kub109MZ.position.set(0, 0, 0.33);
   const kub109MrZ = new THREE.Group();
   kub109MrZ.add(kub109, kub109MZ);
-  kub109MrZ.position.set(-0.7422, 0.3456, 0);
-  const cyl018 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl018.position.set(-0.6668, 0.1409, -0.0005);
-  cyl018.scale.set(-0.0317, -0.1797, -0.0317);
-  cyl018.setRotation(1.5708, 0.0, 0.0);
+  kub109MrZ.position.set(-0.74, 0.35, 0);
+  const cyl18 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl18.position.set(-0.67, 0.14, -0);
+  cyl18.scale.set(-0.03, -0.18, -0.03);
+  cyl18.setRotation(1.57, 0, 0);
 
   const kub110 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-  kub110.scale.set(-0.0358, -0.0754, -0.0358);
-  kub110.setRotation(0.0, 0.0, -0.7854);
+  kub110.scale.set(-0.04, -0.08, -0.04);
+  kub110.setRotation(0, 0, -0.79);
   const kub110MZ = kub110.clone();
   kub110MZ.updateMatrixWorld(true);
-  kub110.position.set(0, 0, 0.1288);
+  kub110.position.set(0, 0, 0.13);
   kub110MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub110MZ.position.set(0, 0, -0.1298);
+  kub110MZ.position.set(0, 0, -0.13);
   const kub110MrZ = new THREE.Group();
   kub110MrZ.add(kub110, kub110MZ);
-  kub110MrZ.position.set(-0.6403, 0.1674, 0);
-  const cyl019 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
-  cyl019.scale.set(0.1012, 0.0067, 0.1012);
-  cyl019.setRotation(1.5708, 0.0, 0.0);
-  const cyl019MZ = cyl019.clone();
-  cyl019MZ.updateMatrixWorld(true);
-  cyl019.position.set(0, 0, 0.4813);
-  cyl019MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl019MZ.position.set(0, 0, -0.4822);
-  const cyl019MrZ = new THREE.Group();
-  cyl019MrZ.add(cyl019, cyl019MZ);
-  cyl019MrZ.position.set(0.2474, 0.1409, 0);
-  const cyl020 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
-  cyl020.position.set(-0.6668, 0.1409, -0.0005);
-  cyl020.scale.set(-0.0284, -0.1868, -0.0284);
-  cyl020.setRotation(1.5708, 0.0, 0.0);
+  kub110MrZ.position.set(-0.64, 0.17, 0);
+  const cyl19 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
+  cyl19.scale.set(0.1, 0.01, 0.1);
+  cyl19.setRotation(1.57, 0, 0);
+  const cyl19MZ = cyl19.clone();
+  cyl19MZ.updateMatrixWorld(true);
+  cyl19.position.set(0, 0, 0.48);
+  cyl19MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl19MZ.position.set(0, 0, -0.48);
+  const cyl19MrZ = new THREE.Group();
+  cyl19MrZ.add(cyl19, cyl19MZ);
+  cyl19MrZ.position.set(0.25, 0.14, 0);
+  const cyl20 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
+  cyl20.position.set(-0.67, 0.14, -0);
+  cyl20.scale.set(-0.03, -0.19, -0.03);
+  cyl20.setRotation(1.57, 0, 0);
 
   const kub111 = new THREE.Mesh(boxGeo, Floor_trainMaterial);
-  kub111.position.set(-0.7408, 0.3941, -0.0005);
-  kub111.scale.set(-0.068, -0.0905, -0.0741);
+  kub111.position.set(-0.74, 0.39, -0);
+  kub111.scale.set(-0.07, -0.09, -0.07);
 
-  const cyl021 = new THREE.Mesh(cylinderGeo, Blue_PictureMaterial);
-  cyl021.position.set(-0.777, 0.6567, -0.0954);
-  cyl021.scale.set(0.0196, 0.0044, 0.0196);
-  cyl021.setRotation(0.0, -0.0, 1.2552);
+  const cyl21 = new THREE.Mesh(cylinderGeo, Blue_PictureMaterial);
+  cyl21.position.set(-0.78, 0.66, -0.1);
+  cyl21.scale.set(0.02, 0, 0.02);
+  cyl21.setRotation(0, 0, 1.26);
 
-  const cyl022 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
-  cyl022.position.set(-0.7865, 0.6277, -0.0411);
-  cyl022.scale.set(0.0196, 0.0044, 0.0196);
-  cyl022.setRotation(0.0, -0.0, 1.2552);
+  const cyl22 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
+  cyl22.position.set(-0.79, 0.63, -0.04);
+  cyl22.scale.set(0.02, 0, 0.02);
+  cyl22.setRotation(0, 0, 1.26);
 
-  const cyl023 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
-  cyl023.position.set(-0.777, 0.6567, 0.0131);
-  cyl023.scale.set(0.0196, 0.0044, 0.0196);
-  cyl023.setRotation(0.0, -0.0, 1.2552);
+  const cyl23 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
+  cyl23.position.set(-0.78, 0.66, 0.01);
+  cyl23.scale.set(0.02, 0, 0.02);
+  cyl23.setRotation(0, 0, 1.26);
 
-  const cyl024 = new THREE.Mesh(cylinderGeo, Train_blueMaterial);
-  cyl024.position.set(-0.7865, 0.6277, 0.0673);
-  cyl024.scale.set(0.0196, 0.0044, 0.0196);
-  cyl024.setRotation(0.0, -0.0, 1.2552);
+  const cyl24 = new THREE.Mesh(cylinderGeo, Train_blueMaterial);
+  cyl24.position.set(-0.79, 0.63, 0.07);
+  cyl24.scale.set(0.02, 0, 0.02);
+  cyl24.setRotation(0, 0, 1.26);
 
   const kub112 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-  kub112.position.set(-0.833, 0.4853, -0.0005);
-  kub112.scale.set(-0.0059, -0.0233, -0.1071);
-  kub112.setRotation(0.0, 0.0, -0.3156);
+  kub112.position.set(-0.83, 0.49, -0);
+  kub112.scale.set(-0.01, -0.02, -0.11);
+  kub112.setRotation(0, 0, -0.32);
 
   const kub113 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub113.position.set(-0.8328, 0.5005, -0.0005);
-  kub113.scale.set(-0.0059, -0.0048, -0.1029);
-  kub113.setRotation(0.0, 0.0, -0.3156);
+  kub113.position.set(-0.83, 0.5, -0);
+  kub113.scale.set(-0.01, -0, -0.1);
+  kub113.setRotation(0, 0, -0.32);
 
   const kub114 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub114.position.set(-0.842, 0.4724, -0.0005);
-  kub114.scale.set(-0.0059, -0.0048, -0.1029);
-  kub114.setRotation(0.0, 0.0, -0.3156);
+  kub114.position.set(-0.84, 0.47, -0);
+  kub114.scale.set(-0.01, -0, -0.1);
+  kub114.setRotation(0, 0, -0.32);
 
   const kub115 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub115.position.set(-0.8374, 0.4865, 0.0976);
-  kub115.scale.set(-0.0059, -0.0048, -0.0118);
-  kub115.setRotation(-1.5708, 0.0, -0.3156);
+  kub115.position.set(-0.84, 0.49, 0.1);
+  kub115.scale.set(-0.01, -0, -0.01);
+  kub115.setRotation(-1.57, 0, -0.32);
 
   const kub116 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub116.position.set(-0.8374, 0.4865, -0.0986);
-  kub116.scale.set(-0.0059, -0.0048, -0.0118);
-  kub116.setRotation(-1.5708, 0.0, -0.3156);
+  kub116.position.set(-0.84, 0.49, -0.1);
+  kub116.scale.set(-0.01, -0, -0.01);
+  kub116.setRotation(-1.57, 0, -0.32);
 
-  const cyl025 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-  cyl025.position.set(-0.8762, 0.4994, 0.0796);
-  cyl025.scale.set(0.007, 0.0613, 0.007);
-  cyl025.setRotation(0.4012, 0.0, 1.2552);
+  const cyl25 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+  cyl25.position.set(-0.88, 0.5, 0.08);
+  cyl25.scale.set(0.01, 0.06, 0.01);
+  cyl25.setRotation(0.4, 0, 1.26);
 
   const sphere = new THREE.Mesh(sphereGeo, Green_PictureMaterial);
-  sphere.position.set(-0.9298, 0.5169, 0.1035);
-  sphere.scale.set(0.0139, 0.0139, 0.0139);
-  sphere.setRotation(0.4012, 0.0, 1.2552);
+  sphere.position.set(-0.93, 0.52, 0.1);
+  sphere.scale.set(0.01, 0.01, 0.01);
+  sphere.setRotation(0.4, 0, 1.26);
 
-  const cyl026 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-  cyl026.position.set(-0.8149, 0.5407, -0.0904);
-  cyl026.scale.set(0.0156, 0.0044, 0.0156);
-  cyl026.setRotation(0.0, -0.0, 1.2552);
+  const cyl26 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+  cyl26.position.set(-0.81, 0.54, -0.09);
+  cyl26.scale.set(0.02, 0, 0.02);
+  cyl26.setRotation(0, 0, 1.26);
 
-  const cyl027 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl027.position.set(-0.8253, 0.5441, -0.0904);
-  cyl027.scale.set(0.0121, 0.0101, 0.0121);
-  cyl027.setRotation(0.0, -0.0, 1.2552);
+  const cyl27 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl27.position.set(-0.83, 0.54, -0.09);
+  cyl27.scale.set(0.01, 0.01, 0.01);
+  cyl27.setRotation(0, 0, 1.26);
 
   const kub117 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub117.position.set(-0.8245, 0.5566, -0.0904);
-  kub117.scale.set(-0.0053, -0.0053, -0.0015);
-  kub117.setRotation(0.0, 0.0, 1.2552);
+  kub117.position.set(-0.82, 0.56, -0.09);
+  kub117.scale.set(-0.01, -0.01, -0);
+  kub117.setRotation(0, 0, 1.26);
 
   const kub118 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub118.position.set(-0.8318, 0.5341, -0.0904);
-  kub118.scale.set(-0.0053, -0.0053, -0.0015);
-  kub118.setRotation(0.0, 0.0, 1.2552);
+  kub118.position.set(-0.83, 0.53, -0.09);
+  kub118.scale.set(-0.01, -0.01, -0);
+  kub118.setRotation(0, 0, 1.26);
 
-  const cyl028 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-  cyl028.position.set(-0.8149, 0.5408, -0.0348);
-  cyl028.scale.set(0.0156, 0.0044, 0.0156);
-  cyl028.setRotation(1.1034, -1.2201, 0.8109);
+  const cyl28 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+  cyl28.position.set(-0.81, 0.54, -0.03);
+  cyl28.scale.set(0.02, 0, 0.02);
+  cyl28.setRotation(1.1, -1.22, 0.81);
 
-  const cyl029 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl029.position.set(-0.8253, 0.5442, -0.0348);
-  cyl029.scale.set(0.0121, 0.0101, 0.0121);
-  cyl029.setRotation(1.1034, -1.2201, 0.8109);
+  const cyl29 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl29.position.set(-0.83, 0.54, -0.03);
+  cyl29.scale.set(0.01, 0.01, 0.01);
+  cyl29.setRotation(1.1, -1.22, 0.81);
 
   const kub119 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub119.position.set(-0.8254, 0.5539, -0.0425);
-  kub119.scale.set(-0.0053, -0.0053, -0.0015);
-  kub119.setRotation(-1.1034, 1.2201, 0.8109);
+  kub119.position.set(-0.83, 0.55, -0.04);
+  kub119.scale.set(-0.01, -0.01, -0);
+  kub119.setRotation(-1.1, 1.22, 0.81);
 
   const kub120 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub120.position.set(-0.831, 0.5368, -0.0272);
-  kub120.scale.set(-0.0053, -0.0053, -0.0015);
-  kub120.setRotation(-1.1034, 1.2201, 0.8109);
+  kub120.position.set(-0.83, 0.54, -0.03);
+  kub120.scale.set(-0.01, -0.01, -0);
+  kub120.setRotation(-1.1, 1.22, 0.81);
 
-  const cyl030 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-  cyl030.position.set(-0.8148, 0.541, 0.032);
-  cyl030.scale.set(0.0156, 0.0044, 0.0156);
-  cyl030.setRotation(-1.2537, 1.6022, -0.0959);
+  const cyl30 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+  cyl30.position.set(-0.81, 0.54, 0.03);
+  cyl30.scale.set(0.02, 0, 0.02);
+  cyl30.setRotation(-1.25, 1.6, -0.1);
 
-  const cyl031 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl031.position.set(-0.8253, 0.5444, 0.032);
-  cyl031.scale.set(0.0121, 0.0101, 0.0121);
-  cyl031.setRotation(-1.2537, 1.6022, -0.0959);
+  const cyl31 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl31.position.set(-0.83, 0.54, 0.03);
+  cyl31.scale.set(0.01, 0.01, 0.01);
+  cyl31.setRotation(-1.25, 1.6, -0.1);
 
   const kub121 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub121.position.set(-0.8286, 0.544, 0.0438);
-  kub121.scale.set(-0.0053, -0.0053, -0.0015);
-  kub121.setRotation(1.2537, -1.6022, -0.0959);
+  kub121.position.set(-0.83, 0.54, 0.04);
+  kub121.scale.set(-0.01, -0.01, -0);
+  kub121.setRotation(1.25, -1.6, -0.1);
 
   const kub122 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub122.position.set(-0.8279, 0.5463, 0.0202);
-  kub122.scale.set(-0.0053, -0.0053, -0.0015);
-  kub122.setRotation(1.2537, -1.6022, -0.0959);
+  kub122.position.set(-0.83, 0.55, 0.02);
+  kub122.scale.set(-0.01, -0.01, -0);
+  kub122.setRotation(1.25, -1.6, -0.1);
 
-  const cyl032 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-  cyl032.position.set(-0.8149, 0.5408, 0.09);
-  cyl032.scale.set(0.0156, 0.0044, 0.0156);
-  cyl032.setRotation(1.0361, 4.2732, -0.9159);
+  const cyl32 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+  cyl32.position.set(-0.81, 0.54, 0.09);
+  cyl32.scale.set(0.02, 0, 0.02);
+  cyl32.setRotation(1.04, 4.27, -0.92);
 
-  const cyl033 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl033.position.set(-0.8253, 0.5442, 0.09);
-  cyl033.scale.set(0.0121, 0.0101, 0.0121);
-  cyl033.setRotation(1.0361, 4.2732, -0.9159);
+  const cyl33 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl33.position.set(-0.83, 0.54, 0.09);
+  cyl33.scale.set(0.01, 0.01, 0.01);
+  cyl33.setRotation(1.04, 4.27, -0.92);
 
   const kub123 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub123.position.set(-0.8312, 0.5359, 0.0835);
-  kub123.scale.set(-0.0053, -0.0053, -0.0015);
-  kub123.setRotation(-1.0361, -4.2732, -0.9159);
+  kub123.position.set(-0.83, 0.54, 0.08);
+  kub123.scale.set(-0.01, -0.01, -0);
+  kub123.setRotation(-1.04, -4.27, -0.92);
 
   const kub124 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub124.position.set(-0.8251, 0.5546, 0.0966);
-  kub124.scale.set(-0.0053, -0.0053, -0.0015);
-  kub124.setRotation(-1.0361, -4.2732, -0.9159);
+  kub124.position.set(-0.83, 0.55, 0.1);
+  kub124.scale.set(-0.01, -0.01, -0);
+  kub124.setRotation(-1.04, -4.27, -0.92);
 
-  const cyl034 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl034.scale.set(0.0162, 0.0722, 0.0162);
-  cyl034.setRotation(0.0, 0.0, -0.0);
-  const cyl034MZ = cyl034.clone();
-  cyl034MZ.updateMatrixWorld(true);
-  cyl034.position.set(0, 0, -0.0988);
-  cyl034MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl034MZ.position.set(0, 0, 0.0979);
-  const cyl034MrZ = new THREE.Group();
-  cyl034MrZ.add(cyl034, cyl034MZ);
-  cyl034MrZ.position.set(-0.7787, 0.3851, 0);
-  const sph001 = new THREE.Mesh(sphereGeo, ColoumnMaterial);
-  sph001.scale.set(0.0178, 0.0178, 0.0178);
-  sph001.setRotation(0.0, 0.0, 0.0);
-  const sph001MZ = sph001.clone();
-  sph001MZ.updateMatrixWorld(true);
-  sph001.position.set(0, 0, -0.0988);
-  sph001MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  sph001MZ.position.set(0, 0, 0.0979);
-  const sph001MrZ = new THREE.Group();
-  sph001MrZ.add(sph001, sph001MZ);
-  sph001MrZ.position.set(-0.7787, 0.3129, 0);
-  const cyl035 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl035.scale.set(0.0162, 0.1045, 0.0162);
-  cyl035.setRotation(0.6981, 0.0, 0.0);
-  const cyl035MZ = cyl035.clone();
-  cyl035MZ.updateMatrixWorld(true);
-  cyl035.position.set(0, 0, -0.1652);
-  cyl035MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl035MZ.position.set(0, 0, 0.1642);
-  const cyl035MrZ = new THREE.Group();
-  cyl035MrZ.add(cyl035, cyl035MZ);
-  cyl035MrZ.position.set(-0.7787, 0.2339, 0);
-  const sph002 = new THREE.Mesh(sphereGeo, ColoumnMaterial);
-  sph002.scale.set(0.0178, 0.0178, 0.0178);
-  sph002.setRotation(0.0, 0.0, 0.0);
-  const sph002MZ = sph002.clone();
-  sph002MZ.updateMatrixWorld(true);
-  sph002.position.set(0, 0, -0.2324);
-  sph002MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  sph002MZ.position.set(0, 0, 0.2314);
-  const sph002MrZ = new THREE.Group();
-  sph002MrZ.add(sph002, sph002MZ);
-  sph002MrZ.position.set(-0.7787, 0.1538, 0);
-  const cyl036 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl036.scale.set(0.0162, 0.3859, 0.0162);
-  cyl036.setRotation(0.0, 0.0, -1.5708);
-  const cyl036MZ = cyl036.clone();
-  cyl036MZ.updateMatrixWorld(true);
-  cyl036.position.set(0, 0, -0.2324);
-  cyl036MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl036MZ.position.set(0, 0, 0.2314);
-  const cyl036MrZ = new THREE.Group();
-  cyl036MrZ.add(cyl036, cyl036MZ);
-  cyl036MrZ.position.set(-0.3951, 0.1538, 0);
+  const cyl34 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl34.scale.set(0.02, 0.07, 0.02);
+  cyl34.setRotation(0, 0, 0);
+  const cyl34MZ = cyl34.clone();
+  cyl34MZ.updateMatrixWorld(true);
+  cyl34.position.set(0, 0, -0.1);
+  cyl34MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl34MZ.position.set(0, 0, 0.1);
+  const cyl34MrZ = new THREE.Group();
+  cyl34MrZ.add(cyl34, cyl34MZ);
+  cyl34MrZ.position.set(-0.78, 0.39, 0);
+  const sph1 = new THREE.Mesh(sphereGeo, ColoumnMaterial);
+  sph1.scale.set(0.02, 0.02, 0.02);
+  sph1.setRotation(0, 0, 0);
+  const sph1MZ = sph1.clone();
+  sph1MZ.updateMatrixWorld(true);
+  sph1.position.set(0, 0, -0.1);
+  sph1MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  sph1MZ.position.set(0, 0, 0.1);
+  const sph1MrZ = new THREE.Group();
+  sph1MrZ.add(sph1, sph1MZ);
+  sph1MrZ.position.set(-0.78, 0.31, 0);
+  const cyl35 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl35.scale.set(0.02, 0.1, 0.02);
+  cyl35.setRotation(0.7, 0, 0);
+  const cyl35MZ = cyl35.clone();
+  cyl35MZ.updateMatrixWorld(true);
+  cyl35.position.set(0, 0, -0.17);
+  cyl35MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl35MZ.position.set(0, 0, 0.16);
+  const cyl35MrZ = new THREE.Group();
+  cyl35MrZ.add(cyl35, cyl35MZ);
+  cyl35MrZ.position.set(-0.78, 0.23, 0);
+  const sph2 = new THREE.Mesh(sphereGeo, ColoumnMaterial);
+  sph2.scale.set(0.02, 0.02, 0.02);
+  sph2.setRotation(0, 0, 0);
+  const sph2MZ = sph2.clone();
+  sph2MZ.updateMatrixWorld(true);
+  sph2.position.set(0, 0, -0.23);
+  sph2MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  sph2MZ.position.set(0, 0, 0.23);
+  const sph2MrZ = new THREE.Group();
+  sph2MrZ.add(sph2, sph2MZ);
+  sph2MrZ.position.set(-0.78, 0.15, 0);
+  const cyl36 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl36.scale.set(0.02, 0.39, 0.02);
+  cyl36.setRotation(0, 0, -1.57);
+  const cyl36MZ = cyl36.clone();
+  cyl36MZ.updateMatrixWorld(true);
+  cyl36.position.set(0, 0, -0.23);
+  cyl36MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl36MZ.position.set(0, 0, 0.23);
+  const cyl36MrZ = new THREE.Group();
+  cyl36MrZ.add(cyl36, cyl36MZ);
+  cyl36MrZ.position.set(-0.4, 0.15, 0);
   const kub125 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub125.scale.set(0.5438, 0.0871, 0.1828);
-  kub125.setRotation(-0.0041, 0.0643, 0.0637);
+  kub125.scale.set(0.54, 0.09, 0.18);
+  kub125.setRotation(-0, 0.06, 0.06);
   const kub125MZ = kub125.clone();
   kub125MZ.updateMatrixWorld(true);
-  kub125.position.set(0, 0, -0.144);
+  kub125.position.set(0, 0, -0.14);
   kub125MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub125MZ.position.set(0, 0, 0.1431);
+  kub125MZ.position.set(0, 0, 0.14);
   const kub125MrZ = new THREE.Group();
   kub125MrZ.add(kub125, kub125MZ);
-  kub125MrZ.position.set(-0.1368, 0.9015, 0);
+  kub125MrZ.position.set(-0.14, 0.9, 0);
   const kub126 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub126.scale.set(0.0908, 0.0086, 0.013);
-  kub126.setRotation(1.3195, 1.3148, 0.0672);
+  kub126.scale.set(0.09, 0.01, 0.01);
+  kub126.setRotation(1.32, 1.31, 0.07);
   const kub126MZ = kub126.clone();
   kub126MZ.updateMatrixWorld(true);
-  kub126.position.set(0, 0, 0.263);
+  kub126.position.set(0, 0, 0.26);
   kub126MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub126MZ.position.set(0, 0, -0.2639);
+  kub126MZ.position.set(0, 0, -0.26);
   const kub126MrZ = new THREE.Group();
   kub126MrZ.add(kub126, kub126MZ);
-  kub126MrZ.position.set(0.4752, 1.0414, 0);
+  kub126MrZ.position.set(0.48, 1.04, 0);
   const kub127 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub127.scale.set(0.0849, 0.0086, 0.0036);
-  kub127.setRotation(0.2645, 0.0, -1.3109);
+  kub127.scale.set(0.08, 0.01, 0);
+  kub127.setRotation(0.26, 0, -1.31);
   const kub127MZ = kub127.clone();
   kub127MZ.updateMatrixWorld(true);
-  kub127.position.set(0, 0, 0.1793);
+  kub127.position.set(0, 0, 0.18);
   kub127MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub127MZ.position.set(0, 0, -0.1802);
+  kub127MZ.position.set(0, 0, -0.18);
   const kub127MrZ = new THREE.Group();
   kub127MrZ.add(kub127, kub127MZ);
-  kub127MrZ.position.set(0.5156, 0.9777, 0);
-  kub127MrZ.setRotation(0.2645, 0.0, -1.3109);
+  kub127MrZ.position.set(0.52, 0.98, 0);
+  kub127MrZ.setRotation(0.26, 0, -1.31);
   const kub127MrZMZ = kub127MrZ.clone();
   kub127MrZMZ.updateMatrixWorld(true);
-  kub127MrZ.position.set(0, 0, 0.1793);
+  kub127MrZ.position.set(0, 0, 0.18);
   kub127MrZMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub127MrZMZ.position.set(0, 0, -0.1802);
+  kub127MrZMZ.position.set(0, 0, -0.18);
   const kub127MrZMrZ = new THREE.Group();
   kub127MrZMrZ.add(kub127MrZ, kub127MrZMZ);
-  kub127MrZMrZ.position.set(0.5156, 0.9777, 0);
-  const cyl037 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl037.position.set(0.9595, 0.1429, -0.0005);
-  cyl037.scale.set(0.0817, 0.1676, 0.0817);
-  cyl037.setRotation(1.5708, 0.0, 0.0);
+  kub127MrZMrZ.position.set(0.52, 0.98, 0);
+  const cyl37 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl37.position.set(0.96, 0.14, -0);
+  cyl37.scale.set(0.08, 0.17, 0.08);
+  cyl37.setRotation(1.57, 0, 0);
 
-  const sph003 = new THREE.Mesh(sphereGeo, ColoumnMaterial);
-  sph003.scale.set(0.08, 0.08, 0.08);
-  sph003.setRotation(1.5708, 0.0, 0.0);
-  const sph003MZ = sph003.clone();
-  sph003MZ.updateMatrixWorld(true);
-  sph003.position.set(0, 0, -0.1681);
-  sph003MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  sph003MZ.position.set(0, 0, 0.1671);
-  const sph003MrZ = new THREE.Group();
-  sph003MrZ.add(sph003, sph003MZ);
-  sph003MrZ.position.set(0.9595, 0.1429, 0);
+  const sph3 = new THREE.Mesh(sphereGeo, ColoumnMaterial);
+  sph3.scale.set(0.08, 0.08, 0.08);
+  sph3.setRotation(1.57, 0, 0);
+  const sph3MZ = sph3.clone();
+  sph3MZ.updateMatrixWorld(true);
+  sph3.position.set(0, 0, -0.17);
+  sph3MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  sph3MZ.position.set(0, 0, 0.17);
+  const sph3MrZ = new THREE.Group();
+  sph3MrZ.add(sph3, sph3MZ);
+  sph3MrZ.position.set(0.96, 0.14, 0);
   const kub128 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub128.position.set(0.7502, 0.2067, -0.0005);
-  kub128.scale.set(0.1506, 0.042, 0.233);
-  kub128.setRotation(0.3098, 1.5708, 0.0);
+  kub128.position.set(0.75, 0.21, -0);
+  kub128.scale.set(0.15, 0.04, 0.23);
+  kub128.setRotation(0.31, 1.57, 0);
 
   const kub129 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub129.position.set(0.7526, 0.2428, -0.0005);
-  kub129.scale.set(0.0423, 0.0157, 0.233);
-  kub129.setRotation(0.3098, 1.5708, 0.0);
+  kub129.position.set(0.75, 0.24, -0);
+  kub129.scale.set(0.04, 0.02, 0.23);
+  kub129.setRotation(0.31, 1.57, 0);
 
   const robot = new THREE.Group();
   robot.add(
-    kub038,
-    kub039,
-    cyl008,
-    cyl009MrZ,
-    pln001MrZ,
-    pln002MrZ,
-    pln003MrZ,
-    pln004MrZ,
-    pln005MrZ,
-    pln014MrZ,
-    pln015MrZ,
-    pln016MrZ,
-    pln017MrZ,
-    pln018MrZ,
-    pln006MrZ,
-    pln007MrZ,
-    pln008MrZ,
-    pln009MrZ,
-    pln011MrZ,
-    kub042,
-    kub043,
-    kub044,
-    kub045,
-    kub046,
-    kub047,
-    kub048,
-    kub049MrZ,
-    kub050MrZ,
-    kub051MrZ,
-    kub052MrZ,
-    kub053MrZ,
-    kub072,
-    kub073,
-    kub074MrZ,
-    kub075MrZ,
-    kub076MrZ,
-    kub077MrZ,
-    kub078MrZ,
-    kub080MrZ,
-    kub079MrZ,
-    kub081MrZ,
-    kub082MrZ,
-    kub083MrZ,
-    kub084MrZ,
-    cyl010MrZ,
-    cyl011MrZ,
-    cyl013MrZ,
-    kub086MrZ,
-    kub088MrZ,
-    kub089MrZ,
-    kub090MrZ,
-    kub091MrZ,
-    kub093MrZ,
-    kub094MrZ,
-    kub095MrZ,
-    kub087MrZ,
-    kub096MrZ,
-    kub097MrZ,
-    kub098MrZ,
-    kub099MrZ,
+    kub38,
+    kub39,
+    cyl8,
+    cyl9MrZ,
+    pln1MrZ,
+    pln2MrZ,
+    pln3MrZ,
+    pln4MrZ,
+    pln5MrZ,
+    pln14MrZ,
+    pln15MrZ,
+    pln16MrZ,
+    pln17MrZ,
+    pln18MrZ,
+    pln6MrZ,
+    pln7MrZ,
+    pln8MrZ,
+    pln9MrZ,
+    pln11MrZ,
+    kub42,
+    kub43,
+    kub44,
+    kub45,
+    kub46,
+    kub47,
+    kub48,
+    kub49MrZ,
+    kub50MrZ,
+    kub51MrZ,
+    kub52MrZ,
+    kub53MrZ,
+    kub72,
+    kub73,
+    kub74MrZ,
+    kub75MrZ,
+    kub76MrZ,
+    kub77MrZ,
+    kub78MrZ,
+    kub80MrZ,
+    kub79MrZ,
+    kub81MrZ,
+    kub82MrZ,
+    kub83MrZ,
+    kub84MrZ,
+    cyl10MrZ,
+    cyl11MrZ,
+    cyl13MrZ,
+    kub86MrZ,
+    kub88MrZ,
+    kub89MrZ,
+    kub90MrZ,
+    kub91MrZ,
+    kub93MrZ,
+    kub94MrZ,
+    kub95MrZ,
+    kub87MrZ,
+    kub96MrZ,
+    kub97MrZ,
+    kub98MrZ,
+    kub99MrZ,
     kub100MrZ,
     kub101MrZ,
     kub102MrZ,
-    cyl014MrZ,
-    cyl015MrZ,
-    cyl016,
-    cyl017,
-    kub085MrZ,
+    cyl14MrZ,
+    cyl15MrZ,
+    cyl16,
+    cyl17,
+    kub85MrZ,
     kub103,
     kub104MrZ,
     kub105MrZ,
@@ -2035,48 +2036,48 @@ function DrawRobotM() {
     kub107MrZ,
     kub108MrZ,
     kub109MrZ,
-    cyl018,
+    cyl18,
     kub110MrZ,
-    cyl019MrZ,
-    cyl020,
+    cyl19MrZ,
+    cyl20,
     kub111,
-    cyl021,
-    cyl022,
-    cyl023,
-    cyl024,
+    cyl21,
+    cyl22,
+    cyl23,
+    cyl24,
     kub112,
     kub113,
     kub114,
     kub115,
     kub116,
-    cyl025,
+    cyl25,
     sphere,
-    cyl026,
-    cyl027,
+    cyl26,
+    cyl27,
     kub117,
     kub118,
-    cyl028,
-    cyl029,
+    cyl28,
+    cyl29,
     kub119,
     kub120,
-    cyl030,
-    cyl031,
+    cyl30,
+    cyl31,
     kub121,
     kub122,
-    cyl032,
-    cyl033,
+    cyl32,
+    cyl33,
     kub123,
     kub124,
-    cyl034MrZ,
-    sph001MrZ,
-    cyl035MrZ,
-    sph002MrZ,
-    cyl036MrZ,
+    cyl34MrZ,
+    sph1MrZ,
+    cyl35MrZ,
+    sph2MrZ,
+    cyl36MrZ,
     kub125MrZ,
     kub126MrZ,
     kub127MrZMrZ,
-    cyl037,
-    sph003MrZ,
+    cyl37,
+    sph3MrZ,
     kub128,
     kub129,
   );
@@ -2099,7 +2100,7 @@ function DrawRobotM() {
 
   // Линия луча
   const geometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 9);
-  const material = new THREE.MeshLambertMaterial({ color: 0xffdd00 });
+  const material = new THREE.MeshLambertMaterial({ color: 0xffdd0 });
 
   let Linetelo;
   Linetelo = new THREE.Mesh(geometry, material);
@@ -2119,43 +2120,43 @@ function DrawRobotM() {
   return out;
   function DrawSphere() {
     const geometry = new THREE.SphereGeometry(0.5, 32, 16);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0 });
     const sphere = new THREE.Mesh(geometry, material);
     return sphere;
   }
 }
 
 function DrawCleanRobot() {
-  const Material_002 = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0504, 0.209, 1.0),
+  const Material_2 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.05, 0.21, 1),
     roughness: 0.5,
   });
-  const Material_001 = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0, 0.0, 0.0),
+  const Material_1 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0, 0, 0),
     roughness: 0.5,
   });
-  const Material_006 = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.1788, 0.1788, 0.1788),
+  const Material_6 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.18, 0.18, 0.18),
     roughness: 0.5,
   });
-  const Material_007 = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.504, 0.4274, 0.4433),
+  const Material_7 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.5, 0.43, 0.44),
     roughness: 0.5,
   });
-  const Material_005 = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 0.0146, 0.0039),
+  const Material_5 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(1, 0.01, 0),
     roughness: 0.5,
   });
-  const Material_003 = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0154, 0.8, 0.0),
+  const Material_3 = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.02, 0.8, 0),
     roughness: 0.5,
   });
   const cylbrushesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.2254, 0.0735, 0.8924),
+    color: new THREE.Color(0.23, 0.07, 0.89),
   });
   const Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-    metalness: 1.0,
+    color: new THREE.Color(1, 1, 1),
+    metalness: 1,
     roughness: 0.5,
   });
 
@@ -2163,55 +2164,55 @@ function DrawCleanRobot() {
   const cylinderGeo = new THREE.CylinderGeometry(1, 1, 2, 32);
   const sphereGeo = new THREE.SphereGeometry(1, 32, 16);
 
-  const cylbody = new THREE.Mesh(cylinderGeo, Material_002);
-  cylbody.position.set(0.0, 0.1347, -0.0);
-  cylbody.scale.set(0.5636, -0.0994, 0.5636);
+  const cylbody = new THREE.Mesh(cylinderGeo, Material_2);
+  cylbody.position.set(0, 0.13, 0);
+  cylbody.scale.set(0.56, -0.1, 0.56);
 
-  const cylwheel2 = new THREE.Mesh(cylinderGeo, Material_001);
-  cylwheel2.position.set(-0.3844, 0.0394, 0.2595);
-  cylwheel2.scale.set(-0.0516, -0.0176, -0.0515);
-  cylwheel2.setRotation(1.8196, -4.5347, 1.5422);
+  const cylwheel2 = new THREE.Mesh(cylinderGeo, Material_1);
+  cylwheel2.position.set(-0.38, 0.04, 0.26);
+  cylwheel2.scale.set(-0.05, -0.02, -0.05);
+  cylwheel2.setRotation(1.82, -4.53, 1.54);
 
-  const sphsupport = new THREE.Mesh(sphereGeo, Material_006);
-  sphsupport.position.set(0.0, 0.0515, -0.4844);
-  sphsupport.scale.set(0.0434, 0.0434, 0.0434);
+  const sphsupport = new THREE.Mesh(sphereGeo, Material_6);
+  sphsupport.position.set(0, 0.05, -0.48);
+  sphsupport.scale.set(0.04, 0.04, 0.04);
 
-  const cylwheel3 = new THREE.Mesh(cylinderGeo, Material_001);
-  cylwheel3.position.set(0.0001, 0.0052, -0.4846);
-  cylwheel3.scale.set(-0.0159, -0.0054, -0.0158);
-  cylwheel3.setRotation(1.8196, -1.8235, 1.5422);
+  const cylwheel3 = new THREE.Mesh(cylinderGeo, Material_1);
+  cylwheel3.position.set(0, 0.01, -0.48);
+  cylwheel3.scale.set(-0.02, -0.01, -0.02);
+  cylwheel3.setRotation(1.82, -1.82, 1.54);
 
-  const cylwheel1 = new THREE.Mesh(cylinderGeo, Material_001);
-  cylwheel1.position.set(0.3747, 0.0394, 0.2595);
-  cylwheel1.scale.set(-0.0516, -0.0176, -0.0515);
-  cylwheel1.setRotation(-1.322, -2.628, 1.5994);
+  const cylwheel1 = new THREE.Mesh(cylinderGeo, Material_1);
+  cylwheel1.position.set(0.37, 0.04, 0.26);
+  cylwheel1.scale.set(-0.05, -0.02, -0.05);
+  cylwheel1.setRotation(-1.32, -2.63, 1.6);
 
-  const kubdisplay = new THREE.Mesh(boxGeo, Material_007);
-  kubdisplay.position.set(0.0, 0.2231, -0.0);
-  kubdisplay.scale.set(-0.2711, -0.0151, -0.2711);
+  const kubdisplay = new THREE.Mesh(boxGeo, Material_7);
+  kubdisplay.position.set(0, 0.22, 0);
+  kubdisplay.scale.set(-0.27, -0.02, -0.27);
 
-  const cylbutton_off = new THREE.Mesh(cylinderGeo, Material_005);
-  cylbutton_off.position.set(0.0516, 0.2185, -0.4293);
-  cylbutton_off.scale.set(0.0227, 0.0227, 0.0227);
+  const cylbutton_off = new THREE.Mesh(cylinderGeo, Material_5);
+  cylbutton_off.position.set(0.05, 0.22, -0.43);
+  cylbutton_off.scale.set(0.02, 0.02, 0.02);
 
-  const cylbutton_on = new THREE.Mesh(cylinderGeo, Material_003);
-  cylbutton_on.position.set(-0.0509, 0.2185, -0.4293);
-  cylbutton_on.scale.set(0.0227, 0.0227, 0.0227);
+  const cylbutton_on = new THREE.Mesh(cylinderGeo, Material_3);
+  cylbutton_on.position.set(-0.05, 0.22, -0.43);
+  cylbutton_on.scale.set(0.02, 0.02, 0.02);
 
   const cylbrushes = new THREE.Mesh(cylinderGeo, cylbrushesMaterial);
-  cylbrushes.position.set(0.0, 0.0858, -0.0);
-  cylbrushes.scale.set(0.0802, 0.28, 0.0802);
-  cylbrushes.setRotation(0.0, 0.0, -1.5708);
+  cylbrushes.position.set(0, 0.09, 0);
+  cylbrushes.scale.set(0.08, 0.28, 0.08);
+  cylbrushes.setRotation(0, 0, -1.57);
 
   const kubantenna1 = new THREE.Mesh(boxGeo, Material);
-  kubantenna1.position.set(-0.441, 0.3083, -0.0);
-  kubantenna1.scale.set(-0.0949, -0.0088, -0.0041);
-  kubantenna1.setRotation(0.0, 0.0, -1.0986);
+  kubantenna1.position.set(-0.44, 0.31, 0);
+  kubantenna1.scale.set(-0.09, -0.01, -0);
+  kubantenna1.setRotation(0, 0, -1.1);
 
   const kubantenna2 = new THREE.Mesh(boxGeo, Material);
-  kubantenna2.position.set(0.4558, 0.3083, -0.0);
-  kubantenna2.scale.set(-0.0949, -0.0088, -0.0041);
-  kubantenna2.setRotation(0.0, 3.1416, -1.0986);
+  kubantenna2.position.set(0.46, 0.31, 0);
+  kubantenna2.scale.set(-0.09, -0.01, -0);
+  kubantenna2.setRotation(0, 3.14, -1.1);
 
   const robot = new THREE.Group();
   robot.add(
@@ -2248,7 +2249,7 @@ function DrawCleanRobot() {
 
   // Линия луча
   const geometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 9);
-  const material = new THREE.MeshLambertMaterial({ color: 0xffdd00 });
+  const material = new THREE.MeshLambertMaterial({ color: 0xffdd0 });
 
   let Linetelo;
   Linetelo = new THREE.Mesh(geometry, material);
@@ -2269,7 +2270,7 @@ function DrawCleanRobot() {
 
   function DrawSphere() {
     const geometry = new THREE.SphereGeometry(0.5, 32, 16);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0 });
     const sphere = new THREE.Mesh(geometry, material);
     return sphere;
   }
@@ -2277,40 +2278,40 @@ function DrawCleanRobot() {
 
 function DrawVagonDecorations() {
   const FloorTileMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.686, 0.6165, 0.3163),
+    color: new THREE.Color(0.69, 0.62, 0.32),
     roughness: 0.5,
   });
   const Metall_RustMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.08, 0.0213, 0.0026),
-    metalness: 0.8254,
-    roughness: 0.8849,
+    color: new THREE.Color(0.08, 0.02, 0),
+    metalness: 0.83,
+    roughness: 0.88,
   });
   const RoofTilesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-    metalness: 1.0,
+    color: new THREE.Color(1, 1, 1),
+    metalness: 1,
   });
   const Floor_CentralMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.3902, 0.2623),
-    metalness: 0.123,
-    roughness: 0.1508,
+    color: new THREE.Color(0.48, 0.39, 0.26),
+    metalness: 0.12,
+    roughness: 0.15,
   });
   const MetalMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.477, 0.477),
-    metalness: 1.0,
+    color: new THREE.Color(0.48, 0.48, 0.48),
+    metalness: 1,
     roughness: 0.5,
   });
   const Green_PictureMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0351, 0.4869, 0.0138),
+    color: new THREE.Color(0.04, 0.49, 0.01),
     roughness: 0.5,
   });
   const Floor_StripesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 0.5225, 0.0),
+    color: new THREE.Color(1, 0.52, 0),
   });
   const WhiteDotsMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
+    color: new THREE.Color(1, 1, 1),
   });
   const PurpleMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.3581, 0.0, 0.8),
+    color: new THREE.Color(0.36, 0, 0.8),
     roughness: 0.5,
   });
 
@@ -2319,713 +2320,713 @@ function DrawVagonDecorations() {
   const sphereGeo = new THREE.SphereGeometry(1, 32, 16);
 
   const kub307 = new THREE.Mesh(boxGeo, FloorTileMaterial);
-  kub307.position.set(0.0127, 6.3994, -1.6438);
-  kub307.scale.set(12.5105, 0.1214, 0.8001);
-  kub307.setRotation(-0.2859, 0.0, 0.0);
+  kub307.position.set(0.01, 6.4, -1.64);
+  kub307.scale.set(12.5, 0.12, 0.8);
+  kub307.setRotation(-0.29, 0, 0);
 
   const kub308 = new THREE.Mesh(boxGeo, FloorTileMaterial);
-  kub308.position.set(0.0127, 6.725, -0.7205);
-  kub308.scale.set(12.5105, 0.1214, 0.2164);
-  kub308.setRotation(1.5708, 0.0, 0.0);
+  kub308.position.set(0.01, 6.72, -0.72);
+  kub308.scale.set(12.5, 0.12, 0.22);
+  kub308.setRotation(1.57, 0, 0);
 
   const kub309 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-  kub309.position.set(0.0127, 6.725, -0.6018);
-  kub309.scale.set(12.4539, 0.0107, 0.1974);
-  kub309.setRotation(1.5708, 0.0, 0.0);
+  kub309.position.set(0.01, 6.72, -0.6);
+  kub309.scale.set(12.5, 0.01, 0.2);
+  kub309.setRotation(1.57, 0, 0);
 
-  const cyl021Gr = new THREE.Group();
+  const cyl21Gr = new THREE.Group();
   for (let i = 0; i < 9; i++) {
-    const cyl021 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
-    cyl021.scale.set(0.3252, 0.052, 0.3252);
-    cyl021.position.set(-2.732 * i, 0, 0);
-    cyl021Gr.add(cyl021);
+    const cyl21 = new THREE.Mesh(cylinderGeo, Metall_RustMaterial);
+    cyl21.scale.set(0.33, 0.05, 0.33);
+    cyl21.position.set(-2.73 * i, 0, 0);
+    cyl21Gr.add(cyl21);
   }
-  cyl021Gr.position.set(10.931, 6.8703, 0.006);
-  const sph002Gr = new THREE.Group();
+  cyl21Gr.position.set(10.9, 6.87, 0.01);
+  const sph2Gr = new THREE.Group();
   for (let i = 0; i < 9; i++) {
-    const sph002 = new THREE.Mesh(sphereGeo, RoofTilesMaterial);
-    sph002.scale.set(0.2453, 0.2164, 0.2453);
-    sph002.position.set(-2.7314 * i, 0, 0);
-    sph002Gr.add(sph002);
+    const sph2 = new THREE.Mesh(sphereGeo, RoofTilesMaterial);
+    sph2.scale.set(0.25, 0.22, 0.25);
+    sph2.position.set(-2.73 * i, 0, 0);
+    sph2Gr.add(sph2);
   }
-  sph002Gr.position.set(10.931, 6.8266, 0.006);
+  sph2Gr.position.set(10.9, 6.83, 0.01);
   const kub310Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub310 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub310.scale.set(0.0702, 0.2701, 0.4985);
-    kub310.position.set(6.4288 * i, 0, 0);
+    kub310.scale.set(0.07, 0.27, 0.5);
+    kub310.position.set(6.43 * i, 0, 0);
     kub310Gr.add(kub310);
   }
-  kub310Gr.position.set(-8.4084, 2.5756, -1.8708);
+  kub310Gr.position.set(-8.41, 2.58, -1.87);
   const kub311Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub311 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub311.scale.set(0.0702, 0.1597, 0.5837);
-    kub311.position.set(6.4288 * i, 0, 0);
+    kub311.scale.set(0.07, 0.16, 0.58);
+    kub311.position.set(6.43 * i, 0, 0);
     kub311Gr.add(kub311);
   }
-  kub311Gr.position.set(-8.4084, 3.0054, -1.7856);
+  kub311Gr.position.set(-8.41, 3.01, -1.79);
   const kub312Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub312 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub312.scale.set(0.0702, 0.1597, 0.2747);
-    kub312.position.set(6.4288 * i, 0, 0);
+    kub312.scale.set(0.07, 0.16, 0.27);
+    kub312.position.set(6.43 * i, 0, 0);
     kub312Gr.add(kub312);
   }
-  kub312Gr.setRotation(1.5708, 0.0, 0.0);
-  kub312Gr.position.set(-8.4084, 3.4397, -2.2097);
+  kub312Gr.setRotation(1.57, 0, 0);
+  kub312Gr.position.set(-8.41, 3.44, -2.21);
   const kub313Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub313 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub313.scale.set(0.0702, 0.1264, 0.2747);
-    kub313.position.set(6.4288 * i, 0, 0);
+    kub313.scale.set(0.07, 0.13, 0.27);
+    kub313.position.set(6.43 * i, 0, 0);
     kub313Gr.add(kub313);
   }
-  kub313Gr.setRotation(3.1416, 0.0, 0.0);
-  kub313Gr.position.set(-8.4084, 3.8408, -2.0946);
+  kub313Gr.setRotation(3.14, 0, 0);
+  kub313Gr.position.set(-8.41, 3.84, -2.09);
   const kub314Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub314 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub314.scale.set(0.0702, 0.1264, 0.3091);
-    kub314.position.set(6.4288 * i, 0, 0);
+    kub314.scale.set(0.07, 0.13, 0.31);
+    kub314.position.set(6.43 * i, 0, 0);
     kub314Gr.add(kub314);
   }
-  kub314Gr.setRotation(1.9635, 0.0, 0.0);
-  kub314Gr.position.set(-8.4084, 3.4772, -2.055);
+  kub314Gr.setRotation(1.96, 0, 0);
+  kub314Gr.position.set(-8.41, 3.48, -2.06);
   const kub315Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub315 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub315.scale.set(0.0702, 0.1519, 0.4307);
-    kub315.position.set(6.4288 * i, 0, 0);
+    kub315.scale.set(0.07, 0.15, 0.43);
+    kub315.position.set(6.43 * i, 0, 0);
     kub315Gr.add(kub315);
   }
-  kub315Gr.setRotation(0.3405, 0.0, 0.0);
-  kub315Gr.position.set(-8.4084, 3.1657, -1.6586);
+  kub315Gr.setRotation(0.34, 0, 0);
+  kub315Gr.position.set(-8.41, 3.17, -1.66);
   const kub316Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub316 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub316.scale.set(0.0702, 0.1519, 0.2855);
-    kub316.position.set(6.4288 * i, 0, 0);
+    kub316.scale.set(0.07, 0.15, 0.29);
+    kub316.position.set(6.43 * i, 0, 0);
     kub316Gr.add(kub316);
   }
-  kub316Gr.setRotation(1.8909, 0.0, -0.0);
-  kub316Gr.position.set(-8.4084, 2.6225, -1.4359);
+  kub316Gr.setRotation(1.89, 0, 0);
+  kub316Gr.position.set(-8.41, 2.62, -1.44);
   const kub317Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub317 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub317.scale.set(0.0702, 0.2701, 0.4985);
-    kub317.position.set(6.4288 * i, 0, 0);
+    kub317.scale.set(0.07, 0.27, 0.5);
+    kub317.position.set(6.43 * i, 0, 0);
     kub317Gr.add(kub317);
   }
-  kub317Gr.position.set(-4.4057, 2.5756, -1.8708);
+  kub317Gr.position.set(-4.41, 2.58, -1.87);
   const kub318Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub318 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub318.scale.set(0.0702, 0.1597, 0.5837);
-    kub318.position.set(6.4288 * i, 0, 0);
+    kub318.scale.set(0.07, 0.16, 0.58);
+    kub318.position.set(6.43 * i, 0, 0);
     kub318Gr.add(kub318);
   }
-  kub318Gr.position.set(-4.4057, 3.0054, -1.7856);
+  kub318Gr.position.set(-4.41, 3.01, -1.79);
   const kub319Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub319 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub319.scale.set(0.0702, 0.1597, 0.2747);
-    kub319.position.set(6.4288 * i, 0, 0);
+    kub319.scale.set(0.07, 0.16, 0.27);
+    kub319.position.set(6.43 * i, 0, 0);
     kub319Gr.add(kub319);
   }
-  kub319Gr.setRotation(1.5708, 0.0, 0.0);
-  kub319Gr.position.set(-4.4057, 3.4397, -2.2097);
+  kub319Gr.setRotation(1.57, 0, 0);
+  kub319Gr.position.set(-4.41, 3.44, -2.21);
   const kub320Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub320 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub320.scale.set(0.0702, 0.1264, 0.2747);
-    kub320.position.set(6.4288 * i, 0, 0);
+    kub320.scale.set(0.07, 0.13, 0.27);
+    kub320.position.set(6.43 * i, 0, 0);
     kub320Gr.add(kub320);
   }
-  kub320Gr.setRotation(3.1416, 0.0, 0.0);
-  kub320Gr.position.set(-4.4057, 3.8408, -2.0946);
+  kub320Gr.setRotation(3.14, 0, 0);
+  kub320Gr.position.set(-4.41, 3.84, -2.09);
   const kub321Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub321 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub321.scale.set(0.0702, 0.1264, 0.3091);
-    kub321.position.set(6.4288 * i, 0, 0);
+    kub321.scale.set(0.07, 0.13, 0.31);
+    kub321.position.set(6.43 * i, 0, 0);
     kub321Gr.add(kub321);
   }
-  kub321Gr.setRotation(1.9635, 0.0, 0.0);
-  kub321Gr.position.set(-4.4057, 3.4772, -2.055);
+  kub321Gr.setRotation(1.96, 0, 0);
+  kub321Gr.position.set(-4.41, 3.48, -2.06);
   const kub322Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub322 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub322.scale.set(0.0702, 0.1519, 0.4307);
-    kub322.position.set(6.4288 * i, 0, 0);
+    kub322.scale.set(0.07, 0.15, 0.43);
+    kub322.position.set(6.43 * i, 0, 0);
     kub322Gr.add(kub322);
   }
-  kub322Gr.setRotation(0.3405, 0.0, 0.0);
-  kub322Gr.position.set(-4.4057, 3.1657, -1.6586);
+  kub322Gr.setRotation(0.34, 0, 0);
+  kub322Gr.position.set(-4.41, 3.17, -1.66);
   const kub323Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub323 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub323.scale.set(0.0702, 0.1519, 0.2855);
-    kub323.position.set(6.4288 * i, 0, 0);
+    kub323.scale.set(0.07, 0.15, 0.29);
+    kub323.position.set(6.43 * i, 0, 0);
     kub323Gr.add(kub323);
   }
-  kub323Gr.setRotation(1.8909, 0.0, -0.0);
-  kub323Gr.position.set(-4.4057, 2.6225, -1.4359);
-  const cyl022Gr = new THREE.Group();
+  kub323Gr.setRotation(1.89, 0, 0);
+  kub323Gr.position.set(-4.41, 2.62, -1.44);
+  const cyl22Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl022 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl022.scale.set(0.039, 0.4636, 0.039);
-    cyl022.position.set(6.4289 * i, 0, 0);
-    cyl022Gr.add(cyl022);
+    const cyl22 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl22.scale.set(0.04, 0.46, 0.04);
+    cyl22.position.set(6.43 * i, 0, 0);
+    cyl22Gr.add(cyl22);
   }
-  cyl022Gr.position.set(-8.4084, 3.6063, -1.3034);
-  const cyl023Gr = new THREE.Group();
+  cyl22Gr.position.set(-8.41, 3.61, -1.3);
+  const cyl23Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl023 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl023.scale.set(0.039, 0.2801, 0.039);
-    cyl023.position.set(6.4297 * i, 0, 0);
-    cyl023Gr.add(cyl023);
+    const cyl23 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl23.scale.set(0.04, 0.28, 0.04);
+    cyl23.position.set(6.43 * i, 0, 0);
+    cyl23Gr.add(cyl23);
   }
-  cyl023Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl023Gr.position.set(-8.4084, 3.8477, -1.5809);
-  const cyl024Gr = new THREE.Group();
+  cyl23Gr.setRotation(1.57, 0, 0);
+  cyl23Gr.position.set(-8.41, 3.85, -1.58);
+  const cyl24Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl024 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl024.scale.set(0.0483, 0.033, 0.0483);
-    cyl024.position.set(6.4293 * i, 0, 0);
-    cyl024Gr.add(cyl024);
+    const cyl24 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl24.scale.set(0.05, 0.03, 0.05);
+    cyl24.position.set(6.43 * i, 0, 0);
+    cyl24Gr.add(cyl24);
   }
-  cyl024Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl024Gr.position.set(-8.4084, 3.8477, -1.787);
-  const cyl025Gr = new THREE.Group();
+  cyl24Gr.setRotation(1.57, 0, 0);
+  cyl24Gr.position.set(-8.41, 3.85, -1.79);
+  const cyl25Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl025 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl025.scale.set(0.0543, 0.0831, 0.0543);
-    cyl025.position.set(6.4289 * i, 0, 0);
-    cyl025Gr.add(cyl025);
+    const cyl25 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl25.scale.set(0.05, 0.08, 0.05);
+    cyl25.position.set(6.43 * i, 0, 0);
+    cyl25Gr.add(cyl25);
   }
-  cyl025Gr.position.set(-8.4084, 3.2062, -1.3034);
-  const sph003Gr = new THREE.Group();
+  cyl25Gr.position.set(-8.41, 3.21, -1.3);
+  const sph3Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const sph003 = new THREE.Mesh(sphereGeo, MetalMaterial);
-    sph003.scale.set(0.0552, 0.0552, 0.0552);
-    sph003.position.set(6.4265 * i, 0, 0);
-    sph003Gr.add(sph003);
+    const sph3 = new THREE.Mesh(sphereGeo, MetalMaterial);
+    sph3.scale.set(0.06, 0.06, 0.06);
+    sph3.position.set(6.43 * i, 0, 0);
+    sph3Gr.add(sph3);
   }
-  sph003Gr.position.set(-8.4084, 4.0978, -1.3034);
-  const cyl026Gr = new THREE.Group();
+  sph3Gr.position.set(-8.41, 4.1, -1.3);
+  const cyl26Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl026 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl026.scale.set(0.039, 0.5356, 0.039);
-    cyl026.position.set(6.4297 * i, 0, 0);
-    cyl026Gr.add(cyl026);
+    const cyl26 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl26.scale.set(0.04, 0.54, 0.04);
+    cyl26.position.set(6.43 * i, 0, 0);
+    cyl26Gr.add(cyl26);
   }
-  cyl026Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl026Gr.position.set(-4.4057, 4.0978, -1.8363);
-  const cyl027Gr = new THREE.Group();
+  cyl26Gr.setRotation(1.57, 0, 0);
+  cyl26Gr.position.set(-4.41, 4.1, -1.84);
+  const cyl27Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl027 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl027.scale.set(0.0508, 0.0545, 0.0508);
-    cyl027.position.set(6.4299 * i, 0, 0);
-    cyl027Gr.add(cyl027);
+    const cyl27 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl27.scale.set(0.05, 0.05, 0.05);
+    cyl27.position.set(6.43 * i, 0, 0);
+    cyl27Gr.add(cyl27);
   }
-  cyl027Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl027Gr.position.set(-8.4084, 4.0978, -2.3174);
-  const cyl028Gr = new THREE.Group();
+  cyl27Gr.setRotation(1.57, 0, 0);
+  cyl27Gr.position.set(-8.41, 4.1, -2.32);
+  const cyl28Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl028 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl028.scale.set(0.039, 0.5356, 0.039);
-    cyl028.position.set(6.4297 * i, 0, 0);
-    cyl028Gr.add(cyl028);
+    const cyl28 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl28.scale.set(0.04, 0.54, 0.04);
+    cyl28.position.set(6.43 * i, 0, 0);
+    cyl28Gr.add(cyl28);
   }
-  cyl028Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl028Gr.position.set(-8.4084, 4.0978, -1.8363);
-  const cyl029Gr = new THREE.Group();
+  cyl28Gr.setRotation(1.57, 0, 0);
+  cyl28Gr.position.set(-8.41, 4.1, -1.84);
+  const cyl29Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl029 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl029.scale.set(0.0508, 0.0545, 0.0508);
-    cyl029.position.set(6.4289 * i, 0, 0);
-    cyl029Gr.add(cyl029);
+    const cyl29 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl29.scale.set(0.05, 0.05, 0.05);
+    cyl29.position.set(6.43 * i, 0, 0);
+    cyl29Gr.add(cyl29);
   }
-  cyl029Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl029Gr.position.set(-4.4057, 4.0978, -2.3174);
-  const sph004Gr = new THREE.Group();
+  cyl29Gr.setRotation(1.57, 0, 0);
+  cyl29Gr.position.set(-4.41, 4.1, -2.32);
+  const sph4Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const sph004 = new THREE.Mesh(sphereGeo, MetalMaterial);
-    sph004.scale.set(0.0552, 0.0552, 0.0552);
-    sph004.position.set(6.4309 * i, 0, 0);
-    sph004Gr.add(sph004);
+    const sph4 = new THREE.Mesh(sphereGeo, MetalMaterial);
+    sph4.scale.set(0.06, 0.06, 0.06);
+    sph4.position.set(6.43 * i, 0, 0);
+    sph4Gr.add(sph4);
   }
-  sph004Gr.position.set(-4.4057, 4.0978, -1.3034);
+  sph4Gr.position.set(-4.41, 4.1, -1.3);
   const kub324Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub324 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-    kub324.scale.set(2.0087, 0.071, 0.5573);
-    kub324.position.set(6.4279 * i, 0, 0);
+    kub324.scale.set(2.01, 0.07, 0.56);
+    kub324.position.set(6.43 * i, 0, 0);
     kub324Gr.add(kub324);
   }
-  kub324Gr.setRotation(3.1416, 0.0, 0.0);
-  kub324Gr.position.set(-6.4071, 3.067, -1.8271);
+  kub324Gr.setRotation(3.14, 0, 0);
+  kub324Gr.position.set(-6.41, 3.07, -1.83);
   const kub325Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub325 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-    kub325.scale.set(2.0087, 0.071, 0.4356);
-    kub325.position.set(6.4279 * i, 0, 0);
+    kub325.scale.set(2.01, 0.07, 0.44);
+    kub325.position.set(6.43 * i, 0, 0);
     kub325Gr.add(kub325);
   }
-  kub325Gr.setRotation(4.465, 0.0, 0.0);
-  kub325Gr.position.set(-6.4071, 3.4491, -2.2037);
+  kub325Gr.setRotation(4.46, 0, 0);
+  kub325Gr.position.set(-6.41, 3.45, -2.2);
   const kub326Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub326 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub326.scale.set(2.0087, 0.071, 0.4033);
-    kub326.position.set(6.4279 * i, 0, 0);
+    kub326.scale.set(2.01, 0.07, 0.4);
+    kub326.position.set(6.43 * i, 0, 0);
     kub326Gr.add(kub326);
   }
-  kub326Gr.setRotation(1.8968, 0.0, 0.0);
-  kub326Gr.position.set(-6.4071, 2.6874, -1.4993);
-  const cyl030Gr = new THREE.Group();
+  kub326Gr.setRotation(1.9, 0, 0);
+  kub326Gr.position.set(-6.41, 2.69, -1.5);
+  const cyl30Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl030 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl030.scale.set(0.039, 0.4636, 0.039);
-    cyl030.position.set(6.4289 * i, 0, 0);
-    cyl030Gr.add(cyl030);
+    const cyl30 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl30.scale.set(0.04, 0.46, 0.04);
+    cyl30.position.set(6.43 * i, 0, 0);
+    cyl30Gr.add(cyl30);
   }
-  cyl030Gr.position.set(-4.4057, 3.6063, -1.3034);
-  const cyl031Gr = new THREE.Group();
+  cyl30Gr.position.set(-4.41, 3.61, -1.3);
+  const cyl31Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl031 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl031.scale.set(0.039, 0.2801, 0.039);
-    cyl031.position.set(6.4297 * i, 0, 0);
-    cyl031Gr.add(cyl031);
+    const cyl31 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl31.scale.set(0.04, 0.28, 0.04);
+    cyl31.position.set(6.43 * i, 0, 0);
+    cyl31Gr.add(cyl31);
   }
-  cyl031Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl031Gr.position.set(-4.4057, 3.8477, -1.5809);
-  const cyl032Gr = new THREE.Group();
+  cyl31Gr.setRotation(1.57, 0, 0);
+  cyl31Gr.position.set(-4.41, 3.85, -1.58);
+  const cyl32Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl032 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl032.scale.set(0.0483, 0.033, 0.0483);
-    cyl032.position.set(6.4283 * i, 0, 0);
-    cyl032Gr.add(cyl032);
+    const cyl32 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl32.scale.set(0.05, 0.03, 0.05);
+    cyl32.position.set(6.43 * i, 0, 0);
+    cyl32Gr.add(cyl32);
   }
-  cyl032Gr.setRotation(1.5708, 0.0, 0.0);
-  cyl032Gr.position.set(-4.4057, 3.8477, -1.787);
-  const cyl033Gr = new THREE.Group();
+  cyl32Gr.setRotation(1.57, 0, 0);
+  cyl32Gr.position.set(-4.41, 3.85, -1.79);
+  const cyl33Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl033 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl033.scale.set(0.0543, 0.0831, 0.0543);
-    cyl033.position.set(6.4289 * i, 0, 0);
-    cyl033Gr.add(cyl033);
+    const cyl33 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl33.scale.set(0.05, 0.08, 0.05);
+    cyl33.position.set(6.43 * i, 0, 0);
+    cyl33Gr.add(cyl33);
   }
-  cyl033Gr.position.set(-4.4057, 3.2062, -1.3034);
+  cyl33Gr.position.set(-4.41, 3.21, -1.3);
   const kub327 = new THREE.Mesh(boxGeo, Green_PictureMaterial);
-  kub327.position.set(-4.8635, 4.8871, -2.3676);
-  kub327.scale.set(0.5148, 0.0124, 0.5964);
-  kub327.setRotation(1.5708, 0.0, 0.0);
+  kub327.position.set(-4.86, 4.89, -2.37);
+  kub327.scale.set(0.51, 0.01, 0.6);
+  kub327.setRotation(1.57, 0, 0);
 
   const kub328 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-  kub328.position.set(7.984, 4.8871, -2.3676);
-  kub328.scale.set(0.5148, 0.0124, 0.5964);
-  kub328.setRotation(1.5708, 0.0, 0.0);
+  kub328.position.set(7.98, 4.89, -2.37);
+  kub328.scale.set(0.51, 0.01, 0.6);
+  kub328.setRotation(1.57, 0, 0);
 
   const kub329Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub329 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub329.scale.set(0.0702, 0.2701, 0.4985);
-    kub329.position.set(6.4288 * i, 0, 0);
+    kub329.scale.set(0.07, 0.27, 0.5);
+    kub329.position.set(6.43 * i, 0, 0);
     kub329Gr.add(kub329);
   }
-  kub329Gr.setRotation(0.0, 3.1416, 0.0);
-  kub329Gr.position.set(8.4518, 2.5756, 1.8774);
+  kub329Gr.setRotation(0, 3.14, 0);
+  kub329Gr.position.set(8.45, 2.58, 1.88);
   const kub330Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub330 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub330.scale.set(0.0702, 0.1597, 0.5837);
-    kub330.position.set(6.4288 * i, 0, 0);
+    kub330.scale.set(0.07, 0.16, 0.58);
+    kub330.position.set(6.43 * i, 0, 0);
     kub330Gr.add(kub330);
   }
-  kub330Gr.setRotation(0.0, 3.1416, 0.0);
-  kub330Gr.position.set(8.4518, 3.0054, 1.7922);
+  kub330Gr.setRotation(0, 3.14, 0);
+  kub330Gr.position.set(8.45, 3.01, 1.79);
   const kub331Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub331 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub331.scale.set(0.0702, 0.1597, 0.2747);
-    kub331.position.set(6.4288 * i, 0, 0);
+    kub331.scale.set(0.07, 0.16, 0.27);
+    kub331.position.set(6.43 * i, 0, 0);
     kub331Gr.add(kub331);
   }
-  kub331Gr.setRotation(1.5708, 3.1416, 0.0);
-  kub331Gr.position.set(8.4518, 3.4397, 2.2163);
+  kub331Gr.setRotation(1.57, 3.14, 0);
+  kub331Gr.position.set(8.45, 3.44, 2.22);
   const kub332Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub332 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub332.scale.set(0.0702, 0.1264, 0.2747);
-    kub332.position.set(6.4288 * i, 0, 0);
+    kub332.scale.set(0.07, 0.13, 0.27);
+    kub332.position.set(6.43 * i, 0, 0);
     kub332Gr.add(kub332);
   }
-  kub332Gr.setRotation(3.1416, 3.1416, 0.0);
-  kub332Gr.position.set(8.4518, 3.8408, 2.1012);
+  kub332Gr.setRotation(3.14, 3.14, 0);
+  kub332Gr.position.set(8.45, 3.84, 2.1);
   const kub333Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub333 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub333.scale.set(0.0702, 0.1264, 0.3091);
-    kub333.position.set(6.4288 * i, 0, 0);
+    kub333.scale.set(0.07, 0.13, 0.31);
+    kub333.position.set(6.43 * i, 0, 0);
     kub333Gr.add(kub333);
   }
-  kub333Gr.setRotation(1.9635, 3.1416, 0.0);
-  kub333Gr.position.set(8.4518, 3.4772, 2.0616);
+  kub333Gr.setRotation(1.96, 3.14, 0);
+  kub333Gr.position.set(8.45, 3.48, 2.06);
   const kub334Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub334 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub334.scale.set(0.0702, 0.1519, 0.4307);
-    kub334.position.set(6.4288 * i, 0, 0);
+    kub334.scale.set(0.07, 0.15, 0.43);
+    kub334.position.set(6.43 * i, 0, 0);
     kub334Gr.add(kub334);
   }
-  kub334Gr.setRotation(0.3405, 3.1416, 0.0);
-  kub334Gr.position.set(8.4518, 3.1657, 1.6652);
+  kub334Gr.setRotation(0.34, 3.14, 0);
+  kub334Gr.position.set(8.45, 3.17, 1.67);
   const kub335Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub335 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub335.scale.set(0.0702, 0.1519, 0.2855);
-    kub335.position.set(6.4288 * i, 0, 0);
+    kub335.scale.set(0.07, 0.15, 0.29);
+    kub335.position.set(6.43 * i, 0, 0);
     kub335Gr.add(kub335);
   }
-  kub335Gr.setRotation(1.8909, 3.1416, 0.0);
-  kub335Gr.position.set(8.4518, 2.6225, 1.4425);
+  kub335Gr.setRotation(1.89, 3.14, 0);
+  kub335Gr.position.set(8.45, 2.62, 1.44);
   const kub336Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub336 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub336.scale.set(0.0702, 0.2701, 0.4985);
-    kub336.position.set(6.4288 * i, 0, 0);
+    kub336.scale.set(0.07, 0.27, 0.5);
+    kub336.position.set(6.43 * i, 0, 0);
     kub336Gr.add(kub336);
   }
-  kub336Gr.setRotation(0.0, 3.1416, 0.0);
-  kub336Gr.position.set(4.4491, 2.5756, 1.8774);
+  kub336Gr.setRotation(0, 3.14, 0);
+  kub336Gr.position.set(4.45, 2.58, 1.88);
   const kub337Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub337 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub337.scale.set(0.0702, 0.1597, 0.5837);
-    kub337.position.set(6.4288 * i, 0, 0);
+    kub337.scale.set(0.07, 0.16, 0.58);
+    kub337.position.set(6.43 * i, 0, 0);
     kub337Gr.add(kub337);
   }
-  kub337Gr.setRotation(0.0, 3.1416, 0.0);
-  kub337Gr.position.set(4.4491, 3.0054, 1.7922);
+  kub337Gr.setRotation(0, 3.14, 0);
+  kub337Gr.position.set(4.45, 3.01, 1.79);
   const kub338Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub338 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub338.scale.set(0.0702, 0.1597, 0.2747);
-    kub338.position.set(6.4288 * i, 0, 0);
+    kub338.scale.set(0.07, 0.16, 0.27);
+    kub338.position.set(6.43 * i, 0, 0);
     kub338Gr.add(kub338);
   }
-  kub338Gr.setRotation(1.5708, 3.1416, 0.0);
-  kub338Gr.position.set(4.4491, 3.4397, 2.2163);
+  kub338Gr.setRotation(1.57, 3.14, 0);
+  kub338Gr.position.set(4.45, 3.44, 2.22);
   const kub339Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub339 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub339.scale.set(0.0702, 0.1264, 0.2747);
-    kub339.position.set(6.4288 * i, 0, 0);
+    kub339.scale.set(0.07, 0.13, 0.27);
+    kub339.position.set(6.43 * i, 0, 0);
     kub339Gr.add(kub339);
   }
-  kub339Gr.setRotation(3.1416, 3.1416, 0.0);
-  kub339Gr.position.set(4.4491, 3.8408, 2.1012);
+  kub339Gr.setRotation(3.14, 3.14, 0);
+  kub339Gr.position.set(4.45, 3.84, 2.1);
   const kub340Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub340 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub340.scale.set(0.0702, 0.1264, 0.3091);
-    kub340.position.set(6.4288 * i, 0, 0);
+    kub340.scale.set(0.07, 0.13, 0.31);
+    kub340.position.set(6.43 * i, 0, 0);
     kub340Gr.add(kub340);
   }
-  kub340Gr.setRotation(1.9635, 3.1416, 0.0);
-  kub340Gr.position.set(4.4491, 3.4772, 2.0616);
+  kub340Gr.setRotation(1.96, 3.14, 0);
+  kub340Gr.position.set(4.45, 3.48, 2.06);
   const kub341Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub341 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub341.scale.set(0.0702, 0.1519, 0.4307);
-    kub341.position.set(6.4288 * i, 0, 0);
+    kub341.scale.set(0.07, 0.15, 0.43);
+    kub341.position.set(6.43 * i, 0, 0);
     kub341Gr.add(kub341);
   }
-  kub341Gr.setRotation(0.3405, 3.1416, 0.0);
-  kub341Gr.position.set(4.4491, 3.1657, 1.6652);
+  kub341Gr.setRotation(0.34, 3.14, 0);
+  kub341Gr.position.set(4.45, 3.17, 1.67);
   const kub342Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub342 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub342.scale.set(0.0702, 0.1519, 0.2855);
-    kub342.position.set(6.4288 * i, 0, 0);
+    kub342.scale.set(0.07, 0.15, 0.29);
+    kub342.position.set(6.43 * i, 0, 0);
     kub342Gr.add(kub342);
   }
-  kub342Gr.setRotation(1.8909, 3.1416, 0.0);
-  kub342Gr.position.set(4.4491, 2.6225, 1.4425);
-  const cyl034Gr = new THREE.Group();
+  kub342Gr.setRotation(1.89, 3.14, 0);
+  kub342Gr.position.set(4.45, 2.62, 1.44);
+  const cyl34Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl034 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl034.scale.set(0.039, 0.4636, 0.039);
-    cyl034.position.set(6.4289 * i, 0, 0);
-    cyl034Gr.add(cyl034);
+    const cyl34 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl34.scale.set(0.04, 0.46, 0.04);
+    cyl34.position.set(6.43 * i, 0, 0);
+    cyl34Gr.add(cyl34);
   }
-  cyl034Gr.setRotation(0.0, 3.1416, 0.0);
-  cyl034Gr.position.set(8.4518, 3.6063, 1.31);
-  const cyl035Gr = new THREE.Group();
+  cyl34Gr.setRotation(0, 3.14, 0);
+  cyl34Gr.position.set(8.45, 3.61, 1.31);
+  const cyl35Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl035 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl035.scale.set(0.039, 0.2801, 0.039);
-    cyl035.position.set(6.4297 * i, 0, 0);
-    cyl035Gr.add(cyl035);
+    const cyl35 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl35.scale.set(0.04, 0.28, 0.04);
+    cyl35.position.set(6.43 * i, 0, 0);
+    cyl35Gr.add(cyl35);
   }
-  cyl035Gr.setRotation(1.5708, 3.1416, 0.0);
-  cyl035Gr.position.set(8.4518, 3.8477, 1.5875);
-  const cyl036Gr = new THREE.Group();
+  cyl35Gr.setRotation(1.57, 3.14, 0);
+  cyl35Gr.position.set(8.45, 3.85, 1.59);
+  const cyl36Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl036 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl036.scale.set(0.0483, 0.033, 0.0483);
-    cyl036.position.set(6.4293 * i, 0, 0);
-    cyl036Gr.add(cyl036);
+    const cyl36 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl36.scale.set(0.05, 0.03, 0.05);
+    cyl36.position.set(6.43 * i, 0, 0);
+    cyl36Gr.add(cyl36);
   }
-  cyl036Gr.setRotation(1.5708, 3.1416, 0.0);
-  cyl036Gr.position.set(8.4518, 3.8477, 1.7936);
-  const cyl037Gr = new THREE.Group();
+  cyl36Gr.setRotation(1.57, 3.14, 0);
+  cyl36Gr.position.set(8.45, 3.85, 1.79);
+  const cyl37Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl037 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl037.scale.set(0.0543, 0.0831, 0.0543);
-    cyl037.position.set(6.4289 * i, 0, 0);
-    cyl037Gr.add(cyl037);
+    const cyl37 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl37.scale.set(0.05, 0.08, 0.05);
+    cyl37.position.set(6.43 * i, 0, 0);
+    cyl37Gr.add(cyl37);
   }
-  cyl037Gr.setRotation(0.0, 3.1416, 0.0);
-  cyl037Gr.position.set(8.4518, 3.2062, 1.31);
-  const sph005Gr = new THREE.Group();
+  cyl37Gr.setRotation(0, 3.14, 0);
+  cyl37Gr.position.set(8.45, 3.21, 1.31);
+  const sph5Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const sph005 = new THREE.Mesh(sphereGeo, MetalMaterial);
-    sph005.scale.set(0.0552, 0.0552, 0.0552);
-    sph005.position.set(6.4265 * i, 0, 0);
-    sph005Gr.add(sph005);
+    const sph5 = new THREE.Mesh(sphereGeo, MetalMaterial);
+    sph5.scale.set(0.06, 0.06, 0.06);
+    sph5.position.set(6.43 * i, 0, 0);
+    sph5Gr.add(sph5);
   }
-  sph005Gr.setRotation(0.0, 3.1416, 0.0);
-  sph005Gr.position.set(8.4518, 4.0978, 1.31);
-  const cyl038Gr = new THREE.Group();
+  sph5Gr.setRotation(0, 3.14, 0);
+  sph5Gr.position.set(8.45, 4.1, 1.31);
+  const cyl38Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl038 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl038.scale.set(0.039, 0.5356, 0.039);
-    cyl038.position.set(6.4297 * i, 0, 0);
-    cyl038Gr.add(cyl038);
+    const cyl38 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl38.scale.set(0.04, 0.54, 0.04);
+    cyl38.position.set(6.43 * i, 0, 0);
+    cyl38Gr.add(cyl38);
   }
-  cyl038Gr.setRotation(1.5708, 3.1416, 0.0);
-  cyl038Gr.position.set(4.4491, 4.0978, 1.8429);
-  const cyl040Gr = new THREE.Group();
+  cyl38Gr.setRotation(1.57, 3.14, 0);
+  cyl38Gr.position.set(4.45, 4.1, 1.84);
+  const cyl40Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl040 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl040.scale.set(0.039, 0.5356, 0.039);
-    cyl040.position.set(6.4297 * i, 0, 0);
-    cyl040Gr.add(cyl040);
+    const cyl40 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl40.scale.set(0.04, 0.54, 0.04);
+    cyl40.position.set(6.43 * i, 0, 0);
+    cyl40Gr.add(cyl40);
   }
-  cyl040Gr.setRotation(1.5708, 3.1416, 0.0);
-  cyl040Gr.position.set(8.4518, 4.0978, 1.8429);
-  const cyl041Gr = new THREE.Group();
+  cyl40Gr.setRotation(1.57, 3.14, 0);
+  cyl40Gr.position.set(8.45, 4.1, 1.84);
+  const cyl41Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl041 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl041.scale.set(0.0508, 0.0545, 0.0508);
-    cyl041.position.set(6.4289 * i, 0, 0);
-    cyl041Gr.add(cyl041);
+    const cyl41 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl41.scale.set(0.05, 0.05, 0.05);
+    cyl41.position.set(6.43 * i, 0, 0);
+    cyl41Gr.add(cyl41);
   }
-  cyl041Gr.setRotation(1.5708, 3.1416, 0.0);
-  cyl041Gr.position.set(4.4491, 4.0978, 2.3241);
-  const sph006Gr = new THREE.Group();
+  cyl41Gr.setRotation(1.57, 3.14, 0);
+  cyl41Gr.position.set(4.45, 4.1, 2.32);
+  const sph6Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const sph006 = new THREE.Mesh(sphereGeo, MetalMaterial);
-    sph006.scale.set(0.0552, 0.0552, 0.0552);
-    sph006.position.set(6.4309 * i, 0, 0);
-    sph006Gr.add(sph006);
+    const sph6 = new THREE.Mesh(sphereGeo, MetalMaterial);
+    sph6.scale.set(0.06, 0.06, 0.06);
+    sph6.position.set(6.43 * i, 0, 0);
+    sph6Gr.add(sph6);
   }
-  sph006Gr.setRotation(0.0, 3.1416, 0.0);
-  sph006Gr.position.set(4.4491, 4.0978, 1.31);
+  sph6Gr.setRotation(0, 3.14, 0);
+  sph6Gr.position.set(4.45, 4.1, 1.31);
   const kub343Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub343 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-    kub343.scale.set(2.0087, 0.071, 0.5573);
-    kub343.position.set(6.4279 * i, 0, 0);
+    kub343.scale.set(2.01, 0.07, 0.56);
+    kub343.position.set(6.43 * i, 0, 0);
     kub343Gr.add(kub343);
   }
-  kub343Gr.setRotation(3.1416, 3.1416, 0.0);
-  kub343Gr.position.set(6.4504, 3.067, 1.8337);
+  kub343Gr.setRotation(3.14, 3.14, 0);
+  kub343Gr.position.set(6.45, 3.07, 1.83);
   const kub344Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub344 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-    kub344.scale.set(2.0087, 0.071, 0.4356);
-    kub344.position.set(6.4279 * i, 0, 0);
+    kub344.scale.set(2.01, 0.07, 0.44);
+    kub344.position.set(6.43 * i, 0, 0);
     kub344Gr.add(kub344);
   }
-  kub344Gr.setRotation(4.465, 3.1416, 0.0);
-  kub344Gr.position.set(6.4504, 3.4491, 2.2104);
+  kub344Gr.setRotation(4.46, 3.14, 0);
+  kub344Gr.position.set(6.45, 3.45, 2.21);
   const kub345Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub345 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-    kub345.scale.set(2.0087, 0.071, 0.4033);
-    kub345.position.set(6.4279 * i, 0, 0);
+    kub345.scale.set(2.01, 0.07, 0.4);
+    kub345.position.set(6.43 * i, 0, 0);
     kub345Gr.add(kub345);
   }
-  kub345Gr.setRotation(1.8968, 3.1416, 0.0);
-  kub345Gr.position.set(6.4504, 2.6874, 1.5059);
-  const cyl042Gr = new THREE.Group();
+  kub345Gr.setRotation(1.9, 3.14, 0);
+  kub345Gr.position.set(6.45, 2.69, 1.51);
+  const cyl42Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl042 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl042.scale.set(0.039, 0.4636, 0.039);
-    cyl042.position.set(6.4289 * i, 0, 0);
-    cyl042Gr.add(cyl042);
+    const cyl42 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl42.scale.set(0.04, 0.46, 0.04);
+    cyl42.position.set(6.43 * i, 0, 0);
+    cyl42Gr.add(cyl42);
   }
-  cyl042Gr.setRotation(0.0, 3.1416, 0.0);
-  cyl042Gr.position.set(4.4491, 3.6063, 1.31);
-  const cyl043Gr = new THREE.Group();
+  cyl42Gr.setRotation(0, 3.14, 0);
+  cyl42Gr.position.set(4.45, 3.61, 1.31);
+  const cyl43Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl043 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl043.scale.set(0.039, 0.2801, 0.039);
-    cyl043.position.set(6.4297 * i, 0, 0);
-    cyl043Gr.add(cyl043);
+    const cyl43 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl43.scale.set(0.04, 0.28, 0.04);
+    cyl43.position.set(6.43 * i, 0, 0);
+    cyl43Gr.add(cyl43);
   }
-  cyl043Gr.setRotation(1.5708, 3.1416, 0.0);
-  cyl043Gr.position.set(4.4491, 3.8477, 1.5875);
-  const cyl044Gr = new THREE.Group();
+  cyl43Gr.setRotation(1.57, 3.14, 0);
+  cyl43Gr.position.set(4.45, 3.85, 1.59);
+  const cyl44Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl044 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl044.scale.set(0.0483, 0.033, 0.0483);
-    cyl044.position.set(6.4283 * i, 0, 0);
-    cyl044Gr.add(cyl044);
+    const cyl44 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl44.scale.set(0.05, 0.03, 0.05);
+    cyl44.position.set(6.43 * i, 0, 0);
+    cyl44Gr.add(cyl44);
   }
-  cyl044Gr.setRotation(1.5708, 3.1416, 0.0);
-  cyl044Gr.position.set(4.4491, 3.8477, 1.7936);
-  const cyl045Gr = new THREE.Group();
+  cyl44Gr.setRotation(1.57, 3.14, 0);
+  cyl44Gr.position.set(4.45, 3.85, 1.79);
+  const cyl45Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
-    const cyl045 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl045.scale.set(0.0543, 0.0831, 0.0543);
-    cyl045.position.set(6.4289 * i, 0, 0);
-    cyl045Gr.add(cyl045);
+    const cyl45 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl45.scale.set(0.05, 0.08, 0.05);
+    cyl45.position.set(6.43 * i, 0, 0);
+    cyl45Gr.add(cyl45);
   }
-  cyl045Gr.setRotation(0.0, 3.1416, 0.0);
-  cyl045Gr.position.set(4.4491, 3.2062, 1.31);
+  cyl45Gr.setRotation(0, 3.14, 0);
+  cyl45Gr.position.set(4.45, 3.21, 1.31);
   const kub346 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-  kub346.position.set(1.5609, 4.8871, 2.3723);
-  kub346.scale.set(0.5148, 0.0124, 0.5964);
-  kub346.setRotation(1.5708, 0.0, 0.0);
+  kub346.position.set(1.56, 4.89, 2.37);
+  kub346.scale.set(0.51, 0.01, 0.6);
+  kub346.setRotation(1.57, 0, 0);
 
   const kub347 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub347.position.set(0.0113, 5.8328, -2.3649);
-  kub347.scale.set(1.973, 0.0148, 0.1951);
-  kub347.setRotation(1.5708, 0.0, 0.0);
+  kub347.position.set(0.01, 5.83, -2.36);
+  kub347.scale.set(1.97, 0.01, 0.2);
+  kub347.setRotation(1.57, 0, 0);
 
-  const cyl046 = new THREE.Mesh(cylinderGeo, PurpleMaterial);
-  cyl046.position.set(-1.7525, 5.8328, -2.3461);
-  cyl046.scale.set(0.1498, 0.0122, 0.1498);
-  cyl046.setRotation(1.5708, 0.0, 0.0);
+  const cyl46 = new THREE.Mesh(cylinderGeo, PurpleMaterial);
+  cyl46.position.set(-1.75, 5.83, -2.35);
+  cyl46.scale.set(0.15, 0.01, 0.15);
+  cyl46.setRotation(1.57, 0, 0);
 
   const kub348 = new THREE.Mesh(boxGeo, PurpleMaterial);
-  kub348.position.set(0.0113, 5.8328, -2.3606);
-  kub348.scale.set(1.8175, 0.0148, 0.0586);
-  kub348.setRotation(1.5708, 0.0, 0.0);
+  kub348.position.set(0.01, 5.83, -2.36);
+  kub348.scale.set(1.82, 0.01, 0.06);
+  kub348.setRotation(1.57, 0, 0);
 
-  const cyl047 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
-  cyl047.position.set(0.5851, 5.8328, -2.3461);
-  cyl047.scale.set(0.1489, 0.0121, 0.1489);
-  cyl047.setRotation(1.6353, 0.0, -4.7124);
+  const cyl47 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
+  cyl47.position.set(0.59, 5.83, -2.35);
+  cyl47.scale.set(0.15, 0.01, 0.15);
+  cyl47.setRotation(1.64, 0, -4.71);
 
-  const cyl048 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
-  cyl048.position.set(-0.5837, 5.8328, -2.3461);
-  cyl048.scale.set(0.1489, 0.0121, 0.1489);
-  cyl048.setRotation(1.4952, 0.0, -1.5708);
+  const cyl48 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
+  cyl48.position.set(-0.58, 5.83, -2.35);
+  cyl48.scale.set(0.15, 0.01, 0.15);
+  cyl48.setRotation(1.5, 0, -1.57);
 
   const kub349 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub349.position.set(6.4755, 5.8328, 2.3389);
-  kub349.scale.set(1.973, 0.0148, 0.1951);
-  kub349.setRotation(1.5708, 3.1416, 0.0);
+  kub349.position.set(6.48, 5.83, 2.34);
+  kub349.scale.set(1.97, 0.01, 0.2);
+  kub349.setRotation(1.57, 3.14, 0);
 
-  const cyl049 = new THREE.Mesh(cylinderGeo, PurpleMaterial);
-  cyl049.position.set(8.2393, 5.8328, 2.3201);
-  cyl049.scale.set(0.1498, 0.0122, 0.1498);
-  cyl049.setRotation(1.5708, 3.1416, 0.0);
+  const cyl49 = new THREE.Mesh(cylinderGeo, PurpleMaterial);
+  cyl49.position.set(8.24, 5.83, 2.32);
+  cyl49.scale.set(0.15, 0.01, 0.15);
+  cyl49.setRotation(1.57, 3.14, 0);
 
   const kub350 = new THREE.Mesh(boxGeo, PurpleMaterial);
-  kub350.position.set(6.4755, 5.8328, 2.3346);
-  kub350.scale.set(1.8175, 0.0148, 0.0586);
-  kub350.setRotation(1.5708, 3.1416, 0.0);
+  kub350.position.set(6.48, 5.83, 2.33);
+  kub350.scale.set(1.82, 0.01, 0.06);
+  kub350.setRotation(1.57, 3.14, 0);
 
-  const cyl050 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
-  cyl050.position.set(5.9017, 5.8328, 2.3201);
-  cyl050.scale.set(0.1489, 0.0121, 0.1489);
-  cyl050.setRotation(4.7769, 0.0, -4.7124);
+  const cyl50 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
+  cyl50.position.set(5.9, 5.83, 2.32);
+  cyl50.scale.set(0.15, 0.01, 0.15);
+  cyl50.setRotation(4.78, 0, -4.71);
 
-  const cyl051 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
-  cyl051.position.set(7.0705, 5.8328, 2.3201);
-  cyl051.scale.set(0.1489, 0.0121, 0.1489);
-  cyl051.setRotation(-1.6464, 0.0, -1.5708);
+  const cyl51 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
+  cyl51.position.set(7.07, 5.83, 2.32);
+  cyl51.scale.set(0.15, 0.01, 0.15);
+  cyl51.setRotation(-1.65, 0, -1.57);
 
   const kub351 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub351.position.set(-6.4193, 5.8328, 2.3389);
-  kub351.scale.set(1.973, 0.0148, 0.1951);
-  kub351.setRotation(1.5708, 3.1416, 0.0);
+  kub351.position.set(-6.42, 5.83, 2.34);
+  kub351.scale.set(1.97, 0.01, 0.2);
+  kub351.setRotation(1.57, 3.14, 0);
 
-  const cyl052 = new THREE.Mesh(cylinderGeo, PurpleMaterial);
-  cyl052.position.set(-4.6554, 5.8328, 2.3201);
-  cyl052.scale.set(0.1498, 0.0122, 0.1498);
-  cyl052.setRotation(1.5708, 3.1416, 0.0);
+  const cyl52 = new THREE.Mesh(cylinderGeo, PurpleMaterial);
+  cyl52.position.set(-4.66, 5.83, 2.32);
+  cyl52.scale.set(0.15, 0.01, 0.15);
+  cyl52.setRotation(1.57, 3.14, 0);
 
   const kub352 = new THREE.Mesh(boxGeo, PurpleMaterial);
-  kub352.position.set(-6.4193, 5.8328, 2.3346);
-  kub352.scale.set(1.8175, 0.0148, 0.0586);
-  kub352.setRotation(1.5708, 3.1416, 0.0);
+  kub352.position.set(-6.42, 5.83, 2.33);
+  kub352.scale.set(1.82, 0.01, 0.06);
+  kub352.setRotation(1.57, 3.14, 0);
 
-  const cyl053 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
-  cyl053.position.set(-6.993, 5.8328, 2.3201);
-  cyl053.scale.set(0.1489, 0.0121, 0.1489);
-  cyl053.setRotation(4.7769, 0.0, -4.7124);
+  const cyl53 = new THREE.Mesh(cylinderGeo, Green_PictureMaterial);
+  cyl53.position.set(-6.99, 5.83, 2.32);
+  cyl53.scale.set(0.15, 0.01, 0.15);
+  cyl53.setRotation(4.78, 0, -4.71);
 
-  const cyl054 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
-  cyl054.position.set(-5.8242, 5.8328, 2.3201);
-  cyl054.scale.set(0.1489, 0.0121, 0.1489);
-  cyl054.setRotation(-1.6464, 0.0, -1.5708);
+  const cyl54 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
+  cyl54.position.set(-5.82, 5.83, 2.32);
+  cyl54.scale.set(0.15, 0.01, 0.15);
+  cyl54.setRotation(-1.65, 0, -1.57);
 
-  const cyl055 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl055.position.set(0.0127, 6.1242, -0.7744);
-  cyl055.scale.set(0.039, 12.4875, 0.039);
-  cyl055.setRotation(1.5708, 1.5708, 0.0);
+  const cyl55 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl55.position.set(0.01, 6.12, -0.77);
+  cyl55.scale.set(0.04, 12.5, 0.04);
+  cyl55.setRotation(1.57, 1.57, 0);
 
-  const cyl056 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl056.position.set(0.0127, 6.1242, 0.786);
-  cyl056.scale.set(0.039, 12.4875, 0.039);
-  cyl056.setRotation(1.5708, 1.5708, 0.0);
+  const cyl56 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl56.position.set(0.01, 6.12, 0.79);
+  cyl56.scale.set(0.04, 12.5, 0.04);
+  cyl56.setRotation(1.57, 1.57, 0);
 
-  const cyl057Gr = new THREE.Group();
+  const cyl57Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const cyl057 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl057.scale.set(0.0389, 0.2166, 0.0389);
-    cyl057.position.set(5.5554 * i, 0, 0);
-    cyl057Gr.add(cyl057);
+    const cyl57 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl57.scale.set(0.04, 0.22, 0.04);
+    cyl57.position.set(5.56 * i, 0, 0);
+    cyl57Gr.add(cyl57);
   }
-  cyl057Gr.position.set(-10.8298, 6.3231, -0.7744);
-  const cyl058Gr = new THREE.Group();
+  cyl57Gr.position.set(-10.8, 6.32, -0.77);
+  const cyl58Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const cyl058 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-    cyl058.scale.set(0.0389, 0.2162, 0.0389);
-    cyl058.position.set(5.5456 * i, 0, 0);
-    cyl058Gr.add(cyl058);
+    const cyl58 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+    cyl58.scale.set(0.04, 0.22, 0.04);
+    cyl58.position.set(5.55 * i, 0, 0);
+    cyl58Gr.add(cyl58);
   }
-  cyl058Gr.position.set(-10.8298, 6.3231, 0.7876);
+  cyl58Gr.position.set(-10.8, 6.32, 0.79);
   const kub353 = new THREE.Mesh(boxGeo, FloorTileMaterial);
-  kub353.position.set(0.0127, 6.3994, 1.6559);
-  kub353.scale.set(12.5105, 0.1214, 0.8001);
-  kub353.setRotation(-0.2859, 3.1416, 0.0);
+  kub353.position.set(0.01, 6.4, 1.66);
+  kub353.scale.set(12.5, 0.12, 0.8);
+  kub353.setRotation(-0.29, 3.14, 0);
 
   const kub116 = new THREE.Mesh(boxGeo, FloorTileMaterial);
-  kub116.position.set(0.0127, 6.725, 0.7325);
-  kub116.scale.set(12.5105, 0.1214, 0.2164);
-  kub116.setRotation(1.5708, 0.0, 0.0);
+  kub116.position.set(0.01, 6.72, 0.73);
+  kub116.scale.set(12.5, 0.12, 0.22);
+  kub116.setRotation(1.57, 0, 0);
 
   const kub145 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-  kub145.position.set(0.0127, 6.725, 0.6138);
-  kub145.scale.set(12.4539, 0.0107, 0.1974);
-  kub145.setRotation(1.5708, 0.0, 0.0);
+  kub145.position.set(0.01, 6.72, 0.61);
+  kub145.scale.set(12.5, 0.01, 0.2);
+  kub145.setRotation(1.57, 0, 0);
 
   const out = new THREE.Group();
   out.add(
     kub307,
     kub308,
     kub309,
-    cyl021Gr,
-    sph002Gr,
+    cyl21Gr,
+    sph2Gr,
     kub310Gr,
     kub311Gr,
     kub312Gr,
@@ -3040,23 +3041,23 @@ function DrawVagonDecorations() {
     kub321Gr,
     kub322Gr,
     kub323Gr,
-    cyl022Gr,
-    cyl023Gr,
-    cyl024Gr,
-    cyl025Gr,
-    sph003Gr,
-    cyl026Gr,
-    cyl027Gr,
-    cyl028Gr,
-    cyl029Gr,
-    sph004Gr,
+    cyl22Gr,
+    cyl23Gr,
+    cyl24Gr,
+    cyl25Gr,
+    sph3Gr,
+    cyl26Gr,
+    cyl27Gr,
+    cyl28Gr,
+    cyl29Gr,
+    sph4Gr,
     kub324Gr,
     kub325Gr,
     kub326Gr,
-    cyl030Gr,
-    cyl031Gr,
-    cyl032Gr,
-    cyl033Gr,
+    cyl30Gr,
+    cyl31Gr,
+    cyl32Gr,
+    cyl33Gr,
     kub327,
     kub328,
     kub329Gr,
@@ -3073,42 +3074,42 @@ function DrawVagonDecorations() {
     kub340Gr,
     kub341Gr,
     kub342Gr,
-    cyl034Gr,
-    cyl035Gr,
-    cyl036Gr,
-    cyl037Gr,
-    sph005Gr,
-    cyl038Gr,
-    cyl040Gr,
-    cyl041Gr,
-    sph006Gr,
+    cyl34Gr,
+    cyl35Gr,
+    cyl36Gr,
+    cyl37Gr,
+    sph5Gr,
+    cyl38Gr,
+    cyl40Gr,
+    cyl41Gr,
+    sph6Gr,
     kub343Gr,
     kub344Gr,
     kub345Gr,
-    cyl042Gr,
-    cyl043Gr,
-    cyl044Gr,
-    cyl045Gr,
+    cyl42Gr,
+    cyl43Gr,
+    cyl44Gr,
+    cyl45Gr,
     kub346,
     kub347,
-    cyl046,
+    cyl46,
     kub348,
-    cyl047,
-    cyl048,
+    cyl47,
+    cyl48,
     kub349,
-    cyl049,
+    cyl49,
     kub350,
-    cyl050,
-    cyl051,
+    cyl50,
+    cyl51,
     kub351,
-    cyl052,
+    cyl52,
     kub352,
-    cyl053,
-    cyl054,
-    cyl055,
-    cyl056,
-    cyl057Gr,
-    cyl058Gr,
+    cyl53,
+    cyl54,
+    cyl55,
+    cyl56,
+    cyl57Gr,
+    cyl58Gr,
     kub353,
     kub116,
     kub145,
@@ -3119,46 +3120,46 @@ function DrawVagonDecorations() {
 
 function DrawVagon() {
   const ColoumnMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0, 0.0, 0.0),
+    color: new THREE.Color(0, 0, 0),
     roughness: 0.5,
   });
   const RoofTilesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-    metalness: 1.0,
-    emissive: new THREE.Color(1.0, 1.0, 1.0),
+    color: new THREE.Color(1, 1, 1),
+    metalness: 1,
+    emissive: new THREE.Color(1, 1, 1),
   });
   const Blue_PictureMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.1467, 0.2457, 0.8),
+    color: new THREE.Color(0.15, 0.25, 0.8),
     roughness: 0.5,
   });
   const Floor_StripesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 0.5225, 0.0),
+    color: new THREE.Color(1, 0.52, 0),
   });
   const Train_blueMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0343, 0.1009, 0.652),
+    color: new THREE.Color(0.03, 0.1, 0.65),
     roughness: 0.5,
   });
   const GlassMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.2227, 0.241, 0.3264),
+    color: new THREE.Color(0.22, 0.24, 0.33),
     transparent: true,
-    opacity: 0.315,
+    opacity: 0.32,
     roughness: 0.5,
   });
   const Ceiling_trainMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.3757, 0.298, 0.0955),
-    roughness: 0.119,
+    color: new THREE.Color(0.38, 0.3, 0.1),
+    roughness: 0.12,
   });
   const Floor_trainMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.3506, 0.1574, 0.0969),
-    metalness: 1.0,
-    roughness: 0.5397,
+    color: new THREE.Color(0.35, 0.16, 0.1),
+    metalness: 1,
+    roughness: 0.54,
   });
   const WhiteDotsMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
+    color: new THREE.Color(1, 1, 1),
   });
   const MetalMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.477, 0.477),
-    metalness: 1.0,
+    color: new THREE.Color(0.48, 0.48, 0.48),
+    metalness: 1,
     roughness: 0.5,
   });
 
@@ -3166,1638 +3167,1638 @@ function DrawVagon() {
   const cylinderGeo = new THREE.CylinderGeometry(1, 1, 2, 32);
   const sphereGeo = new THREE.SphereGeometry(1, 32, 16);
 
-  const cylwheel_008 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cylwheel_008.scale.set(0.8096, 0.1641, 0.8096);
-  cylwheel_008.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_008MZ = cylwheel_008.clone();
-  cylwheel_008MZ.updateMatrixWorld(true);
-  cylwheel_008.position.set(0, 0, -2.124);
-  cylwheel_008MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_008MZ.position.set(0, 0, 2.124);
-  const cylwheel_008MrZ = new THREE.Group();
-  cylwheel_008MrZ.add(cylwheel_008, cylwheel_008MZ);
-  cylwheel_008MrZ.position.set(-6.1348, 0.7716, 0);
-  const cylwheel_009 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
-  cylwheel_009.scale.set(0.509, 0.1032, 0.509);
-  cylwheel_009.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_009MZ = cylwheel_009.clone();
-  cylwheel_009MZ.updateMatrixWorld(true);
-  cylwheel_009.position.set(0, 0, -2.3912);
-  cylwheel_009MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_009MZ.position.set(0, 0, 2.3912);
-  const cylwheel_009MrZ = new THREE.Group();
-  cylwheel_009MrZ.add(cylwheel_009, cylwheel_009MZ);
-  cylwheel_009MrZ.position.set(-6.1348, 0.7716, 0);
-  const cylwheel_010 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cylwheel_010.scale.set(0.8096, 0.1641, 0.8096);
-  cylwheel_010.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_010MZ = cylwheel_010.clone();
-  cylwheel_010MZ.updateMatrixWorld(true);
-  cylwheel_010.position.set(0, 0, -2.124);
-  cylwheel_010MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_010MZ.position.set(0, 0, 2.124);
-  const cylwheel_010MrZ = new THREE.Group();
-  cylwheel_010MrZ.add(cylwheel_010, cylwheel_010MZ);
-  cylwheel_010MrZ.position.set(-10.4008, 0.7716, 0);
-  const cylwheel_011 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
-  cylwheel_011.scale.set(0.509, 0.1032, 0.509);
-  cylwheel_011.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_011MZ = cylwheel_011.clone();
-  cylwheel_011MZ.updateMatrixWorld(true);
-  cylwheel_011.position.set(0, 0, -2.3912);
-  cylwheel_011MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_011MZ.position.set(0, 0, 2.3912);
-  const cylwheel_011MrZ = new THREE.Group();
-  cylwheel_011MrZ.add(cylwheel_011, cylwheel_011MZ);
-  cylwheel_011MrZ.position.set(-10.4008, 0.7716, 0);
+  const cylwheel_8 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cylwheel_8.scale.set(0.81, 0.16, 0.81);
+  cylwheel_8.setRotation(1.57, 0, 0);
+  const cylwheel_8MZ = cylwheel_8.clone();
+  cylwheel_8MZ.updateMatrixWorld(true);
+  cylwheel_8.position.set(0, 0, -2.12);
+  cylwheel_8MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_8MZ.position.set(0, 0, 2.12);
+  const cylwheel_8MrZ = new THREE.Group();
+  cylwheel_8MrZ.add(cylwheel_8, cylwheel_8MZ);
+  cylwheel_8MrZ.position.set(-6.13, 0.77, 0);
+  const cylwheel_9 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
+  cylwheel_9.scale.set(0.51, 0.1, 0.51);
+  cylwheel_9.setRotation(1.57, 0, 0);
+  const cylwheel_9MZ = cylwheel_9.clone();
+  cylwheel_9MZ.updateMatrixWorld(true);
+  cylwheel_9.position.set(0, 0, -2.39);
+  cylwheel_9MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_9MZ.position.set(0, 0, 2.39);
+  const cylwheel_9MrZ = new THREE.Group();
+  cylwheel_9MrZ.add(cylwheel_9, cylwheel_9MZ);
+  cylwheel_9MrZ.position.set(-6.13, 0.77, 0);
+  const cylwheel_10 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cylwheel_10.scale.set(0.81, 0.16, 0.81);
+  cylwheel_10.setRotation(1.57, 0, 0);
+  const cylwheel_10MZ = cylwheel_10.clone();
+  cylwheel_10MZ.updateMatrixWorld(true);
+  cylwheel_10.position.set(0, 0, -2.12);
+  cylwheel_10MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_10MZ.position.set(0, 0, 2.12);
+  const cylwheel_10MrZ = new THREE.Group();
+  cylwheel_10MrZ.add(cylwheel_10, cylwheel_10MZ);
+  cylwheel_10MrZ.position.set(-10.4, 0.77, 0);
+  const cylwheel_11 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
+  cylwheel_11.scale.set(0.51, 0.1, 0.51);
+  cylwheel_11.setRotation(1.57, 0, 0);
+  const cylwheel_11MZ = cylwheel_11.clone();
+  cylwheel_11MZ.updateMatrixWorld(true);
+  cylwheel_11.position.set(0, 0, -2.39);
+  cylwheel_11MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_11MZ.position.set(0, 0, 2.39);
+  const cylwheel_11MrZ = new THREE.Group();
+  cylwheel_11MrZ.add(cylwheel_11, cylwheel_11MZ);
+  cylwheel_11MrZ.position.set(-10.4, 0.77, 0);
   const kub307 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub307.position.set(-0.0006, 1.9794, -0.0);
-  kub307.scale.set(12.5898, 0.2671, 2.4701);
+  kub307.position.set(-0, 1.98, 0);
+  kub307.scale.set(12.6, 0.27, 2.47);
 
   const kub308 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub308.scale.set(0.1708, 0.4672, 0.1996);
-  kub308.setRotation(0.0, 0.0, -0.0);
+  kub308.scale.set(0.17, 0.47, 0.2);
+  kub308.setRotation(0, 0, 0);
   const kub308MZ = kub308.clone();
   kub308MZ.updateMatrixWorld(true);
-  kub308.position.set(0, 0, -1.1446);
+  kub308.position.set(0, 0, -1.14);
   kub308MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub308MZ.position.set(0, 0, 1.1446);
+  kub308MZ.position.set(0, 0, 1.14);
   const kub308MrZ = new THREE.Group();
   kub308MrZ.add(kub308, kub308MZ);
-  kub308MrZ.position.set(-6.1348, 1.2844, 0);
+  kub308MrZ.position.set(-6.13, 1.28, 0);
   const kub309 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub309.scale.set(0.1708, 0.2173, 0.1996);
-  kub309.setRotation(0.0, 0.0, -0.0);
+  kub309.scale.set(0.17, 0.22, 0.2);
+  kub309.setRotation(0, 0, 0);
   const kub309MZ = kub309.clone();
   kub309MZ.updateMatrixWorld(true);
-  kub309.position.set(0, 0, -1.763);
+  kub309.position.set(0, 0, -1.76);
   kub309MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub309MZ.position.set(0, 0, 1.7629);
+  kub309MZ.position.set(0, 0, 1.76);
   const kub309MrZ = new THREE.Group();
   kub309MrZ.add(kub309, kub309MZ);
-  kub309MrZ.position.set(-6.1348, 0.7716, 0);
+  kub309MrZ.position.set(-6.13, 0.77, 0);
   const kub310 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub310.scale.set(0.1708, 0.1639, 0.3627);
-  kub310.setRotation(-0.5678, 0.0, 0.0);
+  kub310.scale.set(0.17, 0.16, 0.36);
+  kub310.setRotation(-0.57, 0, 0);
   const kub310MZ = kub310.clone();
   kub310MZ.updateMatrixWorld(true);
-  kub310.position.set(0, 0, -1.3783);
+  kub310.position.set(0, 0, -1.38);
   kub310MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub310MZ.position.set(0, 0, 1.3783);
+  kub310MZ.position.set(0, 0, 1.38);
   const kub310MrZ = new THREE.Group();
   kub310MrZ.add(kub310, kub310MZ);
-  kub310MrZ.position.set(-6.1348, 0.9047, 0);
-  const cyl021Gr = new THREE.Group();
+  kub310MrZ.position.set(-6.13, 0.9, 0);
+  const cyl21Gr = new THREE.Group();
   for (let i = 0; i < 4; i++) {
-    const cyl021 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-    cyl021.scale.set(0.1218, 0.3642, 0.1218);
-    cyl021.position.set(0.4874 * i, 0, 0);
-    cyl021Gr.add(cyl021);
+    const cyl21 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+    cyl21.scale.set(0.12, 0.36, 0.12);
+    cyl21.position.set(0.49 * i, 0, 0);
+    cyl21Gr.add(cyl21);
   }
-  cyl021Gr.setRotation(0.0, 0.0, -0.0);
-  const cyl021GroupMZ = cyl021Gr.clone();
-  cyl021GroupMZ.updateMatrixWorld(true);
-  cyl021Gr.position.set(0, 0, -2.102);
-  cyl021GroupMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl021GroupMZ.position.set(0, 0, 2.102);
-  const cyl021GroupMrZ = new THREE.Group();
-  cyl021GroupMrZ.add(cyl021Gr, cyl021GroupMZ);
-  cyl021GroupMrZ.position.set(-8.9801, 1.0627, 0);
+  cyl21Gr.setRotation(0, 0, 0);
+  const cyl21GroupMZ = cyl21Gr.clone();
+  cyl21GroupMZ.updateMatrixWorld(true);
+  cyl21Gr.position.set(0, 0, -2.1);
+  cyl21GroupMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl21GroupMZ.position.set(0, 0, 2.1);
+  const cyl21GroupMrZ = new THREE.Group();
+  cyl21GroupMrZ.add(cyl21Gr, cyl21GroupMZ);
+  cyl21GroupMrZ.position.set(-8.98, 1.06, 0);
   const kub311 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub311.scale.set(2.8418, 0.1639, 0.0489);
-  kub311.setRotation(0.0, 0.0, -0.0);
+  kub311.scale.set(2.84, 0.16, 0.05);
+  kub311.setRotation(0, 0, 0);
   const kub311MZ = kub311.clone();
   kub311MZ.updateMatrixWorld(true);
-  kub311.position.set(0, 0, -1.8431);
+  kub311.position.set(0, 0, -1.84);
   kub311MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub311MZ.position.set(0, 0, 1.8431);
+  kub311MZ.position.set(0, 0, 1.84);
   const kub311MrZ = new THREE.Group();
   kub311MrZ.add(kub311, kub311MZ);
-  kub311MrZ.position.set(-8.2678, 0.7884, 0);
+  kub311MrZ.position.set(-8.27, 0.79, 0);
   const kub312 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub312.scale.set(0.1708, 0.1639, 0.3627);
-  kub312.setRotation(-0.5678, 0.0, 0.0);
+  kub312.scale.set(0.17, 0.16, 0.36);
+  kub312.setRotation(-0.57, 0, 0);
   const kub312MZ = kub312.clone();
   kub312MZ.updateMatrixWorld(true);
-  kub312.position.set(0, 0, -1.3783);
+  kub312.position.set(0, 0, -1.38);
   kub312MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub312MZ.position.set(0, 0, 1.3783);
+  kub312MZ.position.set(0, 0, 1.38);
   const kub312MrZ = new THREE.Group();
   kub312MrZ.add(kub312, kub312MZ);
-  kub312MrZ.position.set(-10.4008, 0.9047, 0);
+  kub312MrZ.position.set(-10.4, 0.9, 0);
   const kub313 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub313.scale.set(0.1708, 0.4672, 0.1996);
-  kub313.setRotation(0.0, 0.0, -0.0);
+  kub313.scale.set(0.17, 0.47, 0.2);
+  kub313.setRotation(0, 0, 0);
   const kub313MZ = kub313.clone();
   kub313MZ.updateMatrixWorld(true);
-  kub313.position.set(0, 0, -1.1446);
+  kub313.position.set(0, 0, -1.14);
   kub313MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub313MZ.position.set(0, 0, 1.1446);
+  kub313MZ.position.set(0, 0, 1.14);
   const kub313MrZ = new THREE.Group();
   kub313MrZ.add(kub313, kub313MZ);
-  kub313MrZ.position.set(-10.4008, 1.2844, 0);
+  kub313MrZ.position.set(-10.4, 1.28, 0);
   const kub314 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub314.scale.set(2.8418, 0.1639, 0.0489);
-  kub314.setRotation(0.0, 0.0, -0.0);
+  kub314.scale.set(2.84, 0.16, 0.05);
+  kub314.setRotation(0, 0, 0);
   const kub314MZ = kub314.clone();
   kub314MZ.updateMatrixWorld(true);
-  kub314.position.set(0, 0, -2.3571);
+  kub314.position.set(0, 0, -2.36);
   kub314MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub314MZ.position.set(0, 0, 2.357);
+  kub314MZ.position.set(0, 0, 2.36);
   const kub314MrZ = new THREE.Group();
   kub314MrZ.add(kub314, kub314MZ);
-  kub314MrZ.position.set(-8.2678, 1.5807, 0);
+  kub314MrZ.position.set(-8.27, 1.58, 0);
   const kub315 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub315.scale.set(1.0521, 0.1639, 0.0812);
-  kub315.setRotation(0.0, 0.0, -0.0);
+  kub315.scale.set(1.05, 0.16, 0.08);
+  kub315.setRotation(0, 0, 0);
   const kub315MZ = kub315.clone();
   kub315MZ.updateMatrixWorld(true);
-  kub315.position.set(0, 0, -2.3912);
+  kub315.position.set(0, 0, -2.39);
   kub315MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub315MZ.position.set(0, 0, 2.3912);
+  kub315MZ.position.set(0, 0, 2.39);
   const kub315MrZ = new THREE.Group();
   kub315MrZ.add(kub315, kub315MZ);
-  kub315MrZ.position.set(-8.2678, 0.7716, 0);
+  kub315MrZ.position.set(-8.27, 0.77, 0);
   const kub316 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub316.scale.set(0.1708, 0.2173, 0.1996);
-  kub316.setRotation(0.0, 0.0, -0.0);
+  kub316.scale.set(0.17, 0.22, 0.2);
+  kub316.setRotation(0, 0, 0);
   const kub316MZ = kub316.clone();
   kub316MZ.updateMatrixWorld(true);
-  kub316.position.set(0, 0, -1.763);
+  kub316.position.set(0, 0, -1.76);
   kub316MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub316MZ.position.set(0, 0, 1.7629);
+  kub316MZ.position.set(0, 0, 1.76);
   const kub316MrZ = new THREE.Group();
   kub316MrZ.add(kub316, kub316MZ);
-  kub316MrZ.position.set(-10.4008, 0.7716, 0);
-  const cylwheel_012 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cylwheel_012.scale.set(0.8096, 0.1641, 0.8096);
-  cylwheel_012.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_012MZ = cylwheel_012.clone();
-  cylwheel_012MZ.updateMatrixWorld(true);
-  cylwheel_012.position.set(0, 0, -2.124);
-  cylwheel_012MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_012MZ.position.set(0, 0, 2.124);
-  const cylwheel_012MrZ = new THREE.Group();
-  cylwheel_012MrZ.add(cylwheel_012, cylwheel_012MZ);
-  cylwheel_012MrZ.position.set(11.1541, 0.7716, 0);
-  const cylwheel_013 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
-  cylwheel_013.scale.set(0.509, 0.1032, 0.509);
-  cylwheel_013.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_013MZ = cylwheel_013.clone();
-  cylwheel_013MZ.updateMatrixWorld(true);
-  cylwheel_013.position.set(0, 0, -2.3912);
-  cylwheel_013MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_013MZ.position.set(0, 0, 2.3912);
-  const cylwheel_013MrZ = new THREE.Group();
-  cylwheel_013MrZ.add(cylwheel_013, cylwheel_013MZ);
-  cylwheel_013MrZ.position.set(11.1541, 0.7716, 0);
-  const cylwheel_014 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cylwheel_014.scale.set(0.8096, 0.1641, 0.8096);
-  cylwheel_014.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_014MZ = cylwheel_014.clone();
-  cylwheel_014MZ.updateMatrixWorld(true);
-  cylwheel_014.position.set(0, 0, -2.124);
-  cylwheel_014MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_014MZ.position.set(0, 0, 2.124);
-  const cylwheel_014MrZ = new THREE.Group();
-  cylwheel_014MrZ.add(cylwheel_014, cylwheel_014MZ);
-  cylwheel_014MrZ.position.set(6.8881, 0.7716, 0);
-  const cylwheel_015 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
-  cylwheel_015.scale.set(0.509, 0.1032, 0.509);
-  cylwheel_015.setRotation(1.5708, 0.0, 0.0);
-  const cylwheel_015MZ = cylwheel_015.clone();
-  cylwheel_015MZ.updateMatrixWorld(true);
-  cylwheel_015.position.set(0, 0, -2.3912);
-  cylwheel_015MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cylwheel_015MZ.position.set(0, 0, 2.3912);
-  const cylwheel_015MrZ = new THREE.Group();
-  cylwheel_015MrZ.add(cylwheel_015, cylwheel_015MZ);
-  cylwheel_015MrZ.position.set(6.8881, 0.7716, 0);
+  kub316MrZ.position.set(-10.4, 0.77, 0);
+  const cylwheel_12 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cylwheel_12.scale.set(0.81, 0.16, 0.81);
+  cylwheel_12.setRotation(1.57, 0, 0);
+  const cylwheel_12MZ = cylwheel_12.clone();
+  cylwheel_12MZ.updateMatrixWorld(true);
+  cylwheel_12.position.set(0, 0, -2.12);
+  cylwheel_12MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_12MZ.position.set(0, 0, 2.12);
+  const cylwheel_12MrZ = new THREE.Group();
+  cylwheel_12MrZ.add(cylwheel_12, cylwheel_12MZ);
+  cylwheel_12MrZ.position.set(11.2, 0.77, 0);
+  const cylwheel_13 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
+  cylwheel_13.scale.set(0.51, 0.1, 0.51);
+  cylwheel_13.setRotation(1.57, 0, 0);
+  const cylwheel_13MZ = cylwheel_13.clone();
+  cylwheel_13MZ.updateMatrixWorld(true);
+  cylwheel_13.position.set(0, 0, -2.39);
+  cylwheel_13MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_13MZ.position.set(0, 0, 2.39);
+  const cylwheel_13MrZ = new THREE.Group();
+  cylwheel_13MrZ.add(cylwheel_13, cylwheel_13MZ);
+  cylwheel_13MrZ.position.set(11.2, 0.77, 0);
+  const cylwheel_14 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cylwheel_14.scale.set(0.81, 0.16, 0.81);
+  cylwheel_14.setRotation(1.57, 0, 0);
+  const cylwheel_14MZ = cylwheel_14.clone();
+  cylwheel_14MZ.updateMatrixWorld(true);
+  cylwheel_14.position.set(0, 0, -2.12);
+  cylwheel_14MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_14MZ.position.set(0, 0, 2.12);
+  const cylwheel_14MrZ = new THREE.Group();
+  cylwheel_14MrZ.add(cylwheel_14, cylwheel_14MZ);
+  cylwheel_14MrZ.position.set(6.89, 0.77, 0);
+  const cylwheel_15 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
+  cylwheel_15.scale.set(0.51, 0.1, 0.51);
+  cylwheel_15.setRotation(1.57, 0, 0);
+  const cylwheel_15MZ = cylwheel_15.clone();
+  cylwheel_15MZ.updateMatrixWorld(true);
+  cylwheel_15.position.set(0, 0, -2.39);
+  cylwheel_15MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cylwheel_15MZ.position.set(0, 0, 2.39);
+  const cylwheel_15MrZ = new THREE.Group();
+  cylwheel_15MrZ.add(cylwheel_15, cylwheel_15MZ);
+  cylwheel_15MrZ.position.set(6.89, 0.77, 0);
   const kub317 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub317.scale.set(0.1708, 0.4672, 0.1996);
-  kub317.setRotation(0.0, 0.0, -0.0);
+  kub317.scale.set(0.17, 0.47, 0.2);
+  kub317.setRotation(0, 0, 0);
   const kub317MZ = kub317.clone();
   kub317MZ.updateMatrixWorld(true);
-  kub317.position.set(0, 0, -1.1446);
+  kub317.position.set(0, 0, -1.14);
   kub317MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub317MZ.position.set(0, 0, 1.1446);
+  kub317MZ.position.set(0, 0, 1.14);
   const kub317MrZ = new THREE.Group();
   kub317MrZ.add(kub317, kub317MZ);
-  kub317MrZ.position.set(11.1541, 1.2844, 0);
+  kub317MrZ.position.set(11.2, 1.28, 0);
   const kub318 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub318.scale.set(0.1708, 0.2173, 0.1996);
-  kub318.setRotation(0.0, 0.0, -0.0);
+  kub318.scale.set(0.17, 0.22, 0.2);
+  kub318.setRotation(0, 0, 0);
   const kub318MZ = kub318.clone();
   kub318MZ.updateMatrixWorld(true);
-  kub318.position.set(0, 0, -1.763);
+  kub318.position.set(0, 0, -1.76);
   kub318MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub318MZ.position.set(0, 0, 1.7629);
+  kub318MZ.position.set(0, 0, 1.76);
   const kub318MrZ = new THREE.Group();
   kub318MrZ.add(kub318, kub318MZ);
-  kub318MrZ.position.set(11.1541, 0.7716, 0);
+  kub318MrZ.position.set(11.2, 0.77, 0);
   const kub319 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub319.scale.set(0.1708, 0.1639, 0.3627);
-  kub319.setRotation(-0.5678, 0.0, 0.0);
+  kub319.scale.set(0.17, 0.16, 0.36);
+  kub319.setRotation(-0.57, 0, 0);
   const kub319MZ = kub319.clone();
   kub319MZ.updateMatrixWorld(true);
-  kub319.position.set(0, 0, -1.3783);
+  kub319.position.set(0, 0, -1.38);
   kub319MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub319MZ.position.set(0, 0, 1.3783);
+  kub319MZ.position.set(0, 0, 1.38);
   const kub319MrZ = new THREE.Group();
   kub319MrZ.add(kub319, kub319MZ);
-  kub319MrZ.position.set(11.1541, 0.9047, 0);
+  kub319MrZ.position.set(11.2, 0.9, 0);
   const kub320 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub320.scale.set(2.8418, 0.1639, 0.0489);
-  kub320.setRotation(0.0, 0.0, -0.0);
+  kub320.scale.set(2.84, 0.16, 0.05);
+  kub320.setRotation(0, 0, 0);
   const kub320MZ = kub320.clone();
   kub320MZ.updateMatrixWorld(true);
-  kub320.position.set(0, 0, -1.8431);
+  kub320.position.set(0, 0, -1.84);
   kub320MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub320MZ.position.set(0, 0, 1.8431);
+  kub320MZ.position.set(0, 0, 1.84);
   const kub320MrZ = new THREE.Group();
   kub320MrZ.add(kub320, kub320MZ);
-  kub320MrZ.position.set(9.0211, 0.7884, 0);
+  kub320MrZ.position.set(9.02, 0.79, 0);
   const kub321 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub321.scale.set(0.1708, 0.1639, 0.3627);
-  kub321.setRotation(-0.5678, 0.0, 0.0);
+  kub321.scale.set(0.17, 0.16, 0.36);
+  kub321.setRotation(-0.57, 0, 0);
   const kub321MZ = kub321.clone();
   kub321MZ.updateMatrixWorld(true);
-  kub321.position.set(0, 0, -1.3783);
+  kub321.position.set(0, 0, -1.38);
   kub321MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub321MZ.position.set(0, 0, 1.3783);
+  kub321MZ.position.set(0, 0, 1.38);
   const kub321MrZ = new THREE.Group();
   kub321MrZ.add(kub321, kub321MZ);
-  kub321MrZ.position.set(6.8881, 0.9047, 0);
+  kub321MrZ.position.set(6.89, 0.9, 0);
   const kub322 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub322.scale.set(0.1708, 0.4672, 0.1996);
-  kub322.setRotation(0.0, 0.0, -0.0);
+  kub322.scale.set(0.17, 0.47, 0.2);
+  kub322.setRotation(0, 0, 0);
   const kub322MZ = kub322.clone();
   kub322MZ.updateMatrixWorld(true);
-  kub322.position.set(0, 0, -1.1446);
+  kub322.position.set(0, 0, -1.14);
   kub322MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub322MZ.position.set(0, 0, 1.1446);
+  kub322MZ.position.set(0, 0, 1.14);
   const kub322MrZ = new THREE.Group();
   kub322MrZ.add(kub322, kub322MZ);
-  kub322MrZ.position.set(6.8881, 1.2844, 0);
+  kub322MrZ.position.set(6.89, 1.28, 0);
   const kub323 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub323.scale.set(2.8418, 0.1639, 0.0489);
-  kub323.setRotation(0.0, 0.0, -0.0);
+  kub323.scale.set(2.84, 0.16, 0.05);
+  kub323.setRotation(0, 0, 0);
   const kub323MZ = kub323.clone();
   kub323MZ.updateMatrixWorld(true);
-  kub323.position.set(0, 0, -2.3571);
+  kub323.position.set(0, 0, -2.36);
   kub323MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub323MZ.position.set(0, 0, 2.357);
+  kub323MZ.position.set(0, 0, 2.36);
   const kub323MrZ = new THREE.Group();
   kub323MrZ.add(kub323, kub323MZ);
-  kub323MrZ.position.set(9.0211, 1.5807, 0);
+  kub323MrZ.position.set(9.02, 1.58, 0);
   const kub324 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub324.scale.set(1.0521, 0.1639, 0.0812);
-  kub324.setRotation(0.0, 0.0, -0.0);
+  kub324.scale.set(1.05, 0.16, 0.08);
+  kub324.setRotation(0, 0, 0);
   const kub324MZ = kub324.clone();
   kub324MZ.updateMatrixWorld(true);
-  kub324.position.set(0, 0, -2.3912);
+  kub324.position.set(0, 0, -2.39);
   kub324MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub324MZ.position.set(0, 0, 2.3912);
+  kub324MZ.position.set(0, 0, 2.39);
   const kub324MrZ = new THREE.Group();
   kub324MrZ.add(kub324, kub324MZ);
-  kub324MrZ.position.set(9.0211, 0.7716, 0);
+  kub324MrZ.position.set(9.02, 0.77, 0);
   const kub325 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub325.scale.set(0.1708, 0.2173, 0.1996);
-  kub325.setRotation(0.0, 0.0, -0.0);
+  kub325.scale.set(0.17, 0.22, 0.2);
+  kub325.setRotation(0, 0, 0);
   const kub325MZ = kub325.clone();
   kub325MZ.updateMatrixWorld(true);
-  kub325.position.set(0, 0, -1.763);
+  kub325.position.set(0, 0, -1.76);
   kub325MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub325MZ.position.set(0, 0, 1.7629);
+  kub325MZ.position.set(0, 0, 1.76);
   const kub325MrZ = new THREE.Group();
   kub325MrZ.add(kub325, kub325MZ);
-  kub325MrZ.position.set(6.8881, 0.7716, 0);
+  kub325MrZ.position.set(6.89, 0.77, 0);
   const kub326 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub326.scale.set(0.9318, 0.051, 2.4701);
-  kub326.setRotation(1.5708, 0.0, 0.0);
+  kub326.scale.set(0.93, 0.05, 2.47);
+  kub326.setRotation(1.57, 0, 0);
   const kub326MZ = kub326.clone();
   kub326MZ.updateMatrixWorld(true);
-  kub326.position.set(0, 0, -2.4192);
+  kub326.position.set(0, 0, -2.42);
   kub326MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub326MZ.position.set(0, 0, 2.4191);
+  kub326MZ.position.set(0, 0, 2.42);
   const kub326MrZ = new THREE.Group();
   kub326MrZ.add(kub326, kub326MZ);
-  kub326MrZ.position.set(-11.6586, 4.7166, 0);
+  kub326MrZ.position.set(-11.7, 4.72, 0);
   const kub327 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub327.scale.set(0.8412, 0.0446, 0.9062);
-  kub327.setRotation(1.5708, 1.5708, 0.0);
+  kub327.scale.set(0.84, 0.04, 0.91);
+  kub327.setRotation(1.57, 1.57, 0);
   const kub327MZ = kub327.clone();
   kub327MZ.updateMatrixWorld(true);
-  kub327.position.set(0, 0, -1.527);
+  kub327.position.set(0, 0, -1.53);
   kub327MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub327MZ.position.set(0, 0, 1.5269);
+  kub327MZ.position.set(0, 0, 1.53);
   const kub327MrZ = new THREE.Group();
   kub327MrZ.add(kub327, kub327MZ);
-  kub327MrZ.position.set(-12.5457, 3.1527, 0);
-  const cyl022 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
-  cyl022.scale.set(0.3106, 0.044, 0.3106);
-  cyl022.setRotation(0.0, 0.0, -1.5708);
-  const cyl022MZ = cyl022.clone();
-  cyl022MZ.updateMatrixWorld(true);
-  cyl022.position.set(0, 0, -1.527);
-  cyl022MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl022MZ.position.set(0, 0, 1.5269);
-  const cyl022MrZ = new THREE.Group();
-  cyl022MrZ.add(cyl022, cyl022MZ);
-  cyl022MrZ.position.set(-12.593, 3.1527, 0);
-  const sph002 = new THREE.Mesh(sphereGeo, RoofTilesMaterial);
-  sph002.scale.set(0.2749, 0.0831, 0.2749);
-  sph002.setRotation(0.0, 0.0, -1.5708);
-  const sph002MZ = sph002.clone();
-  sph002MZ.updateMatrixWorld(true);
-  sph002.position.set(0, 0, -1.527);
-  sph002MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  sph002MZ.position.set(0, 0, 1.5269);
-  const sph002MrZ = new THREE.Group();
-  sph002MrZ.add(sph002, sph002MZ);
-  sph002MrZ.position.set(-12.6391, 3.1527, 0);
+  kub327MrZ.position.set(-12.5, 3.15, 0);
+  const cyl22 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
+  cyl22.scale.set(0.31, 0.04, 0.31);
+  cyl22.setRotation(0, 0, -1.57);
+  const cyl22MZ = cyl22.clone();
+  cyl22MZ.updateMatrixWorld(true);
+  cyl22.position.set(0, 0, -1.53);
+  cyl22MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl22MZ.position.set(0, 0, 1.53);
+  const cyl22MrZ = new THREE.Group();
+  cyl22MrZ.add(cyl22, cyl22MZ);
+  cyl22MrZ.position.set(-12.6, 3.15, 0);
+  const sph2 = new THREE.Mesh(sphereGeo, RoofTilesMaterial);
+  sph2.scale.set(0.27, 0.08, 0.27);
+  sph2.setRotation(0, 0, -1.57);
+  const sph2MZ = sph2.clone();
+  sph2MZ.updateMatrixWorld(true);
+  sph2.position.set(0, 0, -1.53);
+  sph2MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  sph2MZ.position.set(0, 0, 1.53);
+  const sph2MrZ = new THREE.Group();
+  sph2MrZ.add(sph2, sph2MZ);
+  sph2MrZ.position.set(-12.6, 3.15, 0);
   const kub328 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub328.scale.set(0.1275, 0.0446, 0.9062);
-  kub328.setRotation(1.5708, 1.5708, 0.0);
+  kub328.scale.set(0.13, 0.04, 0.91);
+  kub328.setRotation(1.57, 1.57, 0);
   const kub328MZ = kub328.clone();
   kub328MZ.updateMatrixWorld(true);
-  kub328.position.set(0, 0, -2.2407);
+  kub328.position.set(0, 0, -2.24);
   kub328MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub328MZ.position.set(0, 0, 2.2406);
+  kub328MZ.position.set(0, 0, 2.24);
   const kub328MrZ = new THREE.Group();
   kub328MrZ.add(kub328, kub328MZ);
-  kub328MrZ.position.set(-12.5457, 4.965, 0);
+  kub328MrZ.position.set(-12.5, 4.96, 0);
   const kub329 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub329.scale.set(0.1275, 0.0446, 0.9062);
-  kub329.setRotation(1.5708, 1.5708, 0.0);
+  kub329.scale.set(0.13, 0.04, 0.91);
+  kub329.setRotation(1.57, 1.57, 0);
   const kub329MZ = kub329.clone();
   kub329MZ.updateMatrixWorld(true);
-  kub329.position.set(0, 0, -0.8133);
+  kub329.position.set(0, 0, -0.81);
   kub329MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub329MZ.position.set(0, 0, 0.8132);
+  kub329MZ.position.set(0, 0, 0.81);
   const kub329MrZ = new THREE.Group();
   kub329MrZ.add(kub329, kub329MZ);
-  kub329MrZ.position.set(-12.5457, 4.965, 0);
+  kub329MrZ.position.set(-12.5, 4.96, 0);
   const kub330 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub330.scale.set(0.8412, 0.0446, 0.681);
-  kub330.setRotation(1.5708, 1.5708, 0.0);
+  kub330.scale.set(0.84, 0.04, 0.68);
+  kub330.setRotation(1.57, 1.57, 0);
   const kub330MZ = kub330.clone();
   kub330MZ.updateMatrixWorld(true);
-  kub330.position.set(0, 0, -1.527);
+  kub330.position.set(0, 0, -1.53);
   kub330MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub330MZ.position.set(0, 0, 1.5269);
+  kub330MZ.position.set(0, 0, 1.53);
   const kub330MrZ = new THREE.Group();
   kub330MrZ.add(kub330, kub330MZ);
-  kub330MrZ.position.set(-12.5457, 6.5057, 0);
+  kub330MrZ.position.set(-12.5, 6.51, 0);
   const kub331 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub331.position.set(-12.5457, 3.1527, -0.0);
-  kub331.scale.set(0.7058, 0.0351, 0.9062);
-  kub331.setRotation(1.5708, 1.5708, 0.0);
+  kub331.position.set(-12.5, 3.15, 0);
+  kub331.scale.set(0.71, 0.04, 0.91);
+  kub331.setRotation(1.57, 1.57, 0);
 
   const kub332 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub332.position.set(-12.5457, 4.9776, -0.5792);
-  kub332.scale.set(0.1266, 0.0351, 0.9188);
-  kub332.setRotation(1.5708, 1.5708, 0.0);
+  kub332.position.set(-12.5, 4.98, -0.58);
+  kub332.scale.set(0.13, 0.04, 0.92);
+  kub332.setRotation(1.57, 1.57, 0);
 
   const kub333 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub333.position.set(-12.5457, 6.4998, -0.0);
-  kub333.scale.set(0.7058, 0.0351, 0.6869);
-  kub333.setRotation(1.5708, 1.5708, 0.0);
+  kub333.position.set(-12.5, 6.5, 0);
+  kub333.scale.set(0.71, 0.04, 0.69);
+  kub333.setRotation(1.57, 1.57, 0);
 
   const kub334 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub334.scale.set(0.1434, 0.0309, 0.1545);
-  kub334.setRotation(1.5708, 1.5708, 0.7854);
+  kub334.scale.set(0.14, 0.03, 0.15);
+  kub334.setRotation(1.57, 1.57, 0.79);
   const kub334MZ = kub334.clone();
   kub334MZ.updateMatrixWorld(true);
-  kub334.position.set(0, 0, -0.9277);
+  kub334.position.set(0, 0, -0.93);
   kub334MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub334MZ.position.set(0, 0, 0.9276);
+  kub334MZ.position.set(0, 0, 0.93);
   const kub334MrZ = new THREE.Group();
   kub334MrZ.add(kub334, kub334MZ);
   const kub334MrZMY = kub334MrZ.clone();
   kub334MrZMY.updateMatrixWorld(true);
-  kub334MrZ.position.set(0, 4.0498, 0);
+  kub334MrZ.position.set(0, 4.05, 0);
   kub334MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub334MrZMY.position.set(0, 5.827, 0);
+  kub334MrZMY.position.set(0, 5.83, 0);
   const kub334MrZMrY = new THREE.Group();
   kub334MrZMrY.add(kub334MrZ, kub334MrZMY);
-  kub334MrZMrY.position.set(-12.5457, 0, 0);
+  kub334MrZMrY.position.set(-12.5, 0, 0);
   const kub335 = new THREE.Mesh(boxGeo, GlassMaterial);
-  kub335.scale.set(-0.0151, 1.0, 0.7144);
-  kub335.setRotation(0.0, 0.0, -0.0);
+  kub335.scale.set(-0.02, 1, 0.71);
+  kub335.setRotation(0, 0, 0);
   const kub335MZ = kub335.clone();
   kub335MZ.updateMatrixWorld(true);
-  kub335.position.set(0, 0, -1.527);
+  kub335.position.set(0, 0, -1.53);
   kub335MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub335MZ.position.set(0, 0, 1.5269);
+  kub335MZ.position.set(0, 0, 1.53);
   const kub335MrZ = new THREE.Group();
   kub335MrZ.add(kub335, kub335MZ);
-  kub335MrZ.position.set(-12.5457, 4.9411, 0);
+  kub335MrZ.position.set(-12.5, 4.94, 0);
   const kub336 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub336.scale.set(0.4607, 0.0309, 0.0226);
-  kub336.setRotation(1.5708, 1.5708, -0.0);
+  kub336.scale.set(0.46, 0.03, 0.02);
+  kub336.setRotation(1.57, 1.57, 0);
   const kub336MZ = kub336.clone();
   kub336MZ.updateMatrixWorld(true);
-  kub336.position.set(0, 0, -1.527);
+  kub336.position.set(0, 0, -1.53);
   kub336MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub336MZ.position.set(0, 0, 1.5269);
+  kub336MZ.position.set(0, 0, 1.53);
   const kub336MrZ = new THREE.Group();
   kub336MrZ.add(kub336, kub336MZ);
   const kub336MrZMY = kub336MrZ.clone();
   kub336MrZMY.updateMatrixWorld(true);
-  kub336MrZ.position.set(0, 4.0617, 0);
+  kub336MrZ.position.set(0, 4.06, 0);
   kub336MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub336MrZMY.position.set(0, 5.815, 0);
+  kub336MrZMY.position.set(0, 5.82, 0);
   const kub336MrZMrY = new THREE.Group();
   kub336MrZMrY.add(kub336MrZ, kub336MrZMY);
-  kub336MrZMrY.position.set(-12.5457, 0, 0);
+  kub336MrZMrY.position.set(-12.5, 0, 0);
   const kub337 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub337.scale.set(0.7643, 0.0309, 0.0226);
-  kub337.setRotation(3.1416, 0.0, 1.5708);
+  kub337.scale.set(0.76, 0.03, 0.02);
+  kub337.setRotation(3.14, 0, 1.57);
   const kub337MX = kub337.clone();
   kub337MX.updateMatrixWorld(true);
-  kub337.position.set(-12.5457, 0, 0);
+  kub337.position.set(-12.5, 0, 0);
   kub337MX.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-  kub337MX.position.set(-12.5457, 0, 0);
+  kub337MX.position.set(-12.5, 0, 0);
   const kub337MrX = new THREE.Group();
   kub337MrX.add(kub337, kub337MX);
   const kub337MrXMZ = kub337MrX.clone();
   kub337MrXMZ.updateMatrixWorld(true);
-  kub337MrX.position.set(0, 0, -0.9381);
+  kub337MrX.position.set(0, 0, -0.94);
   kub337MrXMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub337MrXMZ.position.set(0, 0, 0.9381);
+  kub337MrXMZ.position.set(0, 0, 0.94);
   const kub337MrXMrZ = new THREE.Group();
   kub337MrXMrZ.add(kub337MrX, kub337MrXMZ);
   const kub337MrXMrZMY = kub337MrXMrZ.clone();
   kub337MrXMrZMY.updateMatrixWorld(true);
-  kub337MrXMrZ.position.set(0, 4.936, 0);
+  kub337MrXMrZ.position.set(0, 4.94, 0);
   kub337MrXMrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub337MrXMrZMY.position.set(0, 4.9408, 0);
+  kub337MrXMrZMY.position.set(0, 4.94, 0);
   const kub337MrXMrZMrY = new THREE.Group();
   kub337MrXMrZMrY.add(kub337MrXMrZ, kub337MrXMrZMY);
   const kub338 = new THREE.Mesh(boxGeo, GlassMaterial);
-  kub338.position.set(-12.5457, 4.9384, -0.0);
-  kub338.scale.set(-0.0151, 0.9645, 0.4812);
+  kub338.position.set(-12.5, 4.94, 0);
+  kub338.scale.set(-0.02, 0.96, 0.48);
 
   const kub339 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub339.scale.set(0.1434, 0.0309, 0.1545);
-  kub339.setRotation(1.5708, 1.5708, 0.7854);
+  kub339.scale.set(0.14, 0.03, 0.15);
+  kub339.setRotation(1.57, 1.57, 0.79);
   const kub339MZ = kub339.clone();
   kub339MZ.updateMatrixWorld(true);
-  kub339.position.set(0, 0, 0.4478);
+  kub339.position.set(0, 0, 0.45);
   kub339MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub339MZ.position.set(0, 0, -0.4478);
+  kub339MZ.position.set(0, 0, -0.45);
   const kub339MrZ = new THREE.Group();
   kub339MrZ.add(kub339, kub339MZ);
   const kub339MrZMY = kub339MrZ.clone();
   kub339MrZMY.updateMatrixWorld(true);
-  kub339MrZ.position.set(0, 4.0693, 0);
+  kub339MrZ.position.set(0, 4.07, 0);
   kub339MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub339MrZMY.position.set(0, 5.8075, 0);
+  kub339MrZMY.position.set(0, 5.81, 0);
   const kub339MrZMrY = new THREE.Group();
   kub339MrZMrY.add(kub339MrZ, kub339MrZMY);
-  kub339MrZMrY.position.set(-12.5457, 0, 0);
+  kub339MrZMrY.position.set(-12.5, 0, 0);
   const kub340 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub340.scale.set(0.4607, 0.0309, 0.0226);
-  kub340.setRotation(1.5708, 1.5708, -0.0);
+  kub340.scale.set(0.46, 0.03, 0.02);
+  kub340.setRotation(1.57, 1.57, 0);
   const kub340MY = kub340.clone();
   kub340MY.updateMatrixWorld(true);
-  kub340.position.set(0, 4.0568, 0);
+  kub340.position.set(0, 4.06, 0);
   kub340MY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
   kub340MY.position.set(0, 5.82, 0);
   const kub340MrY = new THREE.Group();
   kub340MrY.add(kub340, kub340MY);
-  kub340MrY.position.set(-12.5457, 0, -0.0);
+  kub340MrY.position.set(-12.5, 0, 0);
   const kub341 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub341.scale.set(0.7643, 0.0309, 0.0226);
-  kub341.setRotation(3.1416, 0.0, 1.5708);
+  kub341.scale.set(0.76, 0.03, 0.02);
+  kub341.setRotation(3.14, 0, 1.57);
   const kub341MZ = kub341.clone();
   kub341MZ.updateMatrixWorld(true);
-  kub341.position.set(0, 0, 0.4584);
+  kub341.position.set(0, 0, 0.46);
   kub341MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub341MZ.position.set(0, 0, -0.4584);
+  kub341MZ.position.set(0, 0, -0.46);
   const kub341MrZ = new THREE.Group();
   kub341MrZ.add(kub341, kub341MZ);
-  kub341MrZ.position.set(-12.5457, 4.9303, 0);
+  kub341MrZ.position.set(-12.5, 4.93, 0);
   const kub342 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub342.scale.set(0.7643, 0.0309, 0.0226);
-  kub342.setRotation(3.1416, 0.0, 1.5708);
+  kub342.scale.set(0.76, 0.03, 0.02);
+  kub342.setRotation(3.14, 0, 1.57);
   const kub342MX = kub342.clone();
   kub342MX.updateMatrixWorld(true);
-  kub342.position.set(-12.5457, 0, 0);
+  kub342.position.set(-12.5, 0, 0);
   kub342MX.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-  kub342MX.position.set(-12.5457, 0, 0);
+  kub342MX.position.set(-12.5, 0, 0);
   const kub342MrX = new THREE.Group();
   kub342MrX.add(kub342, kub342MX);
   const kub342MrXMZ = kub342MrX.clone();
   kub342MrXMZ.updateMatrixWorld(true);
-  kub342MrX.position.set(0, 0, 2.1187);
+  kub342MrX.position.set(0, 0, 2.12);
   kub342MrXMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub342MrXMZ.position.set(0, 0, -2.1187);
+  kub342MrXMZ.position.set(0, 0, -2.12);
   const kub342MrXMrZ = new THREE.Group();
   kub342MrXMrZ.add(kub342MrX, kub342MrXMZ);
   const kub342MrXMrZMY = kub342MrXMrZ.clone();
   kub342MrXMrZMY.updateMatrixWorld(true);
-  kub342MrXMrZ.position.set(0, 4.936, 0);
+  kub342MrXMrZ.position.set(0, 4.94, 0);
   kub342MrXMrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub342MrXMrZMY.position.set(0, 4.9408, 0);
+  kub342MrXMrZMY.position.set(0, 4.94, 0);
   const kub342MrXMrZMrY = new THREE.Group();
   kub342MrXMrZMrY.add(kub342MrXMrZ, kub342MrXMrZMY);
   const kub343 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub343.scale.set(0.1434, 0.0309, 0.1545);
-  kub343.setRotation(1.5708, 1.5708, 0.7854);
+  kub343.scale.set(0.14, 0.03, 0.15);
+  kub343.setRotation(1.57, 1.57, 0.79);
   const kub343MZ = kub343.clone();
   kub343MZ.updateMatrixWorld(true);
-  kub343.position.set(0, 0, 2.1206);
+  kub343.position.set(0, 0, 2.12);
   kub343MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub343MZ.position.set(0, 0, -2.1207);
+  kub343MZ.position.set(0, 0, -2.12);
   const kub343MrZ = new THREE.Group();
   kub343MrZ.add(kub343, kub343MZ);
   const kub343MrZMY = kub343MrZ.clone();
   kub343MrZMY.updateMatrixWorld(true);
-  kub343MrZ.position.set(0, 4.0498, 0);
+  kub343MrZ.position.set(0, 4.05, 0);
   kub343MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub343MrZMY.position.set(0, 5.827, 0);
+  kub343MrZMY.position.set(0, 5.83, 0);
   const kub343MrZMrY = new THREE.Group();
   kub343MrZMrY.add(kub343MrZ, kub343MrZMY);
-  kub343MrZMrY.position.set(-12.5457, 0, 0);
-  const cyl023Gr = new THREE.Group();
+  kub343MrZMrY.position.set(-12.5, 0, 0);
+  const cyl23Gr = new THREE.Group();
   for (let i = 0; i < 4; i++) {
-    const cyl023 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-    cyl023.scale.set(0.1218, 0.3642, 0.1218);
-    cyl023.position.set(0.4874 * i, 0, 0);
-    cyl023Gr.add(cyl023);
+    const cyl23 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+    cyl23.scale.set(0.12, 0.36, 0.12);
+    cyl23.position.set(0.49 * i, 0, 0);
+    cyl23Gr.add(cyl23);
   }
-  cyl023Gr.setRotation(0.0, 0.0, -0.0);
-  const cyl023GroupMZ = cyl023Gr.clone();
-  cyl023GroupMZ.updateMatrixWorld(true);
-  cyl023Gr.position.set(0, 0, -2.102);
-  cyl023GroupMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl023GroupMZ.position.set(0, 0, 2.102);
-  const cyl023GroupMrZ = new THREE.Group();
-  cyl023GroupMrZ.add(cyl023Gr, cyl023GroupMZ);
-  cyl023GroupMrZ.position.set(8.3088, 1.0627, 0);
+  cyl23Gr.setRotation(0, 0, 0);
+  const cyl23GroupMZ = cyl23Gr.clone();
+  cyl23GroupMZ.updateMatrixWorld(true);
+  cyl23Gr.position.set(0, 0, -2.1);
+  cyl23GroupMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl23GroupMZ.position.set(0, 0, 2.1);
+  const cyl23GroupMrZ = new THREE.Group();
+  cyl23GroupMrZ.add(cyl23Gr, cyl23GroupMZ);
+  cyl23GroupMrZ.position.set(8.31, 1.06, 0);
   const kub344 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub344.scale.set(-0.9318, 0.051, 2.4701);
-  kub344.setRotation(1.5708, 0.0, 0.0);
+  kub344.scale.set(-0.93, 0.05, 2.47);
+  kub344.setRotation(1.57, 0, 0);
   const kub344MZ = kub344.clone();
   kub344MZ.updateMatrixWorld(true);
-  kub344.position.set(0, 0, -2.4192);
+  kub344.position.set(0, 0, -2.42);
   kub344MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub344MZ.position.set(0, 0, 2.4191);
+  kub344MZ.position.set(0, 0, 2.42);
   const kub344MrZ = new THREE.Group();
   kub344MrZ.add(kub344, kub344MZ);
-  kub344MrZ.position.set(11.6574, 4.7166, 0);
+  kub344MrZ.position.set(11.7, 4.72, 0);
   const kub345 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub345.scale.set(0.8412, -0.0446, 0.9062);
-  kub345.setRotation(1.5708, 1.5708, 0.0);
+  kub345.scale.set(0.84, -0.04, 0.91);
+  kub345.setRotation(1.57, 1.57, 0);
   const kub345MZ = kub345.clone();
   kub345MZ.updateMatrixWorld(true);
-  kub345.position.set(0, 0, -1.527);
+  kub345.position.set(0, 0, -1.53);
   kub345MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub345MZ.position.set(0, 0, 1.5269);
+  kub345MZ.position.set(0, 0, 1.53);
   const kub345MrZ = new THREE.Group();
   kub345MrZ.add(kub345, kub345MZ);
-  kub345MrZ.position.set(12.5445, 3.1527, 0);
-  const cyl024 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
-  cyl024.scale.set(0.3106, -0.044, 0.3106);
-  cyl024.setRotation(0.0, 0.0, -1.5708);
-  const cyl024MZ = cyl024.clone();
-  cyl024MZ.updateMatrixWorld(true);
-  cyl024.position.set(0, 0, -1.527);
-  cyl024MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  cyl024MZ.position.set(0, 0, 1.5269);
-  const cyl024MrZ = new THREE.Group();
-  cyl024MrZ.add(cyl024, cyl024MZ);
-  cyl024MrZ.position.set(12.5918, 3.1527, 0);
-  const sph003 = new THREE.Mesh(sphereGeo, RoofTilesMaterial);
-  sph003.scale.set(0.2749, -0.0831, 0.2749);
-  sph003.setRotation(0.0, 0.0, -1.5708);
-  const sph003MZ = sph003.clone();
-  sph003MZ.updateMatrixWorld(true);
-  sph003.position.set(0, 0, -1.527);
-  sph003MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  sph003MZ.position.set(0, 0, 1.5269);
-  const sph003MrZ = new THREE.Group();
-  sph003MrZ.add(sph003, sph003MZ);
-  sph003MrZ.position.set(12.638, 3.1527, 0);
+  kub345MrZ.position.set(12.5, 3.15, 0);
+  const cyl24 = new THREE.Mesh(cylinderGeo, Floor_StripesMaterial);
+  cyl24.scale.set(0.31, -0.04, 0.31);
+  cyl24.setRotation(0, 0, -1.57);
+  const cyl24MZ = cyl24.clone();
+  cyl24MZ.updateMatrixWorld(true);
+  cyl24.position.set(0, 0, -1.53);
+  cyl24MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  cyl24MZ.position.set(0, 0, 1.53);
+  const cyl24MrZ = new THREE.Group();
+  cyl24MrZ.add(cyl24, cyl24MZ);
+  cyl24MrZ.position.set(12.6, 3.15, 0);
+  const sph3 = new THREE.Mesh(sphereGeo, RoofTilesMaterial);
+  sph3.scale.set(0.27, -0.08, 0.27);
+  sph3.setRotation(0, 0, -1.57);
+  const sph3MZ = sph3.clone();
+  sph3MZ.updateMatrixWorld(true);
+  sph3.position.set(0, 0, -1.53);
+  sph3MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  sph3MZ.position.set(0, 0, 1.53);
+  const sph3MrZ = new THREE.Group();
+  sph3MrZ.add(sph3, sph3MZ);
+  sph3MrZ.position.set(12.6, 3.15, 0);
   const kub346 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub346.scale.set(0.1275, -0.0446, 0.9062);
-  kub346.setRotation(1.5708, 1.5708, 0.0);
+  kub346.scale.set(0.13, -0.04, 0.91);
+  kub346.setRotation(1.57, 1.57, 0);
   const kub346MZ = kub346.clone();
   kub346MZ.updateMatrixWorld(true);
-  kub346.position.set(0, 0, -2.2407);
+  kub346.position.set(0, 0, -2.24);
   kub346MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub346MZ.position.set(0, 0, 2.2406);
+  kub346MZ.position.set(0, 0, 2.24);
   const kub346MrZ = new THREE.Group();
   kub346MrZ.add(kub346, kub346MZ);
-  kub346MrZ.position.set(12.5445, 4.965, 0);
+  kub346MrZ.position.set(12.5, 4.96, 0);
   const kub347 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub347.scale.set(0.1275, -0.0446, 0.9062);
-  kub347.setRotation(1.5708, 1.5708, 0.0);
+  kub347.scale.set(0.13, -0.04, 0.91);
+  kub347.setRotation(1.57, 1.57, 0);
   const kub347MZ = kub347.clone();
   kub347MZ.updateMatrixWorld(true);
-  kub347.position.set(0, 0, -0.8133);
+  kub347.position.set(0, 0, -0.81);
   kub347MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub347MZ.position.set(0, 0, 0.8132);
+  kub347MZ.position.set(0, 0, 0.81);
   const kub347MrZ = new THREE.Group();
   kub347MrZ.add(kub347, kub347MZ);
-  kub347MrZ.position.set(12.5445, 4.965, 0);
+  kub347MrZ.position.set(12.5, 4.96, 0);
   const kub348 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub348.scale.set(0.8412, -0.0446, 0.681);
-  kub348.setRotation(1.5708, 1.5708, 0.0);
+  kub348.scale.set(0.84, -0.04, 0.68);
+  kub348.setRotation(1.57, 1.57, 0);
   const kub348MZ = kub348.clone();
   kub348MZ.updateMatrixWorld(true);
-  kub348.position.set(0, 0, -1.527);
+  kub348.position.set(0, 0, -1.53);
   kub348MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub348MZ.position.set(0, 0, 1.5269);
+  kub348MZ.position.set(0, 0, 1.53);
   const kub348MrZ = new THREE.Group();
   kub348MrZ.add(kub348, kub348MZ);
-  kub348MrZ.position.set(12.5445, 6.5057, 0);
+  kub348MrZ.position.set(12.5, 6.51, 0);
   const kub349 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub349.position.set(12.5445, 3.1527, -0.0);
-  kub349.scale.set(0.7058, -0.0351, 0.9062);
-  kub349.setRotation(1.5708, 1.5708, 0.0);
+  kub349.position.set(12.5, 3.15, 0);
+  kub349.scale.set(0.71, -0.04, 0.91);
+  kub349.setRotation(1.57, 1.57, 0);
 
   const kub350 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub350.position.set(12.5445, 6.4998, -0.0);
-  kub350.scale.set(0.7058, -0.0351, 0.6869);
-  kub350.setRotation(1.5708, 1.5708, 0.0);
+  kub350.position.set(12.5, 6.5, 0);
+  kub350.scale.set(0.71, -0.04, 0.69);
+  kub350.setRotation(1.57, 1.57, 0);
 
   const kub351 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub351.scale.set(0.1434, -0.0309, 0.1545);
-  kub351.setRotation(1.5708, 1.5708, 0.7854);
+  kub351.scale.set(0.14, -0.03, 0.15);
+  kub351.setRotation(1.57, 1.57, 0.79);
   const kub351MZ = kub351.clone();
   kub351MZ.updateMatrixWorld(true);
-  kub351.position.set(0, 0, -0.9277);
+  kub351.position.set(0, 0, -0.93);
   kub351MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub351MZ.position.set(0, 0, 0.9276);
+  kub351MZ.position.set(0, 0, 0.93);
   const kub351MrZ = new THREE.Group();
   kub351MrZ.add(kub351, kub351MZ);
   const kub351MrZMY = kub351MrZ.clone();
   kub351MrZMY.updateMatrixWorld(true);
-  kub351MrZ.position.set(0, 4.0498, 0);
+  kub351MrZ.position.set(0, 4.05, 0);
   kub351MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub351MrZMY.position.set(0, 5.827, 0);
+  kub351MrZMY.position.set(0, 5.83, 0);
   const kub351MrZMrY = new THREE.Group();
   kub351MrZMrY.add(kub351MrZ, kub351MrZMY);
-  kub351MrZMrY.position.set(12.5445, 0, 0);
+  kub351MrZMrY.position.set(12.5, 0, 0);
   const kub352 = new THREE.Mesh(boxGeo, GlassMaterial);
-  kub352.scale.set(0.0151, 1.0, 0.7144);
-  kub352.setRotation(0.0, 0.0, -0.0);
+  kub352.scale.set(0.02, 1, 0.71);
+  kub352.setRotation(0, 0, 0);
   const kub352MZ = kub352.clone();
   kub352MZ.updateMatrixWorld(true);
-  kub352.position.set(0, 0, -1.527);
+  kub352.position.set(0, 0, -1.53);
   kub352MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub352MZ.position.set(0, 0, 1.5269);
+  kub352MZ.position.set(0, 0, 1.53);
   const kub352MrZ = new THREE.Group();
   kub352MrZ.add(kub352, kub352MZ);
-  kub352MrZ.position.set(12.5445, 4.9411, 0);
+  kub352MrZ.position.set(12.5, 4.94, 0);
   const kub353 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub353.scale.set(0.4607, -0.0309, 0.0226);
-  kub353.setRotation(1.5708, 1.5708, -0.0);
+  kub353.scale.set(0.46, -0.03, 0.02);
+  kub353.setRotation(1.57, 1.57, 0);
   const kub353MZ = kub353.clone();
   kub353MZ.updateMatrixWorld(true);
-  kub353.position.set(0, 0, -1.527);
+  kub353.position.set(0, 0, -1.53);
   kub353MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub353MZ.position.set(0, 0, 1.5269);
+  kub353MZ.position.set(0, 0, 1.53);
   const kub353MrZ = new THREE.Group();
   kub353MrZ.add(kub353, kub353MZ);
   const kub353MrZMY = kub353MrZ.clone();
   kub353MrZMY.updateMatrixWorld(true);
-  kub353MrZ.position.set(0, 4.0617, 0);
+  kub353MrZ.position.set(0, 4.06, 0);
   kub353MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub353MrZMY.position.set(0, 5.815, 0);
+  kub353MrZMY.position.set(0, 5.82, 0);
   const kub353MrZMrY = new THREE.Group();
   kub353MrZMrY.add(kub353MrZ, kub353MrZMY);
-  kub353MrZMrY.position.set(12.5445, 0, 0);
+  kub353MrZMrY.position.set(12.5, 0, 0);
   const kub354 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub354.scale.set(0.7643, -0.0309, 0.0226);
-  kub354.setRotation(3.1416, 0.0, 1.5708);
+  kub354.scale.set(0.76, -0.03, 0.02);
+  kub354.setRotation(3.14, 0, 1.57);
   const kub354MX = kub354.clone();
   kub354MX.updateMatrixWorld(true);
-  kub354.position.set(12.5445, 0, 0);
+  kub354.position.set(12.5, 0, 0);
   kub354MX.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-  kub354MX.position.set(12.5445, 0, 0);
+  kub354MX.position.set(12.5, 0, 0);
   const kub354MrX = new THREE.Group();
   kub354MrX.add(kub354, kub354MX);
   const kub354MrXMZ = kub354MrX.clone();
   kub354MrXMZ.updateMatrixWorld(true);
-  kub354MrX.position.set(0, 0, -0.9381);
+  kub354MrX.position.set(0, 0, -0.94);
   kub354MrXMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub354MrXMZ.position.set(0, 0, 0.9381);
+  kub354MrXMZ.position.set(0, 0, 0.94);
   const kub354MrXMrZ = new THREE.Group();
   kub354MrXMrZ.add(kub354MrX, kub354MrXMZ);
   const kub354MrXMrZMY = kub354MrXMrZ.clone();
   kub354MrXMrZMY.updateMatrixWorld(true);
-  kub354MrXMrZ.position.set(0, 4.936, 0);
+  kub354MrXMrZ.position.set(0, 4.94, 0);
   kub354MrXMrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub354MrXMrZMY.position.set(0, 4.9408, 0);
+  kub354MrXMrZMY.position.set(0, 4.94, 0);
   const kub354MrXMrZMrY = new THREE.Group();
   kub354MrXMrZMrY.add(kub354MrXMrZ, kub354MrXMrZMY);
   const kub355 = new THREE.Mesh(boxGeo, GlassMaterial);
-  kub355.position.set(12.5445, 4.9384, -0.0);
-  kub355.scale.set(0.0151, 0.9645, 0.4812);
+  kub355.position.set(12.5, 4.94, 0);
+  kub355.scale.set(0.02, 0.96, 0.48);
 
   const kub356 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub356.scale.set(0.1434, -0.0309, 0.1545);
-  kub356.setRotation(1.5708, 1.5708, 0.7854);
+  kub356.scale.set(0.14, -0.03, 0.15);
+  kub356.setRotation(1.57, 1.57, 0.79);
   const kub356MZ = kub356.clone();
   kub356MZ.updateMatrixWorld(true);
-  kub356.position.set(0, 0, 0.4478);
+  kub356.position.set(0, 0, 0.45);
   kub356MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub356MZ.position.set(0, 0, -0.4478);
+  kub356MZ.position.set(0, 0, -0.45);
   const kub356MrZ = new THREE.Group();
   kub356MrZ.add(kub356, kub356MZ);
   const kub356MrZMY = kub356MrZ.clone();
   kub356MrZMY.updateMatrixWorld(true);
-  kub356MrZ.position.set(0, 4.0693, 0);
+  kub356MrZ.position.set(0, 4.07, 0);
   kub356MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub356MrZMY.position.set(0, 5.8075, 0);
+  kub356MrZMY.position.set(0, 5.81, 0);
   const kub356MrZMrY = new THREE.Group();
   kub356MrZMrY.add(kub356MrZ, kub356MrZMY);
-  kub356MrZMrY.position.set(12.5445, 0, 0);
+  kub356MrZMrY.position.set(12.5, 0, 0);
   const kub357 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub357.scale.set(0.4607, -0.0309, 0.0226);
-  kub357.setRotation(1.5708, 1.5708, -0.0);
+  kub357.scale.set(0.46, -0.03, 0.02);
+  kub357.setRotation(1.57, 1.57, 0);
   const kub357MY = kub357.clone();
   kub357MY.updateMatrixWorld(true);
-  kub357.position.set(0, 4.0568, 0);
+  kub357.position.set(0, 4.06, 0);
   kub357MY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
   kub357MY.position.set(0, 5.82, 0);
   const kub357MrY = new THREE.Group();
   kub357MrY.add(kub357, kub357MY);
-  kub357MrY.position.set(12.5445, 0, -0.0);
+  kub357MrY.position.set(12.5, 0, 0);
   const kub358 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub358.scale.set(0.7643, -0.0309, 0.0226);
-  kub358.setRotation(3.1416, 0.0, 1.5708);
+  kub358.scale.set(0.76, -0.03, 0.02);
+  kub358.setRotation(3.14, 0, 1.57);
   const kub358MZ = kub358.clone();
   kub358MZ.updateMatrixWorld(true);
-  kub358.position.set(0, 0, 0.4584);
+  kub358.position.set(0, 0, 0.46);
   kub358MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub358MZ.position.set(0, 0, -0.4584);
+  kub358MZ.position.set(0, 0, -0.46);
   const kub358MrZ = new THREE.Group();
   kub358MrZ.add(kub358, kub358MZ);
-  kub358MrZ.position.set(12.5445, 4.9303, 0);
+  kub358MrZ.position.set(12.5, 4.93, 0);
   const kub359 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub359.scale.set(0.7643, -0.0309, 0.0226);
-  kub359.setRotation(3.1416, 0.0, 1.5708);
+  kub359.scale.set(0.76, -0.03, 0.02);
+  kub359.setRotation(3.14, 0, 1.57);
   const kub359MX = kub359.clone();
   kub359MX.updateMatrixWorld(true);
-  kub359.position.set(12.5445, 0, 0);
+  kub359.position.set(12.5, 0, 0);
   kub359MX.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-  kub359MX.position.set(12.5445, 0, 0);
+  kub359MX.position.set(12.5, 0, 0);
   const kub359MrX = new THREE.Group();
   kub359MrX.add(kub359, kub359MX);
   const kub359MrXMZ = kub359MrX.clone();
   kub359MrXMZ.updateMatrixWorld(true);
-  kub359MrX.position.set(0, 0, 2.1187);
+  kub359MrX.position.set(0, 0, 2.12);
   kub359MrXMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub359MrXMZ.position.set(0, 0, -2.1187);
+  kub359MrXMZ.position.set(0, 0, -2.12);
   const kub359MrXMrZ = new THREE.Group();
   kub359MrXMrZ.add(kub359MrX, kub359MrXMZ);
   const kub359MrXMrZMY = kub359MrXMrZ.clone();
   kub359MrXMrZMY.updateMatrixWorld(true);
-  kub359MrXMrZ.position.set(0, 4.936, 0);
+  kub359MrXMrZ.position.set(0, 4.94, 0);
   kub359MrXMrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub359MrXMrZMY.position.set(0, 4.9408, 0);
+  kub359MrXMrZMY.position.set(0, 4.94, 0);
   const kub359MrXMrZMrY = new THREE.Group();
   kub359MrXMrZMrY.add(kub359MrXMrZ, kub359MrXMrZMY);
   const kub360 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub360.scale.set(0.1434, -0.0309, 0.1545);
-  kub360.setRotation(1.5708, 1.5708, 0.7854);
+  kub360.scale.set(0.14, -0.03, 0.15);
+  kub360.setRotation(1.57, 1.57, 0.79);
   const kub360MZ = kub360.clone();
   kub360MZ.updateMatrixWorld(true);
-  kub360.position.set(0, 0, 2.1206);
+  kub360.position.set(0, 0, 2.12);
   kub360MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub360MZ.position.set(0, 0, -2.1207);
+  kub360MZ.position.set(0, 0, -2.12);
   const kub360MrZ = new THREE.Group();
   kub360MrZ.add(kub360, kub360MZ);
   const kub360MrZMY = kub360MrZ.clone();
   kub360MrZMY.updateMatrixWorld(true);
-  kub360MrZ.position.set(0, 4.0498, 0);
+  kub360MrZ.position.set(0, 4.05, 0);
   kub360MrZMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub360MrZMY.position.set(0, 5.827, 0);
+  kub360MrZMY.position.set(0, 5.83, 0);
   const kub360MrZMrY = new THREE.Group();
   kub360MrZMrY.add(kub360MrZ, kub360MrZMY);
-  kub360MrZMrY.position.set(12.5445, 0, 0);
+  kub360MrZMrY.position.set(12.5, 0, 0);
   const kub361 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub361.position.set(-0.0006, 7.2557, -0.0);
-  kub361.scale.set(12.5898, 0.069, 2.4701);
+  kub361.position.set(-0, 7.26, 0);
+  kub361.scale.set(12.6, 0.07, 2.47);
 
   const kub362 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub362.position.set(-0.0006, 7.3977, -0.0);
-  kub362.scale.set(12.1678, 0.2214, 1.4361);
+  kub362.position.set(-0, 7.4, 0);
+  kub362.scale.set(12.2, 0.22, 1.44);
 
   const kub363 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub363.position.set(-12.1452, 7.2829, -0.0);
-  kub363.scale.set(0.2541, 0.2214, 1.4361);
-  kub363.setRotation(0.0, 0.0, -0.7854);
+  kub363.position.set(-12.1, 7.28, 0);
+  kub363.scale.set(0.25, 0.22, 1.44);
+  kub363.setRotation(0, 0, -0.79);
 
   const kub364 = new THREE.Mesh(boxGeo, Ceiling_trainMaterial);
-  kub364.position.set(-0.0006, 7.0623, -0.0);
-  kub364.scale.set(12.5105, 0.1214, 2.3753);
+  kub364.position.set(-0, 7.06, 0);
+  kub364.scale.set(12.5, 0.12, 2.38);
 
   const kub365 = new THREE.Mesh(boxGeo, Floor_trainMaterial);
-  kub365.position.set(-0.0006, 2.1963, -0.0);
-  kub365.scale.set(12.5105, 0.1214, 2.3753);
+  kub365.position.set(-0, 2.2, 0);
+  kub365.scale.set(12.5, 0.12, 2.38);
 
   const kub372 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub372.position.set(-12.5457, 4.9776, 0.5792);
-  kub372.scale.set(0.1266, 0.0351, 0.9188);
-  kub372.setRotation(1.5708, 1.5708, 0.0);
+  kub372.position.set(-12.5, 4.98, 0.58);
+  kub372.scale.set(0.13, 0.04, 0.92);
+  kub372.setRotation(1.57, 1.57, 0);
 
   const kub373 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub373.position.set(12.5445, 4.9776, 0.5792);
-  kub373.scale.set(0.1266, 0.0351, 0.9188);
-  kub373.setRotation(1.5708, 1.5708, 0.0);
+  kub373.position.set(12.5, 4.98, 0.58);
+  kub373.scale.set(0.13, 0.04, 0.92);
+  kub373.setRotation(1.57, 1.57, 0);
 
   const kub374 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-  kub374.position.set(12.5445, 4.9776, -0.5792);
-  kub374.scale.set(0.1266, 0.0351, 0.9188);
-  kub374.setRotation(1.5708, 1.5708, 0.0);
+  kub374.position.set(12.5, 4.98, -0.58);
+  kub374.scale.set(0.13, 0.04, 0.92);
+  kub374.setRotation(1.57, 1.57, 0);
 
   const kub409Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub409 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub409.scale.set(2.1144, 0.051, 0.8864);
-    kub409.position.set(6.4194 * i, 0, 0);
+    kub409.scale.set(2.11, 0.05, 0.89);
+    kub409.position.set(6.42 * i, 0, 0);
     kub409Gr.add(kub409);
   }
-  kub409Gr.setRotation(1.5708, 0.0, 0.0);
-  kub409Gr.position.set(-6.4204, 3.1279, 2.4191);
+  kub409Gr.setRotation(1.57, 0, 0);
+  kub409Gr.position.set(-6.42, 3.13, 2.42);
   const kub410Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub410 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub410.scale.set(2.1144, 0.051, 0.7023);
-    kub410.position.set(6.4194 * i, 0, 0);
+    kub410.scale.set(2.11, 0.05, 0.7);
+    kub410.position.set(6.42 * i, 0, 0);
     kub410Gr.add(kub410);
   }
-  kub410Gr.setRotation(1.5708, 0.0, 0.0);
-  kub410Gr.position.set(-6.4204, 6.2439, 2.4191);
+  kub410Gr.setRotation(1.57, 0, 0);
+  kub410Gr.position.set(-6.42, 6.24, 2.42);
   const kub411 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub411.position.set(-0.001, 7.0636, -2.4216);
-  kub411.scale.set(10.7268, 0.051, 0.1232);
-  kub411.setRotation(1.5708, 0.0, 0.0);
+  kub411.position.set(-0, 7.06, -2.42);
+  kub411.scale.set(10.7, 0.05, 0.12);
+  kub411.setRotation(1.57, 0, 0);
 
   const kub412Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub412 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub412.scale.set(0.5707, 0.051, 0.7636);
-    kub412.position.set(6.4195 * i, 0, 0);
+    kub412.scale.set(0.57, 0.05, 0.76);
+    kub412.position.set(6.42 * i, 0, 0);
     kub412Gr.add(kub412);
   }
-  kub412Gr.setRotation(1.5708, 0.0, 0.0);
-  kub412Gr.position.set(-7.9641, 4.778, 2.4191);
+  kub412Gr.setRotation(1.57, 0, 0);
+  kub412Gr.position.set(-7.96, 4.78, 2.42);
   const kub413Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub413 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub413.scale.set(0.5707, 0.051, 0.7636);
-    kub413.position.set(6.4195 * i, 0, 0);
+    kub413.scale.set(0.57, 0.05, 0.76);
+    kub413.position.set(6.42 * i, 0, 0);
     kub413Gr.add(kub413);
   }
-  kub413Gr.setRotation(1.5708, 0.0, 0.0);
-  kub413Gr.position.set(-4.8768, 4.778, 2.4191);
+  kub413Gr.setRotation(1.57, 0, 0);
+  kub413Gr.position.set(-4.88, 4.78, 2.42);
   const kub414Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub414 = new THREE.Mesh(boxGeo, GlassMaterial);
-    kub414.scale.set(-0.0151, 0.786, 1.0055);
-    kub414.position.set(0, 0, 6.4153 * i);
+    kub414.scale.set(-0.02, 0.79, 1.01);
+    kub414.position.set(0, 0, 6.42 * i);
     kub414Gr.add(kub414);
   }
-  kub414Gr.setRotation(0.0, 1.5708, 0.0);
-  kub414Gr.position.set(-6.4205, 4.778, 2.4191);
+  kub414Gr.setRotation(0, 1.57, 0);
+  kub414Gr.position.set(-6.42, 4.78, 2.42);
   const kub415Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub415 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub415.scale.set(0.9267, 0.0309, 0.0215);
-    kub415.position.set(-6.4313 * i, 0, 0);
+    kub415.scale.set(0.93, 0.03, 0.02);
+    kub415.position.set(-6.43 * i, 0, 0);
     kub415Gr.add(kub415);
   }
-  kub415Gr.setRotation(1.5708, 3.1416, 0.0);
+  kub415Gr.setRotation(1.57, 3.14, 0);
   const kub415GroupMY = kub415Gr.clone();
   kub415GroupMY.updateMatrixWorld(true);
-  kub415Gr.position.set(0, 4.0179, 0);
+  kub415Gr.position.set(0, 4.02, 0);
   kub415GroupMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub415GroupMY.position.set(0, 5.5774, 0);
+  kub415GroupMY.position.set(0, 5.58, 0);
   const kub415GroupMrY = new THREE.Group();
   kub415GroupMrY.add(kub415Gr, kub415GroupMY);
-  kub415GroupMrY.position.set(-6.4205, 0, 2.4191);
+  kub415GroupMrY.position.set(-6.42, 0, 2.42);
   const kub416Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub416 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub416.scale.set(0.1252, 0.0309, 0.1349);
-    kub416.position.set(-4.5462 * i, 0, -4.5331 * i);
+    kub416.scale.set(0.13, 0.03, 0.13);
+    kub416.position.set(-4.55 * i, 0, -4.53 * i);
     kub416Gr.add(kub416);
   }
-  kub416Gr.setRotation(1.5708, 3.1416, 0.7854);
+  kub416Gr.setRotation(1.57, 3.14, 0.79);
   const kub416GroupMY = kub416Gr.clone();
   kub416GroupMY.updateMatrixWorld(true);
-  kub416Gr.position.set(0, 4.0135, 0);
+  kub416Gr.position.set(0, 4.01, 0);
   kub416GroupMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub416GroupMY.position.set(0, 5.5424, 0);
+  kub416GroupMY.position.set(0, 5.54, 0);
   const kub416GroupMrY = new THREE.Group();
   kub416GroupMrY.add(kub416Gr, kub416GroupMY);
-  kub416GroupMrY.position.set(-7.3886, 0, 2.4191);
+  kub416GroupMrY.position.set(-7.39, 0, 2.42);
   const kub417Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub417 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub417.scale.set(0.1252, 0.0309, 0.1349);
-    kub417.position.set(-4.5462 * i, 0, -4.5331 * i);
+    kub417.scale.set(0.13, 0.03, 0.13);
+    kub417.position.set(-4.55 * i, 0, -4.53 * i);
     kub417Gr.add(kub417);
   }
-  kub417Gr.setRotation(1.5708, 3.1416, 0.7854);
+  kub417Gr.setRotation(1.57, 3.14, 0.79);
   const kub417GroupMY = kub417Gr.clone();
   kub417GroupMY.updateMatrixWorld(true);
-  kub417Gr.position.set(0, 3.9782, 0);
+  kub417Gr.position.set(0, 3.98, 0);
   kub417GroupMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub417GroupMY.position.set(0, 5.5778, 0);
+  kub417GroupMY.position.set(0, 5.58, 0);
   const kub417GroupMrY = new THREE.Group();
   kub417GroupMrY.add(kub417Gr, kub417GroupMY);
-  kub417GroupMrY.position.set(-5.4376, 0, 2.4191);
+  kub417GroupMrY.position.set(-5.44, 0, 2.42);
   const kub418Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub418 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub418.scale.set(0.7261, 0.0309, 0.0176);
-    kub418.position.set(0, 0, -6.4199 * i);
+    kub418.scale.set(0.73, 0.03, 0.02);
+    kub418.position.set(0, 0, -6.42 * i);
     kub418Gr.add(kub418);
   }
-  kub418Gr.setRotation(4.7124, 0.0, 1.5708);
-  kub418Gr.position.set(-7.3937, 4.7961, 2.4191);
+  kub418Gr.setRotation(4.71, 0, 1.57);
+  kub418Gr.position.set(-7.39, 4.8, 2.42);
   const kub419Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub419 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub419.scale.set(0.7261, 0.0309, 0.0176);
-    kub419.position.set(0, 0, -6.4199 * i);
+    kub419.scale.set(0.73, 0.03, 0.02);
+    kub419.position.set(0, 0, -6.42 * i);
     kub419Gr.add(kub419);
   }
-  kub419Gr.setRotation(4.7124, 0.0, 1.5708);
-  kub419Gr.position.set(-5.4465, 4.7961, 2.4191);
+  kub419Gr.setRotation(4.71, 0, 1.57);
+  kub419Gr.position.set(-5.45, 4.8, 2.42);
   const kub420Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub420 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub420.scale.set(2.1144, 0.051, 0.8864);
-    kub420.position.set(6.4194 * i, 0, 0);
+    kub420.scale.set(2.11, 0.05, 0.89);
+    kub420.position.set(6.42 * i, 0, 0);
     kub420Gr.add(kub420);
   }
-  kub420Gr.setRotation(1.5708, 0.0, 0.0);
-  kub420Gr.position.set(-6.4204, 3.1279, -2.4192);
+  kub420Gr.setRotation(1.57, 0, 0);
+  kub420Gr.position.set(-6.42, 3.13, -2.42);
   const kub421Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub421 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub421.scale.set(2.1144, 0.051, 0.7023);
-    kub421.position.set(6.4194 * i, 0, 0);
+    kub421.scale.set(2.11, 0.05, 0.7);
+    kub421.position.set(6.42 * i, 0, 0);
     kub421Gr.add(kub421);
   }
-  kub421Gr.setRotation(1.5708, 0.0, 0.0);
-  kub421Gr.position.set(-6.4204, 6.2439, -2.4192);
+  kub421Gr.setRotation(1.57, 0, 0);
+  kub421Gr.position.set(-6.42, 6.24, -2.42);
   const kub422Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub422 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub422.scale.set(0.5707, 0.051, 0.7636);
-    kub422.position.set(6.4195 * i, 0, 0);
+    kub422.scale.set(0.57, 0.05, 0.76);
+    kub422.position.set(6.42 * i, 0, 0);
     kub422Gr.add(kub422);
   }
-  kub422Gr.setRotation(1.5708, 0.0, 0.0);
-  kub422Gr.position.set(-7.9641, 4.778, -2.4192);
+  kub422Gr.setRotation(1.57, 0, 0);
+  kub422Gr.position.set(-7.96, 4.78, -2.42);
   const kub423Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub423 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub423.scale.set(0.5707, 0.051, 0.7636);
-    kub423.position.set(6.4195 * i, 0, 0);
+    kub423.scale.set(0.57, 0.05, 0.76);
+    kub423.position.set(6.42 * i, 0, 0);
     kub423Gr.add(kub423);
   }
-  kub423Gr.setRotation(1.5708, 0.0, 0.0);
-  kub423Gr.position.set(-4.8768, 4.778, -2.4192);
+  kub423Gr.setRotation(1.57, 0, 0);
+  kub423Gr.position.set(-4.88, 4.78, -2.42);
   const kub424Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub424 = new THREE.Mesh(boxGeo, GlassMaterial);
-    kub424.scale.set(-0.0151, 0.786, 1.0055);
-    kub424.position.set(0, 0, 6.4153 * i);
+    kub424.scale.set(-0.02, 0.79, 1.01);
+    kub424.position.set(0, 0, 6.42 * i);
     kub424Gr.add(kub424);
   }
-  kub424Gr.setRotation(0.0, 1.5708, 0.0);
-  kub424Gr.position.set(-6.4205, 4.778, -2.4192);
+  kub424Gr.setRotation(0, 1.57, 0);
+  kub424Gr.position.set(-6.42, 4.78, -2.42);
   const kub425Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub425 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub425.scale.set(0.9267, 0.0309, 0.0215);
-    kub425.position.set(-6.4313 * i, 0, 0);
+    kub425.scale.set(0.93, 0.03, 0.02);
+    kub425.position.set(-6.43 * i, 0, 0);
     kub425Gr.add(kub425);
   }
-  kub425Gr.setRotation(1.5708, 3.1416, 0.0);
+  kub425Gr.setRotation(1.57, 3.14, 0);
   const kub425GroupMY = kub425Gr.clone();
   kub425GroupMY.updateMatrixWorld(true);
-  kub425Gr.position.set(0, 4.0179, 0);
+  kub425Gr.position.set(0, 4.02, 0);
   kub425GroupMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub425GroupMY.position.set(0, 5.5774, 0);
+  kub425GroupMY.position.set(0, 5.58, 0);
   const kub425GroupMrY = new THREE.Group();
   kub425GroupMrY.add(kub425Gr, kub425GroupMY);
-  kub425GroupMrY.position.set(-6.4205, 0, -2.4192);
+  kub425GroupMrY.position.set(-6.42, 0, -2.42);
   const kub426Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub426 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub426.scale.set(0.1252, 0.0309, 0.1349);
-    kub426.position.set(-4.5462 * i, 0, -4.5331 * i);
+    kub426.scale.set(0.13, 0.03, 0.13);
+    kub426.position.set(-4.55 * i, 0, -4.53 * i);
     kub426Gr.add(kub426);
   }
-  kub426Gr.setRotation(1.5708, 3.1416, 0.7854);
+  kub426Gr.setRotation(1.57, 3.14, 0.79);
   const kub426GroupMY = kub426Gr.clone();
   kub426GroupMY.updateMatrixWorld(true);
-  kub426Gr.position.set(0, 4.0135, 0);
+  kub426Gr.position.set(0, 4.01, 0);
   kub426GroupMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub426GroupMY.position.set(0, 5.5424, 0);
+  kub426GroupMY.position.set(0, 5.54, 0);
   const kub426GroupMrY = new THREE.Group();
   kub426GroupMrY.add(kub426Gr, kub426GroupMY);
-  kub426GroupMrY.position.set(-7.3886, 0, -2.4192);
+  kub426GroupMrY.position.set(-7.39, 0, -2.42);
   const kub427Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub427 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub427.scale.set(0.1252, 0.0309, 0.1349);
-    kub427.position.set(-4.5462 * i, 0, -4.5331 * i);
+    kub427.scale.set(0.13, 0.03, 0.13);
+    kub427.position.set(-4.55 * i, 0, -4.53 * i);
     kub427Gr.add(kub427);
   }
-  kub427Gr.setRotation(1.5708, 3.1416, 0.7854);
+  kub427Gr.setRotation(1.57, 3.14, 0.79);
   const kub427GroupMY = kub427Gr.clone();
   kub427GroupMY.updateMatrixWorld(true);
-  kub427Gr.position.set(0, 3.9782, 0);
+  kub427Gr.position.set(0, 3.98, 0);
   kub427GroupMY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub427GroupMY.position.set(0, 5.5778, 0);
+  kub427GroupMY.position.set(0, 5.58, 0);
   const kub427GroupMrY = new THREE.Group();
   kub427GroupMrY.add(kub427Gr, kub427GroupMY);
-  kub427GroupMrY.position.set(-5.4376, 0, -2.4192);
+  kub427GroupMrY.position.set(-5.44, 0, -2.42);
   const kub428Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub428 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub428.scale.set(0.7261, 0.0309, 0.0176);
-    kub428.position.set(0, 0, -6.4199 * i);
+    kub428.scale.set(0.73, 0.03, 0.02);
+    kub428.position.set(0, 0, -6.42 * i);
     kub428Gr.add(kub428);
   }
-  kub428Gr.setRotation(4.7124, 0.0, 1.5708);
-  kub428Gr.position.set(-7.3937, 4.7961, -2.4192);
+  kub428Gr.setRotation(4.71, 0, 1.57);
+  kub428Gr.position.set(-7.39, 4.8, -2.42);
   const kub429Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub429 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub429.scale.set(0.7261, 0.0309, 0.0176);
-    kub429.position.set(0, 0, -6.4199 * i);
+    kub429.scale.set(0.73, 0.03, 0.02);
+    kub429.position.set(0, 0, -6.42 * i);
     kub429Gr.add(kub429);
   }
-  kub429Gr.setRotation(4.7124, 0.0, 1.5708);
-  kub429Gr.position.set(-5.4465, 4.7961, -2.4192);
+  kub429Gr.setRotation(4.71, 0, 1.57);
+  kub429Gr.position.set(-5.45, 4.8, -2.42);
   const kub430 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub430.position.set(-0.001, 7.0636, 2.4074);
-  kub430.scale.set(10.7268, 0.051, 0.1232);
-  kub430.setRotation(1.5708, 0.0, 0.0);
+  kub430.position.set(-0, 7.06, 2.41);
+  kub430.scale.set(10.7, 0.05, 0.12);
+  kub430.setRotation(1.57, 0, 0);
 
   const kub431Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub431 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub431.scale.set(2.1443, 0.0248, 0.1709);
-    kub431.position.set(6.4201 * i, 0, 0);
+    kub431.scale.set(2.14, 0.02, 0.17);
+    kub431.position.set(6.42 * i, 0, 0);
     kub431Gr.add(kub431);
   }
-  kub431Gr.setRotation(1.5708, 0.0, 0.0);
-  kub431Gr.position.set(-6.4204, 3.7969, -2.4653);
+  kub431Gr.setRotation(1.57, 0, 0);
+  kub431Gr.position.set(-6.42, 3.8, -2.47);
   const kub432Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub432 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub432.scale.set(0.9461, 0.0248, 0.1709);
-    kub432.position.set(23.3213 * i, 0, 0);
+    kub432.scale.set(0.95, 0.02, 0.17);
+    kub432.position.set(23.3 * i, 0, 0);
     kub432Gr.add(kub432);
   }
-  kub432Gr.setRotation(1.5708, 0.0, 0.0);
-  kub432Gr.position.set(-11.6623, 3.7969, -2.4653);
+  kub432Gr.setRotation(1.57, 0, 0);
+  kub432Gr.position.set(-11.7, 3.8, -2.47);
   const kub433Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub433 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub433.scale.set(0.9146, 0.0248, 0.1709);
-    kub433.position.set(0, 25.1753 * i, 0);
+    kub433.scale.set(0.91, 0.02, 0.17);
+    kub433.position.set(0, 25.2 * i, 0);
     kub433Gr.add(kub433);
   }
-  kub433Gr.setRotation(1.5708, 1.5708, 0.0);
-  kub433Gr.position.set(-12.5888, 3.7969, -1.5755);
+  kub433Gr.setRotation(1.57, 1.57, 0);
+  kub433Gr.position.set(-12.6, 3.8, -1.58);
   const kub442Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub442 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub442.scale.set(0.0294, 0.0351, 2.0562);
-    kub442.position.set(0, 0, -6.4153 * i);
+    kub442.scale.set(0.03, 0.04, 2.06);
+    kub442.position.set(0, 0, -6.42 * i);
     kub442Gr.add(kub442);
   }
-  kub442Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub442Gr.position.set(-6.4204, 3.4743, -2.4483);
+  kub442Gr.setRotation(0, -1.57, 0.79);
+  kub442Gr.position.set(-6.42, 3.47, -2.45);
   const kub443Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub443 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub443.scale.set(0.0294, 0.0351, 2.0562);
-    kub443.position.set(0, 0, -6.4153 * i);
+    kub443.scale.set(0.03, 0.04, 2.06);
+    kub443.position.set(0, 0, -6.42 * i);
     kub443Gr.add(kub443);
   }
-  kub443Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub443Gr.position.set(-6.4204, 2.9648, -2.4483);
+  kub443Gr.setRotation(0, -1.57, 0.79);
+  kub443Gr.position.set(-6.42, 2.96, -2.45);
   const kub444Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub444 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub444.scale.set(0.0294, 0.0351, 2.0562);
-    kub444.position.set(0, 0, -6.4153 * i);
+    kub444.scale.set(0.03, 0.04, 2.06);
+    kub444.position.set(0, 0, -6.42 * i);
     kub444Gr.add(kub444);
   }
-  kub444Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub444Gr.position.set(-6.4204, 2.4562, -2.4483);
+  kub444Gr.setRotation(0, -1.57, 0.79);
+  kub444Gr.position.set(-6.42, 2.46, -2.45);
   const kub445Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub445 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub445.scale.set(0.0294, 0.0351, 2.0562);
-    kub445.position.set(0, 0, -6.4153 * i);
+    kub445.scale.set(0.03, 0.04, 2.06);
+    kub445.position.set(0, 0, -6.42 * i);
     kub445Gr.add(kub445);
   }
-  kub445Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub445Gr.position.set(-6.4204, 6.5576, -2.4483);
+  kub445Gr.setRotation(0, -1.57, 0.79);
+  kub445Gr.position.set(-6.42, 6.56, -2.45);
   const kub446Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub446 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub446.scale.set(0.0294, 0.0351, 2.0562);
-    kub446.position.set(0, 0, -6.4153 * i);
+    kub446.scale.set(0.03, 0.04, 2.06);
+    kub446.position.set(0, 0, -6.42 * i);
     kub446Gr.add(kub446);
   }
-  kub446Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub446Gr.position.set(-6.4204, 6.0482, -2.4483);
+  kub446Gr.setRotation(0, -1.57, 0.79);
+  kub446Gr.position.set(-6.42, 6.05, -2.45);
   const kub447Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub447 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub447.scale.set(0.0294, 0.0351, 0.5273);
-    kub447.position.set(0, 0, -6.4229 * i);
+    kub447.scale.set(0.03, 0.04, 0.53);
+    kub447.position.set(0, 0, -6.42 * i);
     kub447Gr.add(kub447);
   }
-  kub447Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub447Gr.position.set(-4.8768, 5.0327, -2.4544);
+  kub447Gr.setRotation(0, -1.57, 0.79);
+  kub447Gr.position.set(-4.88, 5.03, -2.45);
   const kub448Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub448 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub448.scale.set(0.0294, 0.0351, 0.5273);
-    kub448.position.set(0, 0, -6.4229 * i);
+    kub448.scale.set(0.03, 0.04, 0.53);
+    kub448.position.set(0, 0, -6.42 * i);
     kub448Gr.add(kub448);
   }
-  kub448Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub448Gr.position.set(-4.8768, 4.5232, -2.4544);
+  kub448Gr.setRotation(0, -1.57, 0.79);
+  kub448Gr.position.set(-4.88, 4.52, -2.45);
   const kub449Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub449 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub449.scale.set(0.0294, 0.0351, 0.5273);
-    kub449.position.set(0, 0, -6.4229 * i);
+    kub449.scale.set(0.03, 0.04, 0.53);
+    kub449.position.set(0, 0, -6.42 * i);
     kub449Gr.add(kub449);
   }
-  kub449Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub449Gr.position.set(-7.9641, 5.0327, -2.4544);
+  kub449Gr.setRotation(0, -1.57, 0.79);
+  kub449Gr.position.set(-7.96, 5.03, -2.45);
   const kub450Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub450 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub450.scale.set(0.0294, 0.0351, 0.5273);
-    kub450.position.set(0, 0, -6.4229 * i);
+    kub450.scale.set(0.03, 0.04, 0.53);
+    kub450.position.set(0, 0, -6.42 * i);
     kub450Gr.add(kub450);
   }
-  kub450Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub450Gr.position.set(-7.9641, 4.5232, -2.4544);
+  kub450Gr.setRotation(0, -1.57, 0.79);
+  kub450Gr.position.set(-7.96, 4.52, -2.45);
   const kub451Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub451 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub451.scale.set(0.0294, 0.0351, 0.8515);
-    kub451.position.set(0, 0, -23.3301 * i);
+    kub451.scale.set(0.03, 0.04, 0.85);
+    kub451.position.set(0, 0, -23.3 * i);
     kub451Gr.add(kub451);
   }
-  kub451Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub451Gr.position.set(-11.6586, 5.2258, -2.465);
+  kub451Gr.setRotation(0, -1.57, 0.79);
+  kub451Gr.position.set(-11.7, 5.23, -2.46);
   const kub452Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub452 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub452.scale.set(0.0294, 0.0351, 0.8515);
-    kub452.position.set(0, 0, -23.3301 * i);
+    kub452.scale.set(0.03, 0.04, 0.85);
+    kub452.position.set(0, 0, -23.3 * i);
     kub452Gr.add(kub452);
   }
-  kub452Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub452Gr.position.set(-11.6586, 4.7163, -2.465);
+  kub452Gr.setRotation(0, -1.57, 0.79);
+  kub452Gr.position.set(-11.7, 4.72, -2.46);
   const kub453Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub453 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub453.scale.set(0.0294, 0.0351, 0.8515);
-    kub453.position.set(0, 0, -23.3301 * i);
+    kub453.scale.set(0.03, 0.04, 0.85);
+    kub453.position.set(0, 0, -23.3 * i);
     kub453Gr.add(kub453);
   }
-  kub453Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub453Gr.position.set(-11.6586, 4.2077, -2.465);
+  kub453Gr.setRotation(0, -1.57, 0.79);
+  kub453Gr.position.set(-11.7, 4.21, -2.46);
   const kub454Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub454 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub454.scale.set(0.0294, 0.0351, 0.8515);
-    kub454.position.set(0, 0, -23.3301 * i);
+    kub454.scale.set(0.03, 0.04, 0.85);
+    kub454.position.set(0, 0, -23.3 * i);
     kub454Gr.add(kub454);
   }
-  kub454Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub454Gr.position.set(-11.6586, 6.7176, -2.465);
+  kub454Gr.setRotation(0, -1.57, 0.79);
+  kub454Gr.position.set(-11.7, 6.72, -2.46);
   const kub455Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub455 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub455.scale.set(0.0294, 0.0351, 0.8515);
-    kub455.position.set(0, 0, -23.3301 * i);
+    kub455.scale.set(0.03, 0.04, 0.85);
+    kub455.position.set(0, 0, -23.3 * i);
     kub455Gr.add(kub455);
   }
-  kub455Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub455Gr.position.set(-11.6586, 6.2081, -2.465);
+  kub455Gr.setRotation(0, -1.57, 0.79);
+  kub455Gr.position.set(-11.7, 6.21, -2.46);
   const kub456Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub456 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub456.scale.set(0.0294, 0.0351, 0.8515);
-    kub456.position.set(0, 0, -23.3301 * i);
+    kub456.scale.set(0.03, 0.04, 0.85);
+    kub456.position.set(0, 0, -23.3 * i);
     kub456Gr.add(kub456);
   }
-  kub456Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub456Gr.position.set(-11.6586, 5.6995, -2.465);
+  kub456Gr.setRotation(0, -1.57, 0.79);
+  kub456Gr.position.set(-11.7, 5.7, -2.46);
   const kub457Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub457 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub457.scale.set(0.0294, 0.0351, 0.8515);
-    kub457.position.set(0, 0, -23.3301 * i);
+    kub457.scale.set(0.03, 0.04, 0.85);
+    kub457.position.set(0, 0, -23.3 * i);
     kub457Gr.add(kub457);
   }
-  kub457Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub457Gr.position.set(-11.6586, 3.2845, -2.465);
+  kub457Gr.setRotation(0, -1.57, 0.79);
+  kub457Gr.position.set(-11.7, 3.28, -2.46);
   const kub458Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub458 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub458.scale.set(0.0294, 0.0351, 0.8515);
-    kub458.position.set(0, 0, -23.3301 * i);
+    kub458.scale.set(0.03, 0.04, 0.85);
+    kub458.position.set(0, 0, -23.3 * i);
     kub458Gr.add(kub458);
   }
-  kub458Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub458Gr.position.set(-11.6586, 2.775, -2.465);
+  kub458Gr.setRotation(0, -1.57, 0.79);
+  kub458Gr.position.set(-11.7, 2.77, -2.46);
   const kub459Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub459 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub459.scale.set(0.0294, 0.0351, 0.8515);
-    kub459.position.set(0, 0, -23.3301 * i);
+    kub459.scale.set(0.03, 0.04, 0.85);
+    kub459.position.set(0, 0, -23.3 * i);
     kub459Gr.add(kub459);
   }
-  kub459Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub459Gr.position.set(-11.6586, 2.2664, -2.465);
+  kub459Gr.setRotation(0, -1.57, 0.79);
+  kub459Gr.position.set(-11.7, 2.27, -2.46);
   const kub460Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
     const kub460 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub460.scale.set(1.0, 0.4065, 0.5334);
+    kub460.scale.set(1, 0.41, 0.53);
     kub460.position.set(-2.2 * i, 0, 0);
     kub460Gr.add(kub460);
   }
-  kub460Gr.position.set(4.7305, 1.2702, -1.8726);
+  kub460Gr.position.set(4.73, 1.27, -1.87);
   const kub461Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
     const kub461 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-    kub461.scale.set(1.0, 0.4065, 0.5334);
+    kub461.scale.set(1, 0.41, 0.53);
     kub461.position.set(-2.2 * i, 0, 0);
     kub461Gr.add(kub461);
   }
-  kub461Gr.position.set(4.7305, 1.2702, 1.8725);
+  kub461Gr.position.set(4.73, 1.27, 1.87);
   const kub462Gr = new THREE.Group();
   for (let i = 0; i < 31; i++) {
     const kub462 = new THREE.Mesh(boxGeo, Train_blueMaterial);
-    kub462.scale.set(0.1124, 0.1685, 0.2825);
-    kub462.position.set(0.7865 * i, 0, 0);
+    kub462.scale.set(0.11, 0.17, 0.28);
+    kub462.position.set(0.79 * i, 0, 0);
     kub462Gr.add(kub462);
   }
-  kub462Gr.setRotation(-0.5843, 0.0, 0.0);
+  kub462Gr.setRotation(-0.58, 0, 0);
   const kub462GroupMZ = kub462Gr.clone();
   kub462GroupMZ.updateMatrixWorld(true);
-  kub462Gr.position.set(0, 0, -1.5788);
+  kub462Gr.position.set(0, 0, -1.58);
   kub462GroupMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub462GroupMZ.position.set(0, 0, 1.5787);
+  kub462GroupMZ.position.set(0, 0, 1.58);
   const kub462GroupMrZ = new THREE.Group();
   kub462GroupMrZ.add(kub462Gr, kub462GroupMZ);
-  kub462GroupMrZ.position.set(-11.6149, 7.3227, 0);
+  kub462GroupMrZ.position.set(-11.6, 7.32, 0);
   const kub463 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub463.position.set(12.1903, 7.2829, -0.0);
-  kub463.scale.set(-0.2541, -0.2214, 1.4361);
-  kub463.setRotation(0.0, 0.0, -0.7854);
+  kub463.position.set(12.2, 7.28, 0);
+  kub463.scale.set(-0.25, -0.22, 1.44);
+  kub463.setRotation(0, 0, -0.79);
 
   const kub464Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub464 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub464.scale.set(2.1443, -0.0248, 0.1709);
-    kub464.position.set(6.4201 * i, 0, 0);
+    kub464.scale.set(2.14, -0.02, 0.17);
+    kub464.position.set(6.42 * i, 0, 0);
     kub464Gr.add(kub464);
   }
-  kub464Gr.setRotation(1.5708, 0.0, 0.0);
-  kub464Gr.position.set(-6.4204, 3.7969, 2.4659);
+  kub464Gr.setRotation(1.57, 0, 0);
+  kub464Gr.position.set(-6.42, 3.8, 2.47);
   const kub465Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub465 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub465.scale.set(0.9461, -0.0248, 0.1709);
-    kub465.position.set(23.3213 * i, 0, 0);
+    kub465.scale.set(0.95, -0.02, 0.17);
+    kub465.position.set(23.3 * i, 0, 0);
     kub465Gr.add(kub465);
   }
-  kub465Gr.setRotation(1.5708, 0.0, 0.0);
-  kub465Gr.position.set(-11.6623, 3.7969, 2.4659);
+  kub465Gr.setRotation(1.57, 0, 0);
+  kub465Gr.position.set(-11.7, 3.8, 2.47);
   const kub466Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub466 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub466.scale.set(-0.9146, 0.0248, 0.1709);
-    kub466.position.set(0, 25.1753 * i, 0);
+    kub466.scale.set(-0.91, 0.02, 0.17);
+    kub466.position.set(0, 25.2 * i, 0);
     kub466Gr.add(kub466);
   }
-  kub466Gr.setRotation(1.5708, 1.5708, 0.0);
-  kub466Gr.position.set(-12.5888, 3.7969, 1.5761);
+  kub466Gr.setRotation(1.57, 1.57, 0);
+  kub466Gr.position.set(-12.6, 3.8, 1.58);
   const kub475Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub475 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub475.scale.set(-0.0294, -0.0351, 2.0562);
-    kub475.position.set(0, 0, -6.4153 * i);
+    kub475.scale.set(-0.03, -0.04, 2.06);
+    kub475.position.set(0, 0, -6.42 * i);
     kub475Gr.add(kub475);
   }
-  kub475Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub475Gr.position.set(-6.4204, 3.4743, 2.4489);
+  kub475Gr.setRotation(0, -1.57, 0.79);
+  kub475Gr.position.set(-6.42, 3.47, 2.45);
   const kub476Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub476 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub476.scale.set(-0.0294, -0.0351, 2.0562);
-    kub476.position.set(0, 0, -6.4153 * i);
+    kub476.scale.set(-0.03, -0.04, 2.06);
+    kub476.position.set(0, 0, -6.42 * i);
     kub476Gr.add(kub476);
   }
-  kub476Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub476Gr.position.set(-6.4204, 2.9648, 2.4489);
+  kub476Gr.setRotation(0, -1.57, 0.79);
+  kub476Gr.position.set(-6.42, 2.96, 2.45);
   const kub477Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub477 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub477.scale.set(-0.0294, -0.0351, 2.0562);
-    kub477.position.set(0, 0, -6.4153 * i);
+    kub477.scale.set(-0.03, -0.04, 2.06);
+    kub477.position.set(0, 0, -6.42 * i);
     kub477Gr.add(kub477);
   }
-  kub477Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub477Gr.position.set(-6.4204, 2.4562, 2.4489);
+  kub477Gr.setRotation(0, -1.57, 0.79);
+  kub477Gr.position.set(-6.42, 2.46, 2.45);
   const kub478Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub478 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub478.scale.set(-0.0294, -0.0351, 2.0562);
-    kub478.position.set(0, 0, -6.4153 * i);
+    kub478.scale.set(-0.03, -0.04, 2.06);
+    kub478.position.set(0, 0, -6.42 * i);
     kub478Gr.add(kub478);
   }
-  kub478Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub478Gr.position.set(-6.4204, 6.5576, 2.4489);
+  kub478Gr.setRotation(0, -1.57, 0.79);
+  kub478Gr.position.set(-6.42, 6.56, 2.45);
   const kub479Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub479 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub479.scale.set(-0.0294, -0.0351, 2.0562);
-    kub479.position.set(0, 0, -6.4153 * i);
+    kub479.scale.set(-0.03, -0.04, 2.06);
+    kub479.position.set(0, 0, -6.42 * i);
     kub479Gr.add(kub479);
   }
-  kub479Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub479Gr.position.set(-6.4204, 6.0482, 2.4489);
+  kub479Gr.setRotation(0, -1.57, 0.79);
+  kub479Gr.position.set(-6.42, 6.05, 2.45);
   const kub480Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub480 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub480.scale.set(-0.0294, -0.0351, 0.5273);
-    kub480.position.set(0, 0, -6.4229 * i);
+    kub480.scale.set(-0.03, -0.04, 0.53);
+    kub480.position.set(0, 0, -6.42 * i);
     kub480Gr.add(kub480);
   }
-  kub480Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub480Gr.position.set(-4.8768, 5.0327, 2.455);
+  kub480Gr.setRotation(0, -1.57, 0.79);
+  kub480Gr.position.set(-4.88, 5.03, 2.46);
   const kub481Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub481 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub481.scale.set(-0.0294, -0.0351, 0.5273);
-    kub481.position.set(0, 0, -6.4229 * i);
+    kub481.scale.set(-0.03, -0.04, 0.53);
+    kub481.position.set(0, 0, -6.42 * i);
     kub481Gr.add(kub481);
   }
-  kub481Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub481Gr.position.set(-4.8768, 4.5232, 2.455);
+  kub481Gr.setRotation(0, -1.57, 0.79);
+  kub481Gr.position.set(-4.88, 4.52, 2.46);
   const kub482Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub482 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub482.scale.set(-0.0294, -0.0351, 0.5273);
-    kub482.position.set(0, 0, -6.4229 * i);
+    kub482.scale.set(-0.03, -0.04, 0.53);
+    kub482.position.set(0, 0, -6.42 * i);
     kub482Gr.add(kub482);
   }
-  kub482Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub482Gr.position.set(-7.9641, 5.0327, 2.455);
+  kub482Gr.setRotation(0, -1.57, 0.79);
+  kub482Gr.position.set(-7.96, 5.03, 2.46);
   const kub483Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub483 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub483.scale.set(-0.0294, -0.0351, 0.5273);
-    kub483.position.set(0, 0, -6.4229 * i);
+    kub483.scale.set(-0.03, -0.04, 0.53);
+    kub483.position.set(0, 0, -6.42 * i);
     kub483Gr.add(kub483);
   }
-  kub483Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub483Gr.position.set(-7.9641, 4.5232, 2.455);
+  kub483Gr.setRotation(0, -1.57, 0.79);
+  kub483Gr.position.set(-7.96, 4.52, 2.46);
   const kub484Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub484 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub484.scale.set(-0.0294, -0.0351, 0.8515);
-    kub484.position.set(0, 0, -23.3301 * i);
+    kub484.scale.set(-0.03, -0.04, 0.85);
+    kub484.position.set(0, 0, -23.3 * i);
     kub484Gr.add(kub484);
   }
-  kub484Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub484Gr.position.set(-11.6586, 5.2258, 2.4657);
+  kub484Gr.setRotation(0, -1.57, 0.79);
+  kub484Gr.position.set(-11.7, 5.23, 2.47);
   const kub485Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub485 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub485.scale.set(-0.0294, -0.0351, 0.8515);
-    kub485.position.set(0, 0, -23.3301 * i);
+    kub485.scale.set(-0.03, -0.04, 0.85);
+    kub485.position.set(0, 0, -23.3 * i);
     kub485Gr.add(kub485);
   }
-  kub485Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub485Gr.position.set(-11.6586, 4.7163, 2.4657);
+  kub485Gr.setRotation(0, -1.57, 0.79);
+  kub485Gr.position.set(-11.7, 4.72, 2.47);
   const kub486Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub486 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub486.scale.set(-0.0294, -0.0351, 0.8515);
-    kub486.position.set(0, 0, -23.3301 * i);
+    kub486.scale.set(-0.03, -0.04, 0.85);
+    kub486.position.set(0, 0, -23.3 * i);
     kub486Gr.add(kub486);
   }
-  kub486Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub486Gr.position.set(-11.6586, 4.2077, 2.4657);
+  kub486Gr.setRotation(0, -1.57, 0.79);
+  kub486Gr.position.set(-11.7, 4.21, 2.47);
   const kub487Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub487 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub487.scale.set(-0.0294, -0.0351, 0.8515);
-    kub487.position.set(0, 0, -23.3301 * i);
+    kub487.scale.set(-0.03, -0.04, 0.85);
+    kub487.position.set(0, 0, -23.3 * i);
     kub487Gr.add(kub487);
   }
-  kub487Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub487Gr.position.set(-11.6586, 6.7176, 2.4657);
+  kub487Gr.setRotation(0, -1.57, 0.79);
+  kub487Gr.position.set(-11.7, 6.72, 2.47);
   const kub488Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub488 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub488.scale.set(-0.0294, -0.0351, 0.8515);
-    kub488.position.set(0, 0, -23.3301 * i);
+    kub488.scale.set(-0.03, -0.04, 0.85);
+    kub488.position.set(0, 0, -23.3 * i);
     kub488Gr.add(kub488);
   }
-  kub488Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub488Gr.position.set(-11.6586, 6.2081, 2.4657);
+  kub488Gr.setRotation(0, -1.57, 0.79);
+  kub488Gr.position.set(-11.7, 6.21, 2.47);
   const kub489Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub489 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub489.scale.set(-0.0294, -0.0351, 0.8515);
-    kub489.position.set(0, 0, -23.3301 * i);
+    kub489.scale.set(-0.03, -0.04, 0.85);
+    kub489.position.set(0, 0, -23.3 * i);
     kub489Gr.add(kub489);
   }
-  kub489Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub489Gr.position.set(-11.6586, 5.6995, 2.4657);
+  kub489Gr.setRotation(0, -1.57, 0.79);
+  kub489Gr.position.set(-11.7, 5.7, 2.47);
   const kub490Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub490 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub490.scale.set(-0.0294, -0.0351, 0.8515);
-    kub490.position.set(0, 0, -23.3301 * i);
+    kub490.scale.set(-0.03, -0.04, 0.85);
+    kub490.position.set(0, 0, -23.3 * i);
     kub490Gr.add(kub490);
   }
-  kub490Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub490Gr.position.set(-11.6586, 3.2845, 2.4657);
+  kub490Gr.setRotation(0, -1.57, 0.79);
+  kub490Gr.position.set(-11.7, 3.28, 2.47);
   const kub491Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub491 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub491.scale.set(-0.0294, -0.0351, 0.8515);
-    kub491.position.set(0, 0, -23.3301 * i);
+    kub491.scale.set(-0.03, -0.04, 0.85);
+    kub491.position.set(0, 0, -23.3 * i);
     kub491Gr.add(kub491);
   }
-  kub491Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub491Gr.position.set(-11.6586, 2.775, 2.4657);
+  kub491Gr.setRotation(0, -1.57, 0.79);
+  kub491Gr.position.set(-11.7, 2.77, 2.47);
   const kub492Gr = new THREE.Group();
   for (let i = 0; i < 2; i++) {
     const kub492 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub492.scale.set(-0.0294, -0.0351, 0.8515);
-    kub492.position.set(0, 0, -23.3301 * i);
+    kub492.scale.set(-0.03, -0.04, 0.85);
+    kub492.position.set(0, 0, -23.3 * i);
     kub492Gr.add(kub492);
   }
-  kub492Gr.setRotation(-0.0, -1.5708, 0.7854);
-  kub492Gr.position.set(-11.6586, 2.2664, 2.4657);
+  kub492Gr.setRotation(0, -1.57, 0.79);
+  kub492Gr.position.set(-11.7, 2.27, 2.47);
   const kub493 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub493.scale.set(0.0457, 0.0229, 0.0229);
-  kub493.setRotation(0.0, 0.0, -0.0);
+  kub493.scale.set(0.05, 0.02, 0.02);
+  kub493.setRotation(0, 0, 0);
   const kub493MZ = kub493.clone();
   kub493MZ.updateMatrixWorld(true);
-  kub493.position.set(0, 0, -0.8133);
+  kub493.position.set(0, 0, -0.81);
   kub493MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub493MZ.position.set(0, 0, -0.8133);
+  kub493MZ.position.set(0, 0, -0.81);
   const kub493MrZ = new THREE.Group();
   kub493MrZ.add(kub493, kub493MZ);
-  kub493MrZ.position.set(-12.636, 4.0817, 0);
-  const cyl025 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl025.position.set(-12.6604, 4.965, -0.8133);
-  cyl025.scale.set(0.017, 0.87, 0.017);
+  kub493MrZ.position.set(-12.6, 4.08, 0);
+  const cyl25 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl25.position.set(-12.7, 4.96, -0.81);
+  cyl25.scale.set(0.02, 0.87, 0.02);
 
   const kub494 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub494.scale.set(0.0457, 0.0229, 0.0229);
-  kub494.setRotation(0.0, 0.0, -0.0);
+  kub494.scale.set(0.05, 0.02, 0.02);
+  kub494.setRotation(0, 0, 0);
   const kub494MZ = kub494.clone();
   kub494MZ.updateMatrixWorld(true);
-  kub494.position.set(0, 0, 0.8132);
+  kub494.position.set(0, 0, 0.81);
   kub494MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub494MZ.position.set(0, 0, -2.4397);
+  kub494MZ.position.set(0, 0, -2.44);
   const kub494MrZ = new THREE.Group();
   kub494MrZ.add(kub494, kub494MZ);
-  kub494MrZ.position.set(-12.636, 4.0817, 0);
-  const cyl026 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl026.position.set(-12.6604, 4.965, 0.8132);
-  cyl026.scale.set(0.017, 0.87, 0.017);
+  kub494MrZ.position.set(-12.6, 4.08, 0);
+  const cyl26 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl26.position.set(-12.7, 4.96, 0.81);
+  cyl26.scale.set(0.02, 0.87, 0.02);
 
   const kub495 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub495.scale.set(-0.0457, 0.0229, 0.0229);
-  kub495.setRotation(0.0, 0.0, -0.0);
+  kub495.scale.set(-0.05, 0.02, 0.02);
+  kub495.setRotation(0, 0, 0);
   const kub495MZ = kub495.clone();
   kub495MZ.updateMatrixWorld(true);
-  kub495.position.set(0, 0, -0.8133);
+  kub495.position.set(0, 0, -0.81);
   kub495MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub495MZ.position.set(0, 0, -0.8133);
+  kub495MZ.position.set(0, 0, -0.81);
   const kub495MrZ = new THREE.Group();
   kub495MrZ.add(kub495, kub495MZ);
-  kub495MrZ.position.set(12.6349, 4.0817, 0);
-  const cyl027 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl027.position.set(12.6592, 4.965, -0.8133);
-  cyl027.scale.set(-0.017, 0.87, 0.017);
+  kub495MrZ.position.set(12.6, 4.08, 0);
+  const cyl27 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl27.position.set(12.7, 4.96, -0.81);
+  cyl27.scale.set(-0.02, 0.87, 0.02);
 
   const kub496 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub496.scale.set(-0.0457, 0.0229, 0.0229);
-  kub496.setRotation(0.0, 0.0, -0.0);
+  kub496.scale.set(-0.05, 0.02, 0.02);
+  kub496.setRotation(0, 0, 0);
   const kub496MZ = kub496.clone();
   kub496MZ.updateMatrixWorld(true);
-  kub496.position.set(0, 0, 0.8132);
+  kub496.position.set(0, 0, 0.81);
   kub496MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub496MZ.position.set(0, 0, -2.4397);
+  kub496MZ.position.set(0, 0, -2.44);
   const kub496MrZ = new THREE.Group();
   kub496MrZ.add(kub496, kub496MZ);
-  kub496MrZ.position.set(12.6349, 4.0817, 0);
-  const cyl028 = new THREE.Mesh(cylinderGeo, MetalMaterial);
-  cyl028.position.set(12.6592, 4.965, 0.8132);
-  cyl028.scale.set(-0.017, 0.87, 0.017);
+  kub496MrZ.position.set(12.6, 4.08, 0);
+  const cyl28 = new THREE.Mesh(cylinderGeo, MetalMaterial);
+  cyl28.position.set(12.7, 4.96, 0.81);
+  cyl28.scale.set(-0.02, 0.87, 0.02);
 
   const kub497 = new THREE.Mesh(boxGeo, Floor_trainMaterial);
-  kub497.position.set(-0.0006, 2.1963, -0.0);
-  kub497.scale.set(12.5105, 0.1214, 2.3753);
+  kub497.position.set(-0, 2.2, 0);
+  kub497.scale.set(12.5, 0.12, 2.38);
 
   const kub533Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub533 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-    kub533.scale.set(2.1144, 0.051, 0.8864);
-    kub533.position.set(6.4194 * i, 0, 0);
+    kub533.scale.set(2.11, 0.05, 0.89);
+    kub533.position.set(6.42 * i, 0, 0);
     kub533Gr.add(kub533);
   }
-  kub533Gr.setRotation(1.5708, 0.0, 0.0);
-  kub533Gr.position.set(-6.4204, 3.1279, 2.4191);
+  kub533Gr.setRotation(1.57, 0, 0);
+  kub533Gr.position.set(-6.42, 3.13, 2.42);
   const kub542Gr = new THREE.Group();
   for (let i = 0; i < 3; i++) {
     const kub542 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub542.scale.set(2.1443, -0.0248, 0.1709);
-    kub542.position.set(6.4201 * i, 0, 0);
+    kub542.scale.set(2.14, -0.02, 0.17);
+    kub542.position.set(6.42 * i, 0, 0);
     kub542Gr.add(kub542);
   }
-  kub542Gr.setRotation(1.5708, 0.0, 0.0);
-  kub542Gr.position.set(-6.4204, 3.7969, 2.4659);
+  kub542Gr.setRotation(1.57, 0, 0);
+  kub542Gr.position.set(-6.42, 3.8, 2.47);
   const DrawTrainDoorFunctionEntityGr = new THREE.Group();
   for (let i = 0; i < 4; i++) {
     const DrawTrainDoorFunctionEntity = DrawTrainDoor();
-    DrawTrainDoorFunctionEntity.position.set(6.4192 * i, 0, 0);
+    DrawTrainDoorFunctionEntity.position.set(6.42 * i, 0, 0);
     DrawTrainDoorFunctionEntityGr.add(DrawTrainDoorFunctionEntity);
   }
-  DrawTrainDoorFunctionEntityGr.setRotation(0.0, 0.0, -0.0);
+  DrawTrainDoorFunctionEntityGr.setRotation(0, 0, 0);
 
   const DrawTrainDoorFunctionEntityGroupMZ = new THREE.Group();
   for (let i = 0; i < 4; i++) {
     const DrawTrainDoorFunctionEntity = DrawTrainDoor();
-    DrawTrainDoorFunctionEntity.position.set(6.4192 * i, 0, 0);
+    DrawTrainDoorFunctionEntity.position.set(6.42 * i, 0, 0);
     DrawTrainDoorFunctionEntityGroupMZ.add(DrawTrainDoorFunctionEntity);
   }
   DrawTrainDoorFunctionEntityGroupMZ.updateMatrixWorld(true);
 
-  DrawTrainDoorFunctionEntityGr.position.set(0, 0, -2.4011);
+  DrawTrainDoorFunctionEntityGr.position.set(0, 0, -2.4);
   DrawTrainDoorFunctionEntityGroupMZ.applyMatrix(
     new THREE.Matrix4().makeScale(1, 1, -1),
   );
-  DrawTrainDoorFunctionEntityGroupMZ.position.set(0, 0, 2.4011);
+  DrawTrainDoorFunctionEntityGroupMZ.position.set(0, 0, 2.4);
 
   const DrawTrainDoorFunctionEntityGroupMrZ = new THREE.Group();
   DrawTrainDoorFunctionEntityGroupMrZ.add(
     DrawTrainDoorFunctionEntityGr,
     DrawTrainDoorFunctionEntityGroupMZ,
   );
-  DrawTrainDoorFunctionEntityGroupMrZ.position.set(-9.6225, 2.2455, 0);
+  DrawTrainDoorFunctionEntityGroupMrZ.position.set(-9.62, 2.25, 0);
 
   const Decor = DrawVagonDecorations();
   const out = new THREE.Group();
   out.add(
     Decor,
-    cylwheel_008MrZ,
-    cylwheel_009MrZ,
-    cylwheel_010MrZ,
-    cylwheel_011MrZ,
+    cylwheel_8MrZ,
+    cylwheel_9MrZ,
+    cylwheel_10MrZ,
+    cylwheel_11MrZ,
     kub307,
     kub308MrZ,
     kub309MrZ,
     kub310MrZ,
-    cyl021GroupMrZ,
+    cyl21GroupMrZ,
     kub311MrZ,
     kub312MrZ,
     kub313MrZ,
     kub314MrZ,
     kub315MrZ,
     kub316MrZ,
-    cylwheel_012MrZ,
-    cylwheel_013MrZ,
-    cylwheel_014MrZ,
-    cylwheel_015MrZ,
+    cylwheel_12MrZ,
+    cylwheel_13MrZ,
+    cylwheel_14MrZ,
+    cylwheel_15MrZ,
     kub317MrZ,
     kub318MrZ,
     kub319MrZ,
@@ -4809,8 +4810,8 @@ function DrawVagon() {
     kub325MrZ,
     kub326MrZ,
     kub327MrZ,
-    cyl022MrZ,
-    sph002MrZ,
+    cyl22MrZ,
+    sph2MrZ,
     kub328MrZ,
     kub329MrZ,
     kub330MrZ,
@@ -4827,11 +4828,11 @@ function DrawVagon() {
     kub341MrZ,
     kub342MrXMrZMrY,
     kub343MrZMrY,
-    cyl023GroupMrZ,
+    cyl23GroupMrZ,
     kub344MrZ,
     kub345MrZ,
-    cyl024MrZ,
-    sph003MrZ,
+    cyl24MrZ,
+    sph3MrZ,
     kub346MrZ,
     kub347MrZ,
     kub348MrZ,
@@ -4924,13 +4925,13 @@ function DrawVagon() {
     kub491Gr,
     kub492Gr,
     kub493MrZ,
-    cyl025,
+    cyl25,
     kub494MrZ,
-    cyl026,
+    cyl26,
     kub495MrZ,
-    cyl027,
+    cyl27,
     kub496MrZ,
-    cyl028,
+    cyl28,
     kub497,
     kub533Gr,
     kub542Gr,
@@ -4941,107 +4942,107 @@ function DrawVagon() {
 }
 
 function DrawRightDoorFunction() {
-  const Train_blue_003Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0343, 0.1009, 0.652),
+  const Train_blue_3Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.03, 0.1, 0.65),
     roughness: 0.5,
   });
-  const Glass_003Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.2227, 0.241, 0.3264),
+  const Glass_3Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.22, 0.24, 0.33),
     transparent: true,
-    opacity: 0.315,
+    opacity: 0.32,
     roughness: 0.5,
   });
-  const Coloumn_003Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0, 0.0, 0.0),
+  const Coloumn_3Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0, 0, 0),
     roughness: 0.5,
   });
-  const WhiteDots_003Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
+  const WhiteDots_3Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(1, 1, 1),
   });
-  const Metal_003Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.477, 0.477),
-    metalness: 1.0,
+  const Metal_3Material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0.48, 0.48, 0.48),
+    metalness: 1,
     roughness: 0.5,
   });
 
   const boxGeo = new THREE.BoxGeometry(2, 2, 2);
 
-  const kub642 = new THREE.Mesh(boxGeo, Train_blue_003Material);
-  kub642.position.set(-0.5485, 0.8713, -0.0051);
-  kub642.scale.set(0.5484, 0.0351, 0.8609);
-  kub642.setRotation(1.5708, 3.1416, 0.0);
+  const kub642 = new THREE.Mesh(boxGeo, Train_blue_3Material);
+  kub642.position.set(-0.55, 0.87, -0.01);
+  kub642.scale.set(0.55, 0.04, 0.86);
+  kub642.setRotation(1.57, 3.14, 0);
 
-  const kub643 = new THREE.Mesh(boxGeo, Glass_003Material);
-  kub643.position.set(-0.5485, 2.5616, -0.0051);
-  kub643.scale.set(-0.0151, 0.9163, 0.3739);
-  kub643.setRotation(0.0, 1.5708, 0.0);
+  const kub643 = new THREE.Mesh(boxGeo, Glass_3Material);
+  kub643.position.set(-0.55, 2.56, -0.01);
+  kub643.scale.set(-0.02, 0.92, 0.37);
+  kub643.setRotation(0, 1.57, 0);
 
-  const kub644 = new THREE.Mesh(boxGeo, Coloumn_003Material);
-  kub644.scale.set(0.1252, 0.0309, 0.1349);
-  kub644.setRotation(1.5708, 3.1416, 0.7854);
+  const kub644 = new THREE.Mesh(boxGeo, Coloumn_3Material);
+  kub644.scale.set(0.13, 0.03, 0.13);
+  kub644.setRotation(1.57, 3.14, 0.79);
   const kub644MY = kub644.clone();
   kub644MY.updateMatrixWorld(true);
-  kub644.position.set(0, 1.7421, 0);
+  kub644.position.set(0, 1.74, 0);
   kub644MY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub644MY.position.set(0, 3.3811, 0);
+  kub644MY.position.set(0, 3.38, 0);
   const kub644MrY = new THREE.Group();
   kub644MrY.add(kub644, kub644MY);
-  kub644MrY.position.set(-0.2006, 0, -0.0051);
-  const kub645 = new THREE.Mesh(boxGeo, Train_blue_003Material);
-  kub645.position.set(-0.9986, 2.605, -0.0051);
-  kub645.scale.set(0.0984, 0.0351, 0.8728);
-  kub645.setRotation(1.5708, 3.1416, 0.0);
+  kub644MrY.position.set(-0.2, 0, -0.01);
+  const kub645 = new THREE.Mesh(boxGeo, Train_blue_3Material);
+  kub645.position.set(-1, 2.6, -0.01);
+  kub645.scale.set(0.1, 0.04, 0.87);
+  kub645.setRotation(1.57, 3.14, 0);
 
-  const kub646 = new THREE.Mesh(boxGeo, Coloumn_003Material);
-  kub646.position.set(-0.5511, 1.7302, -0.0051);
-  kub646.scale.set(0.3579, 0.0309, 0.0215);
-  kub646.setRotation(1.5708, 3.1416, 0.0);
+  const kub646 = new THREE.Mesh(boxGeo, Coloumn_3Material);
+  kub646.position.set(-0.55, 1.73, -0.01);
+  kub646.scale.set(0.36, 0.03, 0.02);
+  kub646.setRotation(1.57, 3.14, 0);
 
-  const kub647 = new THREE.Mesh(boxGeo, Coloumn_003Material);
-  kub647.scale.set(0.1252, 0.0309, 0.1349);
-  kub647.setRotation(1.5708, 3.1416, 0.7854);
+  const kub647 = new THREE.Mesh(boxGeo, Coloumn_3Material);
+  kub647.scale.set(0.13, 0.03, 0.13);
+  kub647.setRotation(1.57, 3.14, 0.79);
   const kub647MY = kub647.clone();
   kub647MY.updateMatrixWorld(true);
-  kub647.position.set(0, 1.7421, 0);
+  kub647.position.set(0, 1.74, 0);
   kub647MY.applyMatrix(new THREE.Matrix4().makeScale(1, -1, 1));
-  kub647MY.position.set(0, 3.3811, 0);
+  kub647MY.position.set(0, 3.38, 0);
   const kub647MrY = new THREE.Group();
   kub647MrY.add(kub647, kub647MY);
-  kub647MrY.position.set(-0.9097, 0, -0.0051);
-  const kub648 = new THREE.Mesh(boxGeo, WhiteDots_003Material);
-  kub648.position.set(-0.0872, 0.5556, -0.0198);
-  kub648.scale.set(0.087, 0.0279, 0.087);
-  kub648.setRotation(1.5708, 0.0, -0.0);
+  kub647MrY.position.set(-0.91, 0, -0.01);
+  const kub648 = new THREE.Mesh(boxGeo, WhiteDots_3Material);
+  kub648.position.set(-0.09, 0.56, -0.02);
+  kub648.scale.set(0.09, 0.03, 0.09);
+  kub648.setRotation(1.57, 0, 0);
 
-  const kub649 = new THREE.Mesh(boxGeo, Coloumn_003Material);
-  kub649.position.set(-0.0177, 2.3728, -0.0123);
-  kub649.scale.set(2.3673, 0.0387, 0.0176);
-  kub649.setRotation(4.7124, 0.0, 1.5708);
+  const kub649 = new THREE.Mesh(boxGeo, Coloumn_3Material);
+  kub649.position.set(-0.02, 2.37, -0.01);
+  kub649.scale.set(2.37, 0.04, 0.02);
+  kub649.setRotation(4.71, 0, 1.57);
 
-  const kub650 = new THREE.Mesh(boxGeo, Train_blue_003Material);
-  kub650.position.set(-0.5485, 4.0511, -0.0051);
-  kub650.scale.set(0.5484, 0.0351, 0.6526);
-  kub650.setRotation(1.5708, 3.1416, 0.0);
+  const kub650 = new THREE.Mesh(boxGeo, Train_blue_3Material);
+  kub650.position.set(-0.55, 4.05, -0.01);
+  kub650.scale.set(0.55, 0.04, 0.65);
+  kub650.setRotation(1.57, 3.14, 0);
 
-  const kub651 = new THREE.Mesh(boxGeo, Glass_003Material);
-  kub651.position.set(-0.5485, 2.5616, -0.0051);
-  kub651.scale.set(-0.0151, 0.9163, 0.3739);
-  kub651.setRotation(0.0, 1.5708, 0.0);
+  const kub651 = new THREE.Mesh(boxGeo, Glass_3Material);
+  kub651.position.set(-0.55, 2.56, -0.01);
+  kub651.scale.set(-0.02, 0.92, 0.37);
+  kub651.setRotation(0, 1.57, 0);
 
-  const kub652 = new THREE.Mesh(boxGeo, Train_blue_003Material);
-  kub652.position.set(-0.0985, 2.605, -0.0051);
-  kub652.scale.set(0.0984, 0.0351, 0.8728);
-  kub652.setRotation(1.5708, 3.1416, 0.0);
+  const kub652 = new THREE.Mesh(boxGeo, Train_blue_3Material);
+  kub652.position.set(-0.1, 2.6, -0.01);
+  kub652.scale.set(0.1, 0.04, 0.87);
+  kub652.setRotation(1.57, 3.14, 0);
 
-  const kub653 = new THREE.Mesh(boxGeo, WhiteDots_003Material);
-  kub653.position.set(-0.6357, 1.1039, -0.0237);
-  kub653.scale.set(0.7754, 0.0248, 0.1232);
-  kub653.setRotation(1.5708, 0.0, -0.7854);
+  const kub653 = new THREE.Mesh(boxGeo, WhiteDots_3Material);
+  kub653.position.set(-0.64, 1.1, -0.02);
+  kub653.scale.set(0.78, 0.02, 0.12);
+  kub653.setRotation(1.57, 0, -0.79);
 
-  const kub654 = new THREE.Mesh(boxGeo, Metal_003Material);
-  kub654.position.set(-0.5485, 0.4296, -0.0099);
-  kub654.scale.set(0.0294, 0.0351, 0.5456);
-  kub654.setRotation(-1.5708, 0.0, 1.5708);
+  const kub654 = new THREE.Mesh(boxGeo, Metal_3Material);
+  kub654.position.set(-0.55, 0.43, -0.01);
+  kub654.scale.set(0.03, 0.04, 0.55);
+  kub654.setRotation(-1.57, 0, 1.57);
 
   const out = new THREE.Group();
   out.add(
@@ -5064,67 +5065,67 @@ function DrawRightDoorFunction() {
 
 function DrawStation() {
   const ColoumnMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0, 0.0, 0.0),
+    color: new THREE.Color(0, 0, 0),
     roughness: 0.5,
   });
   const BrassMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.7948, 0.7991, 0.0045),
-    metalness: 0.9127,
+    color: new THREE.Color(0.79, 0.8, 0),
+    metalness: 0.91,
     roughness: 0.1,
   });
   const RoofTilesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
-    metalness: 1.0,
-    emissive: new THREE.Color(1.0, 1.0, 1.0),
+    color: new THREE.Color(1, 1, 1),
+    metalness: 1,
+    emissive: new THREE.Color(1, 1, 1),
   });
   const RoofTiles_1Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.814, 0.814, 0.814),
+    color: new THREE.Color(0.81, 0.81, 0.81),
   });
   const ColoumnPlateMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.3672, 0.2714, 0.1523),
+    color: new THREE.Color(0.37, 0.27, 0.15),
     roughness: 0.5,
   });
   const Floor_ColumnsMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.2396, 0.197, 0.134),
-    metalness: 0.123,
-    roughness: 0.1508,
+    color: new THREE.Color(0.24, 0.2, 0.13),
+    metalness: 0.12,
+    roughness: 0.15,
   });
   const Floor_CentralMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.3902, 0.2623),
-    metalness: 0.123,
-    roughness: 0.1508,
+    color: new THREE.Color(0.48, 0.39, 0.26),
+    metalness: 0.12,
+    roughness: 0.15,
   });
   const Blue_PictureMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.1467, 0.2457, 0.8),
+    color: new THREE.Color(0.15, 0.25, 0.8),
     roughness: 0.5,
   });
   const WhiteDotsMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 1.0, 1.0),
+    color: new THREE.Color(1, 1, 1),
   });
   const MetalMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.477, 0.477, 0.477),
-    metalness: 1.0,
+    color: new THREE.Color(0.48, 0.48, 0.48),
+    metalness: 1,
     roughness: 0.5,
   });
   const Green_PictureMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.0351, 0.4869, 0.0138),
+    color: new THREE.Color(0.04, 0.49, 0.01),
     roughness: 0.5,
   });
   const Metall_RustMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.08, 0.0213, 0.0026),
-    metalness: 0.8254,
-    roughness: 0.8849,
+    color: new THREE.Color(0.08, 0.02, 0),
+    metalness: 0.83,
+    roughness: 0.88,
   });
   const Floor_Sides_1Material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.3343, 0.2742, 0.1854),
-    metalness: 0.123,
-    roughness: 0.3333,
+    color: new THREE.Color(0.33, 0.27, 0.19),
+    metalness: 0.12,
+    roughness: 0.33,
   });
   const Floor_StripesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1.0, 0.5225, 0.0),
+    color: new THREE.Color(1, 0.52, 0),
   });
   const FloorTileMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0.686, 0.6165, 0.3163),
+    color: new THREE.Color(0.69, 0.62, 0.32),
     roughness: 0.5,
   });
   const textureLoader = new THREE.TextureLoader();
@@ -5144,1662 +5145,1662 @@ function DrawStation() {
   const torusGeo = new THREE.TorusGeometry(1, 0.25, 12, 48);
 
   const kubimage = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kubimage.position.set(-31.329, 5.5248, -0.0053);
-  kubimage.scale.set(0.18, 3.8564, 3.3873);
+  kubimage.position.set(-31.3, 5.52, -0.01);
+  kubimage.scale.set(0.18, 3.86, 3.39);
 
   const kubborder = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubborder.position.set(-31.329, 6.267, 3.5536);
-  kubborder.scale.set(0.2035, 5.141, 0.2341);
+  kubborder.position.set(-31.3, 6.27, 3.55);
+  kubborder.scale.set(0.2, 5.14, 0.23);
 
-  const kubborder_001 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubborder_001.position.set(-31.329, 6.267, -3.667);
-  kubborder_001.scale.set(0.2035, 5.141, 0.2341);
+  const kubborder_1 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubborder_1.position.set(-31.3, 6.27, -3.67);
+  kubborder_1.scale.set(0.2, 5.14, 0.23);
 
-  const kubborder_002 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubborder_002.position.set(-31.3395, 1.3972, -0.005);
-  kubborder_002.scale.set(0.2035, 3.6351, 0.2712);
-  kubborder_002.setRotation(1.5708, 0.0, 0.0);
+  const kubborder_2 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubborder_2.position.set(-31.3, 1.4, -0.01);
+  kubborder_2.scale.set(0.2, 3.64, 0.27);
+  kubborder_2.setRotation(1.57, 0, 0);
 
   const kubsmallroof_tileGr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
     const kubsmallroof_tile = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile.scale.set(1.9374, -0.1342, 0.6357);
-    kubsmallroof_tile.position.set(4.0298 * i, 0, 0);
+    kubsmallroof_tile.scale.set(1.94, -0.13, 0.64);
+    kubsmallroof_tile.position.set(4.03 * i, 0, 0);
     kubsmallroof_tileGr.add(kubsmallroof_tile);
   }
-  kubsmallroof_tileGr.setRotation(3.0771, 0.0, -0.0);
-  kubsmallroof_tileGr.position.set(-29.7716, 9.7462, -0.6276);
-  const kubsmallroof_tile_005Gr = new THREE.Group();
+  kubsmallroof_tileGr.setRotation(3.08, 0, 0);
+  kubsmallroof_tileGr.position.set(-29.8, 9.75, -0.63);
+  const kubsmallroof_tile_5Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_005 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_005.scale.set(1.9374, -0.1342, 0.6357);
-    kubsmallroof_tile_005.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_005Gr.add(kubsmallroof_tile_005);
+    const kubsmallroof_tile_5 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_5.scale.set(1.94, -0.13, 0.64);
+    kubsmallroof_tile_5.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_5Gr.add(kubsmallroof_tile_5);
   }
-  kubsmallroof_tile_005Gr.setRotation(2.968, 0.0, -0.0);
-  kubsmallroof_tile_005Gr.position.set(-29.7716, 9.5972, -1.8736);
-  const kubsmallroof_tile_004Gr = new THREE.Group();
+  kubsmallroof_tile_5Gr.setRotation(2.97, 0, 0);
+  kubsmallroof_tile_5Gr.position.set(-29.8, 9.6, -1.87);
+  const kubsmallroof_tile_4Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_004 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_004.scale.set(1.9374, -0.1342, 0.579);
-    kubsmallroof_tile_004.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_004Gr.add(kubsmallroof_tile_004);
+    const kubsmallroof_tile_4 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_4.scale.set(1.94, -0.13, 0.58);
+    kubsmallroof_tile_4.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_4Gr.add(kubsmallroof_tile_4);
   }
-  kubsmallroof_tile_004Gr.setRotation(2.8706, 0.0, -0.0);
-  kubsmallroof_tile_004Gr.position.set(-29.7716, 9.3407, -3.0144);
-  const kubsmallroof_tile_003Gr = new THREE.Group();
+  kubsmallroof_tile_4Gr.setRotation(2.87, 0, 0);
+  kubsmallroof_tile_4Gr.position.set(-29.8, 9.34, -3.01);
+  const kubsmallroof_tile_3Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_003 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_003.scale.set(1.9374, -0.1342, 0.5332);
-    kubsmallroof_tile_003.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_003Gr.add(kubsmallroof_tile_003);
+    const kubsmallroof_tile_3 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_3.scale.set(1.94, -0.13, 0.53);
+    kubsmallroof_tile_3.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_3Gr.add(kubsmallroof_tile_3);
   }
-  kubsmallroof_tile_003Gr.setRotation(2.7329, 0.0, -0.0);
-  kubsmallroof_tile_003Gr.position.set(-29.7716, 8.9771, -4.0545);
-  const kubsmallroof_tile_002Gr = new THREE.Group();
+  kubsmallroof_tile_3Gr.setRotation(2.73, 0, 0);
+  kubsmallroof_tile_3Gr.position.set(-29.8, 8.98, -4.05);
+  const kubsmallroof_tile_2Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_002 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_002.scale.set(1.9374, -0.1342, 0.5332);
-    kubsmallroof_tile_002.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_002Gr.add(kubsmallroof_tile_002);
+    const kubsmallroof_tile_2 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_2.scale.set(1.94, -0.13, 0.53);
+    kubsmallroof_tile_2.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_2Gr.add(kubsmallroof_tile_2);
   }
-  kubsmallroof_tile_002Gr.setRotation(2.4437, 0.0, -0.0);
-  kubsmallroof_tile_002Gr.position.set(-29.7716, 8.4392, -4.9277);
-  const kubsmallroof_tile_001Gr = new THREE.Group();
+  kubsmallroof_tile_2Gr.setRotation(2.44, 0, 0);
+  kubsmallroof_tile_2Gr.position.set(-29.8, 8.44, -4.93);
+  const kubsmallroof_tile_1Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_001 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_001.scale.set(1.9374, -0.1342, 0.6071);
-    kubsmallroof_tile_001.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_001Gr.add(kubsmallroof_tile_001);
+    const kubsmallroof_tile_1 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_1.scale.set(1.94, -0.13, 0.61);
+    kubsmallroof_tile_1.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_1Gr.add(kubsmallroof_tile_1);
   }
-  kubsmallroof_tile_001Gr.setRotation(2.1312, 0.0, -0.0);
-  kubsmallroof_tile_001Gr.position.set(-29.7716, 7.6197, -5.6245);
-  const kubsmallroof_tile_006Gr = new THREE.Group();
+  kubsmallroof_tile_1Gr.setRotation(2.13, 0, 0);
+  kubsmallroof_tile_1Gr.position.set(-29.8, 7.62, -5.62);
+  const kubsmallroof_tile_6Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_006 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_006.scale.set(0.1278, -0.1342, 0.6357);
-    kubsmallroof_tile_006.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_006Gr.add(kubsmallroof_tile_006);
+    const kubsmallroof_tile_6 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_6.scale.set(0.13, -0.13, 0.64);
+    kubsmallroof_tile_6.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_6Gr.add(kubsmallroof_tile_6);
   }
-  kubsmallroof_tile_006Gr.setRotation(3.0771, 0.0, -0.0);
-  kubsmallroof_tile_006Gr.position.set(-27.7592, 9.6666, -0.6276);
-  const kubsmallroof_tile_007Gr = new THREE.Group();
+  kubsmallroof_tile_6Gr.setRotation(3.08, 0, 0);
+  kubsmallroof_tile_6Gr.position.set(-27.8, 9.67, -0.63);
+  const kubsmallroof_tile_7Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_007 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_007.scale.set(0.1278, -0.1342, 0.6357);
-    kubsmallroof_tile_007.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_007Gr.add(kubsmallroof_tile_007);
+    const kubsmallroof_tile_7 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_7.scale.set(0.13, -0.13, 0.64);
+    kubsmallroof_tile_7.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_7Gr.add(kubsmallroof_tile_7);
   }
-  kubsmallroof_tile_007Gr.setRotation(2.968, 0.0, -0.0);
-  kubsmallroof_tile_007Gr.position.set(-27.7592, 9.5176, -1.8736);
-  const kubsmallroof_tile_008Gr = new THREE.Group();
+  kubsmallroof_tile_7Gr.setRotation(2.97, 0, 0);
+  kubsmallroof_tile_7Gr.position.set(-27.8, 9.52, -1.87);
+  const kubsmallroof_tile_8Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_008 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_008.scale.set(0.1278, -0.1342, 0.579);
-    kubsmallroof_tile_008.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_008Gr.add(kubsmallroof_tile_008);
+    const kubsmallroof_tile_8 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_8.scale.set(0.13, -0.13, 0.58);
+    kubsmallroof_tile_8.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_8Gr.add(kubsmallroof_tile_8);
   }
-  kubsmallroof_tile_008Gr.setRotation(2.8706, 0.0, -0.0);
-  kubsmallroof_tile_008Gr.position.set(-27.7592, 9.261, -3.0144);
-  const kubsmallroof_tile_009Gr = new THREE.Group();
+  kubsmallroof_tile_8Gr.setRotation(2.87, 0, 0);
+  kubsmallroof_tile_8Gr.position.set(-27.8, 9.26, -3.01);
+  const kubsmallroof_tile_9Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_009 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_009.scale.set(0.1278, -0.1342, 0.5332);
-    kubsmallroof_tile_009.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_009Gr.add(kubsmallroof_tile_009);
+    const kubsmallroof_tile_9 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_9.scale.set(0.13, -0.13, 0.53);
+    kubsmallroof_tile_9.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_9Gr.add(kubsmallroof_tile_9);
   }
-  kubsmallroof_tile_009Gr.setRotation(2.7329, 0.0, -0.0);
-  kubsmallroof_tile_009Gr.position.set(-27.7592, 8.8974, -4.0545);
-  const kubsmallroof_tile_010Gr = new THREE.Group();
+  kubsmallroof_tile_9Gr.setRotation(2.73, 0, 0);
+  kubsmallroof_tile_9Gr.position.set(-27.8, 8.9, -4.05);
+  const kubsmallroof_tile_10Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_010 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_010.scale.set(0.1278, -0.1342, 0.5332);
-    kubsmallroof_tile_010.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_010Gr.add(kubsmallroof_tile_010);
+    const kubsmallroof_tile_10 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_10.scale.set(0.13, -0.13, 0.53);
+    kubsmallroof_tile_10.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_10Gr.add(kubsmallroof_tile_10);
   }
-  kubsmallroof_tile_010Gr.setRotation(2.4437, 0.0, -0.0);
-  kubsmallroof_tile_010Gr.position.set(-27.7592, 8.3596, -4.9277);
-  const kubsmallroof_tile_011Gr = new THREE.Group();
+  kubsmallroof_tile_10Gr.setRotation(2.44, 0, 0);
+  kubsmallroof_tile_10Gr.position.set(-27.8, 8.36, -4.93);
+  const kubsmallroof_tile_11Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_011 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_011.scale.set(0.1278, -0.1342, 0.6071);
-    kubsmallroof_tile_011.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_011Gr.add(kubsmallroof_tile_011);
+    const kubsmallroof_tile_11 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_11.scale.set(0.13, -0.13, 0.61);
+    kubsmallroof_tile_11.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_11Gr.add(kubsmallroof_tile_11);
   }
-  kubsmallroof_tile_011Gr.setRotation(2.1312, 0.0, -0.0);
-  kubsmallroof_tile_011Gr.position.set(-27.7592, 7.5401, -5.6245);
-  const kubsmallroof_tile_012Gr = new THREE.Group();
+  kubsmallroof_tile_11Gr.setRotation(2.13, 0, 0);
+  kubsmallroof_tile_11Gr.position.set(-27.8, 7.54, -5.62);
+  const kubsmallroof_tile_12Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_012 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_012.scale.set(1.9374, -0.1342, 0.6357);
-    kubsmallroof_tile_012.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_012Gr.add(kubsmallroof_tile_012);
+    const kubsmallroof_tile_12 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_12.scale.set(1.94, -0.13, 0.64);
+    kubsmallroof_tile_12.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_12Gr.add(kubsmallroof_tile_12);
   }
-  kubsmallroof_tile_012Gr.setRotation(-3.0772, 0.0, -0.0);
-  kubsmallroof_tile_012Gr.position.set(-29.7716, 9.7482, 0.6277);
-  const kubsmallroof_tile_013Gr = new THREE.Group();
+  kubsmallroof_tile_12Gr.setRotation(-3.08, 0, 0);
+  kubsmallroof_tile_12Gr.position.set(-29.8, 9.75, 0.63);
+  const kubsmallroof_tile_13Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_013 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_013.scale.set(1.9374, -0.1342, 0.6357);
-    kubsmallroof_tile_013.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_013Gr.add(kubsmallroof_tile_013);
+    const kubsmallroof_tile_13 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_13.scale.set(1.94, -0.13, 0.64);
+    kubsmallroof_tile_13.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_13Gr.add(kubsmallroof_tile_13);
   }
-  kubsmallroof_tile_013Gr.setRotation(-2.968, 0.0, -0.0);
-  kubsmallroof_tile_013Gr.position.set(-29.7716, 9.6026, 1.8431);
-  const kubsmallroof_tile_014Gr = new THREE.Group();
+  kubsmallroof_tile_13Gr.setRotation(-2.97, 0, 0);
+  kubsmallroof_tile_13Gr.position.set(-29.8, 9.6, 1.84);
+  const kubsmallroof_tile_14Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_014 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_014.scale.set(1.9374, -0.1342, 0.579);
-    kubsmallroof_tile_014.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_014Gr.add(kubsmallroof_tile_014);
+    const kubsmallroof_tile_14 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_14.scale.set(1.94, -0.13, 0.58);
+    kubsmallroof_tile_14.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_14Gr.add(kubsmallroof_tile_14);
   }
-  kubsmallroof_tile_014Gr.setRotation(-2.8706, 0.0, -0.0);
-  kubsmallroof_tile_014Gr.position.set(-29.7716, 9.3406, 3.0144);
-  const kubsmallroof_tile_015Gr = new THREE.Group();
+  kubsmallroof_tile_14Gr.setRotation(-2.87, 0, 0);
+  kubsmallroof_tile_14Gr.position.set(-29.8, 9.34, 3.01);
+  const kubsmallroof_tile_15Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_015 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_015.scale.set(1.9374, -0.1342, 0.5332);
-    kubsmallroof_tile_015.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_015Gr.add(kubsmallroof_tile_015);
+    const kubsmallroof_tile_15 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_15.scale.set(1.94, -0.13, 0.53);
+    kubsmallroof_tile_15.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_15Gr.add(kubsmallroof_tile_15);
   }
-  kubsmallroof_tile_015Gr.setRotation(-2.7329, 0.0, -0.0);
-  kubsmallroof_tile_015Gr.position.set(-29.7716, 8.977, 4.0544);
-  const kubsmallroof_tile_016Gr = new THREE.Group();
+  kubsmallroof_tile_15Gr.setRotation(-2.73, 0, 0);
+  kubsmallroof_tile_15Gr.position.set(-29.8, 8.98, 4.05);
+  const kubsmallroof_tile_16Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_016 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_016.scale.set(1.9374, -0.1342, 0.5332);
-    kubsmallroof_tile_016.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_016Gr.add(kubsmallroof_tile_016);
+    const kubsmallroof_tile_16 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_16.scale.set(1.94, -0.13, 0.53);
+    kubsmallroof_tile_16.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_16Gr.add(kubsmallroof_tile_16);
   }
-  kubsmallroof_tile_016Gr.setRotation(-2.4437, 0.0, -0.0);
-  kubsmallroof_tile_016Gr.position.set(-29.7716, 8.4452, 4.9207);
-  const kubsmallroof_tile_017Gr = new THREE.Group();
+  kubsmallroof_tile_16Gr.setRotation(-2.44, 0, 0);
+  kubsmallroof_tile_16Gr.position.set(-29.8, 8.45, 4.92);
+  const kubsmallroof_tile_17Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_017 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-    kubsmallroof_tile_017.scale.set(1.9374, -0.1342, 0.6071);
-    kubsmallroof_tile_017.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_017Gr.add(kubsmallroof_tile_017);
+    const kubsmallroof_tile_17 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+    kubsmallroof_tile_17.scale.set(1.94, -0.13, 0.61);
+    kubsmallroof_tile_17.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_17Gr.add(kubsmallroof_tile_17);
   }
-  kubsmallroof_tile_017Gr.setRotation(-2.1312, 0.0, -0.0);
-  kubsmallroof_tile_017Gr.position.set(-29.7716, 7.6197, 5.6245);
-  const kubsmallroof_tile_018Gr = new THREE.Group();
+  kubsmallroof_tile_17Gr.setRotation(-2.13, 0, 0);
+  kubsmallroof_tile_17Gr.position.set(-29.8, 7.62, 5.62);
+  const kubsmallroof_tile_18Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_018 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_018.scale.set(0.1278, -0.1342, 0.6357);
-    kubsmallroof_tile_018.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_018Gr.add(kubsmallroof_tile_018);
+    const kubsmallroof_tile_18 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_18.scale.set(0.13, -0.13, 0.64);
+    kubsmallroof_tile_18.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_18Gr.add(kubsmallroof_tile_18);
   }
-  kubsmallroof_tile_018Gr.setRotation(-3.0772, 0.0, -0.0);
-  kubsmallroof_tile_018Gr.position.set(-27.7592, 9.6682, 0.6277);
-  const kubsmallroof_tile_019Gr = new THREE.Group();
+  kubsmallroof_tile_18Gr.setRotation(-3.08, 0, 0);
+  kubsmallroof_tile_18Gr.position.set(-27.8, 9.67, 0.63);
+  const kubsmallroof_tile_19Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_019 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_019.scale.set(0.1278, -0.1342, 0.6357);
-    kubsmallroof_tile_019.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_019Gr.add(kubsmallroof_tile_019);
+    const kubsmallroof_tile_19 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_19.scale.set(0.13, -0.13, 0.64);
+    kubsmallroof_tile_19.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_19Gr.add(kubsmallroof_tile_19);
   }
-  kubsmallroof_tile_019Gr.setRotation(-2.968, 0.0, -0.0);
-  kubsmallroof_tile_019Gr.position.set(-27.7592, 9.5207, 1.8742);
-  const kubsmallroof_tile_020Gr = new THREE.Group();
+  kubsmallroof_tile_19Gr.setRotation(-2.97, 0, 0);
+  kubsmallroof_tile_19Gr.position.set(-27.8, 9.52, 1.87);
+  const kubsmallroof_tile_20Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_020 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_020.scale.set(0.1278, -0.1342, 0.579);
-    kubsmallroof_tile_020.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_020Gr.add(kubsmallroof_tile_020);
+    const kubsmallroof_tile_20 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_20.scale.set(0.13, -0.13, 0.58);
+    kubsmallroof_tile_20.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_20Gr.add(kubsmallroof_tile_20);
   }
-  kubsmallroof_tile_020Gr.setRotation(-2.8706, 0.0, -0.0);
-  kubsmallroof_tile_020Gr.position.set(-27.7592, 9.2635, 3.0151);
-  const kubsmallroof_tile_021Gr = new THREE.Group();
+  kubsmallroof_tile_20Gr.setRotation(-2.87, 0, 0);
+  kubsmallroof_tile_20Gr.position.set(-27.8, 9.26, 3.02);
+  const kubsmallroof_tile_21Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_021 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_021.scale.set(0.1278, -0.1342, 0.5332);
-    kubsmallroof_tile_021.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_021Gr.add(kubsmallroof_tile_021);
+    const kubsmallroof_tile_21 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_21.scale.set(0.13, -0.13, 0.53);
+    kubsmallroof_tile_21.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_21Gr.add(kubsmallroof_tile_21);
   }
-  kubsmallroof_tile_021Gr.setRotation(-2.7329, 0.0, -0.0);
-  kubsmallroof_tile_021Gr.position.set(-27.7592, 8.8938, 4.0628);
-  const kubsmallroof_tile_022Gr = new THREE.Group();
+  kubsmallroof_tile_21Gr.setRotation(-2.73, 0, 0);
+  kubsmallroof_tile_21Gr.position.set(-27.8, 8.89, 4.06);
+  const kubsmallroof_tile_22Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_022 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_022.scale.set(0.1278, -0.1342, 0.5332);
-    kubsmallroof_tile_022.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_022Gr.add(kubsmallroof_tile_022);
+    const kubsmallroof_tile_22 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_22.scale.set(0.13, -0.13, 0.53);
+    kubsmallroof_tile_22.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_22Gr.add(kubsmallroof_tile_22);
   }
-  kubsmallroof_tile_022Gr.setRotation(-2.4437, 0.0, -0.0);
-  kubsmallroof_tile_022Gr.position.set(-27.7592, 8.3655, 4.9207);
-  const kubsmallroof_tile_023Gr = new THREE.Group();
+  kubsmallroof_tile_22Gr.setRotation(-2.44, 0, 0);
+  kubsmallroof_tile_22Gr.position.set(-27.8, 8.37, 4.92);
+  const kubsmallroof_tile_23Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_023 = new THREE.Mesh(boxGeo, BrassMaterial);
-    kubsmallroof_tile_023.scale.set(0.1278, -0.1342, 0.6071);
-    kubsmallroof_tile_023.position.set(4.0321 * i, 0, 0);
-    kubsmallroof_tile_023Gr.add(kubsmallroof_tile_023);
+    const kubsmallroof_tile_23 = new THREE.Mesh(boxGeo, BrassMaterial);
+    kubsmallroof_tile_23.scale.set(0.13, -0.13, 0.61);
+    kubsmallroof_tile_23.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_23Gr.add(kubsmallroof_tile_23);
   }
-  kubsmallroof_tile_023Gr.setRotation(-2.1312, 0.0, -0.0);
-  kubsmallroof_tile_023Gr.position.set(-27.7592, 7.5401, 5.6245);
-  const kubsmallroof_tile_024 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubsmallroof_tile_024.position.set(-31.4153, 9.461, -0.6276);
-  kubsmallroof_tile_024.scale.set(0.2866, -0.2859, 0.6404);
-  kubsmallroof_tile_024.setRotation(3.0771, 0.0, -0.0);
+  kubsmallroof_tile_23Gr.setRotation(-2.13, 0, 0);
+  kubsmallroof_tile_23Gr.position.set(-27.8, 7.54, 5.62);
+  const kubsmallroof_tile_24 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubsmallroof_tile_24.position.set(-31.4, 9.46, -0.63);
+  kubsmallroof_tile_24.scale.set(0.29, -0.29, 0.64);
+  kubsmallroof_tile_24.setRotation(3.08, 0, 0);
 
-  const kubsmallroof_tile_025 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubsmallroof_tile_025.position.set(-31.4153, 9.312, -1.8736);
-  kubsmallroof_tile_025.scale.set(0.2866, -0.283, 0.6686);
-  kubsmallroof_tile_025.setRotation(2.968, 0.0, -0.0);
+  const kubsmallroof_tile_25 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubsmallroof_tile_25.position.set(-31.4, 9.31, -1.87);
+  kubsmallroof_tile_25.scale.set(0.29, -0.28, 0.67);
+  kubsmallroof_tile_25.setRotation(2.97, 0, 0);
 
-  const kubsmallroof_tile_026 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubsmallroof_tile_026.position.set(-31.4153, 9.0554, -3.0144);
-  kubsmallroof_tile_026.scale.set(0.2866, -0.2783, 0.6486);
-  kubsmallroof_tile_026.setRotation(2.8706, 0.0, -0.0);
+  const kubsmallroof_tile_26 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubsmallroof_tile_26.position.set(-31.4, 9.06, -3.01);
+  kubsmallroof_tile_26.scale.set(0.29, -0.28, 0.65);
+  kubsmallroof_tile_26.setRotation(2.87, 0, 0);
 
-  const kubsmallroof_tile_027 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubsmallroof_tile_027.position.set(-31.4153, 9.4626, 0.6277);
-  kubsmallroof_tile_027.scale.set(0.2866, -0.2859, 0.6404);
-  kubsmallroof_tile_027.setRotation(-3.0772, 0.0, -0.0);
+  const kubsmallroof_tile_27 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubsmallroof_tile_27.position.set(-31.4, 9.46, 0.63);
+  kubsmallroof_tile_27.scale.set(0.29, -0.29, 0.64);
+  kubsmallroof_tile_27.setRotation(-3.08, 0, 0);
 
-  const kubsmallroof_tile_028 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubsmallroof_tile_028.position.set(-31.4153, 9.3151, 1.8742);
-  kubsmallroof_tile_028.scale.set(0.2866, -0.283, 0.6686);
-  kubsmallroof_tile_028.setRotation(-2.968, 0.0, -0.0);
+  const kubsmallroof_tile_28 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubsmallroof_tile_28.position.set(-31.4, 9.32, 1.87);
+  kubsmallroof_tile_28.scale.set(0.29, -0.28, 0.67);
+  kubsmallroof_tile_28.setRotation(-2.97, 0, 0);
 
-  const kubsmallroof_tile_029 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kubsmallroof_tile_029.position.set(-31.4153, 9.0579, 3.0151);
-  kubsmallroof_tile_029.scale.set(0.2866, -0.2783, 0.6486);
-  kubsmallroof_tile_029.setRotation(-2.8706, 0.0, -0.0);
+  const kubsmallroof_tile_29 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kubsmallroof_tile_29.position.set(-31.4, 9.06, 3.02);
+  kubsmallroof_tile_29.scale.set(0.29, -0.28, 0.65);
+  kubsmallroof_tile_29.setRotation(-2.87, 0, 0);
 
-  const kubsmallroof_tile_030Gr = new THREE.Group();
+  const kubsmallroof_tile_30Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_030 = new THREE.Mesh(boxGeo, RoofTiles_1Material);
-    kubsmallroof_tile_030.scale.set(1.9374, -0.1342, -0.102);
-    kubsmallroof_tile_030.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_030Gr.add(kubsmallroof_tile_030);
+    const kubsmallroof_tile_30 = new THREE.Mesh(boxGeo, RoofTiles_1Material);
+    kubsmallroof_tile_30.scale.set(1.94, -0.13, -0.1);
+    kubsmallroof_tile_30.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_30Gr.add(kubsmallroof_tile_30);
   }
-  kubsmallroof_tile_030Gr.setRotation(2.8706, 0.0, -0.0);
-  kubsmallroof_tile_030Gr.position.set(-29.7716, 9.3073, -3.0144);
-  const kubsmallroof_tile_031Gr = new THREE.Group();
+  kubsmallroof_tile_30Gr.setRotation(2.87, 0, 0);
+  kubsmallroof_tile_30Gr.position.set(-29.8, 9.31, -3.01);
+  const kubsmallroof_tile_31Gr = new THREE.Group();
   for (let i = 0; i < 21; i++) {
-    const kubsmallroof_tile_031 = new THREE.Mesh(boxGeo, RoofTiles_1Material);
-    kubsmallroof_tile_031.scale.set(1.9374, -0.1342, -0.102);
-    kubsmallroof_tile_031.position.set(4.0298 * i, 0, 0);
-    kubsmallroof_tile_031Gr.add(kubsmallroof_tile_031);
+    const kubsmallroof_tile_31 = new THREE.Mesh(boxGeo, RoofTiles_1Material);
+    kubsmallroof_tile_31.scale.set(1.94, -0.13, -0.1);
+    kubsmallroof_tile_31.position.set(4.03 * i, 0, 0);
+    kubsmallroof_tile_31Gr.add(kubsmallroof_tile_31);
   }
-  kubsmallroof_tile_031Gr.setRotation(-2.8706, 0.0, -0.0);
-  kubsmallroof_tile_031Gr.position.set(-29.7716, 9.3073, 3.0144);
+  kubsmallroof_tile_31Gr.setRotation(-2.87, 0, 0);
+  kubsmallroof_tile_31Gr.position.set(-29.8, 9.31, 3.01);
   const cubeGr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
     const cube = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    cube.scale.set(1.0, 3.4789, 1.0);
-    cube.position.set(6.0 * i, 0, 0);
+    cube.scale.set(1, 3.48, 1);
+    cube.position.set(6 * i, 0, 0);
     cubeGr.add(cube);
   }
-  cubeGr.position.set(-30.709, 4.3331, 7.8995);
-  const kub002Gr = new THREE.Group();
+  cubeGr.position.set(-30.7, 4.33, 7.9);
+  const kub2Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub002 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub002.scale.set(0.4453, 0.2934, 0.9985);
-    kub002.position.set(2.8961 * i, -5.2527 * i, 0);
-    kub002Gr.add(kub002);
+    const kub2 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub2.scale.set(0.45, 0.29, 1);
+    kub2.position.set(2.9 * i, -5.25 * i, 0);
+    kub2Gr.add(kub2);
   }
-  kub002Gr.setRotation(0.0, 0.0, 1.0669);
-  kub002Gr.position.set(-29.8356, 4.92, 7.8995);
-  const kub004Gr = new THREE.Group();
+  kub2Gr.setRotation(0, 0, 1.07);
+  kub2Gr.position.set(-29.8, 4.92, 7.9);
+  const kub4Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub004 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub004.scale.set(0.4453, 0.4393, 0.9985);
-    kub004.position.set(4.771 * i, -3.6355 * i, 0);
-    kub004Gr.add(kub004);
+    const kub4 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub4.scale.set(0.45, 0.44, 1);
+    kub4.position.set(4.77 * i, -3.64 * i, 0);
+    kub4Gr.add(kub4);
   }
-  kub004Gr.setRotation(0.0, 0.0, 0.6511);
-  kub004Gr.position.set(-29.3814, 5.5959, 7.8995);
-  const kub005Gr = new THREE.Group();
+  kub4Gr.setRotation(0, 0, 0.65);
+  kub4Gr.position.set(-29.4, 5.6, 7.9);
+  const kub5Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub005 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub005.scale.set(0.4453, 0.2384, 0.9985);
-    kub005.position.set(5.7105 * i, -1.8349 * i, 0);
-    kub005Gr.add(kub005);
+    const kub5 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub5.scale.set(0.45, 0.24, 1);
+    kub5.position.set(5.71 * i, -1.83 * i, 0);
+    kub5Gr.add(kub5);
   }
-  kub005Gr.setRotation(0.0, 0.0, 0.3109);
-  kub005Gr.position.set(-28.5579, 5.832, 7.8995);
-  const kub006Gr = new THREE.Group();
+  kub5Gr.setRotation(0, 0, 0.31);
+  kub5Gr.position.set(-28.6, 5.83, 7.9);
+  const kub6Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub006 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub006.scale.set(0.4453, 0.1584, 0.9985);
-    kub006.position.set(5.9981 * i, 0, 0);
-    kub006Gr.add(kub006);
+    const kub6 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub6.scale.set(0.45, 0.16, 1);
+    kub6.position.set(6 * i, 0, 0);
+    kub6Gr.add(kub6);
   }
-  kub006Gr.position.set(-27.6974, 5.8917, 7.8995);
-  const kub007Gr = new THREE.Group();
+  kub6Gr.position.set(-27.7, 5.89, 7.9);
+  const kub7Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub007 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub007.scale.set(0.4453, 0.2934, 0.9985);
-    kub007.position.set(2.8961 * i, 5.2527 * i, 0);
-    kub007Gr.add(kub007);
+    const kub7 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub7.scale.set(0.45, 0.29, 1);
+    kub7.position.set(2.9 * i, 5.25 * i, 0);
+    kub7Gr.add(kub7);
   }
-  kub007Gr.setRotation(0.0, 0.0, -1.0669);
-  kub007Gr.position.set(-25.5818, 4.92, 7.8995);
-  const kub008 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub008.position.set(-26.0135, 5.5959, 7.8995);
-  kub008.scale.set(0.4453, 0.4393, 0.9985);
-  kub008.setRotation(0.0, 0.0, -0.6511);
+  kub7Gr.setRotation(0, 0, -1.07);
+  kub7Gr.position.set(-25.6, 4.92, 7.9);
+  const kub8 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub8.position.set(-26, 5.6, 7.9);
+  kub8.scale.set(0.45, 0.44, 1);
+  kub8.setRotation(0, 0, -0.65);
 
-  const kub009 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub009.position.set(-26.8361, 5.832, 7.8995);
-  kub009.scale.set(0.4453, 0.2384, 0.9985);
-  kub009.setRotation(0.0, 0.0, -0.3109);
+  const kub9 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub9.position.set(-26.8, 5.83, 7.9);
+  kub9.scale.set(0.45, 0.24, 1);
+  kub9.setRotation(0, 0, -0.31);
 
-  const kub011Gr = new THREE.Group();
+  const kub11Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub011 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub011.scale.set(0.4453, 0.2384, 0.9985);
-    kub011.position.set(5.7105 * i, 1.8349 * i, 0);
-    kub011Gr.add(kub011);
+    const kub11 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub11.scale.set(0.45, 0.24, 1);
+    kub11.position.set(5.71 * i, 1.83 * i, 0);
+    kub11Gr.add(kub11);
   }
-  kub011Gr.setRotation(0.0, 0.0, -0.3109);
-  kub011Gr.position.set(-26.8361, 5.832, 7.8995);
-  const kub012Gr = new THREE.Group();
+  kub11Gr.setRotation(0, 0, -0.31);
+  kub11Gr.position.set(-26.8, 5.83, 7.9);
+  const kub12Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub012 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub012.scale.set(0.4453, 0.4393, 0.9985);
-    kub012.position.set(4.771 * i, 3.6355 * i, 0);
-    kub012Gr.add(kub012);
+    const kub12 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub12.scale.set(0.45, 0.44, 1);
+    kub12.position.set(4.77 * i, 3.64 * i, 0);
+    kub12Gr.add(kub12);
   }
-  kub012Gr.setRotation(0.0, 0.0, -0.6511);
-  kub012Gr.position.set(-26.0135, 5.5959, 7.8995);
-  const kub013Gr = new THREE.Group();
+  kub12Gr.setRotation(0, 0, -0.65);
+  kub12Gr.position.set(-26, 5.6, 7.9);
+  const kub13Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub013 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub013.scale.set(0.4453, 0.2934, 0.6455);
-    kub013.position.set(2.8961 * i, 5.2527 * i, 0);
-    kub013Gr.add(kub013);
+    const kub13 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub13.scale.set(0.45, 0.29, 0.65);
+    kub13.position.set(2.9 * i, 5.25 * i, 0);
+    kub13Gr.add(kub13);
   }
-  kub013Gr.setRotation(0.0, 0.0, -1.0669);
-  kub013Gr.position.set(-25.6364, 4.92, 7.8995);
-  const kub015Gr = new THREE.Group();
+  kub13Gr.setRotation(0, 0, -1.07);
+  kub13Gr.position.set(-25.6, 4.92, 7.9);
+  const kub15Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const kub015 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub015.scale.set(1.05, 3.4789, 0.6455);
-    kub015.position.set(6.0 * i, 0, 0);
-    kub015Gr.add(kub015);
+    const kub15 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub15.scale.set(1.05, 3.48, 0.65);
+    kub15.position.set(6 * i, 0, 0);
+    kub15Gr.add(kub15);
   }
-  kub015Gr.position.set(-30.709, 4.3331, 7.8995);
-  const kub016Gr = new THREE.Group();
+  kub15Gr.position.set(-30.7, 4.33, 7.9);
+  const kub16Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub016 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub016.scale.set(0.4453, 0.2934, 0.6455);
-    kub016.position.set(2.8961 * i, -5.2527 * i, 0);
-    kub016Gr.add(kub016);
+    const kub16 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub16.scale.set(0.45, 0.29, 0.65);
+    kub16.position.set(2.9 * i, -5.25 * i, 0);
+    kub16Gr.add(kub16);
   }
-  kub016Gr.setRotation(0.0, 0.0, 1.0669);
-  kub016Gr.position.set(-29.777, 4.92, 7.8995);
-  const kub017Gr = new THREE.Group();
+  kub16Gr.setRotation(0, 0, 1.07);
+  kub16Gr.position.set(-29.8, 4.92, 7.9);
+  const kub17Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub017 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub017.scale.set(0.4453, 0.4393, 0.6455);
-    kub017.position.set(4.771 * i, -3.6355 * i, 0);
-    kub017Gr.add(kub017);
+    const kub17 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub17.scale.set(0.45, 0.44, 0.65);
+    kub17.position.set(4.77 * i, -3.64 * i, 0);
+    kub17Gr.add(kub17);
   }
-  kub017Gr.setRotation(0.0, 0.0, 0.6511);
-  kub017Gr.position.set(-29.3235, 5.5959, 7.8995);
-  const kub018Gr = new THREE.Group();
+  kub17Gr.setRotation(0, 0, 0.65);
+  kub17Gr.position.set(-29.3, 5.6, 7.9);
+  const kub18Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub018 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub018.scale.set(0.4453, 0.2384, 0.6455);
-    kub018.position.set(5.7105 * i, -1.8349 * i, 0);
-    kub018Gr.add(kub018);
+    const kub18 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub18.scale.set(0.45, 0.24, 0.65);
+    kub18.position.set(5.71 * i, -1.83 * i, 0);
+    kub18Gr.add(kub18);
   }
-  kub018Gr.setRotation(0.0, 0.0, 0.3109);
-  kub018Gr.position.set(-28.4432, 5.832, 7.8995);
-  const kub019Gr = new THREE.Group();
+  kub18Gr.setRotation(0, 0, 0.31);
+  kub18Gr.position.set(-28.4, 5.83, 7.9);
+  const kub19Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub019 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub019.scale.set(0.4453, 0.1584, 0.6455);
-    kub019.position.set(5.9981 * i, 0, 0);
-    kub019Gr.add(kub019);
+    const kub19 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub19.scale.set(0.45, 0.16, 0.65);
+    kub19.position.set(6 * i, 0, 0);
+    kub19Gr.add(kub19);
   }
-  kub019Gr.position.set(-27.6974, 5.8583, 7.8995);
-  const kub020 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub020.position.set(-25.5818, 4.92, 7.8995);
-  kub020.scale.set(0.4453, 0.2934, 0.9985);
-  kub020.setRotation(0.0, 0.0, -1.0669);
+  kub19Gr.position.set(-27.7, 5.86, 7.9);
+  const kub20 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub20.position.set(-25.6, 4.92, 7.9);
+  kub20.scale.set(0.45, 0.29, 1);
+  kub20.setRotation(0, 0, -1.07);
 
-  const kub021Gr = new THREE.Group();
+  const kub21Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub021 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub021.scale.set(0.4453, 0.4393, 0.6455);
-    kub021.position.set(4.771 * i, 3.6355 * i, 0);
-    kub021Gr.add(kub021);
+    const kub21 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub21.scale.set(0.45, 0.44, 0.65);
+    kub21.position.set(4.77 * i, 3.64 * i, 0);
+    kub21Gr.add(kub21);
   }
-  kub021Gr.setRotation(0.0, 0.0, -0.6511);
-  kub021Gr.position.set(-26.068, 5.5959, 7.8995);
-  const kub022Gr = new THREE.Group();
+  kub21Gr.setRotation(0, 0, -0.65);
+  kub21Gr.position.set(-26.1, 5.6, 7.9);
+  const kub22Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub022 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub022.scale.set(0.4453, 0.2384, 0.6455);
-    kub022.position.set(5.7105 * i, 1.8349 * i, 0);
-    kub022Gr.add(kub022);
+    const kub22 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub22.scale.set(0.45, 0.24, 0.65);
+    kub22.position.set(5.71 * i, 1.83 * i, 0);
+    kub22Gr.add(kub22);
   }
-  kub022Gr.setRotation(0.0, 0.0, -0.3109);
-  kub022Gr.position.set(-26.9447, 5.832, 7.8995);
-  const kub010Gr = new THREE.Group();
+  kub22Gr.setRotation(0, 0, -0.31);
+  kub22Gr.position.set(-26.9, 5.83, 7.9);
+  const kub10Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const kub010 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub010.scale.set(1.0, 3.4789, 1.0);
-    kub010.position.set(6.0 * i, 0, 0);
-    kub010Gr.add(kub010);
+    const kub10 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub10.scale.set(1, 3.48, 1);
+    kub10.position.set(6 * i, 0, 0);
+    kub10Gr.add(kub10);
   }
-  kub010Gr.position.set(-30.709, 4.3331, -7.8995);
-  const kub023Gr = new THREE.Group();
+  kub10Gr.position.set(-30.7, 4.33, -7.9);
+  const kub23Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const kub023 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub023.scale.set(1.05, 3.4789, 0.6455);
-    kub023.position.set(6.0 * i, 0, 0);
-    kub023Gr.add(kub023);
+    const kub23 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub23.scale.set(1.05, 3.48, 0.65);
+    kub23.position.set(6 * i, 0, 0);
+    kub23Gr.add(kub23);
   }
-  kub023Gr.position.set(-30.709, 4.3331, -7.8995);
-  const kub024Gr = new THREE.Group();
+  kub23Gr.position.set(-30.7, 4.33, -7.9);
+  const kub24Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub024 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub024.scale.set(0.4453, 0.2934, 0.9985);
-    kub024.position.set(2.8961 * i, -5.2527 * i, 0);
-    kub024Gr.add(kub024);
+    const kub24 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub24.scale.set(0.45, 0.29, 1);
+    kub24.position.set(2.9 * i, -5.25 * i, 0);
+    kub24Gr.add(kub24);
   }
-  kub024Gr.setRotation(0.0, 0.0, 1.0669);
-  kub024Gr.position.set(-29.8356, 4.92, -7.901);
-  const kub025Gr = new THREE.Group();
+  kub24Gr.setRotation(0, 0, 1.07);
+  kub24Gr.position.set(-29.8, 4.92, -7.9);
+  const kub25Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub025 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub025.scale.set(0.4453, 0.4393, 0.9985);
-    kub025.position.set(4.771 * i, -3.6355 * i, 0);
-    kub025Gr.add(kub025);
+    const kub25 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub25.scale.set(0.45, 0.44, 1);
+    kub25.position.set(4.77 * i, -3.64 * i, 0);
+    kub25Gr.add(kub25);
   }
-  kub025Gr.setRotation(0.0, 0.0, 0.6511);
-  kub025Gr.position.set(-29.3814, 5.5959, -7.901);
-  const kub026Gr = new THREE.Group();
+  kub25Gr.setRotation(0, 0, 0.65);
+  kub25Gr.position.set(-29.4, 5.6, -7.9);
+  const kub26Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub026 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub026.scale.set(0.4453, 0.2384, 0.9985);
-    kub026.position.set(5.7105 * i, -1.8349 * i, 0);
-    kub026Gr.add(kub026);
+    const kub26 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub26.scale.set(0.45, 0.24, 1);
+    kub26.position.set(5.71 * i, -1.83 * i, 0);
+    kub26Gr.add(kub26);
   }
-  kub026Gr.setRotation(0.0, 0.0, 0.3109);
-  kub026Gr.position.set(-28.5579, 5.832, -7.901);
-  const kub027Gr = new THREE.Group();
+  kub26Gr.setRotation(0, 0, 0.31);
+  kub26Gr.position.set(-28.6, 5.83, -7.9);
+  const kub27Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub027 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub027.scale.set(0.4453, 0.1584, 0.9985);
-    kub027.position.set(5.9981 * i, 0, 0);
-    kub027Gr.add(kub027);
+    const kub27 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub27.scale.set(0.45, 0.16, 1);
+    kub27.position.set(6 * i, 0, 0);
+    kub27Gr.add(kub27);
   }
-  kub027Gr.position.set(-27.6974, 5.8917, -7.901);
-  const kub028Gr = new THREE.Group();
+  kub27Gr.position.set(-27.7, 5.89, -7.9);
+  const kub28Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub028 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub028.scale.set(0.4453, 0.2934, 0.9985);
-    kub028.position.set(2.8961 * i, 5.2527 * i, 0);
-    kub028Gr.add(kub028);
+    const kub28 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub28.scale.set(0.45, 0.29, 1);
+    kub28.position.set(2.9 * i, 5.25 * i, 0);
+    kub28Gr.add(kub28);
   }
-  kub028Gr.setRotation(0.0, 0.0, -1.0669);
-  kub028Gr.position.set(-25.5818, 4.92, -7.901);
-  const kub029Gr = new THREE.Group();
+  kub28Gr.setRotation(0, 0, -1.07);
+  kub28Gr.position.set(-25.6, 4.92, -7.9);
+  const kub29Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub029 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub029.scale.set(0.4453, 0.2384, 0.9985);
-    kub029.position.set(5.7105 * i, 1.8349 * i, 0);
-    kub029Gr.add(kub029);
+    const kub29 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub29.scale.set(0.45, 0.24, 1);
+    kub29.position.set(5.71 * i, 1.83 * i, 0);
+    kub29Gr.add(kub29);
   }
-  kub029Gr.setRotation(0.0, 0.0, -0.3109);
-  kub029Gr.position.set(-26.8361, 5.832, -7.901);
-  const kub030Gr = new THREE.Group();
+  kub29Gr.setRotation(0, 0, -0.31);
+  kub29Gr.position.set(-26.8, 5.83, -7.9);
+  const kub30Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub030 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub030.scale.set(0.4453, 0.4393, 0.9985);
-    kub030.position.set(4.771 * i, 3.6355 * i, 0);
-    kub030Gr.add(kub030);
+    const kub30 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub30.scale.set(0.45, 0.44, 1);
+    kub30.position.set(4.77 * i, 3.64 * i, 0);
+    kub30Gr.add(kub30);
   }
-  kub030Gr.setRotation(0.0, 0.0, -0.6511);
-  kub030Gr.position.set(-26.0135, 5.5959, -7.901);
-  const kub031Gr = new THREE.Group();
+  kub30Gr.setRotation(0, 0, -0.65);
+  kub30Gr.position.set(-26, 5.6, -7.9);
+  const kub31Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub031 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub031.scale.set(0.4453, 0.2934, 0.6455);
-    kub031.position.set(2.8961 * i, 5.2527 * i, 0);
-    kub031Gr.add(kub031);
+    const kub31 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub31.scale.set(0.45, 0.29, 0.65);
+    kub31.position.set(2.9 * i, 5.25 * i, 0);
+    kub31Gr.add(kub31);
   }
-  kub031Gr.setRotation(0.0, 0.0, -1.0669);
-  kub031Gr.position.set(-25.6364, 4.92, -7.901);
-  const kub032Gr = new THREE.Group();
+  kub31Gr.setRotation(0, 0, -1.07);
+  kub31Gr.position.set(-25.6, 4.92, -7.9);
+  const kub32Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub032 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub032.scale.set(0.4453, 0.2934, 0.6455);
-    kub032.position.set(2.8961 * i, -5.2527 * i, 0);
-    kub032Gr.add(kub032);
+    const kub32 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub32.scale.set(0.45, 0.29, 0.65);
+    kub32.position.set(2.9 * i, -5.25 * i, 0);
+    kub32Gr.add(kub32);
   }
-  kub032Gr.setRotation(0.0, 0.0, 1.0669);
-  kub032Gr.position.set(-29.777, 4.92, -7.901);
-  const kub033Gr = new THREE.Group();
+  kub32Gr.setRotation(0, 0, 1.07);
+  kub32Gr.position.set(-29.8, 4.92, -7.9);
+  const kub33Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub033 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub033.scale.set(0.4453, 0.4393, 0.6455);
-    kub033.position.set(4.771 * i, -3.6355 * i, 0);
-    kub033Gr.add(kub033);
+    const kub33 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub33.scale.set(0.45, 0.44, 0.65);
+    kub33.position.set(4.77 * i, -3.64 * i, 0);
+    kub33Gr.add(kub33);
   }
-  kub033Gr.setRotation(0.0, 0.0, 0.6511);
-  kub033Gr.position.set(-29.3235, 5.5959, -7.901);
-  const kub034Gr = new THREE.Group();
+  kub33Gr.setRotation(0, 0, 0.65);
+  kub33Gr.position.set(-29.3, 5.6, -7.9);
+  const kub34Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub034 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub034.scale.set(0.4453, 0.2384, 0.6455);
-    kub034.position.set(5.7105 * i, -1.8349 * i, 0);
-    kub034Gr.add(kub034);
+    const kub34 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub34.scale.set(0.45, 0.24, 0.65);
+    kub34.position.set(5.71 * i, -1.83 * i, 0);
+    kub34Gr.add(kub34);
   }
-  kub034Gr.setRotation(0.0, 0.0, 0.3109);
-  kub034Gr.position.set(-28.4432, 5.832, -7.901);
-  const kub035Gr = new THREE.Group();
+  kub34Gr.setRotation(0, 0, 0.31);
+  kub34Gr.position.set(-28.4, 5.83, -7.9);
+  const kub35Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub035 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub035.scale.set(0.4453, 0.1584, 0.6455);
-    kub035.position.set(5.9981 * i, 0, 0);
-    kub035Gr.add(kub035);
+    const kub35 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub35.scale.set(0.45, 0.16, 0.65);
+    kub35.position.set(6 * i, 0, 0);
+    kub35Gr.add(kub35);
   }
-  kub035Gr.position.set(-27.6974, 5.8583, -7.901);
-  const kub036Gr = new THREE.Group();
+  kub35Gr.position.set(-27.7, 5.86, -7.9);
+  const kub36Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub036 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub036.scale.set(0.4453, 0.4393, 0.6455);
-    kub036.position.set(4.771 * i, 3.6355 * i, 0);
-    kub036Gr.add(kub036);
+    const kub36 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub36.scale.set(0.45, 0.44, 0.65);
+    kub36.position.set(4.77 * i, 3.64 * i, 0);
+    kub36Gr.add(kub36);
   }
-  kub036Gr.setRotation(0.0, 0.0, -0.6511);
-  kub036Gr.position.set(-26.068, 5.5959, -7.901);
-  const kub037Gr = new THREE.Group();
+  kub36Gr.setRotation(0, 0, -0.65);
+  kub36Gr.position.set(-26.1, 5.6, -7.9);
+  const kub37Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub037 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-    kub037.scale.set(0.4453, 0.2384, 0.6455);
-    kub037.position.set(5.7105 * i, 1.8349 * i, 0);
-    kub037Gr.add(kub037);
+    const kub37 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+    kub37.scale.set(0.45, 0.24, 0.65);
+    kub37.position.set(5.71 * i, 1.83 * i, 0);
+    kub37Gr.add(kub37);
   }
-  kub037Gr.setRotation(0.0, 0.0, -0.3109);
-  kub037Gr.position.set(-26.9447, 5.832, -7.901);
-  const kub038 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub038.scale.set(8.2777, 3.4789, 1.0);
-  kub038.setRotation(0.0, 0.0, -0.0);
-  const kub038MZ = kub038.clone();
-  kub038MZ.updateMatrixWorld(true);
-  kub038.position.set(0, 0, 7.8995);
-  kub038MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub038MZ.position.set(0, 0, -7.8995);
-  const kub038MrZ = new THREE.Group();
-  kub038MrZ.add(kub038, kub038MZ);
-  kub038MrZ.position.set(44.5687, 4.3331, 0);
-  const kub039 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub039.scale.set(1.0167, 3.4789, 2.3384);
-  kub039.setRotation(0.0, 0.0, -0.0);
-  const kub039MZ = kub039.clone();
-  kub039MZ.updateMatrixWorld(true);
-  kub039.position.set(0, 0, 9.2379);
-  kub039MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub039MZ.position.set(0, 0, -9.2379);
-  const kub039MrZ = new THREE.Group();
-  kub039MrZ.add(kub039, kub039MZ);
-  kub039MrZ.position.set(53.863, 4.3331, 0);
-  const kub040 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub040.scale.set(15.8045, 3.4789, 1.128);
-  kub040.setRotation(0.0, 0.0, -0.0);
-  const kub040MZ = kub040.clone();
-  kub040MZ.updateMatrixWorld(true);
-  kub040.position.set(0, 0, 10.4484);
-  kub040MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub040MZ.position.set(0, 0, -10.4484);
-  const kub040MrZ = new THREE.Group();
-  kub040MrZ.add(kub040, kub040MZ);
-  kub040MrZ.position.set(70.6842, 4.3331, 0);
-  const kub070Gr = new THREE.Group();
+  kub37Gr.setRotation(0, 0, -0.31);
+  kub37Gr.position.set(-26.9, 5.83, -7.9);
+  const kub38 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub38.scale.set(8.28, 3.48, 1);
+  kub38.setRotation(0, 0, 0);
+  const kub38MZ = kub38.clone();
+  kub38MZ.updateMatrixWorld(true);
+  kub38.position.set(0, 0, 7.9);
+  kub38MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub38MZ.position.set(0, 0, -7.9);
+  const kub38MrZ = new THREE.Group();
+  kub38MrZ.add(kub38, kub38MZ);
+  kub38MrZ.position.set(44.6, 4.33, 0);
+  const kub39 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub39.scale.set(1.02, 3.48, 2.34);
+  kub39.setRotation(0, 0, 0);
+  const kub39MZ = kub39.clone();
+  kub39MZ.updateMatrixWorld(true);
+  kub39.position.set(0, 0, 9.24);
+  kub39MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub39MZ.position.set(0, 0, -9.24);
+  const kub39MrZ = new THREE.Group();
+  kub39MrZ.add(kub39, kub39MZ);
+  kub39MrZ.position.set(53.9, 4.33, 0);
+  const kub40 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub40.scale.set(15.8, 3.48, 1.13);
+  kub40.setRotation(0, 0, 0);
+  const kub40MZ = kub40.clone();
+  kub40MZ.updateMatrixWorld(true);
+  kub40.position.set(0, 0, 10.4);
+  kub40MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub40MZ.position.set(0, 0, -10.4);
+  const kub40MrZ = new THREE.Group();
+  kub40MrZ.add(kub40, kub40MZ);
+  kub40MrZ.position.set(70.7, 4.33, 0);
+  const kub70Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub070 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub070.scale.set(2.0429, 0.9826, 0.9985);
-    kub070.position.set(5.998 * i, 0, 0);
-    kub070Gr.add(kub070);
+    const kub70 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub70.scale.set(2.04, 0.98, 1);
+    kub70.position.set(6 * i, 0, 0);
+    kub70Gr.add(kub70);
   }
-  kub070Gr.position.set(-27.6974, 6.8294, -7.901);
-  const kub071Gr = new THREE.Group();
+  kub70Gr.position.set(-27.7, 6.83, -7.9);
+  const kub71Gr = new THREE.Group();
   for (let i = 0; i < 11; i++) {
-    const kub071 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub071.scale.set(2.0429, 0.9826, 0.9985);
-    kub071.position.set(5.998 * i, 0, 0);
-    kub071Gr.add(kub071);
+    const kub71 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub71.scale.set(2.04, 0.98, 1);
+    kub71.position.set(6 * i, 0, 0);
+    kub71Gr.add(kub71);
   }
-  kub071Gr.position.set(-27.6974, 6.8294, 7.901);
-  const kub092 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub092.scale.set(8.9444, 3.4789, 1.0);
-  kub092.setRotation(0.0, 0.0, -0.0);
-  const kub092MZ = kub092.clone();
-  kub092MZ.updateMatrixWorld(true);
-  kub092.position.set(0, 0, 7.8995);
-  kub092MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub092MZ.position.set(0, 0, -7.8995);
-  const kub092MrZ = new THREE.Group();
-  kub092MrZ.add(kub092, kub092MZ);
-  kub092MrZ.position.set(-40.6534, 4.3331, 0);
+  kub71Gr.position.set(-27.7, 6.83, 7.9);
+  const kub92 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub92.scale.set(8.94, 3.48, 1);
+  kub92.setRotation(0, 0, 0);
+  const kub92MZ = kub92.clone();
+  kub92MZ.updateMatrixWorld(true);
+  kub92.position.set(0, 0, 7.9);
+  kub92MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub92MZ.position.set(0, 0, -7.9);
+  const kub92MrZ = new THREE.Group();
+  kub92MrZ.add(kub92, kub92MZ);
+  kub92MrZ.position.set(-40.7, 4.33, 0);
   const kub300 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub300.scale.set(146.5053, 6.6273, 2.6352);
-  kub300.setRotation(0.0, 0.0, -0.0);
+  kub300.scale.set(146.5, 6.63, 2.64);
+  kub300.setRotation(0, 0, 0);
   const kub300MZ = kub300.clone();
   kub300MZ.updateMatrixWorld(true);
-  kub300.position.set(0, 0, 12.4841);
+  kub300.position.set(0, 0, 12.5);
   kub300MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub300MZ.position.set(0, 0, -12.4841);
+  kub300MZ.position.set(0, 0, -12.5);
   const kub300MrZ = new THREE.Group();
   kub300MrZ.add(kub300, kub300MZ);
-  kub300MrZ.position.set(197.0714, 3.2323, 0);
+  kub300MrZ.position.set(197.1, 3.23, 0);
   const kub301 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub301.scale.set(146.5053, 6.6273, 2.6352);
-  kub301.setRotation(1.8693, 0.0, 0.0);
+  kub301.scale.set(146.5, 6.63, 2.64);
+  kub301.setRotation(1.87, 0, 0);
   const kub301MZ = kub301.clone();
   kub301MZ.updateMatrixWorld(true);
-  kub301.position.set(0, 0, 19.9295);
+  kub301.position.set(0, 0, 19.9);
   kub301MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub301MZ.position.set(0, 0, -19.9295);
+  kub301MZ.position.set(0, 0, -19.9);
   const kub301MrZ = new THREE.Group();
   kub301MrZ.add(kub301, kub301MZ);
-  kub301MrZ.position.set(197.0714, 10.2316, 0);
+  kub301MrZ.position.set(197.1, 10.2, 0);
   const kub306 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub306.scale.set(146.5053, 6.6273, 2.6352);
-  kub306.setRotation(1.8693, 0.0, 0.0);
+  kub306.scale.set(146.5, 6.63, 2.64);
+  kub306.setRotation(1.87, 0, 0);
   const kub306MZ = kub306.clone();
   kub306MZ.updateMatrixWorld(true);
-  kub306.position.set(0, 0, 19.9273);
+  kub306.position.set(0, 0, 19.9);
   kub306MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub306MZ.position.set(0, 0, -19.9273);
+  kub306MZ.position.set(0, 0, -19.9);
   const kub306MrZ = new THREE.Group();
   kub306MrZ.add(kub306, kub306MZ);
-  kub306MrZ.position.set(-195.3522, 10.2316, 0);
+  kub306MrZ.position.set(-195.4, 10.2, 0);
   const kubbigroof = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-  kubbigroof.scale.set(347.5576, 0.1743, 6.2642);
-  kubbigroof.setRotation(1.5708, 0.0, 0.0);
+  kubbigroof.scale.set(347.6, 0.17, 6.26);
+  kubbigroof.setRotation(1.57, 0, 0);
   const kubbigroofMZ = kubbigroof.clone();
   kubbigroofMZ.updateMatrixWorld(true);
-  kubbigroof.position.set(0, 0, 22.6954);
+  kubbigroof.position.set(0, 0, 22.7);
   kubbigroofMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubbigroofMZ.position.set(0, 0, -22.6954);
+  kubbigroofMZ.position.set(0, 0, -22.7);
   const kubbigroofMrZ = new THREE.Group();
   kubbigroofMrZ.add(kubbigroof, kubbigroofMZ);
-  kubbigroofMrZ.position.set(-0.2398, -0.2095, 0);
-  const kubbigroof_004 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-  kubbigroof_004.scale.set(49.229, 0.1743, 3.3728);
-  kubbigroof_004.setRotation(1.5708, 0.0, 0.0);
-  const kubbigroof_004MZ = kubbigroof_004.clone();
-  kubbigroof_004MZ.updateMatrixWorld(true);
-  kubbigroof_004.position.set(0, 0, 14.5133);
-  kubbigroof_004MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubbigroof_004MZ.position.set(0, 0, -14.5133);
-  const kubbigroof_004MrZ = new THREE.Group();
-  kubbigroof_004MrZ.add(kubbigroof_004, kubbigroof_004MZ);
-  kubbigroof_004MrZ.position.set(-1.2151, -3.1009, 0);
-  const kubescfloor_011 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
-  kubescfloor_011.position.set(72.3317, 0.7364, -6.6458);
-  kubescfloor_011.scale.set(1.3957, 0.9468, 0.1099);
-  kubescfloor_011.setRotation(1.5708, 0.0, 0.0);
+  kubbigroofMrZ.position.set(-0.24, -0.21, 0);
+  const kubbigroof_4 = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
+  kubbigroof_4.scale.set(49.2, 0.17, 3.37);
+  kubbigroof_4.setRotation(1.57, 0, 0);
+  const kubbigroof_4MZ = kubbigroof_4.clone();
+  kubbigroof_4MZ.updateMatrixWorld(true);
+  kubbigroof_4.position.set(0, 0, 14.5);
+  kubbigroof_4MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kubbigroof_4MZ.position.set(0, 0, -14.5);
+  const kubbigroof_4MrZ = new THREE.Group();
+  kubbigroof_4MrZ.add(kubbigroof_4, kubbigroof_4MZ);
+  kubbigroof_4MrZ.position.set(-1.22, -3.1, 0);
+  const kubescfloor_11 = new THREE.Mesh(boxGeo, RoofTilesMaterial);
+  kubescfloor_11.position.set(72.3, 0.74, -6.65);
+  kubescfloor_11.scale.set(1.4, 0.95, 0.11);
+  kubescfloor_11.setRotation(1.57, 0, 0);
 
-  const kub041 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub041.position.set(53.7454, 7.9374, -0.0);
-  kub041.scale.set(1.1221, 2.1309, 7.0248);
+  const kub41 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+  kub41.position.set(53.7, 7.94, 0);
+  kub41.scale.set(1.12, 2.13, 7.02);
 
-  const kub042 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kub042.position.set(53.6094, 6.0196, -0.0);
-  kub042.scale.set(1.2033, 0.1788, 7.0248);
+  const kub42 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kub42.position.set(53.6, 6.02, 0);
+  kub42.scale.set(1.2, 0.18, 7.02);
 
-  const kub043 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kub043.scale.set(1.2033, 0.0529, 1.1606);
-  kub043.setRotation(1.5708, 0.0, 0.0);
-  const kub043MZ = kub043.clone();
-  kub043MZ.updateMatrixWorld(true);
-  kub043.position.set(0, 0, -5.01);
-  kub043MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub043MZ.position.set(0, 0, 5.01);
-  const kub043MrZ = new THREE.Group();
-  kub043MrZ.add(kub043, kub043MZ);
-  kub043MrZ.position.set(53.6094, 7.359, 0);
-  const kub044 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kub044.scale.set(1.2033, 0.0529, 1.7061);
-  kub044.setRotation(1.5708, 0.0, 0.0);
-  const kub044MZ = kub044.clone();
-  kub044MZ.updateMatrixWorld(true);
-  kub044.position.set(0, 0, -2.5808);
-  kub044MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub044MZ.position.set(0, 0, 2.5808);
-  const kub044MrZ = new THREE.Group();
-  kub044MrZ.add(kub044, kub044MZ);
-  kub044MrZ.position.set(53.6094, 7.9044, 0);
-  const kub045 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kub045.position.set(53.6094, 7.9044, -0.0);
-  kub045.scale.set(1.2033, 0.0529, 1.7061);
-  kub045.setRotation(1.5708, 0.0, 0.0);
+  const kub43 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kub43.scale.set(1.2, 0.05, 1.16);
+  kub43.setRotation(1.57, 0, 0);
+  const kub43MZ = kub43.clone();
+  kub43MZ.updateMatrixWorld(true);
+  kub43.position.set(0, 0, -5.01);
+  kub43MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub43MZ.position.set(0, 0, 5.01);
+  const kub43MrZ = new THREE.Group();
+  kub43MrZ.add(kub43, kub43MZ);
+  kub43MrZ.position.set(53.6, 7.36, 0);
+  const kub44 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kub44.scale.set(1.2, 0.05, 1.71);
+  kub44.setRotation(1.57, 0, 0);
+  const kub44MZ = kub44.clone();
+  kub44MZ.updateMatrixWorld(true);
+  kub44.position.set(0, 0, -2.58);
+  kub44MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub44MZ.position.set(0, 0, 2.58);
+  const kub44MrZ = new THREE.Group();
+  kub44MrZ.add(kub44, kub44MZ);
+  kub44MrZ.position.set(53.6, 7.9, 0);
+  const kub45 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kub45.position.set(53.6, 7.9, 0);
+  kub45.scale.set(1.2, 0.05, 1.71);
+  kub45.setRotation(1.57, 0, 0);
 
-  const kub046 = new THREE.Mesh(boxGeo, BrassMaterial);
-  kub046.position.set(53.6429, 8.2123, -0.0);
-  kub046.scale.set(1.2033, 0.0405, 5.5555);
+  const kub46 = new THREE.Mesh(boxGeo, BrassMaterial);
+  kub46.position.set(53.6, 8.21, 0);
+  kub46.scale.set(1.2, 0.04, 5.56);
 
-  const kub047 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub047.position.set(52.4948, 8.1131, -0.0);
-  kub047.scale.set(-0.0232, 1.9147, 4.9622);
+  const kub47 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
+  kub47.position.set(52.5, 8.11, 0);
+  kub47.scale.set(-0.02, 1.91, 4.96);
 
-  const cyl008 = new THREE.Mesh(cylinderGeo, BrassMaterial);
-  cyl008.position.set(52.4284, 7.9374, -0.0);
-  cyl008.scale.set(1.0, 0.0534, 1.0);
-  cyl008.setRotation(0.0, 0.0, -1.5708);
+  const cyl8 = new THREE.Mesh(cylinderGeo, BrassMaterial);
+  cyl8.position.set(52.4, 7.94, 0);
+  cyl8.scale.set(1, 0.05, 1);
+  cyl8.setRotation(0, 0, -1.57);
 
-  const cyl009 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-  cyl009.position.set(52.3781, 7.9374, -0.0);
-  cyl009.scale.set(0.9637, 0.0534, 0.9637);
-  cyl009.setRotation(0.0, 0.0, -1.5708);
+  const cyl9 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+  cyl9.position.set(52.4, 7.94, 0);
+  cyl9.scale.set(0.96, 0.05, 0.96);
+  cyl9.setRotation(0, 0, -1.57);
 
-  const cyl010 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-  cyl010.position.set(52.3201, 7.9374, -0.0);
-  cyl010.scale.set(0.075, 0.0188, 0.075);
-  cyl010.setRotation(0.0, 0.0, -1.5708);
+  const cyl10 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+  cyl10.position.set(52.3, 7.94, 0);
+  cyl10.scale.set(0.07, 0.02, 0.07);
+  cyl10.setRotation(0, 0, -1.57);
 
-  const kub048 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub048.position.set(52.3406, 8.3492, -0.0);
-  kub048.scale.set(0.0334, 0.3772, 0.0334);
+  const kub48 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub48.position.set(52.3, 8.35, 0);
+  kub48.scale.set(0.03, 0.38, 0.03);
 
-  const kub049 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub049.position.set(52.3406, 8.0482, 0.3139);
-  kub049.scale.set(0.0334, 0.305, 0.0334);
-  kub049.setRotation(1.2316, 0.0, 0.0);
+  const kub49 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub49.position.set(52.3, 8.05, 0.31);
+  kub49.scale.set(0.03, 0.3, 0.03);
+  kub49.setRotation(1.23, 0, 0);
 
-  const kub050 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub050.scale.set(0.0328, 0.0583, 0.0328);
-  kub050.setRotation(0.0, 0.0, -0.0);
-  const kub050MX = kub050.clone();
-  kub050MX.updateMatrixWorld(true);
-  kub050.position.set(52.3403, 0, 0);
-  kub050MX.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-  kub050MX.position.set(52.416, 0, 0);
-  const kub050MrX = new THREE.Group();
-  kub050MrX.add(kub050, kub050MX);
-  kub050MrX.position.set(0, 8.8056, -0.0);
-  const kub051 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub051.scale.set(0.0328, 0.0583, 0.0328);
-  kub051.setRotation(1.5708, 0.0, 0.0);
-  const kub051MZ = kub051.clone();
-  kub051MZ.updateMatrixWorld(true);
-  kub051.position.set(0, 0, 0.8682);
-  kub051MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub051MZ.position.set(0, 0, -0.8682);
-  const kub051MrZ = new THREE.Group();
-  kub051MrZ.add(kub051, kub051MZ);
-  kub051MrZ.position.set(52.3403, 7.9374, 0);
-  const kub052 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub052.scale.set(0.0328, 0.0583, 0.0328);
-  kub052.setRotation(2.3562, 0.0, 0.0);
-  const kub052MZ = kub052.clone();
-  kub052MZ.updateMatrixWorld(true);
-  kub052.position.set(0, 0, 0.6139);
-  kub052MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub052MZ.position.set(0, 0, -0.6139);
-  const kub052MrZ = new THREE.Group();
-  kub052MrZ.add(kub052, kub052MZ);
-  kub052MrZ.position.set(52.3403, 7.3235, 0);
-  const kub053 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub053.scale.set(0.0328, 0.0583, 0.0328);
-  kub053.setRotation(0.7854, 0.0, 0.0);
-  const kub053MZ = kub053.clone();
-  kub053MZ.updateMatrixWorld(true);
-  kub053.position.set(0, 0, 0.6139);
-  kub053MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub053MZ.position.set(0, 0, -0.6139);
-  const kub053MrZ = new THREE.Group();
-  kub053MrZ.add(kub053, kub053MZ);
-  kub053MrZ.position.set(52.3403, 8.5513, 0);
-  const cyl011 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
-  cyl011.position.set(52.3299, 7.9374, -0.0);
-  cyl011.scale.set(0.4398, 0.011, 0.4398);
-  cyl011.setRotation(0.0, 0.0, -1.5708);
+  const kub50 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub50.scale.set(0.03, 0.06, 0.03);
+  kub50.setRotation(0, 0, 0);
+  const kub50MX = kub50.clone();
+  kub50MX.updateMatrixWorld(true);
+  kub50.position.set(52.3, 0, 0);
+  kub50MX.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+  kub50MX.position.set(52.4, 0, 0);
+  const kub50MrX = new THREE.Group();
+  kub50MrX.add(kub50, kub50MX);
+  kub50MrX.position.set(0, 8.81, 0);
+  const kub51 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub51.scale.set(0.03, 0.06, 0.03);
+  kub51.setRotation(1.57, 0, 0);
+  const kub51MZ = kub51.clone();
+  kub51MZ.updateMatrixWorld(true);
+  kub51.position.set(0, 0, 0.87);
+  kub51MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub51MZ.position.set(0, 0, -0.87);
+  const kub51MrZ = new THREE.Group();
+  kub51MrZ.add(kub51, kub51MZ);
+  kub51MrZ.position.set(52.3, 7.94, 0);
+  const kub52 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub52.scale.set(0.03, 0.06, 0.03);
+  kub52.setRotation(2.36, 0, 0);
+  const kub52MZ = kub52.clone();
+  kub52MZ.updateMatrixWorld(true);
+  kub52.position.set(0, 0, 0.61);
+  kub52MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub52MZ.position.set(0, 0, -0.61);
+  const kub52MrZ = new THREE.Group();
+  kub52MrZ.add(kub52, kub52MZ);
+  kub52MrZ.position.set(52.3, 7.32, 0);
+  const kub53 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub53.scale.set(0.03, 0.06, 0.03);
+  kub53.setRotation(0.79, 0, 0);
+  const kub53MZ = kub53.clone();
+  kub53MZ.updateMatrixWorld(true);
+  kub53.position.set(0, 0, 0.61);
+  kub53MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub53MZ.position.set(0, 0, -0.61);
+  const kub53MrZ = new THREE.Group();
+  kub53MrZ.add(kub53, kub53MZ);
+  kub53MrZ.position.set(52.3, 8.55, 0);
+  const cyl11 = new THREE.Mesh(cylinderGeo, RoofTilesMaterial);
+  cyl11.position.set(52.3, 7.94, 0);
+  cyl11.scale.set(0.44, 0.01, 0.44);
+  cyl11.setRotation(0, 0, -1.57);
 
-  const kub054 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub054.position.set(38.1605, 2.3445, 6.9102);
-  kub054.scale.set(1.2649, 0.9801, 0.0322);
+  const kub54 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub54.position.set(38.2, 2.34, 6.91);
+  kub54.scale.set(1.26, 0.98, 0.03);
 
-  const kub055 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub055.position.set(38.1605, 3.1273, -6.8906);
-  kub055.scale.set(1.6975, 1.1575, 0.0322);
+  const kub55 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub55.position.set(38.2, 3.13, -6.89);
+  kub55.scale.set(1.7, 1.16, 0.03);
 
-  const kub056 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub056.position.set(38.1605, 2.9853, -6.8646);
-  kub056.scale.set(1.6244, 0.9379, 0.0322);
+  const kub56 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
+  kub56.position.set(38.2, 2.99, -6.86);
+  kub56.scale.set(1.62, 0.94, 0.03);
 
-  const kub057 = new THREE.Mesh(boxGeo, Green_PictureMaterial);
-  kub057.position.set(38.1605, 4.0931, -6.8646);
-  kub057.scale.set(1.6244, 0.146, 0.0322);
+  const kub57 = new THREE.Mesh(boxGeo, Green_PictureMaterial);
+  kub57.position.set(38.2, 4.09, -6.86);
+  kub57.scale.set(1.62, 0.15, 0.03);
 
-  const kub058 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub058.position.set(38.1605, 4.4235, 6.9102);
-  kub058.scale.set(1.2649, 0.9801, 0.0322);
+  const kub58 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub58.position.set(38.2, 4.42, 6.91);
+  kub58.scale.set(1.26, 0.98, 0.03);
 
-  const kub059 = new THREE.Mesh(boxGeo, Green_PictureMaterial);
-  kub059.position.set(38.1605, 2.3445, 6.8851);
-  kub059.scale.set(1.1847, 0.918, 0.0301);
+  const kub59 = new THREE.Mesh(boxGeo, Green_PictureMaterial);
+  kub59.position.set(38.2, 2.34, 6.89);
+  kub59.scale.set(1.18, 0.92, 0.03);
 
-  const kub060 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
-  kub060.position.set(38.1605, 4.4235, 6.8851);
-  kub060.scale.set(1.1847, 0.918, 0.0301);
+  const kub60 = new THREE.Mesh(boxGeo, Blue_PictureMaterial);
+  kub60.position.set(38.2, 4.42, 6.89);
+  kub60.scale.set(1.18, 0.92, 0.03);
 
-  const kub061 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub061.position.set(38.1605, 5.1875, -6.9009);
-  kub061.scale.set(0.1398, 0.1398, 0.0286);
+  const kub61 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub61.position.set(38.2, 5.19, -6.9);
+  kub61.scale.set(0.14, 0.14, 0.03);
 
-  const kub062 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub062.position.set(38.1605, 5.1875, -6.7612);
-  kub062.scale.set(0.041, 0.041, 0.1231);
+  const kub62 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub62.position.set(38.2, 5.19, -6.76);
+  kub62.scale.set(0.04, 0.04, 0.12);
 
-  const kub063 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub063.position.set(38.1605, 5.1875, -6.3446);
-  kub063.scale.set(0.1035, 0.3, 0.3);
+  const kub63 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub63.position.set(38.2, 5.19, -6.34);
+  kub63.scale.set(0.1, 0.3, 0.3);
 
-  const kub064 = new THREE.Mesh(boxGeo, Green_PictureMaterial);
-  kub064.position.set(38.1605, 5.1875, -6.3446);
-  kub064.scale.set(0.1379, 0.2533, 0.2533);
+  const kub64 = new THREE.Mesh(boxGeo, Green_PictureMaterial);
+  kub64.position.set(38.2, 5.19, -6.34);
+  kub64.scale.set(0.14, 0.25, 0.25);
 
-  const kub065 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-  kub065.position.set(38.1605, 5.1086, -6.3446);
-  kub065.scale.set(0.1751, 0.1278, 0.0332);
+  const kub65 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+  kub65.position.set(38.2, 5.11, -6.34);
+  kub65.scale.set(0.18, 0.13, 0.03);
 
-  const cyl012 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-  cyl012.position.set(38.1605, 5.3262, -6.3446);
-  cyl012.scale.set(0.0413, 0.1645, 0.0413);
-  cyl012.setRotation(0.0, 0.0, -1.5708);
+  const cyl12 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+  cyl12.position.set(38.2, 5.33, -6.34);
+  cyl12.scale.set(0.04, 0.16, 0.04);
+  cyl12.setRotation(0, 0, -1.57);
 
-  const kub066Gr = new THREE.Group();
+  const kub66Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const kub066 = new THREE.Mesh(boxGeo, MapMaterial);
-    kub066.scale.set(0.0392, 0.6686, 0.47);
-    kub066.position.set(12.001 * i, 0, 0);
-    kub066Gr.add(kub066);
+    const kub66 = new THREE.Mesh(boxGeo, MapMaterial);
+    kub66.scale.set(0.04, 0.67, 0.47);
+    kub66.position.set(12 * i, 0, 0);
+    kub66Gr.add(kub66);
   }
-  kub066Gr.position.set(-23.6566, 3.1162, 7.8995);
-  const kub067Gr = new THREE.Group();
+  kub66Gr.position.set(-23.7, 3.12, 7.9);
+  const kub67Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const kub067 = new THREE.Mesh(boxGeo, MapMaterial);
-    kub067.scale.set(0.0392, 0.6686, 0.47);
-    kub067.position.set(12.001 * i, 0, 0);
-    kub067Gr.add(kub067);
+    const kub67 = new THREE.Mesh(boxGeo, MapMaterial);
+    kub67.scale.set(0.04, 0.67, 0.47);
+    kub67.position.set(12 * i, 0, 0);
+    kub67Gr.add(kub67);
   }
-  kub067Gr.position.set(-23.6566, 3.1162, -7.8995);
-  const kub068Gr = new THREE.Group();
+  kub67Gr.position.set(-23.7, 3.12, -7.9);
+  const kub68Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const kub068 = new THREE.Mesh(boxGeo, MapMaterial);
-    kub068.scale.set(0.0392, 0.6686, 0.47);
-    kub068.position.set(12.001 * i, 0, 0);
-    kub068Gr.add(kub068);
+    const kub68 = new THREE.Mesh(boxGeo, MapMaterial);
+    kub68.scale.set(0.04, 0.67, 0.47);
+    kub68.position.set(12 * i, 0, 0);
+    kub68Gr.add(kub68);
   }
-  kub068Gr.position.set(-25.7557, 3.1162, 7.8995);
-  const kub069Gr = new THREE.Group();
+  kub68Gr.position.set(-25.8, 3.12, 7.9);
+  const kub69Gr = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    const kub069 = new THREE.Mesh(boxGeo, MapMaterial);
-    kub069.scale.set(0.0392, 0.6686, 0.47);
-    kub069.position.set(12.001 * i, 0, 0);
-    kub069Gr.add(kub069);
+    const kub69 = new THREE.Mesh(boxGeo, MapMaterial);
+    kub69.scale.set(0.04, 0.67, 0.47);
+    kub69.position.set(12 * i, 0, 0);
+    kub69Gr.add(kub69);
   }
-  kub069Gr.position.set(-25.7557, 3.1162, -7.8995);
-  const kub072 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-  kub072.scale.set(337.424, 0.0913, 3.9259);
-  kub072.setRotation(0.0, 0.0, -0.0);
-  const kub072MZ = kub072.clone();
-  kub072MZ.updateMatrixWorld(true);
-  kub072.position.set(0, 0, 18.6043);
-  kub072MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub072MZ.position.set(0, 0, -18.6043);
-  const kub072MrZ = new THREE.Group();
-  kub072MrZ.add(kub072, kub072MZ);
-  kub072MrZ.position.set(-0.9392, -1.8809, 0);
-  const kub073 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
-  kub073.scale.set(350.9227, 0.0913, 0.6522);
-  kub073.setRotation(-1.0876, 0.0, 0.0);
-  const kub073MZ = kub073.clone();
-  kub073MZ.updateMatrixWorld(true);
-  kub073.position.set(0, 0, 22.347);
-  kub073MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub073MZ.position.set(0, 0, -22.347);
-  const kub073MrZ = new THREE.Group();
-  kub073MrZ.add(kub073, kub073MZ);
-  kub073MrZ.position.set(-2.026, -1.6274, 0);
-  const kub074 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub074.scale.set(352.5921, 0.2605, 0.166);
-  kub074.setRotation(0.0, 0.0, -0.0);
-  const kub074MZ = kub074.clone();
-  kub074MZ.updateMatrixWorld(true);
-  kub074.position.set(0, 0, 16.1386);
-  kub074MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub074MZ.position.set(0, 0, -16.1386);
-  const kub074MrZ = new THREE.Group();
-  kub074MrZ.add(kub074, kub074MZ);
-  kub074MrZ.position.set(-1.2826, -1.529, 0);
-  const kub075 = new THREE.Mesh(boxGeo, MetalMaterial);
-  kub075.scale.set(352.5921, 0.2605, 0.166);
-  kub075.setRotation(0.0, 0.0, -0.0);
-  const kub075MZ = kub075.clone();
-  kub075MZ.updateMatrixWorld(true);
-  kub075.position.set(0, 0, 21.0701);
-  kub075MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub075MZ.position.set(0, 0, -21.0701);
-  const kub075MrZ = new THREE.Group();
-  kub075MrZ.add(kub075, kub075MZ);
-  kub075MrZ.position.set(-1.2826, -1.529, 0);
-  const kub076 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub076.scale.set(350.9227, 0.0913, 1.6548);
-  kub076.setRotation(1.5708, 0.0, 0.0);
-  const kub076MZ = kub076.clone();
-  kub076MZ.updateMatrixWorld(true);
-  kub076.position.set(0, 0, 22.5792);
-  kub076MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kub076MZ.position.set(0, 0, -22.5792);
-  const kub076MrZ = new THREE.Group();
-  kub076MrZ.add(kub076, kub076MZ);
-  kub076MrZ.position.set(-2.026, 0.2518, 0);
-  const kub077Gr = new THREE.Group();
+  kub69Gr.position.set(-25.8, 3.12, -7.9);
+  const kub72 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
+  kub72.scale.set(337.4, 0.09, 3.93);
+  kub72.setRotation(0, 0, 0);
+  const kub72MZ = kub72.clone();
+  kub72MZ.updateMatrixWorld(true);
+  kub72.position.set(0, 0, 18.6);
+  kub72MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub72MZ.position.set(0, 0, -18.6);
+  const kub72MrZ = new THREE.Group();
+  kub72MrZ.add(kub72, kub72MZ);
+  kub72MrZ.position.set(-0.94, -1.88, 0);
+  const kub73 = new THREE.Mesh(boxGeo, Metall_RustMaterial);
+  kub73.scale.set(350.9, 0.09, 0.65);
+  kub73.setRotation(-1.09, 0, 0);
+  const kub73MZ = kub73.clone();
+  kub73MZ.updateMatrixWorld(true);
+  kub73.position.set(0, 0, 22.3);
+  kub73MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub73MZ.position.set(0, 0, -22.3);
+  const kub73MrZ = new THREE.Group();
+  kub73MrZ.add(kub73, kub73MZ);
+  kub73MrZ.position.set(-2.03, -1.63, 0);
+  const kub74 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub74.scale.set(352.6, 0.26, 0.17);
+  kub74.setRotation(0, 0, 0);
+  const kub74MZ = kub74.clone();
+  kub74MZ.updateMatrixWorld(true);
+  kub74.position.set(0, 0, 16.1);
+  kub74MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub74MZ.position.set(0, 0, -16.1);
+  const kub74MrZ = new THREE.Group();
+  kub74MrZ.add(kub74, kub74MZ);
+  kub74MrZ.position.set(-1.28, -1.53, 0);
+  const kub75 = new THREE.Mesh(boxGeo, MetalMaterial);
+  kub75.scale.set(352.6, 0.26, 0.17);
+  kub75.setRotation(0, 0, 0);
+  const kub75MZ = kub75.clone();
+  kub75MZ.updateMatrixWorld(true);
+  kub75.position.set(0, 0, 21.1);
+  kub75MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub75MZ.position.set(0, 0, -21.1);
+  const kub75MrZ = new THREE.Group();
+  kub75MrZ.add(kub75, kub75MZ);
+  kub75MrZ.position.set(-1.28, -1.53, 0);
+  const kub76 = new THREE.Mesh(boxGeo, ColoumnMaterial);
+  kub76.scale.set(350.9, 0.09, 1.65);
+  kub76.setRotation(1.57, 0, 0);
+  const kub76MZ = kub76.clone();
+  kub76MZ.updateMatrixWorld(true);
+  kub76.position.set(0, 0, 22.6);
+  kub76MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kub76MZ.position.set(0, 0, -22.6);
+  const kub76MrZ = new THREE.Group();
+  kub76MrZ.add(kub76, kub76MZ);
+  kub76MrZ.position.set(-2.03, 0.25, 0);
+  const kub77Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub077 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub077.scale.set(1.5186, 0.0513, 1.4186);
-    kub077.position.set(3.341 * i, 0, 0);
-    kub077Gr.add(kub077);
+    const kub77 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub77.scale.set(1.52, 0.05, 1.42);
+    kub77.position.set(3.34 * i, 0, 0);
+    kub77Gr.add(kub77);
   }
-  kub077Gr.setRotation(0.053, -0.0, 0.0);
-  kub077Gr.position.set(-48.0887, 9.1261, 15.2259);
-  const kub078Gr = new THREE.Group();
+  kub77Gr.setRotation(0.05, 0, 0);
+  kub77Gr.position.set(-48.1, 9.13, 15.2);
+  const kub78Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub078 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub078.scale.set(1.5186, 0.0513, 1.3299);
-    kub078.position.set(3.341 * i, 0, 0);
-    kub078Gr.add(kub078);
+    const kub78 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub78.scale.set(1.52, 0.05, 1.33);
+    kub78.position.set(3.34 * i, 0, 0);
+    kub78Gr.add(kub78);
   }
-  kub078Gr.setRotation(-0.2552, -0.0, 0.0);
-  kub078Gr.position.set(-48.0887, 8.8694, 12.5384);
-  const kub079Gr = new THREE.Group();
+  kub78Gr.setRotation(-0.26, 0, 0);
+  kub78Gr.position.set(-48.1, 8.87, 12.5);
+  const kub79Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub079 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub079.scale.set(1.5186, 0.0513, 1.2076);
-    kub079.position.set(3.341 * i, 0, 0);
-    kub079Gr.add(kub079);
+    const kub79 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub79.scale.set(1.52, 0.05, 1.21);
+    kub79.position.set(3.34 * i, 0, 0);
+    kub79Gr.add(kub79);
   }
-  kub079Gr.setRotation(-0.6303, -0.0, 0.0);
-  kub079Gr.position.set(-48.0887, 7.8661, 10.3425);
-  const kub080Gr = new THREE.Group();
+  kub79Gr.setRotation(-0.63, 0, 0);
+  kub79Gr.position.set(-48.1, 7.87, 10.3);
+  const kub80Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub080 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub080.scale.set(1.5186, 0.0513, 0.6538);
-    kub080.position.set(3.341 * i, 0, 0);
-    kub080Gr.add(kub080);
+    const kub80 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub80.scale.set(1.52, 0.05, 0.65);
+    kub80.position.set(3.34 * i, 0, 0);
+    kub80Gr.add(kub80);
   }
-  kub080Gr.setRotation(-1.1069, -0.0, -0.0);
-  kub080Gr.position.set(-48.0887, 6.6251, 9.1086);
-  const kub081Gr = new THREE.Group();
+  kub80Gr.setRotation(-1.11, 0, 0);
+  kub80Gr.position.set(-48.1, 6.63, 9.11);
+  const kub81Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub081 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub081.scale.set(1.5186, 0.0513, 1.4186);
-    kub081.position.set(3.341 * i, 0, 0);
-    kub081Gr.add(kub081);
+    const kub81 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub81.scale.set(1.52, 0.05, 1.42);
+    kub81.position.set(3.34 * i, 0, 0);
+    kub81Gr.add(kub81);
   }
-  kub081Gr.setRotation(0.3397, -0.0, 0.0);
-  kub081Gr.position.set(-48.0887, 8.5788, 17.9723);
-  const kub082Gr = new THREE.Group();
+  kub81Gr.setRotation(0.34, 0, 0);
+  kub81Gr.position.set(-48.1, 8.58, 18);
+  const kub82Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub082 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub082.scale.set(1.5186, 0.0513, 1.3442);
-    kub082.position.set(3.341 * i, 0, 0);
-    kub082Gr.add(kub082);
+    const kub82 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub82.scale.set(1.52, 0.05, 1.34);
+    kub82.position.set(3.34 * i, 0, 0);
+    kub82Gr.add(kub82);
   }
-  kub082Gr.setRotation(0.6479, -0.0, 0.0);
-  kub082Gr.position.set(-48.0887, 7.3242, 20.3389);
-  const kub083Gr = new THREE.Group();
+  kub82Gr.setRotation(0.65, 0, 0);
+  kub82Gr.position.set(-48.1, 7.32, 20.3);
+  const kub83Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub083 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub083.scale.set(1.5186, 0.0513, 1.3442);
-    kub083.position.set(3.341 * i, 0, 0);
-    kub083Gr.add(kub083);
+    const kub83 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub83.scale.set(1.52, 0.05, 1.34);
+    kub83.position.set(3.34 * i, 0, 0);
+    kub83Gr.add(kub83);
   }
-  kub083Gr.setRotation(1.023, -0.0, 0.0);
-  kub083Gr.position.set(-48.0887, 5.4288, 22.068);
-  const kub084Gr = new THREE.Group();
+  kub83Gr.setRotation(1.02, 0, 0);
+  kub83Gr.position.set(-48.1, 5.43, 22.1);
+  const kub84Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub084 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub084.scale.set(0.1738, 0.0511, 1.3427);
-    kub084.position.set(3.341 * i, 0, 0);
-    kub084Gr.add(kub084);
+    const kub84 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub84.scale.set(0.17, 0.05, 1.34);
+    kub84.position.set(3.34 * i, 0, 0);
+    kub84Gr.add(kub84);
   }
-  kub084Gr.setRotation(1.023, -0.0, 0.0);
-  kub084Gr.position.set(-46.4182, 5.3882, 22.0402);
-  const kub085Gr = new THREE.Group();
+  kub84Gr.setRotation(1.02, 0, 0);
+  kub84Gr.position.set(-46.4, 5.39, 22);
+  const kub85Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub085 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub085.scale.set(0.1738, 0.0513, 1.4127);
-    kub085.position.set(3.341 * i, 0, 0);
-    kub085Gr.add(kub085);
+    const kub85 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub85.scale.set(0.17, 0.05, 1.41);
+    kub85.position.set(3.34 * i, 0, 0);
+    kub85Gr.add(kub85);
   }
-  kub085Gr.setRotation(0.053, -0.0, 0.0);
-  kub085Gr.position.set(-46.4182, 9.0855, 15.2265);
-  const kub086Gr = new THREE.Group();
+  kub85Gr.setRotation(0.05, 0, 0);
+  kub85Gr.position.set(-46.4, 9.09, 15.2);
+  const kub86Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub086 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub086.scale.set(0.1738, 0.0513, 1.3247);
-    kub086.position.set(3.341 * i, 0, 0);
-    kub086Gr.add(kub086);
+    const kub86 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub86.scale.set(0.17, 0.05, 1.32);
+    kub86.position.set(3.34 * i, 0, 0);
+    kub86Gr.add(kub86);
   }
-  kub086Gr.setRotation(-0.2552, -0.0, 0.0);
-  kub086Gr.position.set(-46.4182, 8.8288, 12.5501);
-  const kub087Gr = new THREE.Group();
+  kub86Gr.setRotation(-0.26, 0, 0);
+  kub86Gr.position.set(-46.4, 8.83, 12.6);
+  const kub87Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub087 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub087.scale.set(0.1738, 0.0512, 1.2043);
-    kub087.position.set(3.341 * i, 0, 0);
-    kub087Gr.add(kub087);
+    const kub87 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub87.scale.set(0.17, 0.05, 1.2);
+    kub87.position.set(3.34 * i, 0, 0);
+    kub87Gr.add(kub87);
   }
-  kub087Gr.setRotation(-0.6303, -0.0, 0.0);
-  kub087Gr.position.set(-46.4182, 7.8255, 10.3634);
-  const kub088Gr = new THREE.Group();
+  kub87Gr.setRotation(-0.63, 0, 0);
+  kub87Gr.position.set(-46.4, 7.83, 10.4);
+  const kub88Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub088 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub088.scale.set(0.1738, 0.0511, 0.6533);
-    kub088.position.set(3.341 * i, 0, 0);
-    kub088Gr.add(kub088);
+    const kub88 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub88.scale.set(0.17, 0.05, 0.65);
+    kub88.position.set(3.34 * i, 0, 0);
+    kub88Gr.add(kub88);
   }
-  kub088Gr.setRotation(-1.1069, -0.0, 0.0);
-  kub088Gr.position.set(-46.4182, 6.5845, 9.1346);
-  const kub089Gr = new THREE.Group();
+  kub88Gr.setRotation(-1.11, 0, 0);
+  kub88Gr.position.set(-46.4, 6.58, 9.13);
+  const kub89Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub089 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub089.scale.set(0.1738, 0.0513, 1.4133);
-    kub089.position.set(3.341 * i, 0, 0);
-    kub089Gr.add(kub089);
+    const kub89 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub89.scale.set(0.17, 0.05, 1.41);
+    kub89.position.set(3.34 * i, 0, 0);
+    kub89Gr.add(kub89);
   }
-  kub089Gr.setRotation(0.3397, -0.0, 0.0);
-  kub089Gr.position.set(-46.4182, 8.5382, 17.9615);
-  const kub090Gr = new THREE.Group();
+  kub89Gr.setRotation(0.34, 0, 0);
+  kub89Gr.position.set(-46.4, 8.54, 18);
+  const kub90Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub090 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub090.scale.set(0.1738, 0.0512, 1.3406);
-    kub090.position.set(3.341 * i, 0, 0);
-    kub090Gr.add(kub090);
+    const kub90 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub90.scale.set(0.17, 0.05, 1.34);
+    kub90.position.set(3.34 * i, 0, 0);
+    kub90Gr.add(kub90);
   }
-  kub090Gr.setRotation(0.6479, -0.0, 0.0);
-  kub090Gr.position.set(-46.4182, 7.2836, 20.3183);
-  const kub091Gr = new THREE.Group();
+  kub90Gr.setRotation(0.65, 0, 0);
+  kub90Gr.position.set(-46.4, 7.28, 20.3);
+  const kub91Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub091 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub091.scale.set(1.5186, 0.0513, 0.0838);
-    kub091.position.set(3.341 * i, 0, 0);
-    kub091Gr.add(kub091);
+    const kub91 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub91.scale.set(1.52, 0.05, 0.08);
+    kub91.position.set(3.34 * i, 0, 0);
+    kub91Gr.add(kub91);
   }
-  kub091Gr.setRotation(0.1825, 0.0, 0.0);
-  kub091Gr.position.set(-48.0887, 9.0256, 16.6168);
-  const kub093Gr = new THREE.Group();
+  kub91Gr.setRotation(0.18, 0, 0);
+  kub91Gr.position.set(-48.1, 9.03, 16.6);
+  const kub93Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub093 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub093.scale.set(1.5186, 0.0513, 0.6538);
-    kub093.position.set(3.341 * i, 0, 0);
-    kub093Gr.add(kub093);
+    const kub93 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub93.scale.set(1.52, 0.05, 0.65);
+    kub93.position.set(3.34 * i, 0, 0);
+    kub93Gr.add(kub93);
   }
-  kub093Gr.setRotation(1.1069, -0.0, -0.0);
-  kub093Gr.position.set(-48.0887, 6.6251, -9.1086);
-  const kub094Gr = new THREE.Group();
+  kub93Gr.setRotation(1.11, 0, 0);
+  kub93Gr.position.set(-48.1, 6.63, -9.11);
+  const kub94Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub094 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub094.scale.set(1.5186, 0.0513, 1.2076);
-    kub094.position.set(3.341 * i, 0, 0);
-    kub094Gr.add(kub094);
+    const kub94 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub94.scale.set(1.52, 0.05, 1.21);
+    kub94.position.set(3.34 * i, 0, 0);
+    kub94Gr.add(kub94);
   }
-  kub094Gr.setRotation(0.6303, -0.0, 0.0);
-  kub094Gr.position.set(-48.0887, 7.8661, -10.3425);
-  const kub095Gr = new THREE.Group();
+  kub94Gr.setRotation(0.63, 0, 0);
+  kub94Gr.position.set(-48.1, 7.87, -10.3);
+  const kub95Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub095 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub095.scale.set(0.1738, 0.0511, 0.6533);
-    kub095.position.set(3.341 * i, 0, 0);
-    kub095Gr.add(kub095);
+    const kub95 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub95.scale.set(0.17, 0.05, 0.65);
+    kub95.position.set(3.34 * i, 0, 0);
+    kub95Gr.add(kub95);
   }
-  kub095Gr.setRotation(1.1069, -0.0, 0.0);
-  kub095Gr.position.set(-46.4182, 6.5845, -9.1346);
-  const kub096Gr = new THREE.Group();
+  kub95Gr.setRotation(1.11, 0, 0);
+  kub95Gr.position.set(-46.4, 6.58, -9.13);
+  const kub96Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub096 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub096.scale.set(0.1738, 0.0512, 1.2043);
-    kub096.position.set(3.341 * i, 0, 0);
-    kub096Gr.add(kub096);
+    const kub96 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub96.scale.set(0.17, 0.05, 1.2);
+    kub96.position.set(3.34 * i, 0, 0);
+    kub96Gr.add(kub96);
   }
-  kub096Gr.setRotation(0.6303, -0.0, 0.0);
-  kub096Gr.position.set(-46.4182, 7.8255, -10.3634);
-  const kub097Gr = new THREE.Group();
+  kub96Gr.setRotation(0.63, 0, 0);
+  kub96Gr.position.set(-46.4, 7.83, -10.4);
+  const kub97Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub097 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub097.scale.set(1.5186, 0.0513, 1.3299);
-    kub097.position.set(3.341 * i, 0, 0);
-    kub097Gr.add(kub097);
+    const kub97 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub97.scale.set(1.52, 0.05, 1.33);
+    kub97.position.set(3.34 * i, 0, 0);
+    kub97Gr.add(kub97);
   }
-  kub097Gr.setRotation(0.2552, -0.0, 0.0);
-  kub097Gr.position.set(-48.0887, 8.8694, -12.5384);
-  const kub098Gr = new THREE.Group();
+  kub97Gr.setRotation(0.26, 0, 0);
+  kub97Gr.position.set(-48.1, 8.87, -12.5);
+  const kub98Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub098 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub098.scale.set(0.1738, 0.0513, 1.3247);
-    kub098.position.set(3.341 * i, 0, 0);
-    kub098Gr.add(kub098);
+    const kub98 = new THREE.Mesh(boxGeo, MetalMaterial);
+    kub98.scale.set(0.17, 0.05, 1.32);
+    kub98.position.set(3.34 * i, 0, 0);
+    kub98Gr.add(kub98);
   }
-  kub098Gr.setRotation(0.2552, -0.0, 0.0);
-  kub098Gr.position.set(-46.4182, 8.8288, -12.5501);
-  const kub099Gr = new THREE.Group();
+  kub98Gr.setRotation(0.26, 0, 0);
+  kub98Gr.position.set(-46.4, 8.83, -12.6);
+  const kub99Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
-    const kub099 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub099.scale.set(1.5186, 0.0513, 1.4186);
-    kub099.position.set(3.341 * i, 0, 0);
-    kub099Gr.add(kub099);
+    const kub99 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
+    kub99.scale.set(1.52, 0.05, 1.42);
+    kub99.position.set(3.34 * i, 0, 0);
+    kub99Gr.add(kub99);
   }
-  kub099Gr.setRotation(-0.053, -0.0, 0.0);
-  kub099Gr.position.set(-48.0888, 9.1261, -15.2259);
+  kub99Gr.setRotation(-0.05, 0, 0);
+  kub99Gr.position.set(-48.1, 9.13, -15.2);
   const kub100Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
     const kub100 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub100.scale.set(0.1738, 0.0513, 1.4127);
-    kub100.position.set(3.341 * i, 0, 0);
+    kub100.scale.set(0.17, 0.05, 1.41);
+    kub100.position.set(3.34 * i, 0, 0);
     kub100Gr.add(kub100);
   }
-  kub100Gr.setRotation(-0.053, -0.0, 0.0);
-  kub100Gr.position.set(-46.4182, 9.0855, -15.2265);
+  kub100Gr.setRotation(-0.05, 0, 0);
+  kub100Gr.position.set(-46.4, 9.09, -15.2);
   const kub101Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
     const kub101 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub101.scale.set(1.5186, 0.0513, 1.4186);
-    kub101.position.set(3.341 * i, 0, 0);
+    kub101.scale.set(1.52, 0.05, 1.42);
+    kub101.position.set(3.34 * i, 0, 0);
     kub101Gr.add(kub101);
   }
-  kub101Gr.setRotation(-0.3397, -0.0, 0.0);
-  kub101Gr.position.set(-48.0887, 8.5788, -17.9723);
+  kub101Gr.setRotation(-0.34, 0, 0);
+  kub101Gr.position.set(-48.1, 8.58, -18);
   const kub102Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
     const kub102 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub102.scale.set(0.1738, 0.0512, 1.3406);
-    kub102.position.set(3.341 * i, 0, 0);
+    kub102.scale.set(0.17, 0.05, 1.34);
+    kub102.position.set(3.34 * i, 0, 0);
     kub102Gr.add(kub102);
   }
-  kub102Gr.setRotation(-0.6479, -0.0, 0.0);
-  kub102Gr.position.set(-46.4182, 7.2836, -20.3183);
+  kub102Gr.setRotation(-0.65, 0, 0);
+  kub102Gr.position.set(-46.4, 7.28, -20.3);
   const kub103Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
     const kub103 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub103.scale.set(0.1738, 0.0513, 1.4133);
-    kub103.position.set(3.341 * i, 0, 0);
+    kub103.scale.set(0.17, 0.05, 1.41);
+    kub103.position.set(3.34 * i, 0, 0);
     kub103Gr.add(kub103);
   }
-  kub103Gr.setRotation(-0.3397, -0.0, 0.0);
-  kub103Gr.position.set(-46.4182, 8.5382, -17.9615);
+  kub103Gr.setRotation(-0.34, 0, 0);
+  kub103Gr.position.set(-46.4, 8.54, -18);
   const kub104Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
     const kub104 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub104.scale.set(1.5186, 0.0513, 1.3442);
-    kub104.position.set(3.341 * i, 0, 0);
+    kub104.scale.set(1.52, 0.05, 1.34);
+    kub104.position.set(3.34 * i, 0, 0);
     kub104Gr.add(kub104);
   }
-  kub104Gr.setRotation(-0.6479, -0.0, 0.0);
-  kub104Gr.position.set(-48.0887, 7.3242, -20.3389);
+  kub104Gr.setRotation(-0.65, 0, 0);
+  kub104Gr.position.set(-48.1, 7.32, -20.3);
   const kub105Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
     const kub105 = new THREE.Mesh(boxGeo, WhiteDotsMaterial);
-    kub105.scale.set(1.5186, 0.0513, 1.3442);
-    kub105.position.set(3.341 * i, 0, 0);
+    kub105.scale.set(1.52, 0.05, 1.34);
+    kub105.position.set(3.34 * i, 0, 0);
     kub105Gr.add(kub105);
   }
-  kub105Gr.setRotation(-1.023, -0.0, 0.0);
-  kub105Gr.position.set(-48.0887, 5.4288, -22.068);
+  kub105Gr.setRotation(-1.02, 0, 0);
+  kub105Gr.position.set(-48.1, 5.43, -22.1);
   const kub106Gr = new THREE.Group();
   for (let i = 0; i < 30; i++) {
     const kub106 = new THREE.Mesh(boxGeo, MetalMaterial);
-    kub106.scale.set(0.1738, 0.0511, 1.3427);
-    kub106.position.set(3.341 * i, 0, 0);
+    kub106.scale.set(0.17, 0.05, 1.34);
+    kub106.position.set(3.34 * i, 0, 0);
     kub106Gr.add(kub106);
   }
-  kub106Gr.setRotation(-1.023, -0.0, 0.0);
-  kub106Gr.position.set(-46.4182, 5.3882, -22.0402);
+  kub106Gr.setRotation(-1.02, 0, 0);
+  kub106Gr.position.set(-46.4, 5.39, -22);
   const kub297 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub297.position.set(70.754, 7.9374, -0.0);
-  kub297.scale.set(15.8864, 2.1309, 7.0248);
+  kub297.position.set(70.8, 7.94, 0);
+  kub297.scale.set(15.9, 2.13, 7.02);
 
   const kub298 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub298.position.set(70.754, 6.6102, -0.0);
-  kub298.scale.set(15.8864, 0.3534, 10.2896);
+  kub298.position.set(70.8, 6.61, 0);
+  kub298.scale.set(15.9, 0.35, 10.3);
 
   const kub299 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-  kub299.position.set(80.1152, 3.775, -0.0);
-  kub299.scale.set(3.5137, 0.3534, 10.2896);
-  kub299.setRotation(0.0, 0.0, -1.5708);
+  kub299.position.set(80.1, 3.77, 0);
+  kub299.scale.set(3.51, 0.35, 10.3);
+  kub299.setRotation(0, 0, -1.57);
 
   const cylinderGr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
     const cylinder = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
     cylinder.scale.set(0.5, 2.5, 0.5);
-    cylinder.position.set(6.0 * i, 0, 0);
+    cylinder.position.set(6 * i, 0, 0);
     cylinderGr.add(cylinder);
   }
-  cylinderGr.position.set(-30.709, 3.2961, -7.1816);
-  const cyl001Gr = new THREE.Group();
+  cylinderGr.position.set(-30.7, 3.3, -7.18);
+  const cyl1Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const cyl001 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
-    cyl001.scale.set(0.55, 0.2319, 0.55);
-    cyl001.position.set(6.0 * i, 0, 0);
-    cyl001Gr.add(cyl001);
+    const cyl1 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
+    cyl1.scale.set(0.55, 0.23, 0.55);
+    cyl1.position.set(6 * i, 0, 0);
+    cyl1Gr.add(cyl1);
   }
-  cyl001Gr.position.set(-30.709, 1.0416, -7.1816);
-  const kub003Gr = new THREE.Group();
+  cyl1Gr.position.set(-30.7, 1.04, -7.18);
+  const kub3Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const kub003 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub003.scale.set(0.7, 0.0759, 0.7);
-    kub003.position.set(6.0 * i, 0, 0);
-    kub003Gr.add(kub003);
+    const kub3 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub3.scale.set(0.7, 0.08, 0.7);
+    kub3.position.set(6 * i, 0, 0);
+    kub3Gr.add(kub3);
   }
-  kub003Gr.position.set(-30.709, 5.8089, -7.1816);
-  const cyl003Gr = new THREE.Group();
+  kub3Gr.position.set(-30.7, 5.81, -7.18);
+  const cyl3Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const cyl003 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
-    cyl003.scale.set(0.55, 0.3036, 0.55);
-    cyl003.position.set(6.0 * i, 0, 0);
-    cyl003Gr.add(cyl003);
+    const cyl3 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
+    cyl3.scale.set(0.55, 0.3, 0.55);
+    cyl3.position.set(6 * i, 0, 0);
+    cyl3Gr.add(cyl3);
   }
-  cyl003Gr.position.set(-30.709, 5.47, -7.1816);
-  const cyl004Gr = new THREE.Group();
+  cyl3Gr.position.set(-30.7, 5.47, -7.18);
+  const cyl4Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const cyl004 = new THREE.Mesh(cylinderGeo, BrassMaterial);
-    cyl004.scale.set(0.6, 0.1363, 0.6);
-    cyl004.position.set(6.0 * i, 0, 0);
-    cyl004Gr.add(cyl004);
+    const cyl4 = new THREE.Mesh(cylinderGeo, BrassMaterial);
+    cyl4.scale.set(0.6, 0.14, 0.6);
+    cyl4.position.set(6 * i, 0, 0);
+    cyl4Gr.add(cyl4);
   }
-  cyl004Gr.position.set(-30.709, 5.4668, -7.1816);
-  const tor001Gr = new THREE.Group();
+  cyl4Gr.position.set(-30.7, 5.47, -7.18);
+  const tor1Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const tor001 = new THREE.Mesh(torusGeo, BrassMaterial);
-    tor001.scale.set(0.5, 0.5, 0.5233);
-    tor001.position.set(6.0 * i, 0, 0);
-    tor001Gr.add(tor001);
+    const tor1 = new THREE.Mesh(torusGeo, BrassMaterial);
+    tor1.scale.set(0.5, 0.5, 0.52);
+    tor1.position.set(6 * i, 0, 0);
+    tor1Gr.add(tor1);
   }
-  tor001Gr.setRotation(1.5708, 0.0, 0.0);
-  tor001Gr.position.set(-30.709, 1.0461, -7.1816);
-  const tor002Gr = new THREE.Group();
+  tor1Gr.setRotation(1.57, 0, 0);
+  tor1Gr.position.set(-30.7, 1.05, -7.18);
+  const tor2Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const tor002 = new THREE.Mesh(torusGeo, BrassMaterial);
-    tor002.scale.set(0.52, 0.52, 0.5233);
-    tor002.position.set(6.0 * i, 0, 0);
-    tor002Gr.add(tor002);
+    const tor2 = new THREE.Mesh(torusGeo, BrassMaterial);
+    tor2.scale.set(0.52, 0.52, 0.52);
+    tor2.position.set(6 * i, 0, 0);
+    tor2Gr.add(tor2);
   }
-  tor002Gr.setRotation(1.5708, 0.0, 0.0);
-  tor002Gr.position.set(-30.709, 5.7037, -7.1816);
-  const tor003Gr = new THREE.Group();
+  tor2Gr.setRotation(1.57, 0, 0);
+  tor2Gr.position.set(-30.7, 5.7, -7.18);
+  const tor3Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const tor003 = new THREE.Mesh(torusGeo, BrassMaterial);
-    tor003.scale.set(0.52, 0.52, 0.2641);
-    tor003.position.set(6.0 * i, 0, 0);
-    tor003Gr.add(tor003);
+    const tor3 = new THREE.Mesh(torusGeo, BrassMaterial);
+    tor3.scale.set(0.52, 0.52, 0.26);
+    tor3.position.set(6 * i, 0, 0);
+    tor3Gr.add(tor3);
   }
-  tor003Gr.setRotation(1.5708, 0.0, 0.0);
-  tor003Gr.position.set(-30.709, 5.307, -7.1816);
+  tor3Gr.setRotation(1.57, 0, 0);
+  tor3Gr.position.set(-30.7, 5.31, -7.18);
   const kubfloor_central = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-  kubfloor_central.position.set(24.3999, 0.5684, -0.0);
-  kubfloor_central.scale.set(56.1089, 0.2965, 6.3485);
+  kubfloor_central.position.set(24.4, 0.57, 0);
+  kubfloor_central.scale.set(56.1, 0.3, 6.35);
 
   const kubfloor_columns = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-  kubfloor_columns.scale.set(65.4645, 0.2965, 2.497);
-  kubfloor_columns.setRotation(0.0, 0.0, -0.0);
+  kubfloor_columns.scale.set(65.5, 0.3, 2.5);
+  kubfloor_columns.setRotation(0, 0, 0);
   const kubfloor_columnsMZ = kubfloor_columns.clone();
   kubfloor_columnsMZ.updateMatrixWorld(true);
-  kubfloor_columns.position.set(0, 0, -8.8396);
+  kubfloor_columns.position.set(0, 0, -8.84);
   kubfloor_columnsMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubfloor_columnsMZ.position.set(0, 0, 8.8396);
+  kubfloor_columnsMZ.position.set(0, 0, 8.84);
   const kubfloor_columnsMrZ = new THREE.Group();
   kubfloor_columnsMrZ.add(kubfloor_columns, kubfloor_columnsMZ);
-  kubfloor_columnsMrZ.position.set(15.9462, 0.5578, 0);
+  kubfloor_columnsMrZ.position.set(15.9, 0.56, 0);
   const kubfloor_sided = new THREE.Mesh(boxGeo, Floor_Sides_1Material);
-  kubfloor_sided.scale.set(50.6075, 0.2965, 0.2803);
-  kubfloor_sided.setRotation(0.0, 0.0, -0.0);
+  kubfloor_sided.scale.set(50.6, 0.3, 0.28);
+  kubfloor_sided.setRotation(0, 0, 0);
   const kubfloor_sidedMZ = kubfloor_sided.clone();
   kubfloor_sidedMZ.updateMatrixWorld(true);
-  kubfloor_sided.position.set(0, 0, -11.612);
+  kubfloor_sided.position.set(0, 0, -11.6);
   kubfloor_sidedMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubfloor_sidedMZ.position.set(0, 0, 11.612);
+  kubfloor_sidedMZ.position.set(0, 0, 11.6);
   const kubfloor_sidedMrZ = new THREE.Group();
   kubfloor_sidedMrZ.add(kubfloor_sided, kubfloor_sidedMZ);
-  kubfloor_sidedMrZ.position.set(0.3561, 0.5394, 0);
+  kubfloor_sidedMrZ.position.set(0.36, 0.54, 0);
   const kubfloor_trainsside = new THREE.Mesh(boxGeo, Floor_CentralMaterial);
-  kubfloor_trainsside.scale.set(51.4855, 0.2965, 1.7465);
-  kubfloor_trainsside.setRotation(0.0, 0.0, -0.0);
+  kubfloor_trainsside.scale.set(51.5, 0.3, 1.75);
+  kubfloor_trainsside.setRotation(0, 0, 0);
   const kubfloor_trainssideMZ = kubfloor_trainsside.clone();
   kubfloor_trainssideMZ.updateMatrixWorld(true);
-  kubfloor_trainsside.position.set(0, 0, -13.6124);
+  kubfloor_trainsside.position.set(0, 0, -13.6);
   kubfloor_trainssideMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubfloor_trainssideMZ.position.set(0, 0, 13.6124);
+  kubfloor_trainssideMZ.position.set(0, 0, 13.6);
   const kubfloor_trainssideMrZ = new THREE.Group();
   kubfloor_trainssideMrZ.add(kubfloor_trainsside, kubfloor_trainssideMZ);
-  kubfloor_trainssideMrZ.position.set(-0.5219, 0.5684, 0);
-  const kubstripes_001Gr = new THREE.Group();
+  kubfloor_trainssideMrZ.position.set(-0.52, 0.57, 0);
+  const kubstripes_1Gr = new THREE.Group();
   for (let i = 0; i < 83; i++) {
-    const kubstripes_001 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-    kubstripes_001.scale.set(0.4667, 0.0239, 0.1338);
-    kubstripes_001.position.set(1.2135 * i, 0, 0);
-    kubstripes_001Gr.add(kubstripes_001);
+    const kubstripes_1 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
+    kubstripes_1.scale.set(0.47, 0.02, 0.13);
+    kubstripes_1.position.set(1.21 * i, 0, 0);
+    kubstripes_1Gr.add(kubstripes_1);
   }
-  kubstripes_001Gr.position.set(-49.0516, 0.8519, -13.6124);
+  kubstripes_1Gr.position.set(-49.1, 0.85, -13.6);
   const cylstripe_dotsGr = new THREE.Group();
   for (let i = 0; i < 82; i++) {
     const cylstripe_dots = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-    cylstripe_dots.scale.set(0.131, 0.0041, 0.131);
-    cylstripe_dots.position.set(1.2134 * i, 0, 0);
+    cylstripe_dots.scale.set(0.13, 0, 0.13);
+    cylstripe_dots.position.set(1.21 * i, 0, 0);
     cylstripe_dotsGr.add(cylstripe_dots);
   }
-  cylstripe_dotsGr.position.set(-48.4447, 0.8683, -13.6124);
-  const kubstripes_002 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-  kubstripes_002.scale.set(-59.1002, 0.0239, 0.1614);
-  kubstripes_002.setRotation(0.0, 0.0, -0.0);
-  const kubstripes_002MZ = kubstripes_002.clone();
-  kubstripes_002MZ.updateMatrixWorld(true);
-  kubstripes_002.position.set(0, 0, 4.7543);
-  kubstripes_002MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubstripes_002MZ.position.set(0, 0, -4.7543);
-  const kubstripes_002MrZ = new THREE.Group();
-  kubstripes_002MrZ.add(kubstripes_002, kubstripes_002MZ);
-  kubstripes_002MrZ.position.set(23.6445, 0.8634, 0);
-  const cyl002Gr = new THREE.Group();
+  cylstripe_dotsGr.position.set(-48.4, 0.87, -13.6);
+  const kubstripes_2 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
+  kubstripes_2.scale.set(-59.1, 0.02, 0.16);
+  kubstripes_2.setRotation(0, 0, 0);
+  const kubstripes_2MZ = kubstripes_2.clone();
+  kubstripes_2MZ.updateMatrixWorld(true);
+  kubstripes_2.position.set(0, 0, 4.75);
+  kubstripes_2MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kubstripes_2MZ.position.set(0, 0, -4.75);
+  const kubstripes_2MrZ = new THREE.Group();
+  kubstripes_2MrZ.add(kubstripes_2, kubstripes_2MZ);
+  kubstripes_2MrZ.position.set(23.6, 0.86, 0);
+  const cyl2Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const cyl002 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
-    cyl002.scale.set(0.5, 2.5, 0.5);
-    cyl002.position.set(6.0 * i, 0, 0);
-    cyl002Gr.add(cyl002);
+    const cyl2 = new THREE.Mesh(cylinderGeo, ColoumnMaterial);
+    cyl2.scale.set(0.5, 2.5, 0.5);
+    cyl2.position.set(6 * i, 0, 0);
+    cyl2Gr.add(cyl2);
   }
-  cyl002Gr.position.set(-30.709, 3.2961, 7.171);
-  const kubstripes_003Gr = new THREE.Group();
+  cyl2Gr.position.set(-30.7, 3.3, 7.17);
+  const kubstripes_3Gr = new THREE.Group();
   for (let i = 0; i < 83; i++) {
-    const kubstripes_003 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-    kubstripes_003.scale.set(0.4667, 0.0239, 0.1338);
-    kubstripes_003.position.set(1.2135 * i, 0, 0);
-    kubstripes_003Gr.add(kubstripes_003);
+    const kubstripes_3 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
+    kubstripes_3.scale.set(0.47, 0.02, 0.13);
+    kubstripes_3.position.set(1.21 * i, 0, 0);
+    kubstripes_3Gr.add(kubstripes_3);
   }
-  kubstripes_003Gr.position.set(-49.0516, 0.8519, 13.6124);
-  const cylstripe_dots_001Gr = new THREE.Group();
+  kubstripes_3Gr.position.set(-49.1, 0.85, 13.6);
+  const cylstripe_dots_1Gr = new THREE.Group();
   for (let i = 0; i < 82; i++) {
-    const cylstripe_dots_001 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
-    cylstripe_dots_001.scale.set(0.131, 0.0041, 0.131);
-    cylstripe_dots_001.position.set(1.2134 * i, 0, 0);
-    cylstripe_dots_001Gr.add(cylstripe_dots_001);
+    const cylstripe_dots_1 = new THREE.Mesh(cylinderGeo, WhiteDotsMaterial);
+    cylstripe_dots_1.scale.set(0.13, 0, 0.13);
+    cylstripe_dots_1.position.set(1.21 * i, 0, 0);
+    cylstripe_dots_1Gr.add(cylstripe_dots_1);
   }
-  cylstripe_dots_001Gr.position.set(-48.4447, 0.8683, 13.6124);
-  const cyl005Gr = new THREE.Group();
+  cylstripe_dots_1Gr.position.set(-48.4, 0.87, 13.6);
+  const cyl5Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const cyl005 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
-    cyl005.scale.set(0.55, 0.2319, 0.55);
-    cyl005.position.set(6.0 * i, 0, 0);
-    cyl005Gr.add(cyl005);
+    const cyl5 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
+    cyl5.scale.set(0.55, 0.23, 0.55);
+    cyl5.position.set(6 * i, 0, 0);
+    cyl5Gr.add(cyl5);
   }
-  cyl005Gr.position.set(-30.709, 1.0416, 7.1711);
-  const tor004Gr = new THREE.Group();
+  cyl5Gr.position.set(-30.7, 1.04, 7.17);
+  const tor4Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const tor004 = new THREE.Mesh(torusGeo, BrassMaterial);
-    tor004.scale.set(0.5, 0.5, 0.5233);
-    tor004.position.set(6.0 * i, 0, 0);
-    tor004Gr.add(tor004);
+    const tor4 = new THREE.Mesh(torusGeo, BrassMaterial);
+    tor4.scale.set(0.5, 0.5, 0.52);
+    tor4.position.set(6 * i, 0, 0);
+    tor4Gr.add(tor4);
   }
-  tor004Gr.setRotation(1.5708, 0.0, 0.0);
-  tor004Gr.position.set(-30.709, 1.0461, 7.1657);
-  const cyl006Gr = new THREE.Group();
+  tor4Gr.setRotation(1.57, 0, 0);
+  tor4Gr.position.set(-30.7, 1.05, 7.17);
+  const cyl6Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const cyl006 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
-    cyl006.scale.set(0.55, 0.3036, 0.55);
-    cyl006.position.set(6.0 * i, 0, 0);
-    cyl006Gr.add(cyl006);
+    const cyl6 = new THREE.Mesh(cylinderGeo, ColoumnPlateMaterial);
+    cyl6.scale.set(0.55, 0.3, 0.55);
+    cyl6.position.set(6 * i, 0, 0);
+    cyl6Gr.add(cyl6);
   }
-  cyl006Gr.position.set(-30.709, 5.47, 7.1711);
-  const tor005Gr = new THREE.Group();
+  cyl6Gr.position.set(-30.7, 5.47, 7.17);
+  const tor5Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const tor005 = new THREE.Mesh(torusGeo, BrassMaterial);
-    tor005.scale.set(0.52, 0.52, 0.2641);
-    tor005.position.set(6.0 * i, 0, 0);
-    tor005Gr.add(tor005);
+    const tor5 = new THREE.Mesh(torusGeo, BrassMaterial);
+    tor5.scale.set(0.52, 0.52, 0.26);
+    tor5.position.set(6 * i, 0, 0);
+    tor5Gr.add(tor5);
   }
-  tor005Gr.setRotation(1.5708, 0.0, 0.0);
-  tor005Gr.position.set(-30.709, 5.307, 7.1655);
-  const cyl007Gr = new THREE.Group();
+  tor5Gr.setRotation(1.57, 0, 0);
+  tor5Gr.position.set(-30.7, 5.31, 7.17);
+  const cyl7Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const cyl007 = new THREE.Mesh(cylinderGeo, BrassMaterial);
-    cyl007.scale.set(0.6, 0.1363, 0.6);
-    cyl007.position.set(6.0 * i, 0, 0);
-    cyl007Gr.add(cyl007);
+    const cyl7 = new THREE.Mesh(cylinderGeo, BrassMaterial);
+    cyl7.scale.set(0.6, 0.14, 0.6);
+    cyl7.position.set(6 * i, 0, 0);
+    cyl7Gr.add(cyl7);
   }
-  cyl007Gr.position.set(-30.709, 5.4668, 7.1711);
-  const kub001Gr = new THREE.Group();
+  cyl7Gr.position.set(-30.7, 5.47, 7.17);
+  const kub1Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const kub001 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
-    kub001.scale.set(0.7, 0.0759, 0.7);
-    kub001.position.set(6.0 * i, 0, 0);
-    kub001Gr.add(kub001);
+    const kub1 = new THREE.Mesh(boxGeo, ColoumnPlateMaterial);
+    kub1.scale.set(0.7, 0.08, 0.7);
+    kub1.position.set(6 * i, 0, 0);
+    kub1Gr.add(kub1);
   }
-  kub001Gr.position.set(-30.709, 5.8089, 7.1711);
-  const tor006Gr = new THREE.Group();
+  kub1Gr.position.set(-30.7, 5.81, 7.17);
+  const tor6Gr = new THREE.Group();
   for (let i = 0; i < 12; i++) {
-    const tor006 = new THREE.Mesh(torusGeo, BrassMaterial);
-    tor006.scale.set(0.52, 0.52, 0.5233);
-    tor006.position.set(6.0 * i, 0, 0);
-    tor006Gr.add(tor006);
+    const tor6 = new THREE.Mesh(torusGeo, BrassMaterial);
+    tor6.scale.set(0.52, 0.52, 0.52);
+    tor6.position.set(6 * i, 0, 0);
+    tor6Gr.add(tor6);
   }
-  tor006Gr.setRotation(1.5708, 0.0, 0.0);
-  tor006Gr.position.set(-30.709, 5.7037, 7.1711);
-  const kubstripes_006 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-  kubstripes_006.position.set(76.6066, 0.8634, 0.0932);
-  kubstripes_006.scale.set(-5.1172, 0.0239, 0.1614);
-  kubstripes_006.setRotation(0.0, 1.5708, 0.0);
+  tor6Gr.setRotation(1.57, 0, 0);
+  tor6Gr.position.set(-30.7, 5.7, 7.17);
+  const kubstripes_6 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
+  kubstripes_6.position.set(76.6, 0.86, 0.09);
+  kubstripes_6.scale.set(-5.12, 0.02, 0.16);
+  kubstripes_6.setRotation(0, 1.57, 0);
 
-  const kubstripes_004 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
-  kubstripes_004.position.set(-31.1419, 0.8634, 0.0932);
-  kubstripes_004.scale.set(-5.1172, 0.0239, 0.1614);
-  kubstripes_004.setRotation(0.0, 1.5708, 0.0);
+  const kubstripes_4 = new THREE.Mesh(boxGeo, Floor_StripesMaterial);
+  kubstripes_4.position.set(-31.1, 0.86, 0.09);
+  kubstripes_4.scale.set(-5.12, 0.02, 0.16);
+  kubstripes_4.setRotation(0, 1.57, 0);
 
   const kubbackwall = new THREE.Mesh(boxGeo, FloorTileMaterial);
-  kubbackwall.position.set(-40.9615, 5.4803, -0.0);
-  kubbackwall.scale.set(9.4309, 4.626, 8.2679);
+  kubbackwall.position.set(-41, 5.48, 0);
+  kubbackwall.scale.set(9.43, 4.63, 8.27);
 
-  const kubcoloumnsupper_001 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-  kubcoloumnsupper_001.scale.set(42.5516, 0.1921, 0.7246);
-  kubcoloumnsupper_001.setRotation(0.0, 0.0, -0.0);
-  const kubcoloumnsupper_001MZ = kubcoloumnsupper_001.clone();
-  kubcoloumnsupper_001MZ.updateMatrixWorld(true);
-  kubcoloumnsupper_001.position.set(0, 0, -6.1536);
-  kubcoloumnsupper_001MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubcoloumnsupper_001MZ.position.set(0, 0, 6.1536);
-  const kubcoloumnsupper_001MrZ = new THREE.Group();
-  kubcoloumnsupper_001MrZ.add(kubcoloumnsupper_001, kubcoloumnsupper_001MZ);
-  kubcoloumnsupper_001MrZ.position.set(10.4587, 7.0259, 0);
-  const kubcoloumnsupper_002 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-  kubcoloumnsupper_002.scale.set(42.5516, 0.1921, 0.7246);
-  kubcoloumnsupper_002.setRotation(-0.7258, 0.0, 0.0);
-  const kubcoloumnsupper_002MZ = kubcoloumnsupper_002.clone();
-  kubcoloumnsupper_002MZ.updateMatrixWorld(true);
-  kubcoloumnsupper_002.position.set(0, 0, -6.124);
-  kubcoloumnsupper_002MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubcoloumnsupper_002MZ.position.set(0, 0, 6.124);
-  const kubcoloumnsupper_002MrZ = new THREE.Group();
-  kubcoloumnsupper_002MrZ.add(kubcoloumnsupper_002, kubcoloumnsupper_002MZ);
-  kubcoloumnsupper_002MrZ.position.set(10.4587, 6.5967, 0);
-  const kubcoloumnsupper_003 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
-  kubcoloumnsupper_003.scale.set(42.5516, 0.1921, 0.7246);
-  kubcoloumnsupper_003.setRotation(0.0, 0.0, -0.0);
-  const kubcoloumnsupper_003MZ = kubcoloumnsupper_003.clone();
-  kubcoloumnsupper_003MZ.updateMatrixWorld(true);
-  kubcoloumnsupper_003.position.set(0, 0, -7.1651);
-  kubcoloumnsupper_003MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-  kubcoloumnsupper_003MZ.position.set(0, 0, 7.1651);
-  const kubcoloumnsupper_003MrZ = new THREE.Group();
-  kubcoloumnsupper_003MrZ.add(kubcoloumnsupper_003, kubcoloumnsupper_003MZ);
-  kubcoloumnsupper_003MrZ.position.set(10.4587, 6.0642, 0);
-  const kubbackwall_001 = new THREE.Mesh(boxGeo, FloorTileMaterial);
-  kubbackwall_001.position.set(-53.4691, 1.9826, -0.0);
-  kubbackwall_001.scale.set(3.0767, 9.221, 14.9665);
+  const kubcoloumnsupper_1 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+  kubcoloumnsupper_1.scale.set(42.6, 0.19, 0.72);
+  kubcoloumnsupper_1.setRotation(0, 0, 0);
+  const kubcoloumnsupper_1MZ = kubcoloumnsupper_1.clone();
+  kubcoloumnsupper_1MZ.updateMatrixWorld(true);
+  kubcoloumnsupper_1.position.set(0, 0, -6.15);
+  kubcoloumnsupper_1MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kubcoloumnsupper_1MZ.position.set(0, 0, 6.15);
+  const kubcoloumnsupper_1MrZ = new THREE.Group();
+  kubcoloumnsupper_1MrZ.add(kubcoloumnsupper_1, kubcoloumnsupper_1MZ);
+  kubcoloumnsupper_1MrZ.position.set(10.5, 7.03, 0);
+  const kubcoloumnsupper_2 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+  kubcoloumnsupper_2.scale.set(42.6, 0.19, 0.72);
+  kubcoloumnsupper_2.setRotation(-0.73, 0, 0);
+  const kubcoloumnsupper_2MZ = kubcoloumnsupper_2.clone();
+  kubcoloumnsupper_2MZ.updateMatrixWorld(true);
+  kubcoloumnsupper_2.position.set(0, 0, -6.12);
+  kubcoloumnsupper_2MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kubcoloumnsupper_2MZ.position.set(0, 0, 6.12);
+  const kubcoloumnsupper_2MrZ = new THREE.Group();
+  kubcoloumnsupper_2MrZ.add(kubcoloumnsupper_2, kubcoloumnsupper_2MZ);
+  kubcoloumnsupper_2MrZ.position.set(10.5, 6.6, 0);
+  const kubcoloumnsupper_3 = new THREE.Mesh(boxGeo, Floor_ColumnsMaterial);
+  kubcoloumnsupper_3.scale.set(42.6, 0.19, 0.72);
+  kubcoloumnsupper_3.setRotation(0, 0, 0);
+  const kubcoloumnsupper_3MZ = kubcoloumnsupper_3.clone();
+  kubcoloumnsupper_3MZ.updateMatrixWorld(true);
+  kubcoloumnsupper_3.position.set(0, 0, -7.17);
+  kubcoloumnsupper_3MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+  kubcoloumnsupper_3MZ.position.set(0, 0, 7.17);
+  const kubcoloumnsupper_3MrZ = new THREE.Group();
+  kubcoloumnsupper_3MrZ.add(kubcoloumnsupper_3, kubcoloumnsupper_3MZ);
+  kubcoloumnsupper_3MrZ.position.set(10.5, 6.06, 0);
+  const kubbackwall_1 = new THREE.Mesh(boxGeo, FloorTileMaterial);
+  kubbackwall_1.position.set(-53.5, 1.98, 0);
+  kubbackwall_1.scale.set(3.08, 9.22, 15);
 
-  const kubbackwall_002 = new THREE.Mesh(boxGeo, FloorTileMaterial);
-  kubbackwall_002.position.set(-182.3204, 1.9826, -0.0);
-  kubbackwall_002.scale.set(125.7746, 9.221, 14.9665);
+  const kubbackwall_2 = new THREE.Mesh(boxGeo, FloorTileMaterial);
+  kubbackwall_2.position.set(-182.3, 1.98, 0);
+  kubbackwall_2.scale.set(125.8, 9.22, 15);
 
   const kub302 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub302.position.set(344.4503, 3.6897, 19.9295);
-  kub302.scale.set(2.946, 12.7853, 12.7853);
+  kub302.position.set(344.5, 3.69, 19.9);
+  kub302.scale.set(2.95, 12.8, 12.8);
 
   const kub303 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub303.position.set(344.4503, 3.6897, -18.5225);
-  kub303.scale.set(2.946, 12.7853, 12.7853);
+  kub303.position.set(344.5, 3.69, -18.5);
+  kub303.scale.set(2.95, 12.8, 12.8);
 
   const kub304 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub304.position.set(-308.372, 3.6897, 19.9295);
-  kub304.scale.set(2.946, 12.7853, 12.7853);
+  kub304.position.set(-308.4, 3.69, 19.9);
+  kub304.scale.set(2.95, 12.8, 12.8);
 
   const kub305 = new THREE.Mesh(boxGeo, ColoumnMaterial);
-  kub305.position.set(-308.372, 3.6897, -18.5225);
-  kub305.scale.set(2.946, 12.7853, 12.7853);
+  kub305.position.set(-308.4, 3.69, -18.5);
+  kub305.scale.set(2.95, 12.8, 12.8);
 
   const out = new THREE.Group();
   out.add(
     kubimage,
     kubborder,
-    kubborder_001,
-    kubborder_002,
+    kubborder_1,
+    kubborder_2,
     kubsmallroof_tileGr,
-    kubsmallroof_tile_005Gr,
-    kubsmallroof_tile_004Gr,
-    kubsmallroof_tile_003Gr,
-    kubsmallroof_tile_002Gr,
-    kubsmallroof_tile_001Gr,
-    kubsmallroof_tile_006Gr,
-    kubsmallroof_tile_007Gr,
-    kubsmallroof_tile_008Gr,
-    kubsmallroof_tile_009Gr,
-    kubsmallroof_tile_010Gr,
-    kubsmallroof_tile_011Gr,
-    kubsmallroof_tile_012Gr,
-    kubsmallroof_tile_013Gr,
-    kubsmallroof_tile_014Gr,
-    kubsmallroof_tile_015Gr,
-    kubsmallroof_tile_016Gr,
-    kubsmallroof_tile_017Gr,
-    kubsmallroof_tile_018Gr,
-    kubsmallroof_tile_019Gr,
-    kubsmallroof_tile_020Gr,
-    kubsmallroof_tile_021Gr,
-    kubsmallroof_tile_022Gr,
-    kubsmallroof_tile_023Gr,
-    kubsmallroof_tile_024,
-    kubsmallroof_tile_025,
-    kubsmallroof_tile_026,
-    kubsmallroof_tile_027,
-    kubsmallroof_tile_028,
-    kubsmallroof_tile_029,
-    kubsmallroof_tile_030Gr,
-    kubsmallroof_tile_031Gr,
+    kubsmallroof_tile_5Gr,
+    kubsmallroof_tile_4Gr,
+    kubsmallroof_tile_3Gr,
+    kubsmallroof_tile_2Gr,
+    kubsmallroof_tile_1Gr,
+    kubsmallroof_tile_6Gr,
+    kubsmallroof_tile_7Gr,
+    kubsmallroof_tile_8Gr,
+    kubsmallroof_tile_9Gr,
+    kubsmallroof_tile_10Gr,
+    kubsmallroof_tile_11Gr,
+    kubsmallroof_tile_12Gr,
+    kubsmallroof_tile_13Gr,
+    kubsmallroof_tile_14Gr,
+    kubsmallroof_tile_15Gr,
+    kubsmallroof_tile_16Gr,
+    kubsmallroof_tile_17Gr,
+    kubsmallroof_tile_18Gr,
+    kubsmallroof_tile_19Gr,
+    kubsmallroof_tile_20Gr,
+    kubsmallroof_tile_21Gr,
+    kubsmallroof_tile_22Gr,
+    kubsmallroof_tile_23Gr,
+    kubsmallroof_tile_24,
+    kubsmallroof_tile_25,
+    kubsmallroof_tile_26,
+    kubsmallroof_tile_27,
+    kubsmallroof_tile_28,
+    kubsmallroof_tile_29,
+    kubsmallroof_tile_30Gr,
+    kubsmallroof_tile_31Gr,
     cubeGr,
-    kub002Gr,
-    kub004Gr,
-    kub005Gr,
-    kub006Gr,
-    kub007Gr,
-    kub008,
-    kub009,
-    kub011Gr,
-    kub012Gr,
-    kub013Gr,
-    kub015Gr,
-    kub016Gr,
-    kub017Gr,
-    kub018Gr,
-    kub019Gr,
-    kub020,
-    kub021Gr,
-    kub022Gr,
-    kub010Gr,
-    kub023Gr,
-    kub024Gr,
-    kub025Gr,
-    kub026Gr,
-    kub027Gr,
-    kub028Gr,
-    kub029Gr,
-    kub030Gr,
-    kub031Gr,
-    kub032Gr,
-    kub033Gr,
-    kub034Gr,
-    kub035Gr,
-    kub036Gr,
-    kub037Gr,
-    kub038MrZ,
-    kub039MrZ,
-    kub040MrZ,
-    kub070Gr,
-    kub071Gr,
-    kub092MrZ,
+    kub2Gr,
+    kub4Gr,
+    kub5Gr,
+    kub6Gr,
+    kub7Gr,
+    kub8,
+    kub9,
+    kub11Gr,
+    kub12Gr,
+    kub13Gr,
+    kub15Gr,
+    kub16Gr,
+    kub17Gr,
+    kub18Gr,
+    kub19Gr,
+    kub20,
+    kub21Gr,
+    kub22Gr,
+    kub10Gr,
+    kub23Gr,
+    kub24Gr,
+    kub25Gr,
+    kub26Gr,
+    kub27Gr,
+    kub28Gr,
+    kub29Gr,
+    kub30Gr,
+    kub31Gr,
+    kub32Gr,
+    kub33Gr,
+    kub34Gr,
+    kub35Gr,
+    kub36Gr,
+    kub37Gr,
+    kub38MrZ,
+    kub39MrZ,
+    kub40MrZ,
+    kub70Gr,
+    kub71Gr,
+    kub92MrZ,
     kub300MrZ,
     kub301MrZ,
     kub306MrZ,
     kubbigroofMrZ,
-    kubbigroof_004MrZ,
-    kubescfloor_011,
-    kub041,
-    kub042,
-    kub043MrZ,
-    kub044MrZ,
-    kub045,
-    kub046,
-    kub047,
-    cyl008,
-    cyl009,
-    cyl010,
-    kub048,
-    kub049,
-    kub050MrX,
-    kub051MrZ,
-    kub052MrZ,
-    kub053MrZ,
-    cyl011,
-    kub054,
-    kub055,
-    kub056,
-    kub057,
-    kub058,
-    kub059,
-    kub060,
-    kub061,
-    kub062,
-    kub063,
-    kub064,
-    kub065,
-    cyl012,
-    kub066Gr,
-    kub067Gr,
-    kub068Gr,
-    kub069Gr,
-    kub072MrZ,
-    kub073MrZ,
-    kub074MrZ,
-    kub075MrZ,
-    kub076MrZ,
-    kub077Gr,
-    kub078Gr,
-    kub079Gr,
-    kub080Gr,
-    kub081Gr,
-    kub082Gr,
-    kub083Gr,
-    kub084Gr,
-    kub085Gr,
-    kub086Gr,
-    kub087Gr,
-    kub088Gr,
-    kub089Gr,
-    kub090Gr,
-    kub091Gr,
-    kub093Gr,
-    kub094Gr,
-    kub095Gr,
-    kub096Gr,
-    kub097Gr,
-    kub098Gr,
-    kub099Gr,
+    kubbigroof_4MrZ,
+    kubescfloor_11,
+    kub41,
+    kub42,
+    kub43MrZ,
+    kub44MrZ,
+    kub45,
+    kub46,
+    kub47,
+    cyl8,
+    cyl9,
+    cyl10,
+    kub48,
+    kub49,
+    kub50MrX,
+    kub51MrZ,
+    kub52MrZ,
+    kub53MrZ,
+    cyl11,
+    kub54,
+    kub55,
+    kub56,
+    kub57,
+    kub58,
+    kub59,
+    kub60,
+    kub61,
+    kub62,
+    kub63,
+    kub64,
+    kub65,
+    cyl12,
+    kub66Gr,
+    kub67Gr,
+    kub68Gr,
+    kub69Gr,
+    kub72MrZ,
+    kub73MrZ,
+    kub74MrZ,
+    kub75MrZ,
+    kub76MrZ,
+    kub77Gr,
+    kub78Gr,
+    kub79Gr,
+    kub80Gr,
+    kub81Gr,
+    kub82Gr,
+    kub83Gr,
+    kub84Gr,
+    kub85Gr,
+    kub86Gr,
+    kub87Gr,
+    kub88Gr,
+    kub89Gr,
+    kub90Gr,
+    kub91Gr,
+    kub93Gr,
+    kub94Gr,
+    kub95Gr,
+    kub96Gr,
+    kub97Gr,
+    kub98Gr,
+    kub99Gr,
     kub100Gr,
     kub101Gr,
     kub102Gr,
@@ -6811,38 +6812,38 @@ function DrawStation() {
     kub298,
     kub299,
     cylinderGr,
-    cyl001Gr,
-    kub003Gr,
-    cyl003Gr,
-    cyl004Gr,
-    tor001Gr,
-    tor002Gr,
-    tor003Gr,
+    cyl1Gr,
+    kub3Gr,
+    cyl3Gr,
+    cyl4Gr,
+    tor1Gr,
+    tor2Gr,
+    tor3Gr,
     kubfloor_central,
     kubfloor_columnsMrZ,
     kubfloor_sidedMrZ,
     kubfloor_trainssideMrZ,
-    kubstripes_001Gr,
+    kubstripes_1Gr,
     cylstripe_dotsGr,
-    kubstripes_002MrZ,
-    cyl002Gr,
-    kubstripes_003Gr,
-    cylstripe_dots_001Gr,
-    cyl005Gr,
-    tor004Gr,
-    cyl006Gr,
-    tor005Gr,
-    cyl007Gr,
-    kub001Gr,
-    tor006Gr,
-    kubstripes_006,
-    kubstripes_004,
+    kubstripes_2MrZ,
+    cyl2Gr,
+    kubstripes_3Gr,
+    cylstripe_dots_1Gr,
+    cyl5Gr,
+    tor4Gr,
+    cyl6Gr,
+    tor5Gr,
+    cyl7Gr,
+    kub1Gr,
+    tor6Gr,
+    kubstripes_6,
+    kubstripes_4,
     kubbackwall,
-    kubcoloumnsupper_001MrZ,
-    kubcoloumnsupper_002MrZ,
-    kubcoloumnsupper_003MrZ,
-    kubbackwall_001,
-    kubbackwall_002,
+    kubcoloumnsupper_1MrZ,
+    kubcoloumnsupper_2MrZ,
+    kubcoloumnsupper_3MrZ,
+    kubbackwall_1,
+    kubbackwall_2,
     kub302,
     kub303,
     kub304,
@@ -6851,6 +6852,7 @@ function DrawStation() {
   return out;
 }
 
+//Draw Functions End
 function CreateScene(WC: number, HC: number) {
   THREE.Object3D.prototype.setRotation = function (
     x_rot: number,

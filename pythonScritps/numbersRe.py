@@ -7,14 +7,24 @@ def process_file(input_file, output_file):
     def format_number(num):
         abs_num = abs(num)
         
-        if abs_num < 0.001:
+        if abs_num < 0.0005:
             return '0'
+        elif abs_num < 0.009:
+            return "{0:.4f}".format(round(num, 4))
         elif abs_num >= 10:
             # Округляем до 1 знака, убираем незначащие нули
-            return ('%.1f' % round(num, 1)).rstrip('0').rstrip('.') if round(num, 1) == int(round(num, 1)) else '%.1f' % round(num, 1)
+            formatted = "{0:.1f}".format(round(num, 1))
+            if formatted.endswith(".0"):
+                return formatted[:-2]
+            return formatted
         else:
             # Округляем до 2 знаков, убираем незначащие нули
-            return ('%.2f' % round(num, 2)).rstrip('0').rstrip('.') if round(num, 2) == int(round(num, 2)) else '%.2f' % round(num, 2)
+            formatted = "{0:.2f}".format(round(num, 2))
+            if formatted.endswith(".00"):
+                return formatted[:-3]
+            elif formatted.endswith("0"):
+                return formatted[:-1]
+            return formatted
     
     def replace_float(match):
         num_str = match.group()

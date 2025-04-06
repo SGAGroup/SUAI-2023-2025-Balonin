@@ -678,7 +678,7 @@ function GetDISbySonarV(robotData: RobotData) {
       (i) => '#' + i.object.material.color.getHex().toString(16),
     );
     robotData.COLV = colors[0];
-    // console.warn(`Цвет снизу: ${COLV}`);
+    console.warn(`Цвет снизу: ${robotData.COLV}`);
 
     if (robotData.COLV === robotData.BORDERCOL.toLowerCase()) {
       puts('Коснулся границы');
@@ -5122,7 +5122,7 @@ function DrawStation() {
     roughness: 0.33,
   });
   const Floor_StripesMaterial = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(1, 0.52, 0),
+    color: RobotMData.BORDERCOL
   });
   const FloorTileMaterial = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0.69, 0.62, 0.32),

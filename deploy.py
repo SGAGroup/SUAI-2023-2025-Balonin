@@ -42,15 +42,24 @@ import shutil
 import subprocess
 
 TSC_OUT = './out'
-NPX = 'npx'
+NPX = 'bun'
 RESULT_PATH = './generated.balon.js'
 FOOTER = """
 {{html
 <!DOCTYPE html>
 <head>
- <script SRC="http://livelab.spb.ru/x3d/three.min.js"></script>
- <script SRC="http://livelab.spb.ru/x3d/OrbitControls.js"></script>
- <style>html, body {overflow: hidden;}</style>
+<script SRC="http://livelab.spb.ru/x3d/three.min.js"></script>
+<script SRC="http://livelab.spb.ru/x3d/OrbitControls.js"></script>
+<style>html, body {overflow: hidden;}</style>
+<select id="ChangeCamera">
+ <option value="main" selected>Главная</option>
+ <option value="robot">Робот</option>
+ <option value="robotCleaner">Робот-пылесос</option>
+ <option value="poi_0">Начало платформы</option>
+ <option value="poi_1">Конец платформы</option>
+ <option value="poi_2">Направление: Комендантский проспект</option>
+ <option value="poi_3">Направлене: Шушары</option>
+</select
 </head>
 html}}
 """
@@ -163,7 +172,7 @@ if __name__ == '__main__':
         
     print('apend footer')
 
-    with open(RESULT_PATH, "a") as file:
+    with open(RESULT_PATH, "a", encoding="utf-8") as file:
         file.write(FOOTER)
 
     print('done')

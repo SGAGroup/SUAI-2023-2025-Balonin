@@ -49,11 +49,18 @@ if (tick == 0) {
      scene.add(WetFloor);
      render();
      
-     rob = DrawRobotM();
-     rob.position.set(X+10*W, Y+20*W, Z);
-     rob.scale.set(W, W, W);
-     rob.rotation.x = -PI/2;
-     scene.add(rob);
+    //  rob = DrawRobotM();
+    //  rob.position.set(X+10*W, Y+20*W, Z);
+    //  rob.scale.set(W, W, W);
+    //  rob.rotation.x = -PI/2;
+    //  scene.add(rob);
+
+     var audio = new Audio();
+     audio.loop = true;
+     audio.src = "http://livelab.spb.ru/labs/files/metro_sound.mp3";
+     audio.volume = 0.1;
+     audio.play();
+     scene.add(audio);
  }
 }
 F = true;
@@ -101,9 +108,9 @@ IniSonarV(RobotMData);
 IniSonarV(CleanRobotData);
 //Init Trains
 trains = [];
-trainArriveTime = 200;
-trainStayTime = 300;
-trainSumTime = 800;
+trainArriveTime = 450;
+trainStayTime = 700;
+trainSumTime = 1730;
 }
 function iniRobot(robotData, second) {
 if (second === void 0) { second = false; }
@@ -506,12 +513,12 @@ ctx.fillStyle = '#ffc920';
 ctx.fillRect(0, 0, image.width, image.height);
 ctx.beginPath();
 wetFloorTex = new THREE.CanvasTexture(canvasEl);
-floor.material = new THREE.MeshStandardMaterial({
- color: new THREE.Color(0.5,0.4,0.3),
- metalness: 0.3, roughness: 1,
- metalnessMap: wetFloorTex,
- roughnessMap: wetFloorTex,
-});
+floor.material = floor_mat;
+//  color: new THREE.Color(0.5,0.4,0.3),
+//  metalness: 0.3, roughness: 1,
+//  metalnessMap: wetFloorTex,
+//  roughnessMap: wetFloorTex,
+// });
 floor.userData = {imageSize:{x:image.width, y:image.height}};
 var out = new THREE.Group();
 out.add(floor);
@@ -610,17 +617,17 @@ var otm_b = new THREE.Mesh(geo, MetalMat);
 var otmostka = new THREE.Group(); otmostka.add(otm_fr,otm_b);
 
 
-var cube_038 = new THREE.Mesh(geo, MetalMat);
-    cube_038.position.set(0.9393, 0.0739,0);
-    cube_038.scale.set(0.1139, 0.0767, 0.5205);
+var wall_hall = new THREE.Mesh(geo, MetalMat);
+    wall_hall.position.set(0.9393, 0.0739,0);
+    wall_hall.scale.set(0.1139, 0.0767, 0.5205);
 var cube_039 = new THREE.Mesh(geo, MetalMat);
     cube_039.position.set(0.7271, 0.1346,0);
     cube_039.scale.set(0.2689, 0.0901, 0.233);
     cube_039.setRot(0.3098, 1.5708,0);
 
-var cube_072 = new THREE.Mesh(geo, WasherMat);
-    cube_072.position.set(0.253, 0.2265, 0);
-    cube_072.scale.set(0.2689, 0.0995, 0.3515);
+var rail_bot = new THREE.Mesh(geo, WasherMat);
+    rail_bot.position.set(0.253, 0.2265, 0);
+    rail_bot.scale.set(0.2689, 0.0995, 0.3515);
 var cube_073 = new THREE.Mesh(geo, WasherMat);
     cube_073.position.set(-0.0907, 0.4654, 0);
     cube_073.scale.set(0.5784, 0.0973, 0.3757);
@@ -1046,7 +1053,7 @@ var cylinder_037 = new THREE.Mesh(geo, ColonaMat);
     cylinder_037.setRot(1.5708,0,0);
 
 var robot = new THREE.Group();
-robot.add(cube_038, cube_039, fara_side, fara_fr, panels_mid, panels_l, panels_r, panels_side_l, panels_side_r, otmostka, cube_072, cube_073, cube_098MirroredZ, wheel_fr, cylinder_013MirroredZ, cube_086MirroredZ, cube_095MirroredZ, cube_087MirroredZ, cube_096MirroredZ, cube_097MirroredZ, cube_099MirroredZ, cube_101MirroredZ, cylinder_016, cylinder_017, cube_085MirroredZ, cube_103, cube_104MirroredZ, cube_105MirroredZ, cube_106MirroredZ, cube_107MirroredZ, cube_108MirroredZ, cube_109MirroredZ, cube_110MirroredZ, cylinder_019MirroredZ, cylinder_020, button_panel, cyl_021, cylinder_022, cylinder_023, cylinder_024, cube_112, cube_113, cube_114, cube_115, cube_116, cylinder_025, cylinder_026, cylinder_027, cylinder_028, cylinder_029, cylinder_030, cylinder_031, cylinder_032, cylinder_033, body_bl, cube_126MirroredZ, cylinder_037, cube_128);
+robot.add(wall_hall, cube_039, fara_side, fara_fr, panels_mid, panels_l, panels_r, panels_side_l, panels_side_r, otmostka, rail_bot, cube_073, cube_098MirroredZ, wheel_fr, cylinder_013MirroredZ, cube_086MirroredZ, cube_095MirroredZ, cube_087MirroredZ, cube_096MirroredZ, cube_097MirroredZ, cube_099MirroredZ, cube_101MirroredZ, cylinder_016, cylinder_017, cube_085MirroredZ, cube_103, cube_104MirroredZ, cube_105MirroredZ, cube_106MirroredZ, cube_107MirroredZ, cube_108MirroredZ, cube_109MirroredZ, cube_110MirroredZ, cylinder_019MirroredZ, cylinder_020, button_panel, cyl_021, cylinder_022, cylinder_023, cylinder_024, cube_112, cube_113, cube_114, cube_115, cube_116, cylinder_025, cylinder_026, cylinder_027, cylinder_028, cylinder_029, cylinder_030, cylinder_031, cylinder_032, cylinder_033, body_bl, cube_126MirroredZ, cylinder_037, cube_128);
 robot.rotateX(PI/2);
 var out = new THREE.Group();
 out.add(robot);
@@ -1177,17 +1184,17 @@ function DrawSkamia() {
 var geo = new THREE.BoxGeometry(2,2,2);
 var mesh = new THREE.Mesh(geo, Floor_CentralMat);
 var skamia_side_top = mesh.clone();var skamia_side_mid = mesh.clone();
-    skamia_side_top.position.set(0,3.6,-2.11);skamia_side_top.rotation.x = -PI/2.2;
+    skamia_side_top.position.set(0,3.6,-2.1);skamia_side_top.rotation.x = -PI/2.2;
     skamia_side_top.scale.set(0.06,0.3,0.4);
-    skamia_side_mid.position.set(0,2.8,-1.8); skamia_side_mid.rotation.x = -PI/2.2;
+    skamia_side_mid.position.set(0,2.8,-1.79); skamia_side_mid.rotation.x = -PI/2.2;
     skamia_side_mid.scale.set(0.06,0.6,0.5);
 var skamia_side_l = new THREE.Group(); skamia_side_l.position.set(-8.4,0,0);
     skamia_side_l.add(skamia_side_mid,skamia_side_top);
 var skamia_side_r = skamia_side_l.clone(); skamia_side_l.position.x = -4.4; 
 var mesh = new THREE.Mesh(geo, BrownMat);
-var sidushka = mesh.clone(); var spinka = mesh.clone();
-    sidushka.position.set(-6.4,3,-1.8); sidushka.scale.set(2,0.1,0.5);
-    spinka.position.set(-6.4,3.45,-2.2);spinka.scale.set(2,0.1,0.43);
+var sidushka = new THREE.Mesh(geo, sidenia_mat); var spinka = sidushka.clone();
+    sidushka.position.set(-6.4,3.1,-1.8); sidushka.scale.set(2,0.08,0.5);
+    spinka.position.set(-6.4,3.45,-2.2);spinka.scale.set(2,0.08,0.43);
     spinka.rotation.x = PI/2.2;
 var zaslonka = new THREE.Mesh(geo, Floor_CentralMat);
     zaslonka.position.set(-6.4, 2.68, -1.5);
@@ -1234,10 +1241,10 @@ var skamia_l = skamia_r.clone();
 
 var geo = new THREE.BoxGeometry(2, 2, 2);
 var plakat = new THREE.Mesh(geo, YellowMat);
-    plakat.position.set(1.56, 4.88, 2.37);
+    plakat.position.set(1.56, 4.88, 2.35);
     plakat.scale.set(0.5, 0.6, 0.01);
 var plakat_1 = new THREE.Mesh(geo, BrownMat);
-    plakat_1.position.set(-4.86, 4.88, -2.36);
+    plakat_1.position.set(-4.86, 4.88, -2.35);
     plakat_1.scale.set(0.5, 0.6, 0.01);
 //Плакат сверху поезда, показывающий станции на линии
 function DrawStationsPlakat() {
@@ -1603,293 +1610,131 @@ return out;
 }
 function DrawStation() {
 var out = new THREE.Group();
-
-
+var leftSide = new THREE.Group();
 //КАРТИНА С ПЕТРОМ
-var geom = new THREE.BoxGeometry(2, 2, 2);
-var image_petr = new THREE.Mesh(geom, ColonaMat);
-image_petr.position.set(-31, 6, 0);
-image_petr.scale.set(0.2, 3.85, 3.85);
-
+var geom = new THREE.BoxGeometry(2,2,2);
+var image_petr = new THREE.Mesh(geom, petr_mat);
+    image_petr.position.set(-31,6,0);  image_petr.scale.set(0.2,3.8,3.8);
 var image_base = new THREE.Mesh(geom, BrassMat);
-image_base.position.set(-31.1, 6, 0);
-image_base.scale.set(0.2, 4, 4);
-out.add(image_base);
+    image_base.position.set(-31.1,6,0);image_base.scale.set(0.2,4,4);
 
-//КОЛОННА и арка
+//колонны
 function DrawColumn() {
 var geo = new THREE.CylinderGeometry(1, 1, 2, 12);
- var cylinder_002 = new THREE.Mesh(geo, ColonaMat);
- cylinder_002.scale.set(0.5, 2.5, 0.5);
-cylinder_002.position.set(-30.7, 3.2961, 0.171);
- var cylinder_005 = new THREE.Mesh(geo, ColoumnPlateMat);
- cylinder_005.scale.set(0.55, 0.2319, 0.55);
-cylinder_005.position.set(-30.709, 1.0416, 0.1711);
- var cylinder_006 = new THREE.Mesh(geo, ColoumnPlateMat);
- cylinder_006.scale.set(0.55, 0.3036, 0.55);
-cylinder_006.position.set(-30.709, 5.47, 0.1711);
- var cylinder_007 = new THREE.Mesh(geo, BrassMat);
- cylinder_007.scale.set(0.6, 0.1363, 0.6);
-cylinder_007.position.set(-30.709, 5.4668, 0.1711);
-var geo = new THREE.TorusGeometry(1, 0.25, 12, 10);
- var torus_004 = new THREE.Mesh(geo, BrassMat);
- torus_004.scale.set(0.5, 0.5, 0.5233);
-torus_004.setRot(1.5708, 0.0, 0.0);
-torus_004.position.set(-30.709, 1.0461, 0.1657);
- var torus_005 = new THREE.Mesh(geo, BrassMat);
- torus_005.scale.set(0.52, 0.52, 0.2641);
-torus_005.setRot(1.5708, 0.0, 0.0);
-torus_005.position.set(-30.709, 5.307, 0.1655);
-var torus_006 = new THREE.Mesh(geo, BrassMat);
-torus_006.scale.set(0.52, 0.52, 0.5233);
-torus_006.setRot(1.5708, 0, 0);
-torus_006.position.set(-30.709, 5.7037, 0.1711);
+var col_main = new THREE.Mesh(geo,ColonaMat);
+    col_main.position.y = 3.3;col_main.scale.set(0.5,2.5,0.5);
+var col_bot = new THREE.Mesh(geo,ColoumnPlateMat);
+    col_bot.position.y = 1;   col_bot.scale.set(0.55, 0.2, 0.55);
+var col_top = col_bot.clone();col_top.position.y = 5.5;
+var col_dec = new THREE.Mesh(geo,BrassMat);
+    col_dec.position.y = 5.5; col_dec.scale.set(0.6, 0.15, 0.6);
 var geo = new THREE.BoxGeometry(2,2,2);
-var cube_001 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_001.scale.set(0.7, 0.0759, 0.0);
-    cube_001.position.set(-30.709, 5.8089, 0.1711);
-var geo = new THREE.BoxGeometry(2,2,2);
-var cube = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube.position.set(-30.7, 4.33, 0.9);
-    cube.scale.y = 3.4789;
+var colSup_top = new THREE.Mesh(geo, ColoumnPlateMat);
+    colSup_top.scale.set(0.7,0.07,0.7);colSup_top.position.y = 5.8;
+var col_single = new THREE.Group(); col_single.add(col_main,col_bot,col_top,col_dec,colSup_top);
+    col_single.position.set(-30.7,0,0.17);
+//арка
+var arc_vert = new THREE.Mesh(geo, ColoumnPlateMat);
+    arc_vert.position.set(-5.7, 0, 0.9);
+    arc_vert.scale.set(1,3.5,0.8);
 var cube_2 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_2.position.set(-29.8356, 4.9, 0.9);
-    cube_2.scale.set(0.4453, 0.2934, 1);
-    cube_2.setRot(0,0,1.0669);
+    cube_2.position.set(-4.8356, 0.9, 0.9);
+    cube_2.scale.set(0.4453, 0.29, 0.8); cube_2.rotation.z = PI/2.947;
 var cube_4 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_4.position.set(-29.3814, 5.6, 0.9);
-    cube_4.scale.set(0.4453, 0.4393, 1);
-    cube_4.setRot(0,0,0.6511);
+    cube_4.position.set(-4.3814, 1.6, 0.9);
+    cube_4.scale.set(0.4453, 0.43, 0.8); cube_4.rotation.z = PI/4.823;
 var cube_5 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_5.position.set(-28.5579, 5.832, 0.9);
-    cube_5.scale.set(0.4453, 0.2384, 1);
-    cube_5.setRot(0,0,0.3109);
+    cube_5.position.set(-3.5579, 1.832, 0.9);
+    cube_5.scale.set(0.4453, 0.23, 0.8); cube_5.rotation.z = PI/10.105;
 var cube_6 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_6.position.set(-27.6974, 5.8917, 0.9);
-    cube_6.scale.set(0.4453, 0.1584, 1);
+    cube_6.position.set(-2.6974, 1.8917, 0.9);
+    cube_6.scale.set(0.4453, 0.15, 0.8);
 var cube_7 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_7.position.set(-25.5818, 4.92, 0.8995);
-    cube_7.scale.set(0.4453, 0.2934, 0.9985);
-    cube_7.setRot(0,0,-1.0669);
-var cube_8 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_8.position.set(-26.0135, 5.5959, 0.8995);
-    cube_8.scale.set(0.4453, 0.4393, 0.9985);
-    cube_8.setRot(0.0, 0.0, -0.6511);
+    cube_7.position.set(-0.5818, 0.92, 0.9);
+    cube_7.scale.set(0.4453, 0.29, 0.8); cube_7.rotation.z = -PI/2.947;
 var cube_9 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_9.position.set(-26.8361, 5.832, 0.8995);
-cube_9.scale.set(0.4453, 0.2384, 0.9985);
-cube_9.setRot(0.0, 0.0, -0.3109);
- var cube_11 = new THREE.Mesh(geo, ColoumnPlateMat);
- cube_11.position.set(-26.8361, 5.832, 0.8995);
- cube_11.scale.set(0.4453, 0.2384, 0.9985);
-cube_11.setRot(0.0, 0.0, -0.3109);
- var cube_12 = new THREE.Mesh(geo, ColoumnPlateMat);
- cube_12.position.set(-26.0135, 5.5959, 0.8995);
- cube_12.scale.set(0.4453, 0.4393, 0.9985);
-cube_12.setRot(0.0, 0.0, -0.6511);
- var cube_13 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_13.scale.set(0.4453, 0.2934, 0.6455);
- cube_13.position.set(-25.6364, 4.92, 0.8995);
-cube_13.setRot(0.0, 0.0, -1.0669);
- var cube_15 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_15.scale.set(1.05, 3.4789, 0.6455);
- cube_15.position.set(-30.709, 4.3331, 0.8995);
- var cube_16 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_16.position.set(-29.777, 4.92, 0.8995);
- cube_16.scale.set(0.4453, 0.2934, 0.6455);
-cube_16.setRot(0, 0, 1.0669);
- var cube_17 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_17.scale.set(0.4453, 0.4393, 0.6455);
- cube_17.position.set(-29.3235, 5.5959, 0.8995);
-cube_17.setRot(0.0, 0.0, 0.6511);
- var cube_18 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_18.scale.set(0.4453, 0.2384, 0.6455);
- cube_18.position.set(-28.4432, 5.832, 0.8995);
-cube_18.setRot(0.0, 0.0, 0.3109);
- var cube_19 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_19.scale.set(0.4453, 0.1584, 0.6455);
- cube_19.position.set(-27.6974, 5.8583, 0.8995);
+    cube_9.position.set(-4.8361, 1.832, 0.9);
+    cube_9.scale.set(0.4453, 0.23, 0.8); cube_9.rotation.z = -PI/10.105;
+var cube_11 = new THREE.Mesh(geo, ColoumnPlateMat);
+    cube_11.position.set(-1.8361, 1.832, 0.9);
+    cube_11.scale.set(0.4453, 0.23, 0.8);cube_11.rotation.z = -PI/10.105;
+var cube_12 = new THREE.Mesh(geo, ColoumnPlateMat);
+    cube_12.position.set(-1.0135, 1.5959, 0.9);
+    cube_12.scale.set(0.4453, 0.43, 0.8);cube_12.rotation.z = -PI/4.823;
+var cube_13 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_13.position.set(-0.6364, 0.92, 0.9);
+    cube_13.scale.set(0.4453, 0.29, 0.6);cube_13.rotation.z = -PI/2.947;
+var cube_15 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_15.position.set(-5.709, 0.3331, 0.9);
+    cube_15.scale.set(1.05, 3.47, 0.6);
+var cube_16 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_16.position.set(-4.777, 0.92, 0.9);
+    cube_16.scale.set(0.4453, 0.29, 0.6);cube_16.rotation.z = PI/2.947;
+var cube_17 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_17.position.set(-4.3235, 1.5959, 0.9);
+    cube_17.scale.set(0.4453, 0.43, 0.6);cube_17.rotation.z = PI/4.823;
+var cube_18 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_18.position.set(-3.4432, 1.832, 0.9);
+    cube_18.scale.set(0.4453, 0.23, 0.6);cube_18.rotation.z = PI/10.105;
+var cube_19 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_19.position.set(-2.6974, 1.8583, 0.9);
+    cube_19.scale.set(0.4453, 0.15, 0.6);
 var cube_20 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_20.position.set(-25.5818, 4.92, 0.8995);
-cube_20.scale.set(0.4453, 0.2934, 0.9985);
-cube_20.setRot(0, 0, -1.0669);
- var cube_21 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_21.scale.set(0.4453, 0.4393, 0.6455);
- cube_21.position.set(-26.068, 5.5959, 0.8995);
-cube_21.setRot(0.0, 0.0, -0.6511);
- var cube_22 = new THREE.Mesh(geo, Floor_ColumnsMat);
- cube_22.scale.set(0.4453, 0.2384, 0.6455);
- cube_22.position.set(-26.9447, 5.832, 0.8995);
-cube_22.setRot(0.0, 0.0, -0.3109);
-var col = new THREE.Group();
-var coloumns_up = new THREE.Mesh(geo, Floor_ColumnsMat);
-    coloumns_up.scale.set(42.5516, 0.1921, 0.7246);
-    coloumns_up.position.set(10.4587, 7.0259, 0.8464);
-var coloumns_up_1 = new THREE.Mesh(geo, Floor_ColumnsMat);
-    coloumns_up_1.scale.set(42.5516, 0.1921, 0.7246);
-    coloumns_up_1.setRot(-0.7258, 0, 0);
-    coloumns_up_1.position.set(10.4587, 6.5967, 0.876);
-var coloumns_up_2 = new THREE.Mesh(geo, Floor_ColumnsMat);
-    coloumns_up_2.scale.set(42.5516, 0.1921, 0.7246);
-    coloumns_up_2.position.set(10.4587, 6.0642, -0.1651);
-col.add(coloumns_up,coloumns_up_1,coloumns_up_2); col.position.z = -14;
-var out = new THREE.Group(); out.add(col,cylinder_002,cylinder_005,cylinder_006,cylinder_007,torus_004,torus_005,torus_006,cube_001,cube,cube_2,cube_4,cube_5,cube_6,cube_7,cube_8,cube_9,cube_11,cube_12,cube_13,cube_15,cube_16,cube_17,cube_18,cube_19,cube_20,cube_21,cube_22);
+    cube_20.position.set(-0.5818, 0.92, 0.9);
+    cube_20.scale.set(0.4453, 0.29, 0.6);cube_20.rotation.z = -PI/2.947;
+var cube_21 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_21.position.set(-1.068, 1.5959, 0.9);
+    cube_21.scale.set(0.4453, 0.43, 0.6);cube_21.rotation.z = -PI/4.823;
+var cube_22 = new THREE.Mesh(geo, Floor_ColumnsMat);
+    cube_22.position.set(-1.9447, 1.832, 0.9);
+    cube_22.scale.set(0.4453, 0.23, 0.6);cube_22.rotation.z = -PI/10.09;
+var arka = new THREE.Group(); arka.add(arc_vert,cube_2,cube_4,cube_5,cube_6,cube_7,cube_9,cube_11,cube_12,cube_13,cube_15,cube_16,cube_17,cube_18,cube_19,cube_20,cube_21,cube_22);
+    arka.position.set(-25,4,0);
+var out = new THREE.Group(); out.add(col_single,arka);
 return out;
 }
 var columns = new THREE.Group();
 for(var i = 0; i<12; i++) {
     var column = DrawColumn();
-    column.position.set(6 * i, 0, 0);
+    column.position.x = 6*i;
     columns.add(column);
 }   columns.position.z = 7;
-var columns_r = columns.clone(); columns_r.position.z = -7; columns_r.scale.z = -1;
-
-var geo = new THREE.BoxGeometry(2,2,2);
-var cube_038 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_038.position.set(44.5687, 4.3331, 7.8995);
-cube_038.scale.set(8.2777, 3.4789, 1.0);
-var cube_038MZ = cube_038.clone();
-cube_038MZ.position.z = -cube_038.position.z;
-var cube_038MirroredZ = new THREE.Group();
-cube_038MirroredZ.add(cube_038, cube_038MZ);
-
-var cube_039 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_039.scale.set(1.0167, 3.4789, 2.3384);
-var cube_039MZ = cube_039.clone();
-cube_039MZ.updateMatrixWorld(true);
-cube_039.position.set(0, 0, 9.2379);
-cube_039MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_039MZ.position.set(0, 0, -9.2379);
-var cube_039MirroredZ = new THREE.Group();
-cube_039MirroredZ.add(cube_039, cube_039MZ);
-cube_039MirroredZ.position.set(53.863, 4.3331, 0);
-
-var cube_040 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_040.scale.set(15.8045, 3.4789, 1.128);
-var cube_040MZ = cube_040.clone();
-cube_040MZ.updateMatrixWorld(true);
-cube_040.position.set(0, 0, 10.4484);
-cube_040MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_040MZ.position.set(0, 0, -10.4484);
-var cube_040MirroredZ = new THREE.Group();
-cube_040MirroredZ.add(cube_040, cube_040MZ);
-cube_040MirroredZ.position.set(70.6842, 4.3331, 0);
-
-var cube_092 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_092.scale.set(8.9444, 3.4789, 1.0);
-cube_092.setRot(0.0, 0.0, -0.0);
-var cube_092MZ = cube_092.clone();
-cube_092MZ.updateMatrixWorld(true);
-cube_092.position.set(0, 0, 7.8995);
-cube_092MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_092MZ.position.set(0, 0, -7.8995);
-var cube_092MirroredZ = new THREE.Group();
-cube_092MirroredZ.add(cube_092, cube_092MZ);
-cube_092MirroredZ.position.set(-40.6534, 4.3331, 0);
-
-//стены чуть дальше
-var cube_300 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_300.scale.set(146.5053, 6.6273, 2.6352);
-cube_300.setRot(0.0, 0.0, -0.0);
-var cube_300MZ = cube_300.clone();
-cube_300MZ.updateMatrixWorld(true);
-cube_300.position.set(0, 0, 12.4841);
-cube_300MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_300MZ.position.set(0, 0, -12.4841);
-var cube_300MirroredZ = new THREE.Group();
-cube_300MirroredZ.add(cube_300, cube_300MZ);
-cube_300MirroredZ.position.set(197.0714, 3.2323, 0);
-
-//боковая стена метро
-var cube_bigroof = new THREE.Mesh(geo, Floor_CentralMat);
-cube_bigroof.scale.set(347.5576, 0.1743, 6.2642);
-cube_bigroof.setRot(1.5708, 0.0, 0.0);
-var cube_bigroofMZ = cube_bigroof.clone();
-cube_bigroofMZ.updateMatrixWorld(true);
-cube_bigroof.position.set(0, 0, 22.6954);
-cube_bigroofMZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_bigroofMZ.position.set(0, 0, -22.6954);
-var cube_bigroofMirroredZ = new THREE.Group();
-cube_bigroofMirroredZ.add(cube_bigroof, cube_bigroofMZ);
-cube_bigroofMirroredZ.position.set(-0.2398, -0.2095, 0);
-
-//стена между рельсами и платформой
-var cube_bigroof_004 = new THREE.Mesh(geo, Floor_CentralMat);
-cube_bigroof_004.scale.set(49.229, 0.1743, 3.3728);
-cube_bigroof_004.setRot(1.5708, 0.0, 0.0);
-var cube_bigroof_004MZ = cube_bigroof_004.clone();
-cube_bigroof_004MZ.updateMatrixWorld(true);
-cube_bigroof_004.position.set(0, 0, 14.5133);
-cube_bigroof_004MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_bigroof_004MZ.position.set(0, 0, -14.5133);
-var cube_bigroof_004MirroredZ = new THREE.Group();
-cube_bigroof_004MirroredZ.add(cube_bigroof_004, cube_bigroof_004MZ);
-cube_bigroof_004MirroredZ.position.set(-1.2151, -3.1009, 0);
-
-
-var cube_041 = new THREE.Mesh(geo, ColoumnPlateMat);
-cube_041.position.set(53.7454, 7.9374, -0.0);
-cube_041.scale.set(1.1221, 2.1309, 7.0248);
-
+//нижняя панель часов из меди
 var cube_042 = new THREE.Mesh(geo, BrassMat);
-cube_042.position.set(53.6094, 6.0196, -0.0);
-cube_042.scale.set(1.2033, 0.1788, 7.0248);
-
-//к часам
+    cube_042.position.set(53.6094, 6.0196, 0);
+    cube_042.scale.set(1.2, 0.1788, 7.0248);
+//боковые вертикальные медные полоски
 var cube_043 = new THREE.Mesh(geo, BrassMat);
-cube_043.scale.set(1.2033, 0.0529, 1.1606);
-cube_043.setRot(1.5708, 0, 0);
-var cube_043MZ = cube_043.clone();
-cube_043MZ.updateMatrixWorld(true);
-cube_043.position.set(0, 0, -5.01);
-cube_043MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_043MZ.position.set(0, 0, 5.01);
-var cube_043MirroredZ = new THREE.Group();
-cube_043MirroredZ.add(cube_043, cube_043MZ);
-cube_043MirroredZ.position.set(53.6094, 7.359, 0);
-
+    cube_043.position.set(53.6094, 7.359, -5.01);
+    cube_043.scale.set(1.2, 1.1606, 0.0529);
+//боковые вертикальные медные полоски ближе к часам
 var cube_044 = new THREE.Mesh(geo, BrassMat);
-cube_044.scale.set(1.2033, 0.0529, 1.7061);
-cube_044.setRot(1.5708, 0.0, 0.0);
-var cube_044MZ = cube_044.clone();
-cube_044MZ.updateMatrixWorld(true);
-cube_044.position.set(0, 0, -2.5808);
-cube_044MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-cube_044MZ.position.set(0, 0, 2.5808);
-var cube_044MirroredZ = new THREE.Group();
-cube_044MirroredZ.add(cube_044, cube_044MZ);
-cube_044MirroredZ.position.set(53.6094, 7.9044, 0);
-
-var cube_045 = new THREE.Mesh(geo, BrassMat);
-cube_045.position.set(53.6094, 7.9044, -0.0);
-cube_045.scale.set(1.2033, 0.0529, 1.7061);
-cube_045.setRot(1.5708, 0.0, 0.0);
-
+    cube_044.position.set(53.6094, 7.9044, -2.5808);
+    cube_044.scale.set(1.2,1.7061, 0.0529);
+//средняя медная палочка горизонтальная
 var cube_046 = new THREE.Mesh(geo, BrassMat);
-cube_046.position.set(53.6429, 8.2123, -0.0);
-cube_046.scale.set(1.2033, 0.0405, 5.5555);
-
+    cube_046.position.set(53.6429, 8.2123, 0);
+    cube_046.scale.set(1.2, 0.0405, 5.5555);
 //синяя панель
 var cube_047 = new THREE.Mesh(geo, BlueMat);
-cube_047.position.set(52.4948, 8.1131, -0.0);
+cube_047.position.set(52.4948, 8.1131, 0);
 cube_047.scale.set(-0.0232, 1.9147, 4.9622);
-
 function DrawClock() {
 //основание циферблата
-var geo = new THREE.CylinderGeometry(1, 1, 2, 20);
+var geo = new THREE.CylinderGeometry(1,1,2,20);
 var cylinder_008 = new THREE.Mesh(geo, BrassMat);
-cylinder_008.position.set(0.4284, 8, 0);
+cylinder_008.position.set(0.4284,8,0);
 cylinder_008.scale.set(1, 0.0534, 1);
 cylinder_008.rotation.z = -PI/2;
 //циферблат
 var cylinder_009 = new THREE.Mesh(geo, WhiteDotsMat);
-cylinder_009.position.set(0.3781, 8, -0.0);
+cylinder_009.position.set(0.3781,8,0);
 cylinder_009.scale.set(0.9637, 0.0534, 0.9637);
 cylinder_009.setRot(0.0, 0.0, -1.5708);
 //крепление стрелок
 var cylinder_010 = new THREE.Mesh(geo, ColonaMat);
-cylinder_010.position.set(0.32, 8, 0);
-cylinder_010.scale.set(0.075, 0.0188, 0.075);
+cylinder_010.position.set(0.32,8,0);
+cylinder_010.scale.set(0.075,0.0188,0.075);
 cylinder_010.rotation.z = -PI/2;
 //минутная стрелка
 var geo = new THREE.BoxGeometry(2, 2, 2);
@@ -1916,237 +1761,162 @@ cube_052.scale.set(0.0328, 0.0583, 0.0328);
 cube_052.rotation.x = -PI/4;
 // засечки на часах диагональные верхние
 var cube_053 = cube_052.clone();
-cube_053.position.y = 8.55;
-cube_053.rotation.x = PI/4;
+cube_053.position.y = 8.55;cube_053.rotation.x = PI/4;
 
 var out = new THREE.Group(); out.add(cylinder_008,cylinder_009, cylinder_010, cube_048, cube_049,cube_050,cube_053,cube_052,cube_051);
 return out;
-}
-var clock = DrawClock();
-    clock.position.set(52,0,0);
+}var clock = DrawClock();clock.position.set(52,0,0);
 
 var geo = new THREE.BoxGeometry(2,2,2);
 var cube_054 = new THREE.Mesh(geo, MetalMat);
-cube_054.position.set(38, 2.3445, 6.9102);
-cube_054.scale.set(1.2649, 0.9801, 0.0322);
-
+    cube_054.position.set(38, 2.3445, 6.9102);
+    cube_054.scale.set(1.2649, 0.9801, 0.0322);
 var cube_055 = new THREE.Mesh(geo, MetalMat);
-cube_055.position.set(38, 3.1273, -6.8906);
-cube_055.scale.set(1.6975, 1.1575, 0.0322);
-
+    cube_055.position.set(38, 3.1273, -6.8906);
+    cube_055.scale.set(1.6975, 1.1575, 0.0322);
 var cube_056 = new THREE.Mesh(geo, BlueMat);
-cube_056.position.set(38, 2.9853, -6.8646);
-cube_056.scale.set(1.6244, 0.9379, 0.0322);
-
+    cube_056.position.set(38, 2.9853, -6.8646);
+    cube_056.scale.set(1.6244, 0.9379, 0.0322);
 var cube_057 = new THREE.Mesh(geo, BrownMat);
-cube_057.position.set(38, 4.0931, -6.8646);
-cube_057.scale.set(1.6244, 0.146, 0.0322);
-
+    cube_057.position.set(38, 4.0931, -6.8646);
+    cube_057.scale.set(1.6244, 0.146, 0.0322);
 var cube_058 = new THREE.Mesh(geo, MetalMat);
-cube_058.position.set(38, 4.4235, 6.9102);
-cube_058.scale.set(1.2649, 0.9801, 0.0322);
-
+    cube_058.position.set(38, 4.4235, 6.9102);
+    cube_058.scale.set(1.2649, 0.9801, 0.0322);
 var cube_059 = new THREE.Mesh(geo, BrownMat);
-cube_059.position.set(38, 2.3445, 6.8851);
-cube_059.scale.set(1.1847, 0.918, 0.0301);
-
+    cube_059.position.set(38, 2.3445, 6.8851);
+    cube_059.scale.set(1.1847, 0.918, 0.0301);
 var cube_060 = new THREE.Mesh(geo, BlueMat);
-cube_060.position.set(38, 4.4235, 6.8851);
-cube_060.scale.set(1.1847, 0.918, 0.0301);
-
+    cube_060.position.set(38, 4.4235, 6.8851);
+    cube_060.scale.set(1.1847, 0.918, 0.0301);
 var cube_061 = new THREE.Mesh(geo, MetalMat);
-cube_061.position.set(38, 5.1875, -6.9009);
-cube_061.scale.set(0.1398, 0.1398, 0.0286);
-
+    cube_061.position.set(38, 5.1875, -6.9009);
+    cube_061.scale.set(0.1398, 0.1398, 0.0286);
 var cube_062 = new THREE.Mesh(geo, MetalMat);
-cube_062.position.set(38, 5.1875, -6.7612);
-cube_062.scale.set(0.041, 0.041, 0.1231);
-
+    cube_062.position.set(38, 5.1875, -6.7612);
+    cube_062.scale.set(0.041, 0.041, 0.1231);
 var cube_063 = new THREE.Mesh(geo, MetalMat);
-cube_063.position.set(38, 5.1875, -6.3446);
-cube_063.scale.set(0.1035, 0.3, 0.3);
-
+    cube_063.position.set(38, 5.1875, -6.3446);
+    cube_063.scale.set(0.1035, 0.3, 0.3);
 var cube_064 = new THREE.Mesh(geo, BrownMat);
-cube_064.position.set(38, 5.1875, -6.3446);
-cube_064.scale.set(0.1379, 0.2533, 0.2533);
-
+    cube_064.position.set(38, 5.1875, -6.3446);
+    cube_064.scale.set(0.1379, 0.2533, 0.2533);
 // i
 var cube_065 = new THREE.Mesh(geo, WhiteDotsMat);
-cube_065.position.set(38, 5.1086, -6.3446);
-cube_065.scale.set(0.1751, 0.1278, 0.0332);
-
-//часы
-var geo = new THREE.CylinderGeometry(1,1,2,16);
-var clock_back = new THREE.Mesh(geo, WhiteDotsMat);
-clock_back.position.set(38.1605, 5.3262, -6.3446);
-clock_back.scale.set(0.0413, 0.1645, 0.0413);
-clock_back.setRot(0.0, 0.0, -1.5708);
-
-//КАРТА МЕТРО НА СТЕНАХ
-var geo = new THREE.BoxGeometry(2,2,2);
+    cube_065.position.set(38, 5.1086, -6.3446);
+    cube_065.scale.set(0.1751, 0.1278, 0.0332);
+//Карта метро
 var map = new THREE.Mesh(geo, MapMat);
 map.scale.set(0.04, 0.67, 0.47);
-
-var map_01_L = new THREE.Group();
+var map_fr = new THREE.Group();
 for (var i = 0; i < 5; i++) {
- var cube_Temp = map.clone();
- cube_Temp.position.x = 12*i;
- map_01_L.add(cube_Temp);
-}
-
-map_01_L.position.set(-23.6566, 3.1162, 0);
-var map_02_L = map_01_L.clone();
-map_02_L.position.x = -25.75;
-
-var maps_L = new THREE.Group();
-maps_L.add(map_01_L,map_02_L);
-maps_L.position.z = 7.9;
-
-var maps_R = maps_L.clone();
-maps_R.position.z = -7.9;
-
-
+var tempCub = map.clone();tempCub.position.x = 12*i;
+    map_fr.add(tempCub);
+}   map_fr.position.set(-23.65, 3, 0);
+var map_b = map_fr.clone();map_b.position.x = -25.75;
+var maps = new THREE.Group(); maps.position.z = 7.9;
+    maps.add(map_fr,map_b);
+//Рельсы
+var rail_bot = new THREE.Mesh(geo, BrownMat);rail_bot.receiveShadows=true;
+    rail_bot.position.set(0,-2,18);rail_bot.scale.set(200,0.1,4);
+var rail_r = new THREE.Mesh(geo, MetalMat);
+    rail_r.position.set(0, -1.5, 16.3);rail_r.scale.set(200,0.4,0.15);
+var rail_l = rail_r.clone(); rail_l.position.z = 21;
+//hall walls
 var geo = new THREE.BoxGeometry(2,2,2);
-var cube_072 = new THREE.Mesh(geo, BrownMat);
-    cube_072.scale.set(337.424, 0.0913, 3.9259);
-var cube_072MZ = cube_072.clone();
-    cube_072MZ.updateMatrixWorld(true);
-    cube_072.position.set(0, 0, 18.6043);
-    cube_072MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_072MZ.position.set(0, 0, -18.6043);
-var cube_072MirroredZ = new THREE.Group();
-    cube_072MirroredZ.add(cube_072, cube_072MZ);
-    cube_072MirroredZ.position.set(-0.9392, -1.8809, 0);
-
-var cube_073 = new THREE.Mesh(geo, BrownMat);
-    cube_073.scale.set(350.9227, 0.0913, 0.6522);
-    cube_073.setRot(-1.0876, 0, 0);
-var cube_073MZ = cube_073.clone();
-    cube_073MZ.updateMatrixWorld(true);
-    cube_073.position.set(0, 0, 22.347);
-    cube_073MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_073MZ.position.set(0, 0, -22.347);
-var cube_073MirroredZ = new THREE.Group();
-    cube_073MirroredZ.add(cube_073, cube_073MZ);
-    cube_073MirroredZ.position.set(-2.026, -1.6274, 0);
-
-var cube_074 = new THREE.Mesh(geo, MetalMat);
-    cube_074.scale.set(352.5921, 0.2605, 0.166);
-var cube_074MZ = cube_074.clone();
-    cube_074MZ.updateMatrixWorld(true);
-    cube_074.position.set(0, 0, 16.1386);
-    cube_074MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_074MZ.position.set(0, 0, -16.1386);
-var cube_074MirroredZ = new THREE.Group();
-    cube_074MirroredZ.add(cube_074, cube_074MZ);
-    cube_074MirroredZ.position.set(-1.2826, -1.529, 0);
-
-var cube_075 = new THREE.Mesh(geo, MetalMat);
-    cube_075.scale.set(352.5921, 0.2605, 0.166);
-var cube_075MZ = cube_075.clone();
-    cube_075MZ.updateMatrixWorld(true);
-    cube_075.position.set(0, 0, 21.0701);
-    cube_075MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_075MZ.position.set(0, 0, -21.0701);
-var cube_075MirroredZ = new THREE.Group();
-    cube_075MirroredZ.add(cube_075, cube_075MZ);
-    cube_075MirroredZ.position.set(-1.2826, -1.529, 0);
-
-var cube_076 = new THREE.Mesh(geo, ColonaMat);
-    cube_076.scale.set(350.9227, 0.0913, 1.6548);
-    cube_076.setRot(1.5708, 0, 0);
-var cube_076MZ = cube_076.clone();
-    cube_076MZ.updateMatrixWorld(true);
-    cube_076.position.set(0, 0, 22.5792);
-    cube_076MZ.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-    cube_076MZ.position.set(0, 0, -22.5792);
-var cube_076MirroredZ = new THREE.Group();
-    cube_076MirroredZ.add(cube_076, cube_076MZ);
-    cube_076MirroredZ.position.set(-2.026, 0.2518, 0);
-
-var cube_297 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_297.position.set(70.754, 7.9374, 0);
-    cube_297.scale.set(15.8864, 2.1309, 7.0248);
-
-var cube_298 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_298.position.set(70.754, 6.6102, 0);
-    cube_298.scale.set(15.8864, 0.3534, 10.2896);
-
-var cube_299 = new THREE.Mesh(geo, ColoumnPlateMat);
-    cube_299.position.set(80.1152, 3.775, 0);
-    cube_299.scale.set(3.5137, 0.3534, 10.2896);
-    cube_299.setRot(0, 0, -1.5708);
-
-var cube_floor_central = new THREE.Mesh(geo, Floor_CentralMat);
-    cube_floor_central.position.set(24.3999, 0.5684, 0);
-    cube_floor_central.scale.set(56.1089, 0.2965, 6.3485);
-
-var cube_floor_columns = new THREE.Mesh(geo, Floor_ColumnsMat);
-    cube_floor_columns.scale.set(65.4645, 0.2965, 2.497);
-    cube_floor_columns.position.set(15.9462, 0.5578, -8.8396);
+var wall_hall = new THREE.Mesh(geo, ColoumnPlateMat);
+    wall_hall.position.set(43, 4, 7.9);
+    wall_hall.scale.set(7, 3.5, 1);
+//длинные стены у эскалаторов
+var wall_exc = new THREE.Mesh(geo, ColoumnPlateMat);
+    wall_exc.scale.set(70, 7, 2.5);
+    wall_exc.position.set(130, 3, 12.5);
+//стена между рельсами и платформой
+var wall_platform = new THREE.Mesh(geo, Floor_CentralMat);
+    wall_platform.position.set(0, -0.7, 14.5);
+    wall_platform.scale.set(50, 1.1, 0.2);
+//стена на которой часы висят
+var wall_clock = new THREE.Mesh(geo, ColoumnPlateMat);
+    wall_clock.position.set(67.5, 8, 0);
+    wall_clock.scale.set(15, 2, 7);
+//Стена у Петра
+var petr_backwall = new THREE.Mesh(geo, ColoumnPlateMat);
+    petr_backwall.position.x = -40; petr_backwall.scale.set(9,10,8);
+    petr_backwall.receiveShadows = true; petr_backwall.castShadows = true;
+var petr_longwall = new THREE.Mesh(geo, ColoumnPlateMat);
+    petr_longwall.position.set(-120,5,0);petr_longwall.scale.set(80, 7, 15);
+    petr_longwall.receiveShadows = true; petr_longwall.castShadows = true;
+//стена эскалаторов
+var wall_long_exc = new THREE.Mesh(geo, ColoumnPlateMat);
+    wall_long_exc.position.set(80,3.775,0); wall_long_exc.scale.set(0.35,3.5,10);
+    wall_long_exc.receiveShadows = true;wall_long_exc.castShadows = true;
+//боковая стена метро
+var tunnel_wall = new THREE.Mesh(geo, wall_tunnel_mat);tunnel_wall.position.z = 22;
+    tunnel_wall.scale.set(200,6,0.2);tunnel_wall.receiveShadows = true;
+//Полоса с надписью на стене
+var tunnel_wall_mid = new THREE.Mesh(geo, wall_sign_mat);
+    tunnel_wall_mid.scale.set(200,0.3,0.23);tunnel_wall_mid.position.y = 3.5;
+    tunnel_wall_mid.position.z = 22;tunnel_wall_mid.receiveShadows = true;
+//нижняя часть рельсовой стены
+var tunnel_wall_d = new THREE.Mesh(geo, ColonaMat);
+    tunnel_wall_d.scale.set(200,1,0.23); tunnel_wall_d.position.y = -1;
+    tunnel_wall_d.position.z = 22;tunnel_wall_d.receiveShadows = true;
+//пол под колоннами
+var floor_columns = new THREE.Mesh(geo, colonna_floor_mat);
+    floor_columns.position.set(5,0.55,8.6);floor_columns.receiveShadows = true;
+    floor_columns.scale.set(45,0.35,2.5);
 //платформа у поезда
-var geo = new THREE.BoxGeometry(2,2,2);
-var cube_floor_trainsside = new THREE.Mesh(geo, Floor_CentralMat);
-    cube_floor_trainsside.scale.set(51.4855, 0.2965, 1.7465);
-    cube_floor_trainsside.position.set(-0.5219, 0.5684, -13.6124);
-
-//разметка у поезда
+var floor_trainsside = new THREE.Mesh(geo,floor_trainsside_mat);
+    floor_trainsside.position.set(5,0.56,13); floor_trainsside.scale.set(45,0.3,2);
+    floor_trainsside.receiveShadows = true;
 function razmetka(n){
-    var razmetka = new THREE.Group();
-    //ЖЕЛТЫЕ ПОЛОСЫ
-    var geom = new THREE.PlaneGeometry(0.8, 0.3);
-    var stripes_L = new THREE.Group();
-    for (var i = 0; i < n+1; i++) {
-     var stripe = new THREE.Mesh(geom, YellowMat);
-     stripe.position.x = 1.2135*i; stripes_L.add(stripe);
-    }
-    stripes_L.position.x = -49.0516;
-
-    //БЕЛЫЕ ТОЧКИ
-    var geom = new THREE.CircleGeometry(0.13, 8)
-    var dots_L = new THREE.Group();
-    for (var i = 0; i < n; i++) {
-     var stripeDots = new THREE.Mesh(geom, WhiteDotsMat);
-     stripeDots.position.x = 1.2134*i; dots_L.add(stripeDots);
-    }
-    dots_L.position.x = -48.4447;
-
-    razmetka.position.y = 0.88; razmetka.rotation.x = -PI/2;
+var razmetka = new THREE.Group();
+var geom = new THREE.PlaneGeometry(0.8,0.3);
+var stripes_L = new THREE.Group();
+for (var i = 0; i < n+1; i++) {
+var stripe = new THREE.Mesh(geom, YellowMat);stripe.receiveShadows=true;
+    stripe.position.x = 1.2135*i; stripes_L.add(stripe);
+}   stripes_L.position.x = -41;
+var geom = new THREE.CircleGeometry(0.13, 8)
+var dots_L = new THREE.Group();
+for (var i = 0; i < n; i++) {
+var stripeDots = new THREE.Mesh(geom, WhiteDotsMat);stripeDots.receiveShadows=true;
+    stripeDots.position.x = 1.2134*i; dots_L.add(stripeDots);
+}   dots_L.position.x = -40.4;
+    razmetka.position.y = 0.87; razmetka.rotation.x = -PI/2;
     razmetka.add(stripes_L,dots_L); 
-    return razmetka;
-}
-var razmetka_L = razmetka(82); razmetka_L.position.z =  14.5;
-var razmetka_R = razmetka(82); razmetka_R.position.z = -14.5;
-
-//ОГРАЖДЕНИЕ ДЛЯ РОБОТОВ
+return razmetka;
+} var razmetka_L = razmetka(75); razmetka_L.position.z =  14.5;
+//Ограда для роботов
 var geo = new THREE.BoxGeometry(2,2,2);
-var cube_stripes_006 = new THREE.Mesh(geo, YellowMat);
-cube_stripes_006.position.set(76.6066, 0.8634, 0.0932);
-cube_stripes_006.scale.set(-5.1172, 0.0239, 0.1614);
-cube_stripes_006.rotation.y = PI/2;
-//ОГРАЖДЕНИЕ ДЛЯ РОБОТОВ ПОД ПЕТРОМ
-var cube_stripes_004 = cube_stripes_006.clone();
-cube_stripes_004.position.x = -31.1419;
-//оградка для робота по бокам
-var cube_stripes_002 = new THREE.Mesh(geo, YellowMat);
-    cube_stripes_002.scale.set(60, 0.02, 0.16);
-    cube_stripes_002.position.set(23.6445, 0.8634, 4.7543);
-
-var geo = new THREE.BoxGeometry(2,2,2);
-var petr_backwall = new THREE.Mesh(geo, FloorTileMat);
-petr_backwall.position.set(-40.9615, 5.4803, 0);
-petr_backwall.scale.set(9.4309, 4.626, 8.2679);
-
-var cube_backwall_001 = new THREE.Mesh(geo, FloorTileMat);
-cube_backwall_001.position.set(-53.4691, 1.9826, 0);
-cube_backwall_001.scale.set(3.0767, 9.221, 14.9665);
-
-var cube_backwall_002 = new THREE.Mesh(geo, FloorTileMat);
-cube_backwall_002.position.set(-182.3204, 1.9826, 0);
-cube_backwall_002.scale.set(125.7746, 9.221, 14.9665);
-
-
-out.add(clock,columns_r,columns,image_petr, cube_038MirroredZ, cube_039MirroredZ, cube_040MirroredZ, cube_092MirroredZ, cube_300MirroredZ, cube_bigroofMirroredZ, cube_bigroof_004MirroredZ, cube_041, cube_042, cube_043MirroredZ, cube_044MirroredZ, cube_045, cube_046, cube_047, cube_054, cube_055, cube_056, cube_057, cube_058, cube_059, cube_060, cube_061, cube_062, cube_063, cube_064, cube_065, clock_back, maps_L, maps_R, cube_072MirroredZ, cube_073MirroredZ, cube_074MirroredZ, cube_075MirroredZ, cube_076MirroredZ, cube_297, cube_298, cube_299, cube_floor_central, cube_floor_columns, cube_floor_trainsside, razmetka_L, razmetka_R, cube_stripes_002, cube_stripes_006, cube_stripes_004, petr_backwall, cube_backwall_001, cube_backwall_002);
+var liniaRobot_exc = new THREE.Mesh(geo, YellowMat);liniaRobot_exc.receiveShadows=true;
+    liniaRobot_exc.position.set(70,0.9,0);
+    liniaRobot_exc.scale.set(0.15,0.02,5.15);
+var liniaRobot_petr = liniaRobot_exc.clone();liniaRobot_petr.receiveShadows=true;
+    liniaRobot_petr.position.x = -30;
+var liniaRobot_side = new THREE.Mesh(geo, YellowMat);liniaRobot_side.receiveShadows=true;
+    liniaRobot_side.position.set(20, 0.9, 5);
+    liniaRobot_side.scale.set(50,0.02,0.15);
+//Поддержка крыши
+var roof_sup_up = new THREE.Mesh(geo, WhiteDotsMat);roof_sup_up.scale.set(45,0.2,0.72);
+var roof_sup_mid = roof_sup_up.clone(); var roof_sup_bot = roof_sup_up.clone();
+    roof_sup_up.position.set(5,7,0.84);   roof_sup_bot.position.set(5,6,0);
+    roof_sup_mid.position.set(5,6.5,0.87);roof_sup_mid.rotation.x = -PI/4;
+var roof_sup = new THREE.Group();
+    roof_sup.add(roof_sup_up,roof_sup_mid,roof_sup_bot);
+    roof_sup.position.z = 9;
+var roof_sup_mir = roof_sup.clone(); roof_sup_mir.scale.z = -1;roof_sup_mir.position.z = 6.85;
+//Крыша
+var geo = new THREE.CylinderGeometry(2,2,2,32,1,true,0,PI);geo.scale(-1, 1, 1);
+var roof = new THREE.Mesh(geo, WhiteDotsMat); roof.scale.set(2,45,2.7);   
+    roof.position.set(5,6.8,0); roof.rotation.z = -PI/2;
+var geo = new THREE.CylinderGeometry(2,2,2,32,1,true,0,PI/1.1);geo.scale(-1, 1, 1);
+var roof_side = new THREE.Mesh(geo, WhiteDotsMat);
+    roof_side.position.set(0,5,16);roof_side.rotation.z =-PI/2;roof_side.scale.set(3,200,3);
+    roof_side.receiveShadows = true; roof_side.castShadows = true;
+leftSide.add(columns,cube_043,cube_044,maps,rail_r,rail_l,rail_bot,wall_hall,wall_exc,wall_platform,wall_long_exc,tunnel_wall,tunnel_wall_mid,tunnel_wall_d,floor_columns,floor_trainsside,razmetka_L,liniaRobot_side,roof_side,roof_sup,roof_sup_mir);
+var rightSide = leftSide.clone(); rightSide.scale.z = -1;
+out.add(leftSide,rightSide,image_base,roof,clock,image_petr, wall_clock, cube_042, cube_046, cube_047, cube_054, cube_055, cube_056, cube_057, cube_058, cube_059, cube_060, cube_061, cube_062, cube_063, cube_064, cube_065, liniaRobot_side, liniaRobot_exc, liniaRobot_petr, petr_backwall, petr_longwall);
 return out;
 }
 function animatorByName(animations, endtime, times) {
@@ -2157,8 +1927,7 @@ var animate = function () {
      times--;
      clock = 0;
  }
- if (!times)
-     return;
+ if (!times) return;
  clock++;
  for (var _i = 0, animations_1 = animations; _i < animations_1.length; _i++) {
      var it = animations_1[_i];
@@ -2182,8 +1951,7 @@ var animate = function () {
  }
 };
 var reset = function () {
- clock = 0;
- times = _startTimes;
+ clock = 0; times = _startTimes;
 };
 return [animate, reset];
 }
@@ -2191,35 +1959,75 @@ function iniDoorsAnimation() {
 return animatorByName([
  {
      type: 'position',
-     vector: new THREE.Vector3(1, 0, 0),
+     vector: new THREE.Vector3(1,0,0),
      objectName: 'leftDoor',
      startTime: 0,
-     time: 100,
+     time: 400,
  },
  {
      type: 'position',
-     vector: new THREE.Vector3(-1, 0, 0),
+     vector: new THREE.Vector3(-1,0,0),
      objectName: 'rightDoor',
      startTime: 0,
-     time: 100,
+     time: 400,
  },
  {
      type: 'position',
-     vector: new THREE.Vector3(0, 0, 0),
+     vector: new THREE.Vector3(0,0,0),
      objectName: 'leftDoor',
-     startTime: 100,
-     time: 100,
+     startTime: 1200,
+     time: 400,
  },
  {
      type: 'position',
-     vector: new THREE.Vector3(0, 0, 0),
+     vector: new THREE.Vector3(0,0,0),
      objectName: 'rightDoor',
-     startTime: 100,
-     time: 100,
+     startTime: 1200,
+     time: 400,
  },
-], 300, 1);
+], 2400, 1);
 }
 
+function makeTexturedMaterial(urls, repeatX = 1, repeatY = 1, type = "standard", rotation = 0) {
+  const loader = new THREE.TextureLoader();
+
+  // Карты, поддерживаемые обоими материалами
+  const mapTypes = {
+    map: urls.diffuse,
+    roughnessMap: urls.roughness,
+    normalMap: urls.normal,
+    metalnessMap: urls.metalness
+  };
+
+  const textures = {};
+
+  for (const [key, url] of Object.entries(mapTypes)) {
+    if (!url) continue;
+
+    const tex = loader.load(url);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(repeatX, repeatY);
+
+    // Центр + поворот (если задан)
+    tex.center.set(0.5, 0.5);
+    tex.rotation = rotation;
+
+    textures[key] = tex;
+  }
+
+  // Выбор типа материала
+  if (type === "physical") {
+    return new THREE.MeshPhysicalMaterial({
+      ...textures,
+      clearcoat: 1,
+      clearcoatRoughness: 1,
+      transmission: 0,
+      thickness: 1
+    });
+  } else {
+    return new THREE.MeshStandardMaterial(textures);
+  }
+}
 function SetColorStuff(){
 textureLoader = new THREE.TextureLoader();
 var cubeTextureLoader = new THREE.CubeTextureLoader();
@@ -2231,8 +2039,49 @@ environmentMap = cubeTextureLoader.load([
     'http://livelab.spb.ru/labs/files/ElDZSkybox_Front.png',
     'http://livelab.spb.ru/labs/files/ElDZSkybox_Back.png'
 ]);
+
 var load = textureLoader.load('http://livelab.spb.ru/labs/files/metromap2023r.jpg');
 MapMat = new THREE.MeshStandardMaterial({map:load,roughness:0.8,metalness:0.05});
+
+//Текстура плитки для пола
+var floor_trainsside_tex = {
+    diffuse:'https://i.postimg.cc/rDyvDGty/patio-tiles-diff-1k.jpg',
+    roughness: 'https://i.postimg.cc/XpWMb6jC/patio-tiles-rough-1k.jpg',
+    normal: 'https://i.postimg.cc/C19SQtqj/patio-tiles-nor-gl-1k.jpg',
+    metalness: 'https://i.postimg.cc/3JsYBPT7/patio-tiles-arm-1k.jpg'
+};  floor_trainsside_mat = makeTexturedMaterial(floor_trainsside_tex,30,1,"physical");
+    floor_mat = makeTexturedMaterial(floor_trainsside_tex,30,3,"physical");
+//Текстура изображения петра
+var petr_tex = {
+    diffuse:'https://i.postimg.cc/FYBdqZy7/petr-diff.png',
+    roughness: 'https://i.postimg.cc/sBGQRhmK/petr-rough.png'
+};  petr_mat = makeTexturedMaterial(petr_tex,1,1,"standard");
+//Текстура пола под колоннами
+var colonna_floor_tex = {
+    diffuse:'https://i.postimg.cc/z33gwv9J/rubber-tiles-diff-1k.jpg',
+    roughness: 'https://i.postimg.cc/TYkjyMZd/rubber-tiles-rough-1k.jpg',
+    normal: 'https://i.postimg.cc/tCRtCCvv/rubber-tiles-nor-gl-1k.jpg',
+    metalness: 'https://i.postimg.cc/n9s9nSvs/rubber-tiles-arm-1k.jpg'
+};  colonna_floor_mat = makeTexturedMaterial(colonna_floor_tex,1.5,45,"physical",PI/2);
+//Текстура стены тоннеля
+var wall_tunnel_tex = {
+    diffuse:'https://i.postimg.cc/L5QTFcS8/granite-tile-diff-1k.jpg',
+    roughness: 'https://i.postimg.cc/Kv4fD87k/granite-tile-rough-1k.jpg',
+    normal: 'https://i.postimg.cc/MZ9tBQBJ/granite-tile-nor-gl-1k.jpg',
+    metalness: 'https://i.postimg.cc/3NxB6KPq/granite-tile-arm-1k.jpg'
+};  wall_tunnel_mat = makeTexturedMaterial(wall_tunnel_tex,120,3,"standard");
+//Текстура таблички на стене тоннеля
+var wall_sign_tex = {
+    diffuse:'https://i.postimg.cc/8zp6mKgy/Plastic-Color.png',
+    roughness: 'https://i.postimg.cc/bwm2Cxzq/Plastic-Roughness.png',
+    normal: 'https://i.postimg.cc/jjCnGD5P/Plastic-Normal.png'
+};  wall_sign_mat = makeTexturedMaterial(wall_sign_tex,200,1,"standard");
+var sidenia_tex = {
+    diffuse:'https://i.postimg.cc/rpCyZcGx/leather-col.jpg',
+    roughness: 'https://i.postimg.cc/PqkrMNDd/leather-rough.jpg',
+    normal: 'https://i.postimg.cc/TwddZSQS/leather-gl.jpg',
+    metalness: 'https://i.postimg.cc/L6wsnx6Y/leather-arm.jpg'
+};  sidenia_mat = makeTexturedMaterial(sidenia_tex,3,2,"standard");
 
 GlassMat = new THREE.MeshStandardMaterial({color: 0x393D53, transparent: true, opacity: 0.32, roughness: 0.5});
 Ceiling_trainMat = new THREE.MeshStandardMaterial({color: 0x604C18, roughness: 0.12}); 
@@ -2247,7 +2096,6 @@ BlueMat = new THREE.MeshStandardMaterial({color: 0x1A4DCC, roughness: 0.5});
 WhiteDotsMat = new THREE.MeshStandardMaterial({color: 0xEEEEEE});
 MetalMat = new THREE.MeshStandardMaterial({color: 0xCCCCCC, metalness: 0.7, roughness:0.35,envMap:environmentMap,envMapIntensity: 0.4});
 BrownMat = new THREE.MeshStandardMaterial({color: 0x99664D, roughness: 0.9, metalness: 0.8});
-Floor_Sides_1Mat = new THREE.MeshStandardMaterial({color: 0x4D4D33, roughness: 0.3, metalness: 0.1});
 //нельзя менять
 YellowMat = new THREE.MeshStandardMaterial({color: new THREE.Color(1,0.522,0)});
 FloorTileMat = new THREE.MeshStandardMaterial({color: 0x80804D, roughness:0.5, metalness:0.1});
@@ -2276,13 +2124,14 @@ THREE.Object3D.prototype.GetObjectsByProperty = function (name, value, result) {
 if (typeof sceneexist == 'undefined') {
  sceneexist = true;
  scene = new THREE.Scene();
- scene.background = new THREE.Color(0x444488);
+ scene.background = new THREE.Color(0x333355);
  scene.environment = environmentMap;
  scene.fog = new THREE.FogExp2(0x9999aa, 0.005);
  cameras.main = new THREE.PerspectiveCamera(70,WC/HC,0.1,1000);
  renderer = new THREE.WebGLRenderer({alpha:true,antialias:true});
  renderer.toneMapping = THREE.Uncharted2ToneMapping; //Тонмаппинг
-renderer.toneMappingExposure = 0.75; // Экспозиция (регулирует яркость)
+ renderer.toneMappingExposure = 0.75; // Экспозиция (регулирует яркость)
+ renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
  renderer.setPixelRatio(window.devicePixelRatio);
  (_a = document.getElementById('wCanvas')) === null || _a === void 0 ? void 0 : _a.appendChild(renderer.domElement);
  renderer.setSize(WC, HC);
@@ -2310,14 +2159,12 @@ renderer.toneMappingExposure = 0.75; // Экспозиция (регулируе
      return newCam;
  });
  currentCamera = cameras.main;
-
- var dirLight1 = new THREE.DirectionalLight(0xffffff, 0.35);
- var ambiLight = new THREE.AmbientLight(0xffffff, 0.75);
- var pointLight = new THREE.PointLight(0xFFFFFF, 1);
- pointLight.position.set(0,10,0);
- dirLight1.position.set(5,1, 7);
+ var dirLight1 = new THREE.DirectionalLight(0xffffff, 0.65);
+ var ambiLight = new THREE.AmbientLight(0xffffff, 0.55);
+ var pointLight = new THREE.PointLight(0xFFFFFF, 0.4);
+    pointLight.position.set(15,7,0);
+    dirLight1.position.set(5,1, 7);
  scene.add(ambiLight,dirLight1,pointLight);
-
 }
 }
 // Следующие две функции нужны для переключения камеры с помощью <select>

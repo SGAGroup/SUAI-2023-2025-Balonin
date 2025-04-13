@@ -95,7 +95,24 @@ animateCleanFloor();
 animateWetFloor();
 animateTrains();
 
-Operator.legL1.rotation.x = sin(PI);
+var walkValues = get_walk_values();
+
+
+puts(RobotMData.parts.legL1);
+puts(scene.getObjectById(RobotMData.parts.legL1.id));
+puts(walkValues.legL1X);
+puts(RobotMData.parts.legL1.rotation.x);
+
+RobotMData.parts.legL1.rotation.x = walkValues.legL1X;
+RobotMData.parts.legL1.updateMatrix();
+RobotMData.parts.legR1.rotation.x = walkValues.legR1X;
+RobotMData.parts.legL2.rotation.x = walkValues.legL2X;
+RobotMData.parts.legR2.rotation.x = walkValues.legR2X;
+RobotMData.parts.legL3.rotation.x = walkValues.legL3X;
+RobotMData.parts.legR3.rotation.x = walkValues.legR3X;
+
+puts(RobotMData.parts.legL1.rotation.x);
+ puts( RobotMData.parts);
 }
 function initParameters() {
 var _a;
@@ -114,6 +131,24 @@ trains = [];
 trainArriveTime = 450;
 trainStayTime = 700;
 trainSumTime = 1730;
+}
+function get_walk_values(){
+
+var legR1X=PI/12*sin(tick*0.12);
+var legR2X=PI/4*(-(sin(tick*0.12+PI/2)-1)*0.5);
+var legL1X=PI/12*sin(tick*0.12+PI);
+var legL2X=PI/4*(-(sin(tick*0.12+PI/2+PI)-1)*0.5);
+var legL3X= -legL2X - legL2X;
+var legR3X= -legR2X - legR2X;
+var stup_angle_end = PI/12;
+var stup_angle_start = PI/24;
+
+if(legL3X < -stup_angle_end) legL3X = -stup_angle_end;
+if(legR3X < -stup_angle_end) legR3X = -stup_angle_end;
+if(legL3X > stup_angle_start)legL3X = stup_angle_start;
+if(legR3X > stup_angle_start)legR3X = stup_angle_start;
+
+return {legR1X:legR1X,legR2X:legR2X,legL1X:legL1X,legL2X:legL2X,legL3X:legL3X,legR3X:legR3X}
 }
 function iniRobot(robotData, second) {
 if (second === void 0) { second = false; }
@@ -410,6 +445,7 @@ function easeInQuad(t, b, c, d) {
 }
 function animateRobot(robotObj, robotData) {
 // ГЛОНАС ДАТЧИК
+
 robotData.XR = robotObj.position.x;
 robotData.YR = robotObj.position.z;
 robotData.AR = abs(robotObj.rotation.y);
@@ -482,6 +518,7 @@ switch (true) {
          robotData.isNeedGoHome = true;
      }
      break;
+
 }
 SetSonarV(robotObj, robotData);
 OutWEBCAM(robotData);
@@ -560,6 +597,14 @@ function DrawOperator() {
 var out = new THREE.Group(); 
 var Human = DrawHuman();
     Human.position.set(-1.1,-0.15,0); Human.rotation.y = PI/2;
+
+    legL1.name = 'legL1';
+    legR1.name = 'legR1';
+    legL2.name = 'legL2';
+    legR2.name = 'legR2';
+    legL3.name = 'legL3';
+    legR3.name = 'legR3';
+
     handL1.rotation.set(-PI/6,0,0);
     handR1.rotation.set(handL1.rotation.x,0,-handL1.rotation.z);
     handL2.rotation.set(-PI/4,0,0);
@@ -587,6 +632,10 @@ return out;
 }
 Operator = DrawOperator();
     robot.add(Operator);
+
+RobotMData.parts = {};
+Operator.traverse(function (child) {
+    if (child.name) RobotMData.parts[child.name] = child;});
 
 //Передняя панель
 var geo = new THREE.CylinderGeometry(2,2,2,10,1,true,0,PI/2);
